@@ -1,0 +1,28 @@
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="section-title text-center">{{ section.title|default:"Latest News" }}</h2>
+        <p class="section-subtitle text-center">{{ section.subtitle|default:"Stay updated" }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for item in section.items %}
+            <article class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
+                {% if item.featured_image %}
+                <img src="{{ item.featured_image }}" alt="{{ item.title }}" class="w-full h-48 object-cover">
+                {% else %}
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center"><i class="fas fa-newspaper text-4xl text-gray-400"></i></div>
+                {% endif %}
+                <div class="p-6">
+                    <p class="text-sm text-gray-500 mb-2">{{ item.created_at|date:"F d, Y" }}</p>
+                    <h3 class="text-xl font-bold mb-2">{{ item.title }}</h3>
+                    <p class="text-gray-600">{{ item.summary|truncatewords:15 }}</p>
+                    <a href="{{ item.get_absolute_url }}" class="mt-4 inline-block text-[var(--primary)] font-semibold hover:underline">Read More →</a>
+                </div>
+            </article>
+            {% empty %}
+            <p class="col-span-full text-center text-gray-500">No news available.</p>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-12">
+            <a href="{% url 'news:list' %}" class="btn-outline">View All News</a>
+        </div>
+    </div>
+</section>

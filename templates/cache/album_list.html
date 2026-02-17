@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gallery - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-12" style="color: var(--text);">Photo Gallery</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for album in albums %}
+            <a href="{{ album.get_absolute_url }}" class="group relative overflow-hidden rounded-xl shadow-lg aspect-square">
+                {% if album.cover_image %}
+                <img src="{{ album.cover_image }}" alt="{{ album.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                {% else %}
+                <div class="w-full h-full bg-gray-200 flex items-center justify-center"><i class="fas fa-images text-4xl text-gray-400"></i></div>
+                {% endif %}
+                <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition flex items-end p-6">
+                    <h2 class="text-white text-2xl font-semibold">{{ album.title }}</h2>
+                </div>
+            </a>
+            {% empty %}
+            <p class="col-span-full text-center text-gray-500">No albums yet.</p>
+            {% endfor %}
+        </div>
+        {% if is_paginated %}
+        <div class="flex justify-center mt-12">...</div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

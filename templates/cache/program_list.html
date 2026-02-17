@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Academic Programs - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-12" style="color: var(--text);">Our Academic Programs</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for program in programs %}
+            <div class="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition text-center group">
+                <div class="w-20 h-20 bg-[var(--primary)] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                    <i class="fas fa-{% if program.icon %}{{ program.icon }}{% else %}book-open{% endif %} text-3xl" style="color: var(--primary);"></i>
+                </div>
+                <h2 class="text-2xl font-bold mb-2">{{ program.name }}</h2>
+                <p class="text-gray-600">{{ program.description|truncatewords:20 }}</p>
+                <a href="#" class="mt-6 inline-block text-[var(--primary)] font-semibold hover:underline">Learn more →</a>
+            </div>
+            {% empty %}
+            <p class="col-span-full text-center text-gray-500">No programs listed.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

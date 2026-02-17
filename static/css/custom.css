@@ -1,0 +1,27 @@
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Better focus outlines for accessibility */
+*:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Container max-width */
+.container {
+    max-width: 1280px;
+}
+
+/* Prose styles for rich text */
+.prose h2 {
+    color: var(--text);
+    font-size: 1.875rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+.prose p {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+}

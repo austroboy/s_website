@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Results for "{{ query }}" - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-12" style="color: var(--text);">
+            Search Results for "{{ query }}"
+        </h1>
+
+        {% if results %}
+        <div class="space-y-6">
+            {% for item in results %}
+            <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-md transition">
+                <p class="text-sm text-gray-500 mb-1">{{ item.type }}</p>
+                <h2 class="text-xl font-bold mb-2"><a href="{{ item.url }}" class="hover:text-[var(--primary)]">{{ item.title }}</a></h2>
+                {% if item.date %}
+                <p class="text-sm text-gray-600">{{ item.date|date:"F d, Y" }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if is_paginated %}
+        <div class="flex justify-center mt-12">...</div>
+        {% endif %}
+
+        {% else %}
+        <p class="text-center text-gray-500 text-lg">No results found for "{{ query }}".</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

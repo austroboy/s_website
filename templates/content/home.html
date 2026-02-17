@@ -1,0 +1,380 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- ==================== HERO SECTION ==================== -->
+<section class="relative bg-cover bg-center h-screen flex items-center justify-center" style="background-image: url('{% if hero.background_image %}{{ hero.background_image }}{% else %}https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80{% endif %}');">
+    <div class="absolute inset-0 bg-black opacity-40"></div>
+    <div class="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+            {% if hero.title %}{{ hero.title }}{% else %}Welcome to {{ request.tenant.name }}{% endif %}
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+            {% if hero.subtitle %}{{ hero.subtitle }}{% else %}A place where students thrive, discover, and lead.{% endif %}
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="{% if hero.cta_primary_link %}{{ hero.cta_primary_link }}{% else %}/admissions/{% endif %}" class="bg-[var(--primary)] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition shadow-lg">
+                {% if hero.cta_primary_text %}{{ hero.cta_primary_text }}{% else %}Apply Now{% endif %}
+            </a>
+            <a href="{% if hero.cta_secondary_link %}{{ hero.cta_secondary_link }}{% else %}/about/{% endif %}" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-gray-900 transition">
+                {% if hero.cta_secondary_text %}{{ hero.cta_secondary_text }}{% else %}Learn More{% endif %}
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FEATURES / PROGRAMS ==================== -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--text);">Our Academic Programs</h2>
+            <p class="text-xl" style="color: var(--text-muted);">Designed to inspire and challenge every student.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {% for program in programs %}
+            <div class="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition text-center group">
+                <div class="w-20 h-20 bg-[var(--primary)] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                    <i class="fas fa-{% if program.icon %}{{ program.icon }}{% else %}book-open{% endif %} text-3xl" style="color: var(--primary);"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">{{ program.name|default:"Program Name" }}</h3>
+                <p class="text-gray-600">{{ program.description|default:"Detailed description of the program."|truncatewords:20 }}</p>
+                <a href="{{ program.get_absolute_url|default:'#' }}" class="mt-6 inline-block text-[var(--primary)] font-semibold hover:underline">Learn more →</a>
+            </div>
+            {% empty %}
+            <!-- Fallback dummy items for demonstration -->
+            <div class="bg-gray-50 rounded-2xl p-8 shadow-lg text-center group">
+                <div class="w-20 h-20 bg-[var(--primary)] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-flask text-3xl" style="color: var(--primary);"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Science</h3>
+                <p class="text-gray-600">Comprehensive science program with labs and research opportunities.</p>
+                <a href="#" class="mt-6 inline-block text-[var(--primary)] font-semibold hover:underline">Learn more →</a>
+            </div>
+            <div class="bg-gray-50 rounded-2xl p-8 shadow-lg text-center group">
+                <div class="w-20 h-20 bg-[var(--primary)] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-calculator text-3xl" style="color: var(--primary);"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Mathematics</h3>
+                <p class="text-gray-600">Advanced mathematics curriculum fostering analytical skills.</p>
+                <a href="#" class="mt-6 inline-block text-[var(--primary)] font-semibold hover:underline">Learn more →</a>
+            </div>
+            <div class="bg-gray-50 rounded-2xl p-8 shadow-lg text-center group">
+                <div class="w-20 h-20 bg-[var(--primary)] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-language text-3xl" style="color: var(--primary);"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Languages</h3>
+                <p class="text-gray-600">Multilingual education with focus on communication and literature.</p>
+                <a href="#" class="mt-6 inline-block text-[var(--primary)] font-semibold hover:underline">Learn more →</a>
+            </div>
+            <div class="bg-gray-50 rounded-2xl p-8 shadow-lg text-center group">
+                <div class="w-20 h-20 bg-[var(--primary)] bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-palette text-3xl" style="color: var(--primary);"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Arts</h3>
+                <p class="text-gray-600">Creative arts programs including music, drama, and visual arts.</p>
+                <a href="#" class="mt-6 inline-block text-[var(--primary)] font-semibold hover:underline">Learn more →</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== STATS ==================== -->
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="text-4xl md:text-5xl font-bold mb-2" style="color: var(--primary);" x-data="{ count: 0 }" x-init="setTimeout(() => count = {{ stats.students|default:500 }}, 200)" x-text="count">0</div>
+                <div class="text-gray-600">Students</div>
+            </div>
+            <div class="text-center">
+                <div class="text-4xl md:text-5xl font-bold mb-2" style="color: var(--primary);" x-data="{ count: 0 }" x-init="setTimeout(() => count = {{ stats.teachers|default:50 }}, 200)" x-text="count">0</div>
+                <div class="text-gray-600">Teachers</div>
+            </div>
+            <div class="text-center">
+                <div class="text-4xl md:text-5xl font-bold mb-2" style="color: var(--primary);" x-data="{ count: 0 }" x-init="setTimeout(() => count = {{ stats.programs|default:25 }}, 200)" x-text="count">0</div>
+                <div class="text-gray-600">Programs</div>
+            </div>
+            <div class="text-center">
+                <div class="text-4xl md:text-5xl font-bold mb-2" style="color: var(--primary);" x-data="{ count: 0 }" x-init="setTimeout(() => count = {{ stats.years|default:30 }}, 200)" x-text="count">0</div>
+                <div class="text-gray-600">Years</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== LATEST NEWS ==================== -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--text);">Latest News</h2>
+            <p class="text-xl" style="color: var(--text-muted);">Stay updated with our school happenings.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for news in news_list %}
+            <article class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
+                {% if news.featured_image %}
+                <img src="{{ news.featured_image }}" alt="{{ news.title }}" class="w-full h-48 object-cover">
+                {% else %}
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center"><i class="fas fa-newspaper text-4xl text-gray-400"></i></div>
+                {% endif %}
+                <div class="p-6">
+                    <p class="text-sm text-gray-500 mb-2">{{ news.created_at|date:"F d, Y" }}</p>
+                    <h3 class="text-xl font-bold mb-2">{{ news.title }}</h3>
+                    <p class="text-gray-600">{{ news.summary|truncatewords:20 }}</p>
+                    <a href="{{ news.get_absolute_url }}" class="mt-4 inline-block text-[var(--primary)] font-semibold hover:underline">Read More →</a>
+                </div>
+            </article>
+            {% empty %}
+            <!-- Fallback dummy news -->
+            <article class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center"><i class="fas fa-newspaper text-4xl text-gray-400"></i></div>
+                <div class="p-6">
+                    <p class="text-sm text-gray-500 mb-2">March 15, 2026</p>
+                    <h3 class="text-xl font-bold mb-2">School Wins National Award</h3>
+                    <p class="text-gray-600">Our school has been recognized for excellence in STEM education...</p>
+                    <a href="#" class="mt-4 inline-block text-[var(--primary)] font-semibold hover:underline">Read More →</a>
+                </div>
+            </article>
+            <article class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center"><i class="fas fa-newspaper text-4xl text-gray-400"></i></div>
+                <div class="p-6">
+                    <p class="text-sm text-gray-500 mb-2">March 10, 2026</p>
+                    <h3 class="text-xl font-bold mb-2">Annual Sports Day</h3>
+                    <p class="text-gray-600">Students showcased their athletic skills in a day of fun and competition...</p>
+                    <a href="#" class="mt-4 inline-block text-[var(--primary)] font-semibold hover:underline">Read More →</a>
+                </div>
+            </article>
+            <article class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center"><i class="fas fa-newspaper text-4xl text-gray-400"></i></div>
+                <div class="p-6">
+                    <p class="text-sm text-gray-500 mb-2">March 5, 2026</p>
+                    <h3 class="text-xl font-bold mb-2">New Library Opening</h3>
+                    <p class="text-gray-600">A modern library with thousands of books and digital resources...</p>
+                    <a href="#" class="mt-4 inline-block text-[var(--primary)] font-semibold hover:underline">Read More →</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-12">
+            <a href="{% url 'news:list' %}" class="btn-outline">View All News</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== UPCOMING EVENTS ==================== -->
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--text);">Upcoming Events</h2>
+            <p class="text-xl" style="color: var(--text-muted);">Join us and be part of the excitement.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for event in events_list %}
+            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+                <div class="flex items-center mb-4">
+                    <div class="bg-[var(--primary)] text-white rounded-lg p-3 text-center mr-4 w-16">
+                        <span class="block text-xl font-bold">{{ event.start_date|date:"d" }}</span>
+                        <span class="text-xs uppercase">{{ event.start_date|date:"M" }}</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">{{ event.title }}</h3>
+                        <p class="text-gray-600"><i class="far fa-clock mr-2"></i>{{ event.start_date|date:"g:i A" }}</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">{{ event.summary|truncatewords:20 }}</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-500"><i class="fas fa-map-marker-alt mr-1"></i>{{ event.venue|default:"TBD" }}</span>
+                    <a href="{{ event.get_absolute_url }}" class="text-[var(--primary)] hover:underline">Details</a>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Fallback dummy events -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="bg-[var(--primary)] text-white rounded-lg p-3 text-center mr-4 w-16">
+                        <span class="block text-xl font-bold">25</span>
+                        <span class="text-xs uppercase">MAR</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">Science Fair</h3>
+                        <p class="text-gray-600"><i class="far fa-clock mr-2"></i>10:00 AM</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">Students present innovative projects and experiments.</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-500"><i class="fas fa-map-marker-alt mr-1"></i>Main Hall</span>
+                    <a href="#" class="text-[var(--primary)] hover:underline">Details</a>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="bg-[var(--primary)] text-white rounded-lg p-3 text-center mr-4 w-16">
+                        <span class="block text-xl font-bold">02</span>
+                        <span class="text-xs uppercase">APR</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">Parent-Teacher Meeting</h3>
+                        <p class="text-gray-600"><i class="far fa-clock mr-2"></i>4:30 PM</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">Discuss student progress and upcoming term plans.</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-500"><i class="fas fa-map-marker-alt mr-1"></i>Auditorium</span>
+                    <a href="#" class="text-[var(--primary)] hover:underline">Details</a>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div class="bg-[var(--primary)] text-white rounded-lg p-3 text-center mr-4 w-16">
+                        <span class="block text-xl font-bold">15</span>
+                        <span class="text-xs uppercase">APR</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">Spring Concert</h3>
+                        <p class="text-gray-600"><i class="far fa-clock mr-2"></i>6:00 PM</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">Music performances by students from all grades.</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-500"><i class="fas fa-map-marker-alt mr-1"></i>School Theater</span>
+                    <a href="#" class="text-[var(--primary)] hover:underline">Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-12">
+            <a href="{% url 'events:list' %}" class="btn-outline">View All Events</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== IMPORTANT NOTICES ==================== -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--text);">Important Notices</h2>
+            <p class="text-xl" style="color: var(--text-muted);">Stay informed with the latest announcements.</p>
+        </div>
+        <div class="max-w-3xl mx-auto space-y-4">
+            {% for notice in notices_list %}
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 flex justify-between items-center">
+                <div>
+                    <p class="font-semibold">{{ notice.title }}</p>
+                    <p class="text-sm text-gray-600">{{ notice.summary }}</p>
+                </div>
+                <a href="{{ notice.get_absolute_url }}" class="text-[var(--primary)] hover:underline whitespace-nowrap ml-4">Read →</a>
+            </div>
+            {% empty %}
+            <p class="text-center text-gray-500">No notices at this time.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== TESTIMONIALS ==================== -->
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--text);">What Parents Say</h2>
+            <p class="text-xl" style="color: var(--text-muted);">Trusted by families for generations.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for testimonial in testimonials %}
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="flex items-center mb-4">
+                    <img src="{{ testimonial.photo|default:'https://placehold.co/100x100' }}" alt="{{ testimonial.name }}" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold">{{ testimonial.name }}</h4>
+                        <p class="text-sm text-gray-500">{{ testimonial.role }}</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 italic">"{{ testimonial.quote }}"</p>
+            </div>
+            {% empty %}
+            <!-- Dummy testimonials -->
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="flex items-center mb-4">
+                    <img src="https://placehold.co/100x100" alt="Sarah Johnson" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold">Sarah Johnson</h4>
+                        <p class="text-sm text-gray-500">Parent of Grade 5 Student</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 italic">"The teachers are incredibly dedicated and my child has flourished here."</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="flex items-center mb-4">
+                    <img src="https://placehold.co/100x100" alt="Michael Chen" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold">Michael Chen</h4>
+                        <p class="text-sm text-gray-500">Parent of Grade 8 Student</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 italic">"Excellent academic programs and a supportive community."</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="flex items-center mb-4">
+                    <img src="https://placehold.co/100x100" alt="Priya Patel" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold">Priya Patel</h4>
+                        <p class="text-sm text-gray-500">Parent of Grade 2 Student</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 italic">"My daughter loves going to school every day. The environment is nurturing."</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== GALLERY PREVIEW ==================== -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--text);">Moments at Our School</h2>
+            <p class="text-xl" style="color: var(--text-muted);">A glimpse into our vibrant campus life.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {% for album in gallery_albums %}
+            <a href="{{ album.get_absolute_url }}" class="group relative overflow-hidden rounded-lg shadow-lg aspect-square">
+                {% if album.cover_image %}
+                <img src="{{ album.cover_image }}" alt="{{ album.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                {% else %}
+                <div class="w-full h-full bg-gray-200 flex items-center justify-center"><i class="fas fa-images text-4xl text-gray-400"></i></div>
+                {% endif %}
+                <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition flex items-end p-4">
+                    <h3 class="text-white font-semibold">{{ album.title }}</h3>
+                </div>
+            </a>
+            {% empty %}
+            <!-- Placeholder gallery images -->
+            <div class="bg-gray-200 rounded-lg aspect-square flex items-center justify-center text-gray-400">
+                <i class="fas fa-image text-3xl"></i>
+            </div>
+            <div class="bg-gray-200 rounded-lg aspect-square flex items-center justify-center text-gray-400">
+                <i class="fas fa-image text-3xl"></i>
+            </div>
+            <div class="bg-gray-200 rounded-lg aspect-square flex items-center justify-center text-gray-400">
+                <i class="fas fa-image text-3xl"></i>
+            </div>
+            <div class="bg-gray-200 rounded-lg aspect-square flex items-center justify-center text-gray-400">
+                <i class="fas fa-image text-3xl"></i>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-12">
+            <a href="{% url 'albums:list' %}" class="btn-outline">View Full Gallery</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CALL TO ACTION ==================== -->
+<section class="py-20" style="background-color: var(--primary);">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Join Our Community</h2>
+        <p class="text-xl text-white opacity-90 mb-8">Give your child the best education and a bright future.</p>
+        <a href="/admissions/" class="bg-white text-[var(--primary)] px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition inline-block shadow-lg">Apply Now</a>
+    </div>
+</section>
+{% endblock %}

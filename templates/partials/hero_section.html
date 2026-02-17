@@ -1,0 +1,12 @@
+{% load static %}
+<section class="relative bg-cover bg-center h-screen flex items-center" style="background-image: url('{{ section.config.background_image|default:'https://placehold.co/1920x1080' }}');">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center text-white">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4">{{ section.title|default:"Welcome to Our School" }}</h1>
+        <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">{{ section.subtitle|default:"Providing excellence in education since 1990." }}</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="{{ section.config.cta_primary_link|default:'/admissions/' }}" class="btn-primary text-lg">{{ section.config.cta_primary_text|default:"Apply Now" }}</a>
+            <a href="{{ section.config.cta_secondary_link|default:'/about/' }}" class="btn-outline border-white text-white hover:bg-white hover:text-gray-900 text-lg">{{ section.config.cta_secondary_text|default:"Learn More" }}</a>
+        </div>
+    </div>
+</section>

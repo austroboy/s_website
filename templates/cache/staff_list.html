@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Staff Directory - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="section-title text-center">Our Staff</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+            {% for staff in staff_list %}
+            <div class="bg-gray-50 rounded-2xl p-6 text-center hover:shadow-lg transition">
+                {% if staff.photo %}
+                <img src="{{ staff.photo }}" alt="{{ staff.name }}" class="w-32 h-32 rounded-full mx-auto object-cover mb-4">
+                {% else %}
+                <div class="w-32 h-32 rounded-full mx-auto bg-gray-200 flex items-center justify-center mb-4"><i class="fas fa-user-tie text-4xl text-gray-400"></i></div>
+                {% endif %}
+                <h3 class="text-xl font-bold">{{ staff.name }}</h3>
+                <p class="text-[var(--primary)] font-medium">{{ staff.designation }}</p>
+                <p class="text-gray-600 text-sm mt-2">{{ staff.department }}</p>
+                <div class="mt-4 flex justify-center space-x-3">
+                    {% if staff.email %}
+                    <a href="mailto:{{ staff.email }}" class="text-gray-500 hover:text-[var(--primary)]"><i class="fas fa-envelope"></i></a>
+                    {% endif %}
+                    {% if staff.phone %}
+                    <a href="tel:{{ staff.phone }}" class="text-gray-500 hover:text-[var(--primary)]"><i class="fas fa-phone-alt"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="col-span-full text-center text-gray-500">No staff listed.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

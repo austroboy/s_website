@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">{{ event.title }}</h1>
+        <div class="flex flex-wrap gap-4 text-gray-600 mb-8">
+            <span><i class="far fa-calendar-alt mr-2"></i>{{ event.start_date|date:"F d, Y - g:i A" }}</span>
+            {% if event.end_date %}
+            <span><i class="far fa-calendar-check mr-2"></i>{{ event.end_date|date:"F d, Y - g:i A" }}</span>
+            {% endif %}
+            <span><i class="fas fa-map-marker-alt mr-2"></i>{{ event.venue|default:"TBD" }}</span>
+        </div>
+        <div class="prose prose-lg max-w-none">
+            {{ event.content|safe }}
+        </div>
+        {% if event.registration_link %}
+        <div class="mt-8">
+            <a href="{{ event.registration_link }}" class="btn-primary" target="_blank">Register Now</a>
+        </div>
+        {% endif %}
+        <div class="mt-12 pt-6 border-t">
+            <a href="{% url 'events:list' %}" class="text-[var(--primary)] hover:underline">&larr; Back to Events</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,32 @@
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="section-title text-center">{{ section.title|default:"Upcoming Events" }}</h2>
+        <p class="section-subtitle text-center">{{ section.subtitle|default:"Join us" }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for item in section.items %}
+            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+                <div class="flex items-center mb-4">
+                    <div class="bg-[var(--primary)] text-white rounded-lg p-3 text-center mr-4">
+                        <span class="block text-xl font-bold">{{ item.start_date|date:"d" }}</span>
+                        <span class="text-xs uppercase">{{ item.start_date|date:"M" }}</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold">{{ item.title }}</h3>
+                        <p class="text-gray-600"><i class="far fa-clock mr-2"></i>{{ item.start_date|date:"g:i A" }}</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">{{ item.summary|truncatewords:20 }}</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-500"><i class="fas fa-map-marker-alt mr-1"></i>{{ item.venue|default:"TBD" }}</span>
+                    <a href="{{ item.get_absolute_url }}" class="text-[var(--primary)] hover:underline">Details</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="col-span-full text-center text-gray-500">No upcoming events.</p>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-12">
+            <a href="{% url 'events:list' %}" class="btn-outline">View All Events</a>
+        </div>
+    </div>
+</section>

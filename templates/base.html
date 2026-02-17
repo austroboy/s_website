@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ request.tenant.name }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    
+    <!-- Tailwind CSS via CDN (for development; use a build system for production) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Optional custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    
+    <!-- Alpine.js for lightweight interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: {{ colors.primary }};
+            --secondary: {{ colors.secondary }};
+            --accent: {{ colors.accent }};
+            --surface: {{ colors.surface }};
+            --text: {{ colors.text }};
+            --text-muted: {{ colors.text_muted }};
+        }
+        body {
+            color: var(--text);
+            background-color: var(--surface);
+        }
+        /* Custom utility classes */
+        .btn-primary {
+            @apply bg-[var(--primary)] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition;
+        }
+        .btn-secondary {
+            @apply bg-[var(--secondary)] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition;
+        }
+        .btn-outline {
+            @apply border-2 border-[var(--primary)] text-[var(--primary)] px-6 py-3 rounded-lg font-semibold hover:bg-[var(--primary)] hover:text-white transition;
+        }
+        .section-title {
+            @apply text-3xl md:text-4xl font-bold mb-4;
+            color: var(--text);
+        }
+        .section-subtitle {
+            @apply text-xl text-[var(--text-muted)] mb-8;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="antialiased">
+    {% include 'partials/header.html' %}
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    {% include 'partials/footer.html' %}
+    
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

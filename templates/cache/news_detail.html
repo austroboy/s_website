@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ news.title }} - {{ block.super }}{% endblock %}
+{% block meta_description %}{{ news.summary }}{% endblock %}
+
+{% block content %}
+<article class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        {% if news.featured_image %}
+        <img src="{{ news.featured_image }}" alt="{{ news.title }}" class="w-full h-96 object-cover rounded-2xl shadow-xl mb-8">
+        {% endif %}
+        <p class="text-sm text-gray-500 mb-2">{{ news.created_at|date:"F d, Y" }} by {{ news.author_name|default:"Admin" }}</p>
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">{{ news.title }}</h1>
+        <div class="prose prose-lg max-w-none">
+            {{ news.content|safe }}
+        </div>
+        <div class="mt-12 pt-6 border-t">
+            <a href="{% url 'news:list' %}" class="text-[var(--primary)] hover:underline">&larr; Back to News</a>
+        </div>
+    </div>
+</article>
+{% endblock %}
