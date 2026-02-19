@@ -1,0 +1,53 @@
+<div x-data="{
+    topBarLinks: [
+        { label: 'Publications', href: '/publications' },
+        { label: 'International Students', href: '/admission/international' },
+        { label: 'Academic Calendar', href: '/academic/calendar' },
+        { label: 'Library', href: '/library' },
+        { label: 'Newsletters', href: '/newsletters' },
+        { label: 'Journals', href: '/research/journals' },
+        { label: 'Catalog', href: '/catalog' },
+        { label: 'Archive', href: '/archive' },
+        { label: 'Contact Us', href: '/contact' }
+    ],
+    navigationItems: [
+        {
+            label: 'About',
+            hasDropdown: true,
+            megaMenu: [
+                {
+                    title: 'ABOUT NSU',
+                    items: [
+                        { label: 'Brief History', href: '/about/history' },
+                        { label: 'Vision, Mission & Strategy', href: '/about/vision-mission' },
+                        { label: 'International Advisory Board', href: '/about/advisory-board' },
+                        { label: 'Accreditation', href: '/about/accreditation' },
+                        { label: 'International Recognition', href: '/about/recognition' },
+                        { label: 'Facts About NSU', href: '/about/facts' }
+                    ]
+                },
+                {
+                    title: 'NSU Trustees',
+                    items: [
+                        { label: 'Board of Trustees', href: '/about/trustees' }
+                    ]
+                }
+            ]
+        },
+        {
+            label: 'Academic',
+            hasDropdown: true,
+            megaMenu: [
+                {
+                    title: 'SCHOOLS',
+                    items: [
+                        { label: 'School of Business & Economics', href: '/academic/sbe' },
+                        { label: 'School of Engineering & Physical Sciences', href: '/academic/seps' }
+                    ]
+                }
+            ]
+        },
+        { label: 'Alumni', href: '/alumni', hasDropdown: false },
+        { label: 'Research', href: '/research', hasDropdown: false }
+    ]
+}"></div>

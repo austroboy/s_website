@@ -1,0 +1,87 @@
+{% load static %}
+
+<section x-data="{
+    currentIndex: 0,
+    images: [
+        { url: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=1986&auto=format&fit=crop', alt: 'University Campus' },
+        { url: 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1986&auto=format&fit=crop', alt: 'Library' },
+        { url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1986&auto=format&fit=crop', alt: 'Modern Classroom' },
+        { url: 'https://plus.unsplash.com/premium_photo-1677567996070-68fa4181775a?q=80&w=1986&auto=format&fit=crop', alt: 'Students Group' }
+    ],
+    init() {
+        setInterval(() => {
+            this.currentIndex = (this.currentIndex + 1) % this.images.length;
+        }, 5000);
+    }
+}" class="relative w-full h-[55vh] md:h-[85vh] lg:h-screen overflow-hidden">
+
+    <!-- Image Slider -->
+    <template x-for="(image, index) in images" :key="index">
+        <div x-show="currentIndex === index"
+             x-transition:enter="transition ease-out duration-1000"
+             x-transition:enter-start="opacity-0 scale-105"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-1000"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="absolute inset-0">
+            <img :src="image.url" :alt="image.alt" class="w-full h-full object-cover">
+        </div>
+    </template>
+
+    <!-- Smarter Overlay — concentrated near text area, image shows clearly on top-right -->
+    <div class="absolute inset-0" style="background: linear-gradient(160deg, rgba(3, 3, 3, 0.88) 0%, rgba(13, 13, 13, 0.35) 40%, rgba(5, 13, 36, 0.2) 70%, transparent 100%);"></div>
+    <div class="absolute bottom-0 left-0 w-full h-1/2" style="background: linear-gradient(to top, rgba(5, 13, 36, 0.7) 0%, transparent 100%);"></div>
+
+    <!-- Decorative Elements -->
+    <div class="deco-circle w-[300px] h-[300px] -bottom-32 -left-32 animate-float-slow opacity-40"></div>
+    <div class="deco-circle w-[200px] h-[200px] top-20 -right-20 animate-float opacity-30"></div>
+    <div class="deco-dots bottom-20 right-10 opacity-20 hidden md:block"></div>
+    
+    <!-- Spinning Ring Decoration -->
+    <div class="absolute top-1/2 right-[8%] -translate-y-1/2 w-[400px] h-[400px] hidden xl:block opacity-[0.06] animate-spin-slow">
+        <div class="w-full h-full rounded-full border-2 border-dashed border-white"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 w-full h-full flex flex-col justify-center items-center md:items-start px-6 md:px-16 lg:px-24 text-center md:text-left">
+        <div class="max-w-3xl space-y-6 md:space-y-8 flex flex-col items-center md:items-start reveal-up">
+            
+            <!-- Eyebrow -->
+            <div class="flex items-center space-x-2 animate-fade-in-down">
+                <div class="w-10 h-[2px] bg-[var(--accent)]"></div>
+                <span class="text-[var(--accent)] text-xs font-bold tracking-[0.2em] uppercase">Welcome to NSU</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold text-white leading-[1.05] tracking-tight animate-fade-in-up">
+                Step Up With <br />
+                <span class="gradient-text">Admission</span>
+            </h1>
+
+            <p class="text-white text-sm md:text-base lg:text-lg max-w-xl leading-relaxed animate-fade-in-up hidden md:block">
+                Join one of the most prestigious private universities in Bangladesh. Shaping leaders since 2003.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 items-center md:items-start w-full sm:w-auto animate-fade-in-up">
+                <a href="#" class="btn-primary-blue text-sm h-12 px-8 rounded-lg w-full sm:w-auto shadow-lg">
+                    <span><i data-lucide="pen-line" class="w-4 h-4 mr-2 inline"></i>Apply for Admission</span>
+                </a>
+
+                <a href="#" class="btn-glass text-sm h-12 px-8 rounded-lg w-full sm:w-auto">
+                    <i data-lucide="globe" class="w-4 h-4 mr-2 opacity-70"></i>
+                    International Applicants
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Indicators -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 md:left-24 md:translate-x-0 z-20 flex items-center space-x-3">
+        <template x-for="(image, index) in images" :key="index">
+            <button @click="currentIndex = index"
+                    class="h-1.5 transition-all duration-500 rounded-full"
+                    :class="currentIndex === index ? 'w-10 bg-[var(--primary)] shadow-[0_0_12px_rgba(0,81,255,0.5)]' : 'w-4 bg-white/40 hover:bg-white/70'"></button>
+        </template>
+    </div>
+
+</section>

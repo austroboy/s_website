@@ -7,60 +7,55 @@
     <title>{% block title %}{{ request.tenant.name }}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     
-    <!-- Tailwind CSS via CDN (for development; use a build system for production) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Optional custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Alpine.js for lightweight interactivity -->
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Design System Stylesheet (loaded after Tailwind to override) -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}?v=2">
+    
+    <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     
-    <style>
-        :root {
-            --primary: {{ colors.primary }};
-            --secondary: {{ colors.secondary }};
-            --accent: {{ colors.accent }};
-            --surface: {{ colors.surface }};
-            --text: {{ colors.text }};
-            --text-muted: {{ colors.text_muted }};
-        }
-        body {
-            color: var(--text);
-            background-color: var(--surface);
-        }
-        /* Custom utility classes */
-        .btn-primary {
-            @apply bg-[var(--primary)] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition;
-        }
-        .btn-secondary {
-            @apply bg-[var(--secondary)] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition;
-        }
-        .btn-outline {
-            @apply border-2 border-[var(--primary)] text-[var(--primary)] px-6 py-3 rounded-lg font-semibold hover:bg-[var(--primary)] hover:text-white transition;
-        }
-        .section-title {
-            @apply text-3xl md:text-4xl font-bold mb-4;
-            color: var(--text);
-        }
-        .section-subtitle {
-            @apply text-xl text-[var(--text-muted)] mb-8;
-        }
-    </style>
     {% block extra_head %}{% endblock %}
 </head>
-<body class="antialiased">
-    {% include 'partials/header.html' %}
+<body class="antialiased font-sans bg-[var(--surface)] text-[var(--text)]">
+    {% include 'partials/layout/header.html' %}
     
     <main>
         {% block content %}{% endblock %}
     </main>
     
-    {% include 'partials/footer.html' %}
+    {% include 'partials/layout/footer.html' %}
     
     <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        // Lucide: initial render + MutationObserver for Alpine/Dynamic content
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+
+                // Re-render icons when Alpine adds new DOM nodes
+                let timeout;
+                const observer = new MutationObserver(() => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        observer.disconnect();
+                        lucide.createIcons();
+                        observer.observe(document.body, { childList: true, subtree: true });
+                    }, 100);
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
+            }
+        });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

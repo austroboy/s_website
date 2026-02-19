@@ -1,27 +1,651 @@
-/* Smooth scrolling */
+/* ============================================
+   DESIGN SYSTEM — Electric Blue
+   ============================================ */
+
+/* ---- Design Tokens ---- */
+:root {
+    --primary: #0051FF;
+    --primary-dark: #003ACC;
+    --primary-light: #3B82F6;
+    --primary-glow: rgba(0, 81, 255, 0.35);
+
+    --secondary: #0F1D40;
+    --secondary-light: #1A2D5A;
+
+    --accent: #00D4FF;
+
+    --surface: #F8FAFD;
+    --surface-alt: #EFF4FB;
+
+    --text: #1A1A2E;
+    --text-muted: #64748B;
+
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-full: 9999px;
+
+    --shadow-sm: 0 1px 3px rgba(15, 29, 64, 0.06);
+    --shadow-md: 0 4px 16px rgba(15, 29, 64, 0.08);
+    --shadow-lg: 0 10px 40px rgba(15, 29, 64, 0.12);
+    --shadow-glow: 0 0 30px rgba(0, 81, 255, 0.2);
+    --shadow-glow-lg: 0 0 60px rgba(0, 81, 255, 0.3);
+
+    --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Global Reset & Defaults ---- */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 html {
     scroll-behavior: smooth;
 }
 
-/* Better focus outlines for accessibility */
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background-color: var(--surface);
+    line-height: 1.6;
+}
+
+/* ---- Focus Ring ---- */
 *:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
+    border-radius: var(--radius-sm);
 }
 
-/* Container max-width */
-.container {
-    max-width: 1280px;
+/* ---- Selection ---- */
+::selection {
+    background: var(--primary);
+    color: #fff;
 }
 
-/* Prose styles for rich text */
+/* ---- Headings ---- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Section Header Pattern */
+.section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.section-eyebrow i,
+.section-eyebrow svg {
+    color: var(--primary);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+/* Primary Button — solid blue with stunning hover */
+.btn-primary-blue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    box-shadow: 0 4px 14px var(--primary-glow);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary-blue::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent), var(--primary-light), var(--primary));
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.btn-primary-blue:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(0, 81, 255, 0.5), 0 0 40px rgba(0, 81, 255, 0.25);
+}
+
+.btn-primary-blue:hover::before {
+    opacity: 1;
+}
+
+.btn-primary-blue span,
+.btn-primary-blue i,
+.btn-primary-blue svg {
+    position: relative;
+    z-index: 1;
+}
+
+/* Outline Button — wave fill from bottom */
+.btn-outline-blue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 22px;
+    background: transparent;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.75rem;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--primary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    letter-spacing: 0.08em;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.btn-outline-blue::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -10%;
+    width: 120%;
+    height: 0%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    transition: height var(--transition-base);
+    z-index: -1;
+    border-radius: 50% 50% 0 0;
+}
+
+.btn-outline-blue:hover {
+    color: #fff;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--primary-glow);
+}
+
+.btn-outline-blue:hover::before {
+    height: 120%;
+    border-radius: 0;
+}
+
+/* Mobile View-All Button — full width, rounded */
+@media (max-width: 639px) {
+    .btn-view-all-mobile {
+        display: flex !important;
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+        border-radius: var(--radius-lg);
+        font-size: 0.8rem;
+        margin-top: 1.5rem;
+    }
+}
+
+/* Glass Button */
+.btn-glass {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    white-space: nowrap;
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   CARD & INTERACTION UTILITIES
+   ============================================ */
+
+.card-hover {
+    transition: all var(--transition-slow);
+}
+
+.card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.glow-border-hover {
+    transition: box-shadow var(--transition-base);
+}
+
+.glow-border-hover:hover {
+    box-shadow: 0 0 0 2px var(--primary), var(--shadow-glow);
+}
+
+/* Animated Underline — shared between nav & footer */
+.nav-link-underline {
+    position: relative;
+}
+
+.nav-link-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 2px;
+    transition: width var(--transition-base);
+}
+
+.nav-link-underline:hover::after {
+    width: 100%;
+}
+
+/* ============================================
+   ANIMATIONS — Keyframes
+   ============================================ */
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+}
+
+@keyframes float-slow {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(3deg); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px var(--primary-glow); }
+    50% { box-shadow: 0 0 25px var(--primary-glow), 0 0 50px rgba(0, 81, 255, 0.1); }
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ---- Animation Utility Classes ---- */
+.animate-fade-in-up { animation: fadeInUp 0.6s ease-out both; }
+.animate-fade-in-down { animation: fadeInDown 0.5s ease-out both; }
+.animate-slide-in-left { animation: slideInLeft 0.6s ease-out both; }
+.animate-slide-in-right { animation: slideInRight 0.6s ease-out both; }
+.animate-scale-in { animation: scaleIn 0.5s ease-out both; }
+.animate-float { animation: float 4s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-gradient { animation: gradient-shift 4s ease infinite; background-size: 200% 200%; }
+.animate-slideDown { animation: slideDown 0.3s ease-out; }
+.animate-spin-slow { animation: spin-slow 20s linear infinite; }
+
+/* ============================================
+   COMPONENT STYLES
+   ============================================ */
+
+/* Cloak */
+[x-cloak] { display: none !important; }
+
+/* Header Glass Effect */
+.header-glass {
+    background: linear-gradient(135deg, rgba(15, 29, 64, 0.97), rgba(6, 23, 66, 0.97));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.header-scrolled {
+    background: rgba(15, 29, 64, 0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 2px solid var(--primary);
+}
+
+/* Top Bar */
+.top-bar-gradient {
+    background: linear-gradient(90deg, var(--secondary) 0%, var(--secondary-light) 100%);
+}
+
+/* Top Bar Links — hover: color change only + gradient underline bar */
+.top-bar-link {
+    position: relative;
+    transition: color var(--transition-fast);
+    padding: 2px 8px;
+    display: inline-block;
+}
+
+.top-bar-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 2px;
+    transition: width var(--transition-base);
+}
+
+.top-bar-link:hover {
+    color: var(--accent);
+}
+
+.top-bar-link:hover::after {
+    width: 100%;
+}
+
+/* Top Bar Social Icons — match footer social-icon-box style */
+.top-bar-social {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-base);
+}
+
+.top-bar-social:hover {
+    border-color: var(--primary);
+    background: rgba(0, 81, 255, 0.15);
+    box-shadow: 0 0 15px rgba(0, 81, 255, 0.2);
+}
+
+.top-bar-social:hover i,
+.top-bar-social:hover svg {
+    color: var(--accent) !important;
+}
+
+/* Mega Menu */
+.mega-menu-bg {
+    background: linear-gradient(180deg, var(--secondary) 0%, var(--secondary-light) 100%);
+    border-top: 2px solid var(--primary);
+}
+
+.mega-menu-col-title {
+    color: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    padding-left: 12px;
+}
+
+.mega-menu-link {
+    transition: all var(--transition-fast);
+}
+
+.mega-menu-link:hover {
+    color: #fff;
+    background: rgba(0, 81, 255, 0.1);
+    padding-left: 12px;
+}
+
+/* Footer Gradient Top Border */
+.footer-top-wave {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    height: 4px;
+}
+
+/* Footer Link Hover — gradient underline animation */
+.footer-link {
+    color: rgba(255, 255, 255, 0.55);
+    transition: all var(--transition-base);
+    display: inline-block;
+    position: relative;
+}
+
+.footer-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 2px;
+    transition: width var(--transition-base);
+}
+
+.footer-link:hover {
+    color: #fff;
+    transform: translateX(4px);
+}
+
+.footer-link:hover::after {
+    width: 100%;
+}
+
+.footer-col-title {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.footer-col-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 3px;
+}
+
+/* Social Icon Hover — white icons default */
+.social-icon-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all var(--transition-base);
+}
+
+.social-icon-box i,
+.social-icon-box svg {
+    color: rgba(255, 255, 255, 0.7) !important;
+    transition: color var(--transition-base);
+}
+
+.social-icon-box:hover {
+    border-color: var(--primary);
+    background: rgba(0, 81, 255, 0.15);
+    box-shadow: 0 0 20px rgba(0, 81, 255, 0.2);
+}
+
+.social-icon-box:hover i,
+.social-icon-box:hover svg {
+    color: var(--accent) !important;
+}
+
+/* ============================================
+   DECORATIVE SHAPES
+   ============================================ */
+
+.deco-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 81, 255, 0.12), rgba(0, 212, 255, 0.08));
+    pointer-events: none;
+}
+
+.deco-dots {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background-image: radial-gradient(circle, rgba(0, 81, 255, 0.15) 2px, transparent 2px);
+    background-size: 16px 16px;
+    pointer-events: none;
+}
+
+/* ============================================
+   PROSE
+   ============================================ */
+
 .prose h2 {
     color: var(--text);
     font-size: 1.875rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
+
 .prose p {
     margin-bottom: 1.25rem;
     line-height: 1.8;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* Alive Animations & Reveal Effects */
+@keyframes reveal-up {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.98);
+        filter: blur(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes reveal-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scale-reveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.reveal-up {
+    animation: reveal-up 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.reveal-down {
+    animation: reveal-down 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.reveal-scale {
+    animation: scale-reveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Staggered animation delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* Pulse Glow Effect */
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 81, 255, 0.2); }
+    50% { box-shadow: 0 0 40px rgba(0, 81, 255, 0.4); }
+}
+
+.pulse-glow {
+    animation: pulse-glow 3s infinite ease-in-out;
 }
