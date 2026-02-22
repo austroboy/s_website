@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Academic Programs | {{ request.tenant.name }}{% endblock %}
+
+{% block content %}
+
+<!-- Academic Hero Header -->
+{% include 'partials/academic/header.html' with page_title="Academic Programs" %}
+
+<div class="bg-[var(--surface)] py-6 lg:py-10" 
+     x-data="{
+        activeCategory: 'undergraduate',
+        sidebarItems: {{ sidebarItems|safe|default:'[]' }},
+        programs: {{ programs_list|safe|default:'[]' }},
+        get filteredPrograms() {
+            return this.programs;
+        }
+     }">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+            
+            <!-- Sidebar -->
+            <div class="w-full lg:w-1/4">
+                <div class="sticky top-24">
+                    <h2 class="text-[var(--secondary)] font-bold text-lg mb-6 flex items-center gap-2">
+                        <span class="w-8 h-1 bg-[var(--primary)] rounded-full"></span>
+                        Program Levels
+                    </h2>
+                    {% include 'partials/academic/programs/sidebar.html' %}
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="w-full lg:w-3/4">
+                <div class="mb-8 reveal-up">
+                    <h2 class="text-3xl font-extrabold text-[var(--secondary)] tracking-tight">Discover Our Programs</h2>
+                    <p class="text-[var(--text-muted)] mt-2">Find the right path for your future career from our wide range of academic offerings.</p>
+                </div>
+
+                <!-- Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="(program, index) in filteredPrograms" :key="program.id">
+                        {% include 'partials/academic/programs/program_card.html' %}
+                    </template>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

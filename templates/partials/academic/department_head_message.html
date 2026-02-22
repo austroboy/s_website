@@ -1,0 +1,75 @@
+{% load static %}
+
+<!-- Department Head Message HTML (Partial) -->
+<section id="head-message" class="py-12 md:py-20 bg-[var(--surface-alt)] relative overflow-hidden">
+    <!-- Top Decorative Line -->
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] opacity-50"></div>
+
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+        
+        <!-- Standardized Left-Aligned Heading -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+            <div class="space-y-2">
+                <div class="section-eyebrow">
+                    <i data-lucide="message-square" class="w-4 h-4 text-[var(--primary)]"></i>
+                    <span>Message</span>
+                </div>
+                <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[var(--text)] tracking-tight">{{ department.head_message.title }}</h2>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center lg:items-start">
+            
+            <!-- Profile Image Side -->
+            <div class="w-full lg:w-[40%] shrink-0">
+                <div class="relative max-w-[320px] mx-auto lg:mx-0 group">
+                    <div class="absolute -inset-4 border-2 border-[var(--primary)] rounded-[32px] rounded-br-[80px] opacity-20 group-hover:opacity-100 transition-opacity duration-500 scale-95 origin-top-left -z-10 bg-white shadow-sm"></div>
+                    <div class="absolute -left-6 top-1/2 -translate-y-1/2 w-12 h-24 border-2 border-[var(--primary)] border-r-0 rounded-l-full opacity-30 z-0"></div>
+                    <!-- Play button decoration -->
+                    <div class="absolute -left-3 top-1/2 mt-4 ml-4 z-20">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" class="drop-shadow-md">
+                            <path d="M12 8L32 20L12 32V8Z" fill="#0051FF" />
+                            <path d="M10 16L24 24L10 32V16Z" fill="#FF0055" class="opacity-80" />
+                        </svg>
+                    </div>
+
+                    <div class="relative bg-white rounded-[24px] rounded-br-[64px] border border-gray-100 overflow-hidden shadow-md aspect-[4/5] object-cover">
+                        <img src="{{ department.head_message.profile.image.url }}" alt="{{ department.head_message.profile.image.alt }}" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-black/75 backdrop-blur-sm p-4 text-center">
+                            <h4 class="text-white font-bold text-lg mb-1">{{ department.head_message.profile.name }}</h4>
+                            <p class="text-white/80 text-sm font-medium">{{ department.head_message.profile.overlayDesignation }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Side -->
+            <div class="w-full lg:w-[60%] flex flex-col justify-center">
+                <div class="prose max-w-none text-[var(--text-muted)] text-base lg:text-lg mb-10 opacity-90 leading-relaxed italic border-l-4 border-[var(--primary)] pl-6 bg-white p-6 rounded-r-2xl shadow-sm">
+                    <i class="fas fa-quote-left text-4xl text-[var(--primary)]/20 mb-2 block"></i>
+                    {{ department.head_message.messageBodyHtml|safe }}
+                </div>
+
+                <!-- Info Tiles -->
+                <div class="flex flex-col sm:flex-row gap-4 mt-auto">
+                    {% for tile in department.head_message.infoTiles %}
+                    <div class="flex items-center gap-4 bg-white border border-gray-100/80 p-4 rounded-xl shadow-sm flex-1 hover:border-[var(--primary)]/30 transition-colors">
+                        <div class="w-12 h-12 bg-[var(--surface-alt)] shadow-sm border border-gray-100 rounded-lg flex items-center justify-center shrink-0 text-[var(--primary)]">
+                            {% if tile.type == 'email' %}
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            {% elif tile.type == 'designation' %}
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <p class="text-[var(--secondary)] font-bold text-sm mb-0.5">{{ tile.label }}</p>
+                            <p class="text-[var(--text-muted)] text-sm">{{ tile.value }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>

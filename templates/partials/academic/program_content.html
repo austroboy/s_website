@@ -1,0 +1,74 @@
+{% load static %}
+
+<!-- Program Details Two-Column Layout (Partial) -->
+<!-- Program Details Two-Column Layout (Partial) -->
+<section class="bg-white py-6 md:py-10 relative overflow-hidden" x-data="{
+    activeSection: '{{ program.sections.0.id }}',
+    sections: [
+        {% for s in program.sections %}
+        '{{ s.id }}'{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ],
+    scrollToSection(id) {
+        this.activeSection = id;
+        const el = document.getElementById(id);
+        if(el) {
+            const yOffset = -120; // Accounts for sticky header
+            const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+        }
+    }
+}">
+    
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+            
+            <!-- Left Sidebar Navigation -->
+            <div class="w-full lg:w-[30%] lg:sticky lg:top-24 shrink-0">
+                <nav class="flex flex-col gap-2 relative pl-4">
+                    <!-- Subtle tracker line -->
+                    <div class="absolute left-0 top-2 bottom-2 w-px bg-gray-200"></div>
+                    
+                    {% for section in program.sections %}
+                    <button @click="scrollToSection('{{ section.id }}')"
+                            :class="activeSection === '{{ section.id }}' ? 'text-[var(--primary)] font-bold' : 'text-[var(--secondary)] hover:text-[var(--primary)]'"
+                            class="text-left text-sm py-2.5 px-3 transition-all duration-300 relative group">
+                            
+                        <!-- Active indicator dot -->
+                        <div class="absolute left-[-16.5px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full transition-colors duration-300"
+                             :class="activeSection === '{{ section.id }}' ? 'bg-[var(--primary)]' : 'bg-gray-300 group-hover:bg-[var(--primary)]/50'"></div>
+                             
+                        {{ section.title }}
+                    </button>
+                    {% endfor %}
+                </nav>
+            </div>
+
+            <!-- Right Content Area -->
+            <div class="w-full lg:w-[70%]">
+                <!-- Main Program Title from requested screenshot -->
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-[var(--secondary)] mb-12">{{ program.title }}</h2>
+
+                <!-- Render Each Section Stacked -->
+                <div class="space-y-12 lg:space-y-16">
+                    {% for section in program.sections %}
+                    <div id="{{ section.id }}" class="scroll-mt-32">
+                        <h3 class="text-2xl font-bold text-[var(--secondary)] mb-6">{{ section.title }}</h3>
+                        
+                        <!-- Rich Text Content Block -->
+                        <div class="prose max-w-none text-[var(--text-muted)] text-[15px] leading-relaxed">
+                            {{ section.contentHtml|safe }}
+                        </div>
+                        
+                        <!-- Separator line except for last item -->
+                        {% if not forloop.last %}
+                        <hr class="mt-12 lg:mt-16 border-gray-200/80">
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,27 @@
+{% load static %}
+
+<!-- Department Hero HTML (Partial) -->
+<section id="overview" class="py-12 md:py-20 bg-white relative overflow-hidden">
+    <!-- Decorative faint background circle -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-[0.02]" style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
+
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+        
+        <!-- Standardized Left-Aligned Heading -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+            <div class="space-y-2">
+                <div class="section-eyebrow">
+                    <i data-lucide="info" class="w-4 h-4 text-[var(--primary)]"></i>
+                    <span>Overview</span>
+                </div>
+                <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[var(--text)] tracking-tight">About The Department</h2>
+            </div>
+        </div>
+
+        <div class="prose max-w-none text-[var(--text-muted)]">
+            <img src="{{ department.featured.image.url }}" alt="{{ department.featured.image.alt }}" class="w-full h-[300px] md:h-[450px] object-cover rounded-[var(--radius-lg)] mb-8 shadow-md">
+            <p class="text-lg leading-relaxed">{{ department.featured.description }}</p>
+        </div>
+
+    </div>
+</section>

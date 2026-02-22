@@ -1,0 +1,31 @@
+<div class="bg-white rounded-[var(--radius-md)] overflow-hidden shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-lg)] transition-all duration-500 border border-[var(--surface-alt)] group flex flex-col h-full reveal-up"
+     :style="'animation-delay: ' + (index * 100) + 'ms'">
+    
+    <!-- Image Area with Accent Decor -->
+    <div class="relative h-48 overflow-hidden">
+        <img :src="dept.image" :alt="dept.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="absolute inset-0 bg-gradient-to-t from-[var(--secondary)]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        
+        <!-- School Badge -->
+        <div class="absolute top-4 left-4">
+            <span class="px-3 py-1 bg-white/90 backdrop-blur-md text-[var(--primary)] text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm" x-text="dept.school"></span>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6 flex flex-col flex-1">
+        <h3 class="text-xl font-bold text-[var(--secondary)] mb-3 group-hover:text-[var(--primary)] transition-colors duration-300" x-text="dept.name"></h3>
+        <p class="text-[var(--text-muted)] text-sm line-clamp-3 mb-6 flex-1" x-text="dept.description"></p>
+        
+        <div class="flex items-center justify-between pt-4 border-t border-[var(--surface-alt)]">
+            <div class="flex -space-x-2">
+                <div class="w-8 h-8 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-600">JD</div>
+                <div class="w-8 h-8 rounded-full border-2 border-white bg-indigo-100 flex items-center justify-center text-[10px] font-bold text-indigo-600">MS</div>
+            </div>
+            <a :href="dept.link" class="text-[var(--primary)] text-sm font-bold flex items-center gap-1 group/btn">
+                Know More
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover/btn:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+        </div>
+    </div>
+</div>

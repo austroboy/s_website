@@ -1,0 +1,25 @@
+{% load static %}
+
+<section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://www.bracu.ac.bd/sites/default/files/styles/banner_dept_landing/public/banner-images/2024/12/31/Departments.JPG" 
+             alt="{{ page_title|default:'Academics' }}" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0F1D40]/90 to-transparent"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 w-full">
+        <div class="reveal-up">
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4">
+                {{ page_title|default:"Schools and Departments" }}
+            </h1>
+            <nav class="flex text-white/70 text-sm font-medium">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">Academics</span>
+            </nav>
+        </div>
+    </div>
+</section>
