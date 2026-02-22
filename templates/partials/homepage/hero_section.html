@@ -3,10 +3,9 @@
 <section x-data="{
     currentIndex: 0,
     images: [
-        { url: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=1986&auto=format&fit=crop', alt: 'University Campus' },
-        { url: 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1986&auto=format&fit=crop', alt: 'Library' },
-        { url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1986&auto=format&fit=crop', alt: 'Modern Classroom' },
-        { url: 'https://plus.unsplash.com/premium_photo-1677567996070-68fa4181775a?q=80&w=1986&auto=format&fit=crop', alt: 'Students Group' }
+        {% for image in hero_data.images %}
+        { url: '{{ image.url }}', alt: '{{ image.alt }}' }{% if not forloop.last %},{% endif %}
+        {% endfor %}
     ],
     init() {
         setInterval(() => {
@@ -50,16 +49,16 @@
             <!-- Eyebrow -->
             <div class="flex items-center space-x-2 animate-fade-in-down">
                 <div class="w-10 h-[2px] bg-[var(--accent)]"></div>
-                <span class="text-[var(--accent)] text-xs font-bold tracking-[0.2em] uppercase">Welcome to NSU</span>
+                <span class="text-[var(--accent)] text-xs font-bold tracking-[0.2em] uppercase">{{ hero_data.eyebrow }}</span>
             </div>
 
             <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold text-white leading-[1.05] tracking-tight animate-fade-in-up">
-                Step Up With <br />
-                <span class="gradient-text">Admission</span>
+                {{ hero_data.title_main }} <br />
+                <span class="gradient-text">{{ hero_data.title_gradient }}</span>
             </h1>
 
             <p class="text-white text-sm md:text-base lg:text-lg max-w-xl leading-relaxed animate-fade-in-up hidden md:block">
-                Join one of the most prestigious private universities in Bangladesh. Shaping leaders since 2003.
+                {{ hero_data.description }}
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 items-center md:items-start w-full sm:w-auto animate-fade-in-up">

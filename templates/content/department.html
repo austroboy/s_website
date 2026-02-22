@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Schools and Departments | {{ request.tenant.name }}{% endblock %}
+
+{% block content %}
+
+<!-- Academic Hero Header -->
+{% include 'partials/academic/header.html' with page_title="Schools and Departments" %}
+
+<div class="bg-[var(--surface)] py-12 lg:py-20" 
+     x-data="{
+        activeCategory: 'business',
+        sidebarItems: [
+            { 
+                id: 'business', 
+                label: 'BRAC Business School',
+                children: [
+                    { label: 'Bachelor of Business Administration', href: '#' },
+                    { label: 'Master of Business Administration', href: '#' },
+                    { label: 'Executive MBA', href: '#' }
+                ]
+            },
+            { 
+                id: 'data-science', 
+                label: 'School of Data and Sciences',
+                children: [
+                    { label: 'Computer Science & Engineering', href: '#' },
+                    { label: 'Math & Natural Sciences', href: '#' }
+                ]
+            },
+            { id: 'law', label: 'School of Law' },
+            { id: 'engineering', label: 'BSRM School of Engineering' },
+            { id: 'pharmacy', label: 'School of Pharmacy' },
+            { id: 'humanities', label: 'School of Humanities' }
+        ],
+        departments: [
+            {
+                id: 1,
+                name: 'BRAC Business School',
+                school: 'BBS',
+                description: 'The BRAC Business School (BBS) offers an undergraduate program: Bachelor of Business Administration (BBA) and two graduate programs.',
+                image: 'https://images.unsplash.com/photo-1523240715632-d984bc3107d1?q=80&w=2070&auto=format&fit=crop',
+                link: '#',
+                category: 'business'
+            },
+            {
+                id: 2,
+                name: 'School of Data and Sciences',
+                school: 'SDS',
+                description: 'The School of Data & Sciences is composed of the Department of Computer Science and Engineering (CSE) and the Mathematics & Natural Sciences Department (MNS).',
+                image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop',
+                link: '#',
+                category: 'data-science'
+            },
+            {
+                id: 3,
+                name: 'School of Engineering',
+                school: 'SE',
+                description: 'The BSRM School of Engineering is dedicated to excellence in engineering education and research, preparing students for global challenges.',
+                image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop',
+                link: '#',
+                category: 'engineering'
+            },
+            {
+                id: 4,
+                name: 'School of Law',
+                school: 'SOL',
+                description: 'The School of Law aims to provide high-quality legal education through rigorous academic programs and clinical experience.',
+                image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop',
+                link: '#',
+                category: 'law'
+            },
+            {
+                id: 5,
+                name: 'School of Humanities',
+                school: 'SHSS',
+                description: 'Focusing on social sciences, arts, and humanities to foster critical thinking and cultural understanding.',
+                image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2070&auto=format&fit=crop',
+                link: '#',
+                category: 'humanities'
+            },
+            {
+                id: 6,
+                name: 'School of Pharmacy',
+                school: 'SOP',
+                description: 'Leading the way in pharmaceutical sciences and clinical practice to improve healthcare outcomes.',
+                image: 'https://images.unsplash.com/photo-1587854685352-c54c22191939?q=80&w=2070&auto=format&fit=crop',
+                link: '#',
+                category: 'pharmacy'
+            }
+        ],
+        get filteredDepts() {
+            return this.departments;
+        }
+     }">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+            
+            <!-- Sidebar -->
+            <div class="w-full lg:w-1/4">
+                <div class="sticky top-24">
+                    <h2 class="text-[var(--secondary)] font-bold text-lg mb-6 flex items-center gap-2">
+                        <span class="w-8 h-1 bg-[var(--primary)] rounded-full"></span>
+                        Academic Units
+                    </h2>
+                    {% include 'partials/academic/sidebar.html' %}
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="w-full lg:w-3/4">
+                <div class="mb-8 reveal-up">
+                    <h2 class="text-3xl font-extrabold text-[var(--secondary)] tracking-tight">Schools and Departments</h2>
+                    <p class="text-[var(--text-muted)] mt-2">Explore our diverse range of academic paths and research opportunities.</p>
+                </div>
+
+                <!-- Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="(dept, index) in filteredDepts" :key="dept.id">
+                        {% include 'partials/academic/card.html' %}
+                    </template>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ news_item.title }} | {{ request.tenant.name|default:"School Name" }}{% endblock %}
+
+{% block content %}
+<!-- Standard Academic Hero Header matching Department/Programs -->
+{% include 'partials/academic/header.html' with page_title="Institutional News" %}
+
+<article class="py-12 md:py-20 bg-white relative overflow-hidden">
+    <div class="max-w-[1000px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+        
+        <!-- Article Header (Title First) -->
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-[var(--secondary)] tracking-tight leading-tight mb-4">
+                {{ news_item.title }}
+            </h1>
+            
+            <div class="flex flex-wrap items-center gap-6 text-[var(--text-muted)] font-bold text-base border-b border-gray-100 pb-8">
+                <span class="flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-5 h-5 text-[var(--primary)]"></i> 
+                    {{ news_item.date }}
+                </span>
+                <span class="flex items-center gap-2">
+                    <i data-lucide="user" class="w-5 h-5 text-[var(--primary)]"></i> 
+                    By {{ news_item.author }}
+                </span>
+            </div>
+        </header>
+
+        <!-- Dynamic Image Presentation (Carousel) -->
+        {% if news_item.images %}
+        <div class="relative w-full h-[350px] md:h-[550px] rounded-2xl overflow-hidden shadow-lg mb-12 bg-gray-50 border border-gray-100" 
+             x-data="{ 
+                 activeSlide: 0, 
+                 images: [
+                     {% for image in news_item.images %}
+                     { url: '{{ image.url }}', alt: '{{ image.alt }}' }{% if not forloop.last %},{% endif %}
+                     {% endfor %}
+                 ],
+                 next() { this.activeSlide = (this.activeSlide + 1) % this.images.length },
+                 prev() { this.activeSlide = (this.activeSlide - 1 + this.images.length) % this.images.length }
+             }">
+            
+            <!-- Slides -->
+            <template x-for="(img, index) in images" :key="index">
+                <div class="absolute inset-0 transition-opacity duration-1000"
+                     :class="activeSlide === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+                    <img :src="img.url" :alt="img.alt" class="w-full h-full object-cover">
+                </div>
+            </template>
+            
+            <!-- Basic Next/Prev Buttons (Conditional) -->
+            <template x-if="images.length > 1">
+                <div class="absolute inset-0 z-20 flex items-center justify-between p-4 pointer-events-none">
+                    <button @click="prev" class="pointer-events-auto bg-black/30 hover:bg-black/60 text-white p-3 rounded-full backdrop-blur-md transition-all shadow-lg">
+                        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                    </button>
+                    <button @click="next" class="pointer-events-auto bg-black/30 hover:bg-black/60 text-white p-3 rounded-full backdrop-blur-md transition-all shadow-lg">
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </template>
+
+            <!-- Counter Indicator -->
+            <template x-if="images.length > 1">
+                <div class="absolute bottom-6 right-6 z-20 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1.5 rounded-full tracking-widest uppercase">
+                    <span x-text="activeSlide + 1"></span> / <span x-text="images.length"></span>
+                </div>
+            </template>
+        </div>
+        {% endif %}
+
+        <!-- Article Body -->
+        <div class="prose prose-lg max-w-none text-[var(--text-muted)] leading-relaxed prose-headings:text-[var(--secondary)] prose-a:text-[var(--primary)] prose-blockquote:border-l-[var(--primary)] prose-blockquote:bg-[var(--surface-alt)] prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-xl prose-blockquote:italic">
+            {{ news_item.contentHtml|safe }}
+        </div>
+
+    </div>
+</article>
+{% endblock %}

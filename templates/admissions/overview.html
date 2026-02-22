@@ -1,123 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Admissions - {{ block.super }}{% endblock %}
+{% block title %}Admissions | {{ request.tenant.name|default:"School Name" }}{% endblock %}
 
 {% block content %}
-<!-- Hero small -->
-<section class="bg-[var(--primary)] text-white py-16">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Admissions</h1>
-        <p class="text-xl max-w-3xl mx-auto">Join our community of learners. Follow the steps below to apply.</p>
-    </div>
-</section>
+<!-- Standard Academic Hero Header matching Department/Programs -->
+{% include 'partials/academic/header.html' with page_title="Admissions" %}
 
-<!-- Timeline / Steps -->
-<section class="py-16 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center mb-12" style="color: var(--text);">Admission Process</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-[var(--primary)] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
-                <h3 class="text-xl font-semibold mb-2">Inquiry</h3>
-                <p class="text-gray-600">Fill out the inquiry form or contact our admission office.</p>
-            </div>
-            <div class="text-center">
-                <div class="w-16 h-16 bg-[var(--primary)] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
-                <h3 class="text-xl font-semibold mb-2">Application</h3>
-                <p class="text-gray-600">Submit the application form with required documents.</p>
-            </div>
-            <div class="text-center">
-                <div class="w-16 h-16 bg-[var(--primary)] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
-                <h3 class="text-xl font-semibold mb-2">Assessment</h3>
-                <p class="text-gray-600">Entrance test and interaction (if applicable).</p>
-            </div>
-            <div class="text-center">
-                <div class="w-16 h-16 bg-[var(--primary)] text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">4</div>
-                <h3 class="text-xl font-semibold mb-2">Enrollment</h3>
-                <p class="text-gray-600">Fee payment and confirmation of admission.</p>
-            </div>
-        </div>
-    </div>
-</section>
+<!-- Reuse the Sidebar Layout Partial -->
+{% include 'partials/admissions/admission_content.html' %}
 
-<!-- Downloadable Forms -->
-<section class="py-16 bg-gray-50">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center mb-12" style="color: var(--text);">Downloadable Forms</h2>
-        <div class="max-w-3xl mx-auto space-y-4">
-            {% for form in forms %}
-            <div class="bg-white p-4 rounded-lg shadow flex justify-between items-center">
-                <div>
-                    <h3 class="font-semibold">{{ form.title }}</h3>
-                    {% if form.description %}
-                    <p class="text-sm text-gray-600">{{ form.description }}</p>
-                    {% endif %}
-                </div>
-                <a href="{{ form.file.url }}" class="btn-outline text-sm px-4 py-2" download>Download</a>
-            </div>
-            {% empty %}
-            <p class="text-center text-gray-500">No forms available at this time.</p>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- Fee Overview (can be managed as a page or hardcoded) -->
-<section class="py-16 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center mb-8" style="color: var(--text);">Fee Structure</h2>
-        <div class="max-w-4xl mx-auto">
-            <p class="text-center text-gray-600 mb-6">Please contact the school office for detailed fee information or download the fee brochure.</p>
-            <!-- You could embed a table or link to a PDF -->
-            <div class="text-center">
-                <a href="#" class="btn-primary">Download Fee Brochure</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Inquiry Form -->
-<section class="py-16 bg-gray-50">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-8" style="color: var(--text);">Quick Inquiry</h2>
-            <form method="post" class="space-y-6">
-                {% csrf_token %}
-                {{ inquiry_form.non_field_errors }}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Full Name</label>
-                        {{ inquiry_form.full_name }}
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Email</label>
-                        {{ inquiry_form.email }}
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Phone</label>
-                        {{ inquiry_form.phone }}
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Program of Interest</label>
-                        {{ inquiry_form.program_of_interest }}
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Grade Level</label>
-                    {{ inquiry_form.grade_level }}
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Message (optional)</label>
-                    {{ inquiry_form.message }}
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn-primary">Submit Inquiry</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</section>
 {% endblock %}

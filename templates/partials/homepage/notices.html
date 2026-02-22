@@ -2,48 +2,15 @@
 
 <div x-data="{
     notices: [
+        {% for item in notices_data.items %}
         {
-            title: 'Admission going on for Fall Semester 2026',
-            date: '19 Feb',
-            year: '2026',
-            isNew: true,
-            href: '#'
-        },
-        {
-            title: 'Holiday Notice for International Mother Language Day',
-            date: '21 Feb',
-            year: '2026',
-            isNew: true,
-            href: '#'
-        },
-        {
-            title: 'Schedule for Mid-Term Examination Spring 2026',
-            date: '15 Feb',
-            year: '2026',
-            isNew: false,
-            href: '#'
-        },
-        {
-            title: 'Workshop on Cyber Security for IT Students',
-            date: '10 Feb',
-            year: '2026',
-            isNew: false,
-            href: '#'
-        },
-        {
-            title: 'Annual Sports Day 2026 - Registration Open',
-            date: '05 Feb',
-            year: '2026',
-            isNew: false,
-            href: '#'
-        },
-        {
-            title: 'Library Timing Extended for Final Exams',
-            date: '01 Feb',
-            year: '2026',
-            isNew: false,
-            href: '#'
-        }
+            title: '{{ item.title }}',
+            date: '{{ item.date }}',
+            year: '{{ item.year }}',
+            isNew: {% if item.isNew %}true{% else %}false{% endif %},
+            href: '{{ item.href }}'
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
     ]
 }" class="py-12 md:py-20 bg-[var(--surface-alt)] relative overflow-hidden">
     

@@ -1,32 +1,20 @@
 {% load static %}
 
-<section x-data='{
-    galleryItems: [
-        {% for item in gallery_data.items %}
-        {
-            id: {{ item.id }},
-            title: "{{ item.title }}",
-            date: "{{ item.date }}",
-            image: "{{ item.image }}",
-            gridClass: "{{ item.gridClass }}"
-        }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ]
-}' class="py-12 md:py-20 bg-white relative overflow-hidden">
+<!-- Department Gallery HTML (Partial) -->
+<section id="gallery" class="py-12 md:py-20 bg-[var(--surface-alt)] relative overflow-hidden">
     
     <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
         
-        <!-- Header -->
+        <!-- Standardized Left-Aligned Heading -->
         <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
             <div class="space-y-2">
                 <div class="section-eyebrow">
-                    <i data-lucide="image" class="w-4 h-4"></i>
+                    <i data-lucide="image" class="w-4 h-4 text-[var(--primary)]"></i>
                     <span>Gallery</span>
                 </div>
-                <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[var(--text)] tracking-tight">Our Photo Gallery</h2>
+                <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[var(--text)] tracking-tight">Department Gallery</h2>
             </div>
             
-            <!-- Desktop View All -->
             <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex self-start sm:self-auto">
                 VIEW ALL
                 <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
@@ -34,28 +22,26 @@
         </div>
 
         <!-- Sophisticated Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 h-[500px] md:h-[700px]">
-            <template x-for="item in galleryItems" :key="item.id">
-                <div :class="item.gridClass" class="group relative overflow-hidden rounded-2xl cursor-pointer glow-border-hover">
-                    <img :src="item.image" :alt="item.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 h-[400px] md:h-[600px]">
+            {% for item in department.gallery %}
+                <div class="{{ item.gridClass }} group relative overflow-hidden rounded-2xl cursor-pointer glow-border-hover">
+                    <img src="{{ item.image_url }}" alt="{{ item.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                     
                     <div class="absolute inset-0 bg-gradient-to-t from-[var(--secondary)]/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                     <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-md rounded-lg p-1.5 shadow-lg flex flex-col items-center min-w-[40px] transition-all duration-500 translate-y-[-120%] group-hover:translate-y-0 opacity-0 group-hover:opacity-100">
-                        <span class="text-base font-extrabold text-[var(--secondary)] leading-none" x-text="item.date.split(' ')[0]"></span>
-                        <span class="text-[9px] font-bold text-[var(--primary)] uppercase tracking-tighter" x-text="item.date.split(' ')[1]"></span>
+                        <span class="text-sm font-extrabold text-[var(--secondary)] leading-none text-center">{{ item.date }}</span>
                     </div>
 
                     <div class="absolute bottom-0 left-0 p-4 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100 text-white">
-                        <h4 class="text-xs md:text-sm font-bold leading-tight drop-shadow-lg" x-text="item.title"></h4>
+                        <h4 class="text-xs md:text-sm font-bold leading-tight drop-shadow-lg">{{ item.title }}</h4>
                     </div>
 
                     <div class="absolute inset-x-[-100%] inset-y-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] duration-[1500ms] group-hover:inset-x-[200%] transition-all"></div>
                 </div>
-            </template>
+            {% endfor %}
         </div>
 
-        <!-- Mobile View All -->
         <div class="mt-6 sm:hidden">
             <a href="#" class="btn-outline-blue btn-view-all-mobile text-xs tracking-wider group">
                 VIEW ALL PHOTOS

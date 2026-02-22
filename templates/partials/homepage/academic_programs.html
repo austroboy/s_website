@@ -1,63 +1,24 @@
 {% load static %}
 
 <section x-data="{
-    activeCategory: 'Undergraduate',
-    categories: ['Undergraduate', 'Graduate'],
+    activeCategory: '{{ programs_data.categories.0 }}',
+    categories: [
+        {% for cat in programs_data.categories %}
+        '{{ cat }}'{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ],
     programs: [
+        {% for item in programs_data.items %}
         { 
-            name: 'B.Sc. in Computer Science and Engineering (CSE)', 
-            shortCode: 'CSE',
-            category: 'Undergraduate',
-            duration: '4 Years',
-            credits: '140 Credit',
-            image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop',
-            icon: 'computer'
-        },
-        { 
-            name: 'B.Sc. in Electrical and Electronic Engineering (EEE)', 
-            shortCode: 'EEE',
-            category: 'Undergraduate',
-            duration: '4 Years',
-            credits: '140 Credit',
-            image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop',
-            icon: 'cpu'
-        },
-        { 
-            name: 'B.Sc. in Electronic and Telecommunication Engineerin...', 
-            shortCode: 'ETE',
-            category: 'Undergraduate',
-            duration: '4 Years',
-            credits: '140 Credit',
-            image: 'https://images.unsplash.com/photo-1551624511-71852021c251?q=80&w=2070&auto=format&fit=crop',
-            icon: 'radio'
-        },
-        { 
-            name: 'B.Sc. in Civil Engineering (CE)', 
-            shortCode: 'CIVIL',
-            category: 'Undergraduate',
-            duration: '4 Years',
-            credits: '146 Credit',
-            image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop',
-            icon: 'building'
-        },
-        { 
-            name: 'Master of Business Administration (MBA)', 
-            shortCode: 'MBA',
-            category: 'Graduate',
-            duration: '2 Years',
-            credits: '60 Credit',
-            image: 'https://images.unsplash.com/photo-1454165833772-d996d49513d7?q=80&w=2070&auto=format&fit=crop',
-            icon: 'briefcase'
-        },
-        { 
-            name: 'Master in Public Health (MPH)', 
-            shortCode: 'MPH',
-            category: 'Graduate',
-            duration: '2 Years',
-            credits: '52 Credit',
-            image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1999&auto=format&fit=crop',
-            icon: 'heart'
-        }
+            name: '{{ item.name }}', 
+            shortCode: '{{ item.shortCode }}',
+            category: '{{ item.category }}',
+            duration: '{{ item.duration }}',
+            credits: '{{ item.credits }}',
+            image: '{{ item.image }}',
+            icon: '{{ item.icon }}'
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
     ]
 }" class="py-12 md:py-20 bg-[var(--surface-alt)] relative overflow-hidden">
     

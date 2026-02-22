@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ department.featured.title|default:"Department Details" }} | {{ request.tenant.name|default:"School Name" }}{% endblock %}
+
+{% block content %}
+<!-- Department Hero Header Partial -->
+{% include 'partials/academic/header.html' with page_title=department.featured.title %}
+
+<div class="flex flex-col w-full">
+        <!-- Hero Overview Partial -->
+        {% include 'partials/academic/department_hero.html' %}
+
+        <!-- Head Message Partial -->
+        {% include 'partials/academic/department_head_message.html' %}
+
+        <!-- Faculty Members Partial -->
+        {% include 'partials/academic/department_faculty.html' %}
+
+        <!-- Programs Card Grid Partial -->
+        {% include 'partials/academic/department_programs.html' %}
+        
+        <!-- News & Events Partial -->
+        {% include 'partials/academic/department_news.html' %}
+
+        <!-- Gallery Partial -->
+        {% include 'partials/academic/department_gallery.html' %}
+</div>
+{% endblock %}

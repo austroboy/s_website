@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gallery | {{ request.tenant.name|default:"School Name" }}{% endblock %}
+
+{% block content %}
+<!-- Standard Academic Hero Header matching Department/Programs -->
+{% include 'partials/academic/header.html' with page_title="Experience University Life" %}
+
+<section class="py-12 md:py-20 bg-[var(--surface-alt)] relative overflow-hidden">
+    <!-- Decorative -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-[0.02]" style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
+
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+        
+        <!-- Standardized Left-Aligned Heading -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+            <div class="space-y-2">
+                <div class="section-eyebrow">
+                    <i data-lucide="image" class="w-4 h-4 text-[var(--primary)]"></i>
+                    <span>Multimedia</span>
+                </div>
+                <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[var(--text)] tracking-tight">Photo Gallery</h2>
+            </div>
+        </div>
+
+        <!-- Masonry / Sophisticated Grid linked to Detail Page -->
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5 h-[600px] md:h-[800px] lg:h-[1000px]">
+            {% for item in gallery %}
+                <a href="{% url 'content:gallery_detail' slug=item.slug %}" 
+                   class="{{ item.gridClass }} group relative overflow-hidden rounded-2xl cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 glow-border-hover">
+                    
+                    <img src="{{ item.image_url }}" alt="{{ item.title }}" class="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-110">
+                    
+                    <!-- Overlay text logic -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-[var(--secondary)]/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                    <!-- Date Badge -->
+                    <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-md rounded-lg p-2 shadow-lg flex flex-col items-center min-w-[50px] transition-all duration-500 translate-y-[-120%] group-hover:translate-y-0 opacity-0 group-hover:opacity-100 border border-gray-100/50">
+                        <span class="text-lg font-extrabold text-[var(--secondary)] leading-none text-center">{{ item.date|truncatewords:1|slice:":-3" }}</span>
+                        <span class="text-[10px] font-bold text-[var(--primary)] uppercase tracking-tighter mt-0.5">{{ item.date|truncatewords:2|slice:"-3:" }}</span>
+                    </div>
+
+                    <!-- Floating Title -->
+                    <div class="absolute bottom-0 left-0 p-5 w-full transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100 text-white">
+                        <div class="w-6 h-1 bg-[var(--primary)] mb-2 rounded-full"></div>
+                        <h4 class="text-xs md:text-base font-bold leading-tight drop-shadow-lg">{{ item.title }}</h4>
+                    </div>
+
+                    <!-- Flash Effect -->
+                    <div class="absolute inset-x-[-100%] inset-y-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] duration-[1600ms] group-hover:inset-x-[200%] transition-all pointer-events-none"></div>
+                </a>
+            {% endfor %}
+        </div>
+        
+    </div>
+</section>
+{% endblock %}

@@ -2,10 +2,9 @@
 
 <section x-data="{
     stats: [
-        { label: 'ESTABLISHED', target: 2003, current: 0, icon: 'landmark', suffix: '' },
-        { label: 'PROGRAMMES', target: 13, current: 0, icon: 'book-open', suffix: '' },
-        { label: 'TEACHERS', target: 100, current: 0, icon: 'users', suffix: '+' },
-        { label: 'GRADUATES', target: 10000, current: 0, icon: 'graduation-cap', suffix: '+' }
+        {% for item in stats_data.items %}
+        { label: '{{ item.label }}', target: {{ item.target }}, current: 0, icon: '{{ item.icon }}', suffix: '{{ item.suffix }}' }{% if not forloop.last %},{% endif %}
+        {% endfor %}
     ],
     animate(stat) {
         let start = 0;
@@ -35,7 +34,7 @@
         observer.observe(this.$el);
     }
 }" class="relative py-14 md:py-18 bg-fixed bg-cover bg-center overflow-hidden" 
-   style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2070&auto=format&fit=crop');">
+   style="background-image: url('{{ stats_data.bg_image }}');">
     
     <!-- Gradient Mesh Overlay -->
     <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(15, 29, 64, 0.92) 0%, rgba(0, 81, 255, 0.25) 50%, rgba(5, 13, 36, 0.92) 100%);"></div>
