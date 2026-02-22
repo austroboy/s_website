@@ -581,8 +581,8 @@ h1, h2, h3, h4, h5, h6 {
    ============================================ */
 
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--surface); }
-::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 99px; }
+::-webkit-scrollbar-track { background: var(--primary-glow); }
+::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
 /* Alive Animations & Reveal Effects */

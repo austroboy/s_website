@@ -140,6 +140,137 @@ class PageDetailView(DetailView):
 class DepartmentsView(TemplateView):
     template_name = 'content/department.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sidebarItems'] = [
+            { 
+                'id': 'business', 
+                'label': 'BRAC Business School',
+                'children': [
+                    { 'label': 'Bachelor of Business Administration', 'href': '#' },
+                    { 'label': 'Master of Business Administration', 'href': '#' },
+                    { 'label': 'Executive MBA', 'href': '#' }
+                ]
+            },
+            { 
+                'id': 'data-science', 
+                'label': 'School of Data and Sciences',
+                'children': [
+                    { 'label': 'Computer Science & Engineering', 'href': '#' },
+                    { 'label': 'Math & Natural Sciences', 'href': '#' }
+                ]
+            },
+            { 'id': 'law', 'label': 'School of Law' },
+            { 'id': 'engineering', 'label': 'BSRM School of Engineering' },
+            { 'id': 'pharmacy', 'label': 'School of Pharmacy' },
+            { 'id': 'humanities', 'label': 'School of Humanities' }
+        ]
+        context['departments_list'] = [
+            {
+                'id': 1,
+                'name': 'BRAC Business School',
+                'school': 'BBS',
+                'description': 'The BRAC Business School (BBS) offers an undergraduate program: Bachelor of Business Administration (BBA) and two graduate programs.',
+                'image': 'https://images.unsplash.com/photo-1523240715632-d984bc3107d1?q=80&w=2070&auto=format&fit=crop',
+                'link': '#',
+                'category': 'business'
+            },
+            {
+                'id': 2,
+                'name': 'School of Data and Sciences',
+                'school': 'SDS',
+                'description': 'The School of Data & Sciences is composed of the Department of Computer Science and Engineering (CSE) and the Mathematics & Natural Sciences Department (MNS).',
+                'image': 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop',
+                'link': '#',
+                'category': 'data-science'
+            },
+            {
+                'id': 3,
+                'name': 'School of Engineering',
+                'school': 'SE',
+                'description': 'The BSRM School of Engineering is dedicated to excellence in engineering education and research, preparing students for global challenges.',
+                'image': 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop',
+                'link': '#',
+                'category': 'engineering'
+            },
+            {
+                'id': 4,
+                'name': 'School of Law',
+                'school': 'SOL',
+                'description': 'The School of Law aims to provide high-quality legal education through rigorous academic programs and clinical experience.',
+                'image': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop',
+                'link': '#',
+                'category': 'law'
+            },
+            {
+                'id': 5,
+                'name': 'School of Humanities',
+                'school': 'SHSS',
+                'description': 'Focusing on social sciences, arts, and humanities to foster critical thinking and cultural understanding.',
+                'image': 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2070&auto=format&fit=crop',
+                'link': '#',
+                'category': 'humanities'
+            },
+            {
+                'id': 6,
+                'name': 'School of Pharmacy',
+                'school': 'SOP',
+                'description': 'Leading the way in pharmaceutical sciences and clinical practice to improve healthcare outcomes.',
+                'image': 'https://images.unsplash.com/photo-1587854685352-c54c22191939?q=80&w=2070&auto=format&fit=crop',
+                'link': '#',
+                'category': 'pharmacy'
+            }
+        ]
+        return context
+
+class ProgramsListView(TemplateView):
+    template_name = 'content/programs.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sidebarItems'] = [
+            { 
+                'id': 'undergraduate', 
+                'label': 'Undergraduate Programs',
+                'children': [
+                    { 'label': 'School of Business', 'href': '#' },
+                    { 'label': 'Engineering & Science', 'href': '#' },
+                    { 'label': 'Humanities & Social Science', 'href': '#' }
+                ]
+            },
+            { 
+                'id': 'graduate', 
+                'label': 'Graduate Programs',
+                'children': [
+                    { 'label': 'MBA Programs', 'href': '#' },
+                    { 'label': 'M.Sc. Programs', 'href': '#' }
+                ]
+            },
+            { 'id': 'phd', 'label': 'PhD Programs' },
+            { 'id': 'professional', 'label': 'Professional Courses' }
+        ]
+        context['programs_list'] = [
+            {
+                'id': 1,
+                'name': 'B.Sc. in Computer Science',
+                'school': 'SEPS',
+                'description': 'A comprehensive program covering software engineering, AI, and computer systems.',
+                'image': 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop',
+                'link': '/programs/cse/',
+                'category': 'undergraduate'
+            },
+            {
+                'id': 2,
+                'name': 'Master of Business Administration',
+                'school': 'SBE',
+                'description': 'Develop leadership skills and strategic business knowledge for the global market.',
+                'image': 'https://images.unsplash.com/photo-1454165833772-d996d49513d7?q=80&w=2070&auto=format&fit=crop',
+                'link': '/programs/mba/',
+                'category': 'graduate'
+            }
+        ]
+        return context
+
 class DepartmentDetailView(TemplateView):
     template_name = 'content/department_details.html'
 
@@ -417,6 +548,20 @@ class NewsDetailView(TemplateView):
                 <p>Following the keynote, a robust Q&A session empowered young scholars to ask granular questions concerning overseas higher education preparations and domestic industry integration. The university looks forward to hosting more luminaries from the industry next semester.</p>
             '''
         }
+
+        # Sidebar "What's Happening" (News)
+        context['news_events'] = [
+            { 'title': 'Think Beyond the Syllabus with Tahsan Khan', 'day': '21', 'month': 'Jul', 'image': 'https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=200&auto=format&fit=crop', 'href': '/news/think-beyond/' },
+            { 'title': 'Empowering Voices through Freedom of Association', 'day': '15', 'month': 'Jul', 'image': 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=200&auto=format&fit=crop', 'href': '/news/empowering-voices/' },
+            { 'title': 'English Department Celebrates Emerging Talents', 'day': '28', 'month': 'Jun', 'image': 'https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=200&auto=format&fit=crop', 'href': '/news/english-department/' }
+        ]
+
+        # Sidebar "Recent Highlights" (Notices)
+        context['recent_notices'] = [
+            { 'title': 'Holiday Notice for International Mother Language Day', 'date': '21 Feb', 'year': '2026', 'isNew': True, 'href': '/notice/holiday-mother-language-day/' },
+            { 'title': 'Schedule for Mid-Term Examination Spring 2026', 'date': '15 Feb', 'year': '2026', 'isNew': False, 'href': '/notice/mid-term-exam-spring-2026/' },
+            { 'title': 'Workshop on Cyber Security for IT Students', 'date': '10 Feb', 'year': '2026', 'isNew': False, 'href': '/notice/cyber-security-workshop/' }
+        ]
         return context
 
 class GalleryView(TemplateView):

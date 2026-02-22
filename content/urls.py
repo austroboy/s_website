@@ -3,12 +3,14 @@ app_name = 'content'
 from .views import (
     HomeView, DepartmentsView, PageDetailView, DepartmentDetailView, 
     ProgramDetailView, NewsListView, NewsDetailView, GalleryView, 
-    GalleryDetailView, NoticeListView, NoticeDetailView, ContactView
+    GalleryDetailView, NoticeListView, NoticeDetailView, ContactView,
+    ProgramsListView
 )
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('departments/', DepartmentsView.as_view(), name='departments'),
+    path('programs/', ProgramsListView.as_view(), name='programs_list'),
     path('departments/<slug:slug>/', DepartmentDetailView.as_view(), name='department_detail'),
     path('programs/<slug:slug>/', ProgramDetailView.as_view(), name='program_detail'),
     path('news/', NewsListView.as_view(), name='news_list'),

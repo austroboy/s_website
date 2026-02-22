@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Schools and Departments | {{ request.tenant.name }}{% endblock %}
+{% block title %}Academic Programs | {{ request.tenant.name }}{% endblock %}
 
 {% block content %}
 
 <!-- Academic Hero Header -->
-{% include 'partials/academic/header.html' with page_title="Schools and Departments" %}
+{% include 'partials/academic/header.html' with page_title="Academic Programs" %}
 
 <div class="bg-[var(--surface)] py-6 lg:py-10" 
      x-data="{
-        activeCategory: 'business',
+        activeCategory: 'undergraduate',
         sidebarItems: {{ sidebarItems|safe|default:'[]' }},
-        departments: {{ departments_list|safe|default:'[]' }},
-        get filteredDepts() {
-            return this.departments;
+        programs: {{ programs_list|safe|default:'[]' }},
+        get filteredPrograms() {
+            return this.programs;
         }
      }">
     <div class="max-w-[1200px] mx-auto px-6 lg:px-8">
@@ -25,23 +25,23 @@
                 <div class="sticky top-24">
                     <h2 class="text-[var(--secondary)] font-bold text-lg mb-6 flex items-center gap-2">
                         <span class="w-8 h-1 bg-[var(--primary)] rounded-full"></span>
-                        Academic Units
+                        Program Levels
                     </h2>
-                    {% include 'partials/academic/sidebar.html' %}
+                    {% include 'partials/academic/programs/sidebar.html' %}
                 </div>
             </div>
 
             <!-- Content Area -->
             <div class="w-full lg:w-3/4">
                 <div class="mb-8 reveal-up">
-                    <h2 class="text-3xl font-extrabold text-[var(--secondary)] tracking-tight">Schools and Departments</h2>
-                    <p class="text-[var(--text-muted)] mt-2">Explore our diverse range of academic paths and research opportunities.</p>
+                    <h2 class="text-3xl font-extrabold text-[var(--secondary)] tracking-tight">Discover Our Programs</h2>
+                    <p class="text-[var(--text-muted)] mt-2">Find the right path for your future career from our wide range of academic offerings.</p>
                 </div>
 
                 <!-- Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <template x-for="(dept, index) in filteredDepts" :key="dept.id">
-                        {% include 'partials/academic/card.html' %}
+                    <template x-for="(program, index) in filteredPrograms" :key="program.id">
+                        {% include 'partials/academic/programs/program_card.html' %}
                     </template>
                 </div>
             </div>

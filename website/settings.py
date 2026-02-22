@@ -88,6 +88,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'branding.context_processors.branding',   # if you have this
                 'navigation.context_processors.menus',
+                'content.context_processors.navigation',
             ],
         },
     },
