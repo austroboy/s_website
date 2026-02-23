@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Think Beyond the Syllabus with Tahsan Khan | Presidency University{% endblock %}
+
+{% block content %}
+<!-- Standard Academic Hero Header Flattened -->
+<section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
+    <div class="absolute inset-0 z-0">
+        <img src="https://www.bracu.ac.bd/sites/default/files/styles/banner_dept_landing/public/banner-images/2024/12/31/Departments.JPG" 
+             alt="Institutional News" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0F1D40]/90 to-transparent"></div>
+    </div>
+
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 w-full">
+        <div class="reveal-up">
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4">Institutional News</h1>
+            <nav class="flex text-white/70 text-sm font-medium">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">News</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<article class="py-12 md:py-20 bg-white relative overflow-hidden">
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+        
+        <div class="flex flex-col lg:flex-row gap-12">
+            
+            <!-- Main Content Area -->
+            <div class="lg:w-[70%]">
+                <header class="mb-8">
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-[var(--secondary)] tracking-tight leading-tight mb-4">
+                        Think Beyond the Syllabus with Tahsan Khan
+                    </h1>
+                    
+                    <div class="flex flex-wrap items-center gap-6 text-[var(--text-muted)] font-bold text-base border-b border-gray-100 pb-8">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-5 h-5 text-[var(--primary)]"></i> 
+                            July 21, 2026
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="user" class="w-5 h-5 text-[var(--primary)]"></i> 
+                            By PR Office
+                        </span>
+                    </div>
+                </header>
+
+                <!-- Image Presentation -->
+                <div class="relative w-full h-[350px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg mb-12 bg-gray-50 border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=2070&auto=format&fit=crop" alt="News Image" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Article Body -->
+                <div class="prose prose-lg max-w-none text-[var(--text-muted)] leading-relaxed">
+                    <p>On July 21, 2026, Presidency University hosted a special session titled "Think Beyond the Syllabus" with the renowned artist and academic Tahsan Khan. The event aimed to inspire students to look beyond conventional academic boundaries and explore their creative potential.</p>
+                    <p>Tahsan Khan shared his journey of balancing a successful career in the entertainment industry with his academic pursuits. He emphasized the importance of soft skills, critical thinking, and emotional intelligence in today's rapidly changing world.</p>
+                    <blockquote>"Education is not just about memorizing theories; it's about developing a mindset that can adapt and innovate."</blockquote>
+                    <p>The session concluded with an interactive Q&A where students had the opportunity to engage directly with the speaker. It was a day filled with inspiration and valuable life lessons for all attendees.</p>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="lg:w-[30%] space-y-8" x-data="{
+                news_events: [
+                    { title: 'Empowering Voices through Freedom of Association', day: '15', month: 'Jul', image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=400&auto=format&fit=crop', href: '/news/empowering-voices' },
+                    { title: 'English Department Celebrates Emerging Talents', day: '28', month: 'Jun', image: 'https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=400&auto=format&fit=crop', href: '/news/english-dept-talents' }
+                ],
+                recent_notices: [
+                    { title: 'Admission going on for Fall Semester 2026', date: '19 Feb', href: '/notices/admission-fall' },
+                    { title: 'Holiday Notice for International Mother Language Day', date: '21 Feb', href: '/notices/holiday-mother-language' }
+                ]
+            }">
+                <!-- What's Happening Sidebar -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm reveal-up">
+                    <div class="flex items-center space-x-3 mb-8">
+                        <div class="bg-gradient-to-br from-[var(--accent)] to-[var(--accent-dark)] p-2 rounded-xl text-white shadow-lg">
+                            <i data-lucide="zap" class="w-4 h-4"></i>
+                        </div>
+                        <h2 class="text-xl font-extrabold text-[var(--text)] tracking-tight">What's Happening</h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <template x-for="(item, index) in news_events" :key="index">
+                            <a :href="item.href" class="group flex flex-col space-y-3">
+                                <div class="relative h-32 rounded-2xl overflow-hidden shadow-sm">
+                                    <img :src="item.image" :alt="item.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                    <div class="absolute bottom-3 left-3 flex flex-col w-10 shadow-lg rounded-lg overflow-hidden translate-y-1 group-hover:translate-y-0 transition-transform">
+                                        <div class="bg-white text-[var(--secondary)] font-extrabold text-center py-1 text-sm leading-tight" x-text="item.day"></div>
+                                        <div class="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white font-bold text-center py-0.5 text-[8px] uppercase tracking-wider" x-text="item.month"></div>
+                                    </div>
+                                </div>
+                                <h4 class="text-[13px] font-bold text-[var(--text)] leading-snug group-hover:text-[var(--primary)] transition-colors line-clamp-2" x-text="item.title"></h4>
+                            </a>
+                        </template>
+                    </div>
+
+                    <div class="mt-8 border-t border-gray-50 pt-6">
+                        <a href="/news" class="flex items-center justify-center text-[10px] font-black text-[var(--primary)] hover:text-[var(--primary-dark)] transition-colors uppercase tracking-[0.2em]">
+                            View All News
+                            <i data-lucide="arrow-up-right" class="w-3 h-3 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Recent Highlights Sidebar (Notices) -->
+                <div class="bg-[var(--surface-alt)] p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm reveal-up sticky top-24">
+                    <div class="flex items-center space-x-3 mb-8">
+                        <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2 rounded-xl text-white shadow-lg">
+                            <i data-lucide="bell" class="w-4 h-4"></i>
+                        </div>
+                        <h2 class="text-xl font-extrabold text-[var(--text)] tracking-tight">Recent Highlights</h2>
+                    </div>
+
+                    <div class="space-y-4">
+                        <template x-for="(item, index) in recent_notices" :key="index">
+                            <a :href="item.href" class="group flex items-stretch bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-[var(--primary)]/30 overflow-hidden">
+                                <div class="w-16 flex-shrink-0 bg-gradient-to-b from-[var(--primary)] to-[var(--primary-dark)] flex flex-col items-center justify-center py-2 text-white">
+                                    <span class="text-sm font-extrabold leading-tight" x-text="item.date.split(' ')[0]"></span>
+                                    <span class="text-[8px] font-bold uppercase tracking-wider opacity-80" x-text="item.date.split(' ')[1]"></span>
+                                </div>
+                                <div class="flex-1 p-3 flex flex-col justify-center min-w-0">
+                                    <h4 class="text-[12px] font-bold text-[var(--text)] leading-snug group-hover:text-[var(--primary)] transition-colors line-clamp-2" x-text="item.title"></h4>
+                                </div>
+                            </a>
+                        </template>
+                    </div>
+
+                    <div class="mt-8">
+                        <a href="/notice" class="block text-center text-xs font-bold text-[var(--primary)] hover:text-[var(--primary-dark)] transition-colors uppercase tracking-widest border border-[var(--primary)]/30 py-3 rounded-xl hover:bg-white">
+                            View All Notices
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+</article>
+{% endblock %}
