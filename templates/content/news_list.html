@@ -1,29 +1,39 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}News & Events | {{ request.tenant.name|default:"School Name" }}{% endblock %}
+{% block title %}News & Events | Presidency University{% endblock %}
 
 {% block content %}
+<!-- Standard Academic Hero Header Flattened -->
 <section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
     <div class="absolute inset-0 z-0">
         <img src="https://www.bracu.ac.bd/sites/default/files/styles/banner_dept_landing/public/banner-images/2024/12/31/Departments.JPG" 
              alt="News & Events" 
              class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-r from-[var(--primary)]/90 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0F1D40]/90 to-transparent"></div>
     </div>
+
     <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 w-full">
         <div class="reveal-up">
-            <h1 class="text-4xl lg:text-5xl font-extrabold text-[var(--surface)] mb-4">News & Events</h1>
-            <nav class="flex text-[var(--surface)]/70 text-sm font-medium">
-                <a href="/" class="hover:text-[var(--surface)] transition-colors">Home</a>
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4">News & Events</h1>
+            <nav class="flex text-white/70 text-sm font-medium">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
                 <span class="mx-2">/</span>
-                <span class="text-[var(--surface)]">Academics</span>
+                <span class="text-white">Bulletin</span>
             </nav>
         </div>
     </div>
 </section>
 
-<section class="py-12 md:py-20 bg-[var(--surface)] relative overflow-hidden">
+<section x-data="{
+    news_events: [
+        { title: 'Think Beyond the Syllabus with Tahsan Khan', day: '21', month: 'Jul', image_url: 'https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=2070&auto=format&fit=crop', slug: 'think-beyond-the-syllabus-with-tahsan-khan' },
+        { title: 'Empowering Voices through Freedom of Association', day: '15', month: 'Jul', image_url: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=2070&auto=format&fit=crop', slug: 'empowering-voices-through-freedom-of-association' },
+        { title: 'English Department Celebrates Emerging Talents', day: '28', month: 'Jun', image_url: 'https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=2070&auto=format&fit=crop', slug: 'english-department-celebrates-emerging-talents' },
+        { title: 'Inauguration of the presidency University Library', day: '02', month: 'Jun', image_url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop', slug: 'inauguration-of-the-presidency-university-library' }
+    ]
+}" class="py-12 md:py-20 bg-white relative overflow-hidden">
+    <!-- Decorative -->
     <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-[0.02]" style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
 
     <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
@@ -39,35 +49,35 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {% for event in news_events %}
-                <div class="group bg-[var(--surface)] rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 border border-[var(--border)]/50 flex flex-col overflow-hidden card-hover">
+            <template x-for="(event, index) in news_events" :key="index">
+                <div class="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 border border-gray-100/50 flex flex-col overflow-hidden card-hover">
                     <div class="relative h-56 overflow-hidden">
-                        <img src="{{ event.image_url }}" alt="{{ event.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <img :src="event.image_url" :alt="event.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute bottom-0 left-0 w-full leading-[0]">
                             <svg class="relative block w-full h-[30px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C57.17,40.27,143.92,85.12,253.92,93.47,276.54,95.18,299,91.81,321.39,56.44Z" fill="var(--surface)"></path>
+                                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C57.17,40.27,143.92,85.12,253.92,93.47,276.54,95.18,299,91.81,321.39,56.44Z" fill="#ffffff"></path>
                             </svg>
                         </div>
                     </div>
 
-                    <div class="p-6 pt-2 flex flex-col flex-1 relative bg-[var(--surface)]">
+                    <div class="p-6 pt-2 flex flex-col flex-1 relative bg-white">
                         <div class="absolute -top-11 left-6 z-10">
-                            <div class="flex flex-col w-12 shadow-lg rounded-lg overflow-hidden border border-[var(--border)]/50">
-                                <div class="bg-[var(--surface)] text-[var(--secondary)] font-extrabold text-center py-1 text-lg leading-tight">{{ event.day }}</div>
-                                <div class="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white font-bold text-center py-0.5 text-[10px] uppercase tracking-wider">{{ event.month }}</div>
+                            <div class="flex flex-col w-12 shadow-lg rounded-lg overflow-hidden border border-white/50">
+                                <div class="bg-white text-[var(--secondary)] font-extrabold text-center py-1 text-lg leading-tight" x-text="event.day"></div>
+                                <div class="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white font-bold text-center py-0.5 text-[10px] uppercase tracking-wider" x-text="event.month"></div>
                             </div>
                         </div>
 
-                        <h3 class="text-lg font-bold text-[var(--text)] leading-tight mb-6 mt-4 group-hover:text-[var(--primary)] transition-colors line-clamp-3">{{ event.title }}</h3>
+                        <h3 class="text-lg font-bold text-[var(--text)] leading-tight mb-6 mt-4 group-hover:text-[var(--primary)] transition-colors line-clamp-3" x-text="event.title"></h3>
                         
                         <div class="mt-auto flex justify-end">
-                            <a href="{% url 'content:news_detail' slug=event.slug %}" class="px-5 py-2 border border-[var(--primary)]/30 text-[var(--primary)] text-sm font-semibold hover:bg-[var(--primary)] hover:text-white transition-all duration-300 rounded-lg">
+                            <a :href="'/news/' + event.slug" class="px-5 py-2 border border-[var(--primary)]/30 text-[var(--primary)] text-sm font-semibold hover:bg-[var(--primary)] hover:text-white transition-all duration-300 rounded-lg">
                                 Read More
                             </a>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+            </template>
         </div>
         
     </div>

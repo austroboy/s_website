@@ -8,13 +8,13 @@ class ColorPaletteAdmin(admin.ModelAdmin):
     list_display = (
         "tenant",
         "primary",
+        "primary_dark",
+        "primary_light",
         "secondary",
+        "secondary_light",
         "accent",
         "surface",
         "text",
-        "success",
-        "warning",
-        "error",
         "surface_alt",
         "footer_bg",
         "border",
@@ -25,7 +25,8 @@ class ColorPaletteAdmin(admin.ModelAdmin):
         ("Tenant", {"fields": ("tenant",)}),
         ("Light Mode Colors", {
             "fields": (
-                "primary", "secondary", "accent",
+                "primary", "primary_dark", "primary_light", "primary_glow",
+                "secondary", "secondary_light", "accent",
                 "surface", "text", "text_muted",
                 "success", "warning", "error",
             )

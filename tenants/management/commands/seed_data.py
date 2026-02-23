@@ -66,15 +66,19 @@ class Command(BaseCommand):
                 ColorPalette.objects.get_or_create(
                     tenant=tenant,
                     defaults={
-                        'primary': '#1D4ED8',
-                        'secondary': '#06B6D4',
-                        'accent': '#F59E0B',
-                        'surface': '#FFFFFF',
-                        'surface_alt': '#EFF6FF',
+                        'primary': '#0051FF',
+                        'primary_dark': '#003ACC',
+                        'primary_light': '#3B82F6',
+                        'primary_glow': 'rgba(0, 81, 255, 0.35)',
+                        'secondary': '#0F1D40',
+                        'secondary_light': '#1A2D5A',
+                        'accent': '#00D4FF',
+                        'surface': '#F8FAFD',
+                        'surface_alt': '#EFF4FB',
                         'footer_bg': '#1E293B',
                         'footer_text': '#F1F5F9',
                         'border': '#BFDBFE',
-                        'text': '#1E293B',
+                        'text': '#1A1A2E',
                         'text_muted': '#64748B'
                     }
                 )

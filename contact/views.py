@@ -5,7 +5,7 @@ from .forms import ContactForm, AdmissionInquiryForm
 from django.views.generic import TemplateView
 
 class ContactFormView(FormView):
-    template_name = 'contact/contact.html'
+    template_name = 'content/contact.html'
     form_class = ContactForm
     success_url = reverse_lazy('contact-success')
 

@@ -7,13 +7,19 @@ class ColorPalette(models.Model):
     Tokens are used in CSS variables.
     """
     tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE, related_name='colors')
-    primary = models.CharField(max_length=7, default='#0A4D8C')       # main brand colour
-    secondary = models.CharField(max_length=7, default='#E67E22')     # accent
-    accent = models.CharField(max_length=7, default='#2ECC71')        # highlight
-    surface = models.CharField(max_length=7, default='#FFFFFF')       # background / card
-    text = models.CharField(max_length=7, default='#1A1A1A')          # body text
-    text_muted = models.CharField(max_length=7, default='#6C757D')    # secondary text
-    surface_alt = models.CharField(max_length=7, default='#F8F9FA')   # alternate background
+    primary = models.CharField(max_length=7, default='#0051FF')       # main brand colour
+    primary_dark = models.CharField(max_length=7, default='#003ACC')
+    primary_light = models.CharField(max_length=7, default='#3B82F6')
+    primary_glow = models.CharField(max_length=50, default='rgba(0, 81, 255, 0.35)')
+    
+    secondary = models.CharField(max_length=7, default='#0F1D40')     # accent
+    secondary_light = models.CharField(max_length=7, default='#1A2D5A')
+    
+    accent = models.CharField(max_length=7, default='#00D4FF')        # highlight
+    surface = models.CharField(max_length=7, default='#F8FAFD')       # background / card
+    text = models.CharField(max_length=7, default='#1A1A2E')          # body text
+    text_muted = models.CharField(max_length=7, default='#64748B')    # secondary text
+    surface_alt = models.CharField(max_length=7, default='#EFF4FB')   # alternate background
     footer_bg = models.CharField(max_length=7, default='#111827')     # footer background
     footer_text = models.CharField(max_length=7, default='#FFFFFF')   # footer text
     border = models.CharField(max_length=7, default='#E5E7EB')        # standard border
