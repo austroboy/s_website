@@ -1,5 +1,5 @@
 # navigation/context_processors.py
-from .models import Menu
+from .models import Menu, MenuItem
 
 def menus(request):
     """

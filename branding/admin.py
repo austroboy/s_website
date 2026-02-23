@@ -15,6 +15,9 @@ class ColorPaletteAdmin(admin.ModelAdmin):
         "success",
         "warning",
         "error",
+        "surface_alt",
+        "footer_bg",
+        "border",
     )
     search_fields = ("tenant__name", "tenant__tenant_key")
 
@@ -25,6 +28,12 @@ class ColorPaletteAdmin(admin.ModelAdmin):
                 "primary", "secondary", "accent",
                 "surface", "text", "text_muted",
                 "success", "warning", "error",
+            )
+        }),
+        ("Specialized Colors", {
+            "fields": (
+                "surface_alt", "border",
+                "footer_bg", "footer_text",
             )
         }),
         ("Dark Mode Overrides (Optional)", {

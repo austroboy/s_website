@@ -1,0 +1,45 @@
+[footer] ROOT -> About Us: /about/
+[footer] ROOT -> About Us: /about/
+[footer] ROOT -> Home: /
+[footer] ROOT -> Contact: /contact/
+[footer] ROOT -> Contact: /contact/
+[footer] ROOT -> About Us: /about-us/
+[footer] ROOT -> Careers: /careers/
+[footer] ROOT -> Careers: /careers/
+[footer] ROOT -> Achievements: /achievements/
+[footer] ROOT -> Terms of Service: /terms-of-service/
+[footer] ROOT -> School Documents: /documents/
+[footer] ROOT -> Privacy Policy: /privacy-policy/
+[header] ROOT -> Home: /
+[header] ROOT -> Home: /
+[header] ROOT -> Home: /
+[header] ROOT -> About: /about/
+[header] ROOT -> About: /about/
+[header] ROOT -> About: /about-us/
+[header] ROOT -> Academics: /academics/
+[header] ROOT -> Academics: /academics/
+[header] ROOT -> Global Tech: /global-tech/
+[header] ROOT -> Admissions: /admissions/
+[header] ROOT -> Admissions: /admissions/
+[header] ROOT -> Academics: /academics/
+[header] ROOT -> Admissions: /admissions/
+[header] ROOT -> Achievements: /achievements/
+[header] ROOT -> Documents: /documents/
+[header] ROOT -> News: /news/
+[header] ROOT -> Contact: /contact/
+[header] About -> History: /about/history/
+[header] About -> Leadership: /about/leadership/
+[header] About -> History: /about/history/
+[header] About -> Leadership: /about/leadership/
+[header] Academics -> Curriculum: /academics/curriculum/
+[header] Academics -> All Programs: /academics/
+[header] Academics -> Departments: /academics/departments/
+[header] Academics -> Faculty/Staff: /staff/
+[header] Academics -> Academic Calendar: /events/
+[header] Admissions -> Overview: /admissions/
+[header] Admissions -> Process Overview: /admissions/
+[header] Admissions -> Requirements: /admission-requirements/
+[header] Admissions -> Admission Requirements: /admission-requirements/
+[header] Admissions -> Fee Structure: /fee-structure/
+[header] Admissions -> Inquiry: /contact/admissions/
+[header] Admissions -> Online Inquiry: /contact/admissions/

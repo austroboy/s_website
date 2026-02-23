@@ -13,6 +13,10 @@ class ColorPalette(models.Model):
     surface = models.CharField(max_length=7, default='#FFFFFF')       # background / card
     text = models.CharField(max_length=7, default='#1A1A1A')          # body text
     text_muted = models.CharField(max_length=7, default='#6C757D')    # secondary text
+    surface_alt = models.CharField(max_length=7, default='#F8F9FA')   # alternate background
+    footer_bg = models.CharField(max_length=7, default='#111827')     # footer background
+    footer_text = models.CharField(max_length=7, default='#FFFFFF')   # footer text
+    border = models.CharField(max_length=7, default='#E5E7EB')        # standard border
     success = models.CharField(max_length=7, default='#28A745')
     warning = models.CharField(max_length=7, default='#FFC107')
     error = models.CharField(max_length=7, default='#DC3545')
