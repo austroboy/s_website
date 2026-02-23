@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Notices - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-12" style="color: var(--text);">Important Notices</h1>
+        <div class="space-y-4">
+            {% for notice in notices %}
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 flex justify-between items-center">
+                <div>
+                    <p class="font-semibold">{{ notice.title }}</p>
+                    <p class="text-sm text-gray-600">{{ notice.summary }}</p>
+                </div>
+                <a href="{{ notice.get_absolute_url }}" class="text-[var(--primary)] hover:underline whitespace-nowrap ml-4">Read →</a>
+            </div>
+            {% empty %}
+            <p class="text-center text-gray-500">No notices at this time.</p>
+            {% endfor %}
+        </div>
+        {% if is_paginated %}
+        <div class="flex justify-center mt-12">...</div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ gallery_event.title }} | {{ request.tenant.name|default:"School Name" }}{% endblock %}
+
+{% block content %}
+<!-- Standard Academic Hero Header matching Department/Programs -->
+{% include 'partials/academic/header.html' with page_title="Event Gallery" %}
+
+<article class="py-12 md:py-20 bg-white relative overflow-hidden">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+
+        <!-- Images Presentation FIRST (Mission Grid style/Masonry) -->
+        <div class="mb-12">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[250px] md:auto-rows-[350px]">
+                {% for image_url in gallery_event.images %}
+                    <!-- Every few items span 2 columns/rows to keep it dynamic -->
+                    <div class="{% if forloop.counter == 1 %}col-span-2 row-span-1 md:row-span-2{% elif forloop.counter == 5 %}col-span-2 row-span-1{% else %}col-span-1 row-span-1{% endif %} relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl group transition-all duration-500">
+                        <img src="{{ image_url }}" alt="Event Photo {{ forloop.counter }}" class="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none"></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Details Section (Title, Description, Date/Time) -->
+        <div class="bg-[var(--surface-alt)] rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100/50">
+            <header class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 border-b border-gray-200 pb-8 mb-8">
+                
+                <div class="max-w-2xl">
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-[var(--secondary)] tracking-tight leading-tight mb-4">
+                        {{ gallery_event.title }}
+                    </h1>
+                    <div class="w-16 h-1.5 bg-[var(--primary)] rounded-full"></div>
+                </div>
+
+                <!-- Info Grid Card Matrix -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 shrink-0">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div class="bg-[var(--primary)]/10 p-3 rounded-xl text-[var(--primary)]">
+                            <i data-lucide="calendar" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-extrabold text-[var(--text-muted)] uppercase tracking-widest mb-0.5">Event Date</p>
+                            <p class="text-[13px] font-bold text-[var(--secondary)]">{{ gallery_event.date }}</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                        <div class="bg-[var(--accent)]/10 p-3 rounded-xl text-[var(--accent)]">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-extrabold text-[var(--text-muted)] uppercase tracking-widest mb-0.5">Event Time</p>
+                            <p class="text-[13px] font-bold text-[var(--secondary)]">{{ gallery_event.time }}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </header>
+
+            <!-- Description Body -->
+            <div class="max-w-3xl">
+                <p class="text-lg md:text-xl text-[var(--text-muted)] leading-relaxed font-medium">
+                    {{ gallery_event.description }}
+                </p>
+            </div>
+        </div>
+
+    </div>
+</article>
+
+{% endblock %}

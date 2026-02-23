@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Policies & Documents - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-12" style="color: var(--text);">Policies & Documents</h1>
+
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Sidebar with categories -->
+            <div class="md:w-1/4">
+                <h2 class="text-xl font-bold mb-4">Categories</h2>
+                <ul class="space-y-2">
+                    <li><a href="{% url 'documents:list' %}" class="{% if not current_category %}font-semibold text-[var(--primary)]{% else %}text-gray-600 hover:text-[var(--primary)]{% endif %}">All Documents</a></li>
+                    {% for cat in categories %}
+                    <li><a href="{% url 'documents:category' cat.slug %}" class="{% if current_category and current_category.id == cat.id %}font-semibold text-[var(--primary)]{% else %}text-gray-600 hover:text-[var(--primary)]{% endif %}">{{ cat.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Document list -->
+            <div class="md:w-3/4">
+                {% if current_category %}
+                <h2 class="text-2xl font-bold mb-6">{{ current_category.name }}</h2>
+                {% endif %}
+                <div class="space-y-4">
+                    {% for doc in documents %}
+                    <div class="bg-gray-50 p-4 rounded-lg shadow flex justify-between items-center">
+                        <div>
+                            <h3 class="font-semibold">{{ doc.title }}</h3>
+                            {% if doc.description %}
+                            <p class="text-sm text-gray-600">{{ doc.description }}</p>
+                            {% endif %}
+                            {% if doc.category %}
+                            <p class="text-xs text-gray-500 mt-1">Category: {{ doc.category.name }}</p>
+                            {% endif %}
+                        </div>
+                        <a href="{{ doc.file.url }}" class="btn-outline text-sm px-4 py-2" download>Download</a>
+                    </div>
+                    {% empty %}
+                    <p class="text-center text-gray-500">No documents available.</p>
+                    {% endfor %}
+                </div>
+                {% if is_paginated %}
+                <div class="flex justify-center mt-12">...</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

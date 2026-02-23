@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ program.title|default:"Program Details" }} | {{ request.tenant.name|default:"School Name" }}{% endblock %}
+
+{% block content %}
+<!-- Standard Academic Hero Header -->
+{% include 'partials/academic/header.html' with page_title=program.title %}
+
+<!-- Program Content Layout -->
+{% include 'partials/academic/program_content.html' %}
+{% endblock %}

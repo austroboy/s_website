@@ -1,0 +1,79 @@
+{% load static %}
+
+<div x-data="{
+    notices: [
+        {% for item in notices_data.items %}
+        {
+            title: '{{ item.title }}',
+            date: '{{ item.date }}',
+            year: '{{ item.year }}',
+            isNew: {% if item.isNew %}true{% else %}false{% endif %},
+            href: '{{ item.href }}'
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ]
+}" class="py-12 md:py-20 bg-[var(--surface-alt)] relative overflow-hidden">
+    
+    <!-- Decorative -->
+    <div class="absolute top-0 left-0 w-[350px] h-[350px] rounded-full opacity-[0.03]" style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
+
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+        
+        <!-- Header Section -->
+        <div class="flex items-center justify-between mb-10">
+            <div class="flex items-center space-x-4">
+                <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2.5 rounded-xl text-white shadow-lg shadow-blue-500/20">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">Recent Notices</h2>
+            </div>
+            
+            <!-- Desktop View All -->
+            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex">
+                VIEW ALL
+                <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+            </a>
+        </div>
+
+        <!-- 2-Row Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+            <template x-for="(notice, index) in notices" :key="index">
+                <a :href="notice.href" class="group flex items-stretch bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[var(--primary)]/30 overflow-hidden">
+                    
+                    <!-- Date Section -->
+                    <div class="w-20 sm:w-24 bg-gradient-to-b from-[var(--primary)] to-[var(--primary-dark)] flex flex-col items-center justify-center p-3 transition-all group-hover:from-[var(--primary-light)] group-hover:to-[var(--primary)] group-hover:shadow-[inset_0_0_20px_rgba(0,212,255,0.15)]">
+                        <span class="text-xl font-extrabold text-white" x-text="notice.date.split(' ')[0]"></span>
+                        <span class="text-[10px] font-bold text-white/80 uppercase tracking-widest" x-text="notice.date.split(' ')[1]"></span>
+                    </div>
+
+                    <!-- Accent bar -->
+                    <div class="w-1 bg-gradient-to-b from-[var(--primary)] to-[var(--accent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                    <!-- Content Section -->
+                    <div class="flex-1 p-4 md:p-5 flex flex-col justify-center">
+                        <div class="flex items-center space-x-2 mb-1">
+                            <span class="text-[11px] font-semibold text-[var(--text-muted)]" x-text="notice.year"></span>
+                            <template x-if="notice.isNew">
+                                <span class="bg-[var(--primary)]/10 text-[var(--primary)] text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tight animate-pulse">New</span>
+                            </template>
+                        </div>
+                        <h3 class="text-sm md:text-[15px] font-bold text-[var(--text)] leading-snug group-hover:text-[var(--primary)] transition-colors line-clamp-2" x-text="notice.title"></h3>
+                    </div>
+
+                    <!-- Arrow Indicator -->
+                    <div class="flex items-center px-3 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
+                        <i data-lucide="arrow-right" class="w-4 h-4 text-[var(--primary)]"></i>
+                    </div>
+                </a>
+            </template>
+        </div>
+
+        <!-- Mobile View All — full width, below cards -->
+        <div class="mt-6 sm:hidden">
+            <a href="#" class="btn-outline-blue btn-view-all-mobile text-xs tracking-wider group">
+                VIEW ALL NOTICES
+                <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+            </a>
+        </div>
+    </div>
+</div>

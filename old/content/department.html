@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Schools and Departments | {{ request.tenant.name }}{% endblock %}
+
+{% block content %}
+
+<!-- Academic Hero Header -->
+{% include 'partials/academic/header.html' with page_title="Schools and Departments" %}
+
+<div class="bg-[var(--surface)] py-6 lg:py-10" 
+     x-data="{
+        activeCategory: 'business',
+        sidebarItems: {{ sidebarItems|safe|default:'[]' }},
+        departments: {{ departments_list|safe|default:'[]' }},
+        get filteredDepts() {
+            return this.departments;
+        }
+     }">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+            
+            <!-- Sidebar -->
+            <div class="w-full lg:w-1/4">
+                <div class="sticky top-24">
+                    <h2 class="text-[var(--secondary)] font-bold text-lg mb-6 flex items-center gap-2">
+                        <span class="w-8 h-1 bg-[var(--primary)] rounded-full"></span>
+                        Academic Units
+                    </h2>
+                    {% include 'partials/academic/sidebar.html' %}
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="w-full lg:w-3/4">
+                <div class="mb-8 reveal-up">
+                    <h2 class="text-3xl font-extrabold text-[var(--secondary)] tracking-tight">Schools and Departments</h2>
+                    <p class="text-[var(--text-muted)] mt-2">Explore our diverse range of academic paths and research opportunities.</p>
+                </div>
+
+                <!-- Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="(dept, index) in filteredDepts" :key="dept.id">
+                        {% include 'partials/academic/card.html' %}
+                    </template>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% load static %}
+
+<section x-data="{
+    activeCategory: '{{ programs_data.categories.0 }}',
+    categories: [
+        {% for cat in programs_data.categories %}
+        '{{ cat }}'{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ],
+    programs: [
+        {% for item in programs_data.items %}
+        { 
+            name: '{{ item.name }}', 
+            shortCode: '{{ item.shortCode }}',
+            category: '{{ item.category }}',
+            duration: '{{ item.duration }}',
+            credits: '{{ item.credits }}',
+            image: '{{ item.image }}',
+            icon: '{{ item.icon }}'
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ]
+}" class="py-12 md:py-20 bg-[var(--surface-alt)] relative overflow-hidden">
+    
+    <!-- Decorative Background -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-[0.04]" style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
+
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+        
+        <!-- Header Section -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+            <div class="space-y-2">
+                <div class="section-eyebrow">
+                    <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                    <span>Our Programs</span>
+                </div>
+                <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[var(--text)] tracking-tight">Explore Our Programs</h2>
+            </div>
+            
+            <!-- Desktop View All -->
+            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex self-auto">
+                VIEW ALL
+                <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+            </a>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex justify-center mb-10">
+            <div class="flex flex-wrap justify-center gap-2 p-1.5 bg-white border border-gray-200/80 rounded-xl shadow-sm">
+                <template x-for="cat in categories" :key="cat">
+                    <button @click="activeCategory = cat"
+                            :class="activeCategory === cat ? 'bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white shadow-lg shadow-blue-500/20' : 'text-[var(--text-muted)] hover:text-[var(--primary)]'"
+                            class="px-5 sm:px-8 py-2 font-bold text-xs sm:text-sm transition-all duration-300 rounded-lg uppercase tracking-wider whitespace-nowrap"
+                            x-text="cat">
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <!-- Programs Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <template x-for="(program, index) in programs.filter(p => p.category === activeCategory)" :key="index">
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col border border-gray-100/80">
+                    
+                    <!-- Image Wrapper -->
+                    <div class="relative h-44 overflow-hidden">
+                        <img :src="program.image" :alt="program.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[var(--secondary)]/80 via-black/20 to-transparent"></div>
+                        
+                        <div class="absolute bottom-3 right-5 text-right">
+                            <span class="text-2xl md:text-3xl font-black text-white/90 tracking-tighter drop-shadow-[0_0_12px_rgba(0,81,255,0.4)]" x-text="program.shortCode"></span>
+                        </div>
+
+                        <div class="absolute top-3 left-3 bg-[var(--primary)]/20 backdrop-blur-md p-2 rounded-xl border border-white/20">
+                            <i :data-lucide="program.icon" class="w-4 h-4 text-white"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="p-4 flex flex-col flex-1">
+                        <h3 class="text-sm font-bold text-[var(--text)] leading-snug mb-3 group-hover:text-[var(--primary)] transition-colors line-clamp-2" x-text="program.name"></h3>
+                        
+                        <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-[var(--text-muted)]">
+                            <div class="flex items-center">
+                                <i data-lucide="calendar" class="w-3.5 h-3.5 mr-1 text-[var(--primary)]"></i>
+                                <span x-text="program.duration"></span>
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="award" class="w-3.5 h-3.5 mr-1 text-[var(--accent)]"></i>
+                                <span x-text="program.credits"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] w-0 group-hover:w-full transition-all duration-500"></div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Mobile View All -->
+        <div class="mt-6 sm:hidden">
+            <a href="#" class="btn-outline-blue btn-view-all-mobile text-xs tracking-wider group">
+                VIEW ALL PROGRAMS
+                <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+            </a>
+        </div>
+    </div>
+</section>

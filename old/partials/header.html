@@ -1,0 +1,135 @@
+
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ request.tenant.name }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    
+    <!-- Alpine.js for interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: {{ colors.primary }};
+            --secondary: {{ colors.secondary }};
+            --accent: {{ colors.accent }};
+            --surface: {{ colors.surface }};
+            --text: {{ colors.text }};
+            --text-muted: {{ colors.text_muted }};
+        }
+        body {
+            color: var(--text);
+            background-color: var(--surface);
+        }
+        .btn-primary {
+            @apply bg-[var(--primary)] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition;
+        }
+        .btn-outline {
+            @apply border-2 border-[var(--primary)] text-[var(--primary)] px-6 py-3 rounded-lg font-semibold hover:bg-[var(--primary)] hover:text-white transition;
+        }
+        /* Dropdown hover styles */
+        .group:hover .group-hover\:block {
+            display: block;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<header x-data="{ mobileMenuOpen: false }" class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+            <!-- Logo -->
+            <div class="flex items-center">
+                {% if assets.logo_light %}
+                <a href="/" class="flex items-center">
+                    <img src="{{ assets.logo_light.url }}" alt="{{ request.tenant.name }}" class="h-10 w-auto">
+                </a>
+                {% else %}
+                <a href="/" class="text-2xl font-bold" style="color: var(--primary);">{{ request.tenant.name }}</a>
+                {% endif %}
+            </div>
+
+            <!-- Desktop Navigation (with dropdowns) -->
+            <nav class="hidden md:flex space-x-8">
+                {% for item in menus.header %}
+                    {% if item.children.exists %}
+                        <!-- Dropdown / Mega Menu -->
+                        <div class="relative group">
+                            <button class="flex items-center text-gray-700 hover:text-[var(--primary)] font-medium py-2">
+                                {{ item.title }}
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <!-- Dropdown panel -->
+                            <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                {% for child in item.children.all %}
+                                    <a href="{{ child.url }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[var(--primary)]">
+                                        {{ child.title }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{{ item.url }}" class="text-gray-700 hover:text-[var(--primary)] font-medium py-2">{{ item.title }}</a>
+                    {% endif %}
+                {% endfor %}
+            </nav>
+
+            <!-- Login Button (Desktop) -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="https://sms.example.com/login" class="btn-primary text-sm px-5 py-2">Login</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-gray-700 focus:outline-none">
+                    <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg x-show="mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div x-show="mobileMenuOpen" x-cloak class="md:hidden py-4 border-t">
+            {% for item in menus.header %}
+                {% if item.children.exists %}
+                    <div x-data="{ open: false }" class="border-b border-gray-100">
+                        <button @click="open = !open" class="flex justify-between items-center w-full py-2 text-gray-700 hover:text-[var(--primary)] font-medium">
+                            {{ item.title }}
+                            <svg :class="{'rotate-180': open}" class="w-4 h-4 transform transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="open" x-cloak class="pl-4 pb-2 space-y-1">
+                            {% for child in item.children.all %}
+                                <a href="{{ child.url }}" class="block py-1 text-sm text-gray-600 hover:text-[var(--primary)]">
+                                    {{ child.title }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ item.url }}" class="block py-2 text-gray-700 hover:text-[var(--primary)] font-medium border-b border-gray-100">
+                        {{ item.title }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+            <div class="pt-4">
+                <a href="https://sms.example.com/login" class="btn-primary block text-center">Login</a>
+            </div>
+        </div>
+    </div>
+</header>

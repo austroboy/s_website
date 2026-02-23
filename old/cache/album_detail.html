@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ album.title }} - Gallery - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-4">{{ album.title }}</h1>
+        {% if album.description %}
+        <p class="text-xl text-center text-gray-600 mb-12">{{ album.description }}</p>
+        {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for item in album.media_items %}
+            <a href="{{ item.url }}" data-lightbox="album-{{ album.id }}" data-title="{{ item.caption }}" class="group relative overflow-hidden rounded-lg shadow-lg aspect-square">
+                <img src="{{ item.url }}" alt="{{ item.caption }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                {% if item.caption %}
+                <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition flex items-end p-4">
+                    <p class="text-white text-sm">{{ item.caption }}</p>
+                </div>
+                {% endif %}
+            </a>
+            {% empty %}
+            <p class="col-span-full text-center text-gray-500">No images in this album.</p>
+            {% endfor %}
+        </div>
+
+        <div class="mt-12 text-center">
+            <a href="{% url 'albums:list' %}" class="text-[var(--primary)] hover:underline">&larr; Back to Gallery</a>
+        </div>
+    </div>
+</section>
+
+<!-- Optional: Lightbox2 for gallery -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+{% endblock %}

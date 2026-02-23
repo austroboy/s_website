@@ -1,0 +1,22 @@
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="section-title text-center">{{ section.title|default:"What Parents Say" }}</h2>
+        <p class="section-subtitle text-center">{{ section.subtitle|default:"Testimonials" }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for item in section.items %}
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="flex items-center mb-4">
+                    <img src="{{ item.photo|default:'https://placehold.co/100x100' }}" alt="{{ item.name }}" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold">{{ item.name }}</h4>
+                        <p class="text-sm text-gray-500">{{ item.role }}</p>
+                    </div>
+                </div>
+                <p class="text-gray-600 italic">"{{ item.quote }}"</p>
+            </div>
+            {% empty %}
+            <p class="col-span-full text-center text-gray-500">No testimonials yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>

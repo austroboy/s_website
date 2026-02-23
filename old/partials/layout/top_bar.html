@@ -1,0 +1,32 @@
+<div class="top-bar-gradient text-white py-2 hidden lg:block border-b border-white/5">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8">
+        <div class="flex justify-between items-center text-[12px] tracking-wide">
+            <div class="flex items-center space-x-1">
+                <template x-for="(link, idx) in topBarLinks" :key="link.label">
+                    <div class="flex items-center">
+                        <a :href="link.href" 
+                           class="top-bar-link text-white/70" 
+                           x-text="link.label"></a>
+                        <template x-if="idx < topBarLinks.length - 1">
+                            <span class="text-white/20 mx-0.5">|</span>
+                        </template>
+                    </div>
+                </template>
+            </div>
+            <div class="flex items-center space-x-2">
+                <a href="#" class="top-bar-social">
+                    <i data-lucide="facebook" class="w-3 h-3 text-white/50"></i>
+                </a>
+                <a href="#" class="top-bar-social">
+                    <i data-lucide="twitter" class="w-3 h-3 text-white/50"></i>
+                </a>
+                <a href="#" class="top-bar-social">
+                    <i data-lucide="linkedin" class="w-3 h-3 text-white/50"></i>
+                </a>
+                <a href="#" class="top-bar-social">
+                    <i data-lucide="youtube" class="w-3 h-3 text-white/50"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

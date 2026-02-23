@@ -1,0 +1,25 @@
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="section-title text-center">{{ section.title|default:"Gallery" }}</h2>
+        <p class="section-subtitle text-center">{{ section.subtitle|default:"Moments captured" }}</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {% for item in section.items %}
+            <a href="{{ item.get_absolute_url }}" class="group relative overflow-hidden rounded-lg shadow-lg aspect-square">
+                {% if item.cover_image %}
+                <img src="{{ item.cover_image }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                {% else %}
+                <div class="w-full h-full bg-gray-200 flex items-center justify-center"><i class="fas fa-images text-4xl text-gray-400"></i></div>
+                {% endif %}
+                <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition flex items-end p-4">
+                    <h3 class="text-white font-semibold">{{ item.title }}</h3>
+                </div>
+            </a>
+            {% empty %}
+            <p class="col-span-full text-center text-gray-500">No albums yet.</p>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-12">
+            <a href="{% url 'albums:list' %}" class="btn-outline">View Full Gallery</a>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,128 @@
+{% load static %}
+
+<footer class="bg-[#050d24] text-white pt-0 pb-8 font-sans relative overflow-hidden">
+    
+    <!-- Decorative Top Gradient Line -->
+    <div class="footer-top-wave"></div>
+    
+    <!-- Decorative Background Elements -->
+    <div class="deco-circle w-[400px] h-[400px] -top-48 -right-48 opacity-30"></div>
+    <div class="deco-dots top-20 left-10 opacity-20"></div>
+    
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 pt-16 relative z-10">
+        
+        <!-- Main Footer Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-14">
+            
+            <!-- Column 1: Campus Info -->
+            <div class="space-y-6" data-aos="fade-up">
+                <div class="space-y-1">
+                    <h3 class="text-2xl font-bold tracking-tight">North South University</h3>
+                    <p class="text-white/50 text-sm italic">Center of Excellence in Higher Education</p>
+                </div>
+                
+                <div class="space-y-4 pt-2">
+                    <div class="flex items-start space-x-3 text-white/70 group cursor-pointer">
+                        <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-[var(--primary-light)] group-hover:text-[var(--accent)] transition-colors"></i>
+                        </div>
+                        <span class="text-sm leading-relaxed pt-1.5">Bashundhara, Dhaka-1229, Bangladesh</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-white/70 group cursor-pointer hover:text-white transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors">
+                            <i data-lucide="phone" class="w-4 h-4 text-[var(--primary-light)] group-hover:text-[var(--accent)] transition-colors"></i>
+                        </div>
+                        <span class="text-sm font-medium">+880-2-55668200</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-white/70 group cursor-pointer hover:text-white transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors">
+                            <i data-lucide="printer" class="w-4 h-4 text-[var(--primary-light)] group-hover:text-[var(--accent)] transition-colors"></i>
+                        </div>
+                        <span class="text-sm font-medium">+880-2-55668202</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-white/70 group cursor-pointer hover:text-white transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[var(--primary)]/20 transition-colors">
+                            <i data-lucide="mail" class="w-4 h-4 text-[var(--primary-light)] group-hover:text-[var(--accent)] transition-colors"></i>
+                        </div>
+                        <span class="text-sm font-medium">registrar@northsouth.edu</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2: Explore -->
+            <div data-aos="fade-up" data-aos-delay="100">
+                <h4 class="footer-col-title">Explore</h4>
+                <ul class="space-y-2.5">
+                    <li><a href="/publications" class="footer-link text-sm">Publications</a></li>
+                    <li><a href="/academic/calendar" class="footer-link text-sm">Academic Calendar</a></li>
+                    <li><a href="/library" class="footer-link text-sm">Library</a></li>
+                    <li><a href="/research/journals" class="footer-link text-sm">Journals</a></li>
+                    <li><a href="/newsletters" class="footer-link text-sm">Newsletters</a></li>
+                    <li><a href="/catalog" class="footer-link text-sm">Catalog</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Academic Schools -->
+            <div data-aos="fade-up" data-aos-delay="200">
+                <h4 class="footer-col-title">Academic Schools</h4>
+                <ul class="space-y-2.5">
+                    <li><a href="/academic/sbe" class="footer-link text-sm">Business & Economics</a></li>
+                    <li><a href="/academic/seps" class="footer-link text-sm">Engineering & Sciences</a></li>
+                    <li><a href="/academic/shss" class="footer-link text-sm">Humanities & Social Sciences</a></li>
+                    <li><a href="/academic/shls" class="footer-link text-sm">Health & Life Sciences</a></li>
+                    <li><a href="/academic/undergraduate" class="footer-link text-sm">Undergraduate Programs</a></li>
+                    <li><a href="/academic/graduate" class="footer-link text-sm">Graduate Programs</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Governance (no newsletter) -->
+            <div data-aos="fade-up" data-aos-delay="300">
+                <h4 class="footer-col-title">Governance</h4>
+                <ul class="space-y-2.5">
+                    <li><a href="/about/trustees" class="footer-link text-sm">Board of Trustees</a></li>
+                    <li><a href="/about/leadership" class="footer-link text-sm">VC, Pro-VC & Treasurer</a></li>
+                    <li><a href="/about/syndicate" class="footer-link text-sm">Syndicate</a></li>
+                    <li><a href="/about/academic-council" class="footer-link text-sm">Academic Council</a></li>
+                    <li><a href="/about/deans" class="footer-link text-sm">Deans & Chairs</a></li>
+                    <li><a href="/about/administration" class="footer-link text-sm">Administration</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="pt-8 border-t border-white/[0.06] flex flex-col lg:flex-row items-center justify-between gap-6">
+            
+            <div class="order-2 lg:order-1 text-center lg:text-left">
+                <p class="text-white/30 text-[12px] tracking-wide mb-0.5">Developed & Maintained By IT Office, NSU</p>
+                <p class="text-white/50 text-[12px] font-medium">&copy; 1993-2026 NSU, All Right Reserved.</p>
+            </div>
+
+            <div class="order-1 lg:order-2 flex items-center gap-10">
+                <!-- Social Icons — white by default -->
+                <div class="flex items-center space-x-2.5">
+                    <a href="#" class="social-icon-box">
+                        <i data-lucide="twitter" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="social-icon-box">
+                        <i data-lucide="facebook" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="social-icon-box">
+                        <i data-lucide="youtube" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="social-icon-box">
+                        <i data-lucide="instagram" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Scroll to Top -->
+                <button @click="window.scrollTo({ top: 0, behavior: 'smooth' })" 
+                        class="group flex flex-col items-center cursor-pointer">
+                    <div class="w-10 h-10 rounded-lg bg-white/5 hover:bg-[var(--primary)]/20 flex items-center justify-center transition-all group-hover:shadow-lg group-hover:shadow-blue-500/10">
+                        <i data-lucide="arrow-up" class="w-5 h-5 text-white/40 group-hover:text-[var(--accent)] group-hover:-translate-y-0.5 transition-all"></i>
+                    </div>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</footer>

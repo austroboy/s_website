@@ -1,0 +1,46 @@
+<!-- Mega Menu Dropdown -->
+<div x-show="activeMenu" 
+     x-transition:enter="transition ease-out duration-250"
+     x-transition:enter-start="opacity-0 -translate-y-2"
+     x-transition:enter-end="opacity-100 translate-y-0"
+     x-transition:leave="transition ease-in duration-150"
+     x-transition:leave-start="opacity-100 translate-y-0"
+     x-transition:leave-end="opacity-0 -translate-y-2"
+     @click.away="activeMenu = null"
+     class="absolute top-full left-0 right-0 mega-menu-bg z-40 shadow-2xl">
+    
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 py-8" x-data="{ activeItems: [] }" x-effect="activeItems = navigationItems.find(i => i.label === activeMenu)?.megaMenu || []">
+        <div class="grid gap-10" :style="'grid-template-columns: repeat(' + Math.min(activeItems.length, 4) + ', 1fr)'">
+            <template x-for="(col, idx) in activeItems" :key="idx">
+                <div>
+                    <!-- Column Title -->
+                    <template x-if="col.href">
+                        <a :href="col.href" class="block group/title mb-6">
+                            <div class="flex items-center gap-3 py-2 px-3 border-l-4 border-[var(--primary)] bg-white/5 rounded-r-lg group-hover/title:bg-[var(--primary)] group-hover/title:border-[var(--accent)] transition-all duration-300">
+                                <h3 class="mega-menu-col-title-new text-xs font-black uppercase tracking-[0.2em] text-[var(--primary-light)] group-hover/title:text-white transition-colors" x-text="col.title"></h3>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-[var(--primary-light)] group-hover/title:text-white transition-all transform group-hover/title:translate-x-1 opacity-0 group-hover/title:opacity-100"></i>
+                            </div>
+                        </a>
+                    </template>
+                    <template x-if="!col.href">
+                        <div class="flex items-center gap-3 py-2 px-3 border-l-4 border-[var(--primary)] bg-white/5 rounded-r-lg mb-6">
+                            <h3 class="mega-menu-col-title-new text-xs font-black uppercase tracking-[0.2em] text-[var(--primary-light)]" x-text="col.title"></h3>
+                        </div>
+                    </template>
+
+                    <!-- Menu Items -->
+                    <ul class="space-y-1">
+                        <template x-for="(item, itemIdx) in col.items" :key="itemIdx">
+                            <li>
+                                <a :href="item.href" class="mega-menu-link group flex items-center text-gray-300/80 text-sm px-3 py-2.5 -mx-1 rounded-md">
+                                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 mr-2 text-white/20 group-hover:text-[var(--accent)] transition-colors"></i>
+                                    <span x-text="item.label"></span>
+                                </a>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>
