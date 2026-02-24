@@ -1,0 +1,50 @@
+{% load static %}
+
+<!-- Department Faculty HTML (Partial) -->
+<section id="faculty" class="py-12 md:py-20 bg-white relative overflow-hidden">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+        
+        <!-- Standardized Left-Aligned Heading -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+            <div class="space-y-2">
+                <div class="section-eyebrow">
+                    <i data-lucide="users" class="w-4 h-4 text-[var(--primary)]"></i>
+                    <span>Team</span>
+                </div>
+                <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[var(--text)] tracking-tight">{{ department.faculty.sectionTitle }}</h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+            {% for member in department.faculty.members %}
+            <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-[var(--primary-glow)] transition-all duration-300 border border-gray-100/50">
+                <!-- Faculty Image Frame -->
+                <div class="p-6 pb-0 flex justify-center mt-6">
+                    <div class="w-48 h-48 rounded-full border-4 border-transparent bg-gradient-to-br from-[var(--secondary)] via-[var(--primary)] to-pink-200 p-1 relative group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ member.image.url }}" alt="{{ member.image.alt }}" class="w-full h-full rounded-full object-cover border-4 border-white">
+                    </div>
+                </div>
+                
+                <!-- Faculty Info -->
+                <div class="p-6 text-center">
+                    <h4 class="text-xl font-bold text-[var(--secondary)] group-hover:text-[var(--primary)] transition-colors">{{ member.name }}</h4>
+                    <p class="text-sm font-medium text-[var(--accent)] mt-1">{{ member.rank }}</p>
+                    
+                    {% if member.roles %}
+                    <p class="text-xs text-[var(--text-muted)] mt-2 italic font-semibold">{{ member.roles|join:", " }}</p>
+                    {% endif %}
+
+                    <div class="mt-5 pt-5 border-t border-gray-100 flex flex-col gap-2 items-center justify-center text-sm font-medium text-[var(--text-muted)]">
+                        {% if member.email %}
+                        <a href="mailto:{{ member.email }}" class="hover:text-[var(--primary)] flex items-center gap-2"><i class="fas fa-envelope text-[var(--primary)]/70"></i> {{ member.email }}</a>
+                        {% endif %}
+                        {% if member.phone %}
+                        <a href="tel:{{ member.phone }}" class="hover:text-[var(--primary)] flex items-center gap-2"><i class="fas fa-phone text-[var(--accent)]/70"></i> {{ member.phone }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

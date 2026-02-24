@@ -1,0 +1,84 @@
+{% load static %}
+
+<section x-data="{
+    stats: [
+        {% for item in stats_data.items %}
+        { label: '{{ item.label }}', target: {{ item.target }}, current: 0, icon: '{{ item.icon }}', suffix: '{{ item.suffix }}' }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ],
+    animate(stat) {
+        let start = 0;
+        let end = stat.target;
+        let duration = 2000;
+        let startTime = null;
+
+        const step = (timestamp) => {
+            if (!startTime) startTime = timestamp;
+            let progress = Math.min((timestamp - startTime) / duration, 1);
+            stat.current = Math.floor(progress * (end - start) + start);
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    },
+    init() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.stats.forEach(s => this.animate(s));
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.1 });
+        observer.observe(this.$el);
+    }
+}" class="relative py-14 md:py-18 bg-fixed bg-cover bg-center overflow-hidden" 
+   style="background-image: url('{{ stats_data.bg_image }}');">
+    
+    <!-- Gradient Mesh Overlay -->
+    <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(15, 29, 64, 0.92) 0%, rgba(0, 81, 255, 0.25) 50%, rgba(5, 13, 36, 0.92) 100%);"></div>
+    <div class="absolute inset-0 opacity-[0.06] pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');"></div>
+
+    <!-- Floating Particles -->
+    <div class="deco-circle w-[200px] h-[200px] -top-20 left-[10%] animate-float opacity-20"></div>
+    <div class="deco-circle w-[150px] h-[150px] -bottom-16 right-[15%] animate-float-slow opacity-15"></div>
+
+    <div class="relative z-10 max-w-[1200px] mx-auto px-6 lg:px-8 reveal-up">
+        <!-- Header Text -->
+        <div class="text-center mb-10 space-y-2">
+            <span class="text-[var(--accent)] font-bold tracking-[0.2em] text-xs uppercase">The numbers say it all</span>
+            <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase tracking-wider">Why Choose Us</h2>
+        </div>
+
+        <!-- Stats Grid — compact with card-like icon design -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0">
+            <template x-for="(stat, index) in stats" :key="index">
+                <div class="flex flex-col items-center text-center relative px-4 lg:px-8">
+                    
+                    <!-- Vertical Separator (Desktop) -->
+                    <template x-if="index !== 0">
+                        <div class="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-16 bg-gradient-to-b from-transparent via-[var(--primary)]/30 to-transparent"></div>
+                    </template>
+
+                    <!-- Icon — card-like design with glass bg and glow -->
+                    <div class="mb-4 w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center shadow-lg shadow-blue-500/10 group relative">
+                        <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[var(--primary)]/20 to-[var(--accent)]/10"></div>
+                        <i :data-lucide="stat.icon" class="w-7 h-7 text-[var(--accent)] relative z-10"></i>
+                    </div>
+
+                    <!-- Number -->
+                    <div class="flex items-baseline mb-1">
+                        <span class="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tighter" 
+                              style="text-shadow: 0 0 30px rgba(0, 81, 255, 0.3);"
+                              x-text="stat.current.toLocaleString()"></span>
+                        <span class="text-xl md:text-2xl font-bold text-[var(--accent)] ml-1" x-text="stat.suffix"></span>
+                    </div>
+
+                    <!-- Label -->
+                    <span class="text-[10px] md:text-xs font-bold text-white/50 tracking-[0.2em] uppercase" x-text="stat.label"></span>
+                </div>
+            </template>
+        </div>
+    </div>
+</section>
