@@ -2,17 +2,33 @@
 {% load static %}
 
 {% block content %}
-<!-- Academic Header (Matches Department Style) -->
-{% include 'partials/academic/header.html' with page_title="Admission Inquiry" %}
+<!-- Academic Header Flattened -->
+<section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
+    <div class="absolute inset-0 z-0">
+        <img src="https://www.bracu.ac.bd/sites/default/files/styles/banner_dept_landing/public/banner-images/2024/12/31/Departments.JPG" 
+             alt="Admission Inquiry" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0F1D40]/90 to-transparent"></div>
+    </div>
+
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 w-full">
+        <div class="reveal-up">
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4">Admission Inquiry</h1>
+            <nav class="flex text-white/70 text-sm font-medium">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">Contact</span>
+            </nav>
+        </div>
+    </div>
+</section>
 
 <!-- Main Content Section -->
 <section class="py-12 md:py-20 bg-gray-50/50 min-h-screen relative overflow-hidden">
-    <!-- Decorative faint background circle -->
     <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-[0.02]" style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
 
     <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
         
-        <!-- Standardized Left-Aligned Heading -->
         <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
             <div class="space-y-2">
                 <div class="section-eyebrow">
@@ -53,9 +69,10 @@
                     <div class="relative">
                         <select required class="w-full bg-white border border-gray-200 rounded-md px-4 py-3 text-sm text-gray-600 focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] appearance-none cursor-pointer transition-all">
                             <option value="" disabled selected>— Select Program —</option>
-                            {% for program in programs %}
-                            <option value="{{ program }}">{{ program }}</option>
-                            {% endfor %}
+                            <option value="CSE">B.Sc. in CSE</option>
+                            <option value="EEE">B.Sc. in EEE</option>
+                            <option value="BBA">Bachelor of Business Administration</option>
+                            <option value="MBA">Master of Business Administration</option>
                         </select>
                         <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
                             <i data-lucide="chevron-down" class="w-4 h-4"></i>
@@ -83,7 +100,7 @@
                         <i data-lucide="map-pin" class="w-5 h-5 fill-white"></i>
                     </div>
                     <p class="text-sm font-medium text-gray-600">
-                        Address: {{ contact_info.address }}
+                        Address: 11 Embankment Drive Road, Sector 10, Uttara, Dhaka 1230, Bangladesh
                     </p>
                 </div>
 
@@ -93,7 +110,7 @@
                         <i data-lucide="phone" class="w-5 h-5 fill-white"></i>
                     </div>
                     <p class="text-sm font-medium text-gray-600">
-                        Phone: <a href="tel:{{ contact_info.phone }}" class="text-blue-500 hover:text-blue-700 transition-colors">{{ contact_info.phone }}</a>
+                        Phone: <a href="tel:+880123456789" class="text-blue-500 hover:text-blue-700 transition-colors">+880 1234-56789</a>
                     </p>
                 </div>
 
@@ -103,7 +120,7 @@
                         <i data-lucide="mail" class="w-5 h-5 fill-white"></i>
                     </div>
                     <p class="text-sm font-medium text-gray-600">
-                        Email: <a href="mailto:{{ contact_info.email }}" class="text-blue-500 hover:text-blue-700 transition-colors">{{ contact_info.email }}</a>
+                        Email: <a href="mailto:admission@presidency.edu.bd" class="text-blue-500 hover:text-blue-700 transition-colors">admission@presidency.edu.bd</a>
                     </p>
                 </div>
 
@@ -113,7 +130,7 @@
         <!-- Full Width Map below the columns -->
         <div class="mt-12 md:mt-16 reveal-up bg-white p-2 rounded-lg border border-gray-200 shadow-sm">
             <iframe 
-                src="{{ contact_info.map_url }}" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.431697206121!2d90.3879!3d23.882!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c46440c946e3%3A0x63346d0484a86b3a!2sPresidency%20University!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" 
                 class="w-full h-[400px] border-0 rounded" 
                 allowfullscreen="" 
                 loading="lazy" 

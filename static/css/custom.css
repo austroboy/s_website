@@ -1,59 +1,81 @@
-/* ============================================
-   DESIGN SYSTEM — Electric Blue
-   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
-/* ---- Design Tokens ---- */
-:root {
-    --primary: #0051FF;
-    --primary-dark: #003ACC;
-    --primary-light: #3B82F6;
-    --primary-glow: rgba(0, 81, 255, 0.35);
-
-    --secondary: #0F1D40;
-    --secondary-light: #1A2D5A;
-
-    --accent: #00D4FF;
-
-    --surface: #F8FAFD;
-    --surface-alt: #EFF4FB;
-
-    --text: #1A1A2E;
-    --text-muted: #64748B;
-
-    --radius-sm: 6px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --radius-full: 9999px;
-
-    --shadow-sm: 0 1px 3px rgba(15, 29, 64, 0.06);
-    --shadow-md: 0 4px 16px rgba(15, 29, 64, 0.08);
-    --shadow-lg: 0 10px 40px rgba(15, 29, 64, 0.12);
-    --shadow-glow: 0 0 30px rgba(0, 81, 255, 0.2);
-    --shadow-glow-lg: 0 0 60px rgba(0, 81, 255, 0.3);
-
-    --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ---- Global Reset & Defaults ---- */
-* {
+/* Base typography */
+html, body {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-html {
-    scroll-behavior: smooth;
+h1, h2, h3, h4, h5, h6, .outfit {
+    font-family: 'Outfit', sans-serif;
 }
 
-body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    color: var(--text);
-    background-color: var(--surface);
-    line-height: 1.6;
+/* Premium Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* ---- Focus Ring ---- */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.animate-gradient {
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+}
+
+/* High-end utilities */
+.glass {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.glass-dark {
+    background: rgba(17, 24, 39, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(to right, var(--primary), var(--secondary));
+}
+
+.hover-lift {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.1), 0 15px 15px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Better focus outlines */
 *:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
@@ -329,246 +351,16 @@ h1, h2, h3, h4, h5, h6 {
     50% { box-shadow: 0 0 25px var(--primary-glow), 0 0 50px rgba(0, 81, 255, 0.1); }
 }
 
-@keyframes gradient-shift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+.container {
+    max-width: 1280px;
 }
-
-@keyframes slideDown {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
-}
-
-@keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* ---- Animation Utility Classes ---- */
-.animate-fade-in-up { animation: fadeInUp 0.6s ease-out both; }
-.animate-fade-in-down { animation: fadeInDown 0.5s ease-out both; }
-.animate-slide-in-left { animation: slideInLeft 0.6s ease-out both; }
-.animate-slide-in-right { animation: slideInRight 0.6s ease-out both; }
-.animate-scale-in { animation: scaleIn 0.5s ease-out both; }
-.animate-float { animation: float 4s ease-in-out infinite; }
-.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
-.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
-.animate-gradient { animation: gradient-shift 4s ease infinite; background-size: 200% 200%; }
-.animate-slideDown { animation: slideDown 0.3s ease-out; }
-.animate-spin-slow { animation: spin-slow 20s linear infinite; }
-
-/* ============================================
-   COMPONENT STYLES
-   ============================================ */
-
-/* Cloak */
-[x-cloak] { display: none !important; }
-
-/* Header Glass Effect */
-.header-glass {
-    background: linear-gradient(135deg, rgba(15, 29, 64, 0.97), rgba(6, 23, 66, 0.97));
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-
-.header-scrolled {
-    background: rgba(15, 29, 64, 0.98);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-bottom: 2px solid var(--primary);
-}
-
-/* Top Bar */
-.top-bar-gradient {
-    background: linear-gradient(90deg, var(--secondary) 0%, var(--secondary-light) 100%);
-}
-
-/* Top Bar Links — hover: color change only + gradient underline bar */
-.top-bar-link {
-    position: relative;
-    transition: color var(--transition-fast);
-    padding: 2px 8px;
-    display: inline-block;
-}
-
-.top-bar-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    border-radius: 2px;
-    transition: width var(--transition-base);
-}
-
-.top-bar-link:hover {
-    color: var(--accent);
-}
-
-.top-bar-link:hover::after {
-    width: 100%;
-}
-
-/* Top Bar Social Icons — match footer social-icon-box style */
-.top-bar-social {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all var(--transition-base);
-}
-
-.top-bar-social:hover {
-    border-color: var(--primary);
-    background: rgba(0, 81, 255, 0.15);
-    box-shadow: 0 0 15px rgba(0, 81, 255, 0.2);
-}
-
-.top-bar-social:hover i,
-.top-bar-social:hover svg {
-    color: var(--accent) !important;
-}
-
-/* Mega Menu */
-.mega-menu-bg {
-    background: linear-gradient(180deg, var(--secondary) 0%, var(--secondary-light) 100%);
-    border-top: 2px solid var(--primary);
-}
-
-.mega-menu-col-title {
-    color: var(--primary-light);
-    border-left: 3px solid var(--primary);
-    padding-left: 12px;
-}
-
-.mega-menu-link {
-    transition: all var(--transition-fast);
-}
-
-.mega-menu-link:hover {
-    color: #fff;
-    background: rgba(0, 81, 255, 0.1);
-    padding-left: 12px;
-}
-
-/* Footer Gradient Top Border */
-.footer-top-wave {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    height: 4px;
-}
-
-/* Footer Link Hover — gradient underline animation */
-.footer-link {
-    color: rgba(255, 255, 255, 0.55);
-    transition: all var(--transition-base);
-    display: inline-block;
-    position: relative;
-}
-
-.footer-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    border-radius: 2px;
-    transition: width var(--transition-base);
-}
-
-.footer-link:hover {
-    color: #fff;
-    transform: translateX(4px);
-}
-
-.footer-link:hover::after {
-    width: 100%;
-}
-
-.footer-col-title {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 1.5rem;
-    font-size: 1.125rem;
-    font-weight: 700;
-}
-
-.footer-col-title::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    border-radius: 3px;
-}
-
-/* Social Icon Hover — white icons default */
-.social-icon-box {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    transition: all var(--transition-base);
-}
-
-.social-icon-box i,
-.social-icon-box svg {
-    color: rgba(255, 255, 255, 0.7) !important;
-    transition: color var(--transition-base);
-}
-
-.social-icon-box:hover {
-    border-color: var(--primary);
-    background: rgba(0, 81, 255, 0.15);
-    box-shadow: 0 0 20px rgba(0, 81, 255, 0.2);
-}
-
-.social-icon-box:hover i,
-.social-icon-box:hover svg {
-    color: var(--accent) !important;
-}
-
-/* ============================================
-   DECORATIVE SHAPES
-   ============================================ */
-
-.deco-circle {
-    position: absolute;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(0, 81, 255, 0.12), rgba(0, 212, 255, 0.08));
-    pointer-events: none;
-}
-
-.deco-dots {
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    background-image: radial-gradient(circle, rgba(0, 81, 255, 0.15) 2px, transparent 2px);
-    background-size: 16px 16px;
-    pointer-events: none;
-}
-
-/* ============================================
-   PROSE
-   ============================================ */
 
 .prose h2 {
     color: var(--text);
     font-size: 1.875rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
+    font-family: 'Outfit', sans-serif;
 }
 
 .prose p {

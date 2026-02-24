@@ -58,7 +58,7 @@ from .models import (
 # ---- News ----
 class NewsListView(ListView):
     model = CachedNews
-    template_name = 'cache/news_list.html'
+    template_name = 'content/news_list.html'
     context_object_name = 'news_list'
     paginate_by = 12
 
@@ -67,7 +67,7 @@ class NewsListView(ListView):
 
 class NewsDetailView(DetailView):
     model = CachedNews
-    template_name = 'cache/news_detail.html'
+    template_name = 'content/news_detail.html'
     context_object_name = 'news'
 
     def get_queryset(self):
@@ -95,7 +95,7 @@ class EventDetailView(DetailView):
 # ---- Notices ----
 class NoticeListView(ListView):
     model = CachedNotice
-    template_name = 'cache/notice_list.html'
+    template_name = 'content/notice_list.html'
     context_object_name = 'notices'
     paginate_by = 20
 
@@ -106,7 +106,7 @@ class NoticeListView(ListView):
 
 class NoticeDetailView(DetailView):
     model = CachedNotice
-    template_name = 'cache/notice_detail.html'
+    template_name = 'content/notice_detail.html'
     context_object_name = 'notice'
 
     def get_queryset(self):
@@ -133,7 +133,7 @@ class StaffDetailView(DetailView):
 # ---- Programs (Academics) ----
 class ProgramListView(ListView):
     model = CachedProgram
-    template_name = 'cache/program_list.html'
+    template_name = 'content/programs.html'
     context_object_name = 'programs'
 
     def get_queryset(self):
@@ -142,7 +142,7 @@ class ProgramListView(ListView):
 # ---- Gallery ----
 class AlbumListView(ListView):
     model = CachedAlbum
-    template_name = 'cache/album_list.html'
+    template_name = 'content/gallery.html'
     context_object_name = 'albums'
     paginate_by = 12
 
@@ -151,7 +151,7 @@ class AlbumListView(ListView):
 
 class AlbumDetailView(DetailView):
     model = CachedAlbum
-    template_name = 'cache/album_detail.html'
+    template_name = 'content/gallery_detail.html'
     context_object_name = 'album'
 
     def get_queryset(self):

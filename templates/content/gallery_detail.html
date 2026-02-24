@@ -1,73 +1,91 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ gallery_event.title }} | {{ request.tenant.name|default:"School Name" }}{% endblock %}
+{% block title %}Spring Semester Welcome Day 2026 | Presidency University{% endblock %}
 
 {% block content %}
-<!-- Standard Academic Hero Header matching Department/Programs -->
-{% include 'partials/academic/header.html' with page_title="Event Gallery" %}
-
-<article class="py-12 md:py-20 bg-white relative overflow-hidden">
-    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
-
-        <!-- Images Presentation FIRST (Mission Grid style/Masonry) -->
-        <div class="mb-12">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[250px] md:auto-rows-[350px]">
-                {% for image_url in gallery_event.images %}
-                    <!-- Every few items span 2 columns/rows to keep it dynamic -->
-                    <div class="{% if forloop.counter == 1 %}col-span-2 row-span-1 md:row-span-2{% elif forloop.counter == 5 %}col-span-2 row-span-1{% else %}col-span-1 row-span-1{% endif %} relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl group transition-all duration-500">
-                        <img src="{{ image_url }}" alt="Event Photo {{ forloop.counter }}" class="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none"></div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <!-- Details Section (Title, Description, Date/Time) -->
-        <div class="bg-[var(--surface-alt)] rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100/50">
-            <header class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 border-b border-gray-200 pb-8 mb-8">
-                
-                <div class="max-w-2xl">
-                    <h1 class="text-3xl md:text-5xl font-extrabold text-[var(--secondary)] tracking-tight leading-tight mb-4">
-                        {{ gallery_event.title }}
-                    </h1>
-                    <div class="w-16 h-1.5 bg-[var(--primary)] rounded-full"></div>
-                </div>
-
-                <!-- Info Grid Card Matrix -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 shrink-0">
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-                        <div class="bg-[var(--primary)]/10 p-3 rounded-xl text-[var(--primary)]">
-                            <i data-lucide="calendar" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-extrabold text-[var(--text-muted)] uppercase tracking-widest mb-0.5">Event Date</p>
-                            <p class="text-[13px] font-bold text-[var(--secondary)]">{{ gallery_event.date }}</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-                        <div class="bg-[var(--accent)]/10 p-3 rounded-xl text-[var(--accent)]">
-                            <i data-lucide="clock" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-extrabold text-[var(--text-muted)] uppercase tracking-widest mb-0.5">Event Time</p>
-                            <p class="text-[13px] font-bold text-[var(--secondary)]">{{ gallery_event.time }}</p>
-                        </div>
-                    </div>
-                </div>
-
-            </header>
-
-            <!-- Description Body -->
-            <div class="max-w-3xl">
-                <p class="text-lg md:text-xl text-[var(--text-muted)] leading-relaxed font-medium">
-                    {{ gallery_event.description }}
-                </p>
-            </div>
-        </div>
-
+<!-- Standard Academic Hero Header Flattened -->
+<section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
+    <div class="absolute inset-0 z-0">
+        <img src="https://www.bracu.ac.bd/sites/default/files/styles/banner_dept_landing/public/banner-images/2024/12/31/Departments.JPG" 
+             alt="University Gallery" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0F1D40]/90 to-transparent"></div>
     </div>
-</article>
 
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 w-full">
+        <div class="reveal-up">
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4">University Gallery</h1>
+            <nav class="flex text-white/70 text-sm font-medium">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">Gallery</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<div class="py-16 md:py-24 bg-white" x-data="{
+    event: {
+        title: 'Spring Semester Welcome Day 2026',
+        date: 'January 15, 2026',
+        description: 'Presidency University organized a colourful and vibrant orientation program to welcome the newly admitted students of the Spring 2026 semester.',
+        images: [
+            { url: 'https://images.unsplash.com/photo-1523050335392-93851179ae22?q=80&w=1200&auto=format&fit=crop', alt: 'Orientation Day 01' },
+            { url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1200&auto=format&fit=crop', alt: 'Orientation Day 02' },
+            { url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop', alt: 'Orientation Day 03' },
+            { url: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=1200&auto=format&fit=crop', alt: 'Orientation Day 04' },
+            { url: 'https://images.unsplash.com/photo-1525921429624-479b6a26d84d?q=80&w=1200&auto=format&fit=crop', alt: 'Orientation Day 05' },
+            { url: 'https://images.unsplash.com/photo-1560523182-772013f389fb?q=80&w=1200&auto=format&fit=crop', alt: 'Orientation Day 06' }
+        ]
+    }
+}">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8">
+        <div class="mb-12 reveal-up">
+            <div class="flex items-center gap-2 text-[var(--primary)] font-bold text-sm uppercase tracking-widest mb-4">
+                <i data-lucide="calendar" class="w-4 h-4"></i>
+                <span x-text="event.date"></span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-[#0F1D40] mb-6 leading-tight" x-text="event.title"></h1>
+            <p class="text-lg text-gray-600 max-w-3xl leading-relaxed" x-text="event.description"></p>
+        </div>
+
+        <!-- Masonry Grid Layout -->
+        <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 reveal-up">
+            <template x-for="(image, index) in event.images" :key="index">
+                <div class="break-inside-avoid">
+                    <div class="relative group cursor-pointer overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 bg-gray-100">
+                        <img :src="image.url" 
+                             :alt="image.alt"
+                             class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105">
+                        
+                        <!-- Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-6 left-6 right-6">
+                                <p class="text-white font-bold text-sm" x-text="image.alt"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Navigation -->
+        <div class="mt-20 pt-12 border-t border-gray-100 flex justify-between items-center reveal-up">
+            <a href="/gallery" class="flex items-center gap-3 text-[#0F1D40] font-black uppercase tracking-[0.2em] text-[11px] group">
+                <div class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:bg-[#0F1D40] group-hover:text-white transition-all">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </div>
+                Back to Gallery
+            </a>
+            <div class="flex items-center gap-4">
+                <span class="text-gray-400 text-[11px] font-bold uppercase tracking-widest">Share this album</span>
+                <div class="flex gap-2">
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-[#1877F2] hover:text-white transition-all"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-[#1DA1F2] hover:text-white transition-all"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
