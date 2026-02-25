@@ -1,10 +1,23 @@
 <!-- ==================== STATS ==================== -->
+<!-- ==================== STATS ==================== -->
 <section x-data="{
     stats: [
-        { label: 'ESTABLISHED', target: 2003, current: 0, icon: 'landmark', suffix: '' },
-        { label: 'PROGRAMMES', target: 13, current: 0, icon: 'book-open', suffix: '' },
-        { label: 'TEACHERS', target: 100, current: 0, icon: 'users', suffix: '+' },
-        { label: 'GRADUATES', target: 10000, current: 0, icon: 'graduation-cap', suffix: '+' }
+        {% if stats_data.items %}
+            {% for item in stats_data.items %}
+                { 
+                    label: '{{ item.label|escapejs }}', 
+                    target: {{ item.target|default:0 }}, 
+                    current: 0, 
+                    icon: '{{ item.icon|default:"landmark"|escapejs }}', 
+                    suffix: '{{ item.suffix|default:""|escapejs }}' 
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% else %}
+            { label: 'ESTABLISHED', target: 2003, current: 0, icon: 'landmark', suffix: '' },
+            { label: 'PROGRAMMES', target: 13, current: 0, icon: 'book-open', suffix: '' },
+            { label: 'TEACHERS', target: 100, current: 0, icon: 'users', suffix: '+' },
+            { label: 'GRADUATES', target: 10000, current: 0, icon: 'graduation-cap', suffix: '+' }
+        {% endif %}
     ],
     animate(stat) {
         let start = 0;

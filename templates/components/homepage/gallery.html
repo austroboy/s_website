@@ -1,13 +1,25 @@
 <!-- ==================== GALLERY PREVIEW ==================== -->
 <section x-data='{
     galleryItems: [
-        { id: 1, title: "Guest Lecture", date: "21 Jul", image: "https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=600&auto=format&fit=crop", gridClass: "col-span-1 row-span-1" },
-        { id: 2, title: "Cultural Performance", date: "15 Jul", image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=600&auto=format&fit=crop", gridClass: "col-span-1 row-span-1" },
-        { id: 3, title: "Student Portrait", date: "28 Jun", image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=800&auto=format&fit=crop", gridClass: "col-span-1 row-span-2" },
-        { id: 4, title: "Awards Ceremony 2026", date: "10 Jun", image: "https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=1200&auto=format&fit=crop", gridClass: "col-span-2 row-span-1" },
-        { id: 5, title: "Inspiring Session", date: "24 Apr", image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop", gridClass: "col-span-2 row-span-1" },
-        { id: 6, title: "Grand Iftar", date: "14 Mar", image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop", gridClass: "col-span-1 row-span-1" },
-        { id: 7, title: "Presidency Day", date: "02 Jan", image: "https://images.unsplash.com/photo-1454165833772-d996d49513d7?q=80&w=600&auto=format&fit=crop", gridClass: "col-span-1 row-span-1" }
+        {% if gallery_data.items %}
+            {% for item in gallery_data.items %}
+                { 
+                    id: {{ item.id|default:forloop.counter }}, 
+                    title: "{{ item.title|escapejs }}", 
+                    date: "{{ item.date|default:"01 JAN"|escapejs }}", 
+                    image: "{{ item.image|default:"https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=600&auto=format&fit=crop"|escapejs }}", 
+                    gridClass: "{{ item.gridClass|default:"col-span-1 row-span-1"|escapejs }}" 
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% else %}
+            { id: 1, title: "Guest Lecture", date: "21 Jul", image: "https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=600&auto=format&fit=crop", gridClass: "col-span-1 row-span-1" },
+            { id: 2, title: "Cultural Performance", date: "15 Jul", image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=600&auto=format&fit=crop", gridClass: "col-span-1 row-span-1" },
+            { id: 3, title: "Student Portrait", date: "28 Jun", image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=800&auto=format&fit=crop", gridClass: "col-span-1 row-span-2" },
+            { id: 4, title: "Awards Ceremony 2026", date: "10 Jun", image: "https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=1200&auto=format&fit=crop", gridClass: "col-span-2 row-span-1" },
+            { id: 5, title: "Inspiring Session", date: "24 Apr", image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop", gridClass: "col-span-2 row-span-1" },
+            { id: 6, title: "Grand Iftar", date: "14 Mar", image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop", gridClass: "col-span-1 row-span-1" },
+            { id: 7, title: "Presidency Day", date: "02 Jan", image: "https://images.unsplash.com/photo-1454165833772-d996d49513d7?q=80&w=600&auto=format&fit=crop", gridClass: "col-span-1 row-span-1" }
+        {% endif %}
     ]
 }' class="py-12 md:py-20 bg-white relative overflow-hidden">
     

@@ -1,10 +1,22 @@
 <!-- ==================== LATEST NEWS & EVENTS ==================== -->
 <section x-data="{
     events: [
-        { title: 'Think Beyond the Syllabus with Tahsan Khan', day: '21', month: 'Jul', image: 'https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=2070&auto=format&fit=crop', href: '#' },
-        { title: 'Empowering Voices through Freedom of Association', day: '15', month: 'Jul', image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=2070&auto=format&fit=crop', href: '#' },
-        { title: 'English Department Celebrates Emerging Talents', day: '28', month: 'Jun', image: 'https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=2070&auto=format&fit=crop', href: '#' },
-        { title: 'Inauguration of the presidency University Library', day: '02', month: 'Jun', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop', href: '#' }
+        {% if events_data.items %}
+            {% for item in events_data.items %}
+                { 
+                    title: '{{ item.title|escapejs }}', 
+                    day: '{{ item.day|default:"01"|escapejs }}', 
+                    month: '{{ item.month|default:"JAN"|escapejs }}', 
+                    image: '{{ item.image|default:"https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=2070&auto=format&fit=crop"|escapejs }}', 
+                    href: '{{ item.href|default:"#"|escapejs }}' 
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% else %}
+            { title: 'Think Beyond the Syllabus with Tahsan Khan', day: '21', month: 'Jul', image: 'https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=2070&auto=format&fit=crop', href: '#' },
+            { title: 'Empowering Voices through Freedom of Association', day: '15', month: 'Jul', image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=2070&auto=format&fit=crop', href: '#' },
+            { title: 'English Department Celebrates Emerging Talents', day: '28', month: 'Jun', image: 'https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=2070&auto=format&fit=crop', href: '#' },
+            { title: 'Inauguration of the presidency University Library', day: '02', month: 'Jun', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop', href: '#' }
+        {% endif %}
     ]
 }" class="py-12 md:py-20 bg-white relative overflow-hidden">
     

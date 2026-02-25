@@ -3,11 +3,30 @@
 
 {% block content %}
 
-    {% include 'components/homepage/hero.html' %}
-    {% include 'components/homepage/programs.html' %}
-    {% include 'components/homepage/stats.html' %}
-    {% include 'components/homepage/news.html' %}
-    {% include 'components/homepage/notices.html' %}
-    {% include 'components/homepage/gallery.html' %}
+    {% if active_sections %}
+        {% for section in active_sections %}
+            {% if section.section_type == 'hero' %}
+                {% include 'components/homepage/hero.html' %}
+            {% elif section.section_type == 'features' %}
+                {% include 'components/homepage/programs.html' %}
+            {% elif section.section_type == 'stats' %}
+                {% include 'components/homepage/stats.html' %}
+            {% elif section.section_type == 'news' or section.section_type == 'events' %}
+                {% include 'components/homepage/news.html' %}
+            {% elif section.section_type == 'notices' %}
+                {% include 'components/homepage/notices.html' %}
+            {% elif section.section_type == 'gallery' %}
+                {% include 'components/homepage/gallery.html' %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {# DEFAULT SECTION ORDER #}
+        {% include 'components/homepage/hero.html' %}
+        {% include 'components/homepage/programs.html' %}
+        {% include 'components/homepage/stats.html' %}
+        {% include 'components/homepage/news.html' %}
+        {% include 'components/homepage/notices.html' %}
+        {% include 'components/homepage/gallery.html' %}
+    {% endif %}
 
 {% endblock %}
