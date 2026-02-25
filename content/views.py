@@ -41,12 +41,9 @@ class HomeView(TemplateView):
         # If you have a Testimonial model, add it here
         context['gallery_albums'] = CachedAlbum.objects.filter(tenant=tenant, is_published=True)[:4]
 
-        # Hero section (optional – you can create a HomepageHero model or use section)
-        context['hero'] = {
-            'title': sections.filter(section_type='hero').first().title if sections.filter(section_type='hero').exists() else None,
-            'subtitle': sections.filter(section_type='hero').first().subtitle if sections.filter(section_type='hero').exists() else None,
-            # Add more fields as needed
-        }
+        # Hero section
+        hero_section = sections.filter(section_type='hero').first()
+        context['hero'] = hero_section
         return context
 
 class PageDetailView(DetailView):

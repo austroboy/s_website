@@ -2,33 +2,50 @@
     isScrolled: false,
     activeMenu: null,
     isMobileMenuOpen: false,
-    topBarLinks: [
-        { label: 'Publications', href: '/publications' },
-        { label: 'International Students', href: '/admission/international' },
-        { label: 'Academic Calendar', href: '/academic/calendar' },
-        { label: 'Library', href: '/library' },
-        { label: 'Newsletters', href: '/newsletters' },
-        { label: 'Journals', href: '/research/journals' },
-        { label: 'Catalog', href: '/catalog' },
-        { label: 'Archive', href: '/archive' },
-        { label: 'Contact Us', href: '/contact-us/' }
-    ],
-    navigationItems: [
-        {'label': 'Academic','href': '/academics/', 'hasDropdown': false },
-        { 'label': 'Admission', 'href': '/admissions/', 'hasDropdown': false },
-        { 'label': 'News', 'href': '/news/', 'hasDropdown': false },
-        { 'label': 'Gallery', 'href': '/gallery/', 'hasDropdown': false },
-        { 'label': 'Notice', 'href': '/notices/', 'hasDropdown': false },
-        { 'label': 'Contact Us', 'href': '/contact/', 'hasDropdown': false }
-    ],
+    overflowItems: [],
     toggleMenu(label) {
         this.activeMenu = this.activeMenu === label ? null : label;
     },
     closeMenu() {
         this.activeMenu = null;
+    },
+    measure() {
+        const track = this.$refs.track;
+        if (!track) return;
+        
+        const items = Array.from(track.querySelectorAll('.nav-item-wrapper'));
+        // Reset display
+        items.forEach(el => el.classList.remove('hidden'));
+        this.overflowItems = [];
+        
+        // Available width - space for More button + padding
+        const availableWidth = track.clientWidth - 110; 
+        let currentWidth = 0;
+        
+        items.forEach(el => {
+            currentWidth += el.offsetWidth + 8; // margins/gap
+            if (currentWidth > availableWidth) {
+                el.classList.add('hidden');
+                try {
+                    const children = JSON.parse(el.dataset.children || '[]');
+                    this.overflowItems.push({
+                        title: el.dataset.title,
+                        url: el.dataset.url,
+                        hasChildren: children.length > 0,
+                        children: children
+                    });
+                } catch (e) {
+                    console.error('Failed to parse menu children:', e);
+                }
+            }
+        });
     }
 }" 
-x-init="window.addEventListener('scroll', () => { isScrolled = window.scrollY > 100 })"
+x-init="
+    window.addEventListener('scroll', () => { isScrolled = window.scrollY > 100 });
+    $nextTick(() => measure()); 
+    window.addEventListener('resize', () => measure());
+"
 @keydown.escape.window="activeMenu = null; isMobileMenuOpen = false"
 class="relative z-[100]">
 
@@ -36,34 +53,6 @@ class="relative z-[100]">
     <div class="w-full transition-all duration-300"
          :class="isScrolled ? 'fixed top-0 left-0 w-full animate-slideDown z-50' : 'relative z-40'">
         
-        <!-- Top Bar Flattened -->
-        <template x-if="!isScrolled">
-            <div class="top-bar-gradient text-white py-2 hidden lg:block border-b border-white/5">
-                <div class="max-w-[1200px] mx-auto px-6 lg:px-8">
-                    <div class="flex justify-between items-center text-[12px] tracking-wide">
-                        <div class="flex items-center space-x-1">
-                            <template x-for="(link, idx) in topBarLinks" :key="link.label">
-                                <div class="flex items-center">
-                                    <a :href="link.href" 
-                                       class="top-bar-link text-white/70" 
-                                       x-text="link.label"></a>
-                                    <template x-if="idx < topBarLinks.length - 1">
-                                        <span class="text-white/20 mx-0.5">|</span>
-                                    </template>
-                                </div>
-                            </template>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <a href="#" class="top-bar-social"><i data-lucide="facebook" class="w-3 h-3 text-white/50"></i></a>
-                            <a href="#" class="top-bar-social"><i data-lucide="twitter" class="w-3 h-3 text-white/50"></i></a>
-                            <a href="#" class="top-bar-social"><i data-lucide="linkedin" class="w-3 h-3 text-white/50"></i></a>
-                            <a href="#" class="top-bar-social"><i data-lucide="youtube" class="w-3 h-3 text-white/50"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </template>
-
         <div class="relative" :class="isScrolled ? 'header-scrolled' : 'header-glass'">
             <div class="max-w-[1200px] mx-auto px-6 lg:px-8">
                 <div class="flex items-center justify-between h-[60px] lg:h-[70px]">
@@ -71,29 +60,62 @@ class="relative z-[100]">
                     <!-- Logo -->
                     <div class="relative z-10 shrink-0 group">
                         <a href="/" class="block">
-                            <img src="https://www.northsouth.edu/newassets/summer_25/img/logo.png" 
-                                 alt="North South University"
-                                 class="object-contain w-[45px] h-[45px] lg:w-[130px] lg:h-[60px] transition-all duration-300 group-hover:drop-shadow-[0_0_15px_rgba(0,81,255,0.4)]" />
+                            {% if request.tenant.assets.logo_light %}
+                                <img src="{{ request.tenant.assets.logo_light.url }}" 
+                                     alt="{{ request.tenant.name }}"
+                                     class="object-contain w-[45px] h-[45px] lg:w-[130px] lg:h-[60px] transition-all duration-300 group-hover:drop-shadow-[0_0_15px_var(--primary-glow)]" />
+                            {% else %}
+                                <span class="text-white font-bold text-xl">{{ request.tenant.name }}</span>
+                            {% endif %}
                         </a>
                     </div>
 
-                    <!-- Desktop Navigation -->
+                    <!-- Desktop Navigation (Overflow handled) -->
                     <nav class="hidden lg:flex items-center justify-center flex-1 text-white text-[14px] font-[500] tracking-wide">
-                        <template x-for="item in navigationItems" :key="item.label">
-                            <div class="nav-link-underline flex items-center cursor-pointer px-4 py-2 mx-0.5 rounded-md transition-all duration-200 select-none"
-                                 :class="activeMenu === item.label ? 'bg-[var(--primary)]/20 text-white' : 'hover:bg-white/5'"
-                                 @click="item.hasDropdown ? toggleMenu(item.label) : (window.location.href = item.href)"
-                                 @mouseenter="item.hasDropdown && activeMenu !== null ? (activeMenu = item.label) : null">
-                                
-                                <span x-text="item.label" class="font-semibold"></span>
-                                
-                                <template x-if="item.hasDropdown">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                         class="ml-1.5 opacity-70 transition-transform duration-300"
-                                         :class="activeMenu === item.label ? 'rotate-180' : ''"><path d="m6 9 6 6 6-6"/></svg>
-                                </template>
+                        
+                        <div class="flex items-center justify-center w-full h-full" x-ref="track">
+                            {% for menu in request.tenant.menus.all %}
+                                {% if menu.slug == 'header' %}
+                                    {% for item in menu.items.all %}
+                                        {% if not item.parent %}
+                                            <div class="nav-item-wrapper shrink-0"
+                                                 data-title="{{ item.title }}"
+                                                 data-url="{{ item.url }}"
+                                                 data-children="[{% for child in item.children.all %}{&quot;title&quot;: &quot;{{ child.title }}&quot;, &quot;url&quot;: &quot;{{ child.url|default:'#' }}&quot;}{% if not forloop.last %},{% endif %}{% endfor %}]">
+                                                <div class="nav-link-underline flex items-center cursor-pointer px-4 py-2 mx-0.5 rounded-md transition-all duration-200 select-none"
+                                                     :class="activeMenu === '{{ item.title }}' ? 'bg-[var(--primary)]/20 text-white' : 'hover:bg-white/5'"
+                                                     {% if item.children.exists %}
+                                                     @click="toggleMenu('{{ item.title }}')"
+                                                     @mouseenter="activeMenu !== null ? (activeMenu = '{{ item.title }}') : null"
+                                                     {% else %}
+                                                     @click="window.location.href = '{{ item.url }}'"
+                                                     {% endif %}>
+                                                    
+                                                    <span class="font-semibold">{{ item.title }}</span>
+                                                    
+                                                    {% if item.children.exists %}
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             class="ml-1.5 opacity-70 transition-all duration-300"
+                                                             :class="activeMenu === '{{ item.title }}' ? 'rotate-180 translate-y-0.5 text-[var(--accent)]' : 'group-hover:translate-y-0.5'"><path d="m6 9 6 6 6-6"/></svg>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <!-- More Dropdown -->
+                            <div x-show="overflowItems.length > 0" 
+                                 class="relative flex items-center cursor-pointer px-4 py-2 mx-0.5 rounded-md transition-all duration-200 select-none shrink-0 nav-link-underline" 
+                                 :class="activeMenu === 'More' ? 'bg-[var(--primary)]/20 text-white' : 'hover:bg-white/5'"
+                                 @click="toggleMenu('More')"
+                                 @mouseenter="activeMenu !== null ? (activeMenu = 'More') : null"
+                                 x-cloak>
+                                <span class="font-semibold">More</span>
+                                 <i data-lucide="chevron-down" class="ml-1.5 opacity-70 w-4 h-4 transition-transform duration-300" :class="activeMenu === 'More' ? 'rotate-180 text-[var(--accent)]' : ''"></i>
                             </div>
-                        </template>
+                        </div>
                     </nav>
 
                     <!-- Apply Now CTA -->
@@ -121,43 +143,93 @@ class="relative z-[100]">
                 </div>
             </div>
 
-            <div x-show="activeMenu" 
-                 x-transition:enter="transition ease-out duration-250"
-                 x-transition:enter-start="opacity-0 -translate-y-2"
-                 x-transition:enter-end="opacity-100 translate-y-0"
-                 x-transition:leave="transition ease-in duration-150"
-                 x-transition:leave-start="opacity-100 translate-y-0"
-                 x-transition:leave-end="opacity-0 -translate-y-2"
-                 @click.away="activeMenu = null"
-                 class="absolute top-full left-0 right-0 mega-menu-bg z-40 shadow-2xl">
-                
-                <div class="max-w-[1200px] mx-auto px-6 lg:px-8 py-8" x-data="{ activeItems: [] }" x-effect="activeItems = navigationItems.find(i => i.label === activeMenu)?.megaMenu || []">
-                    <div class="grid gap-10" :style="'grid-template-columns: repeat(' + Math.min(activeItems.length, 4) + ', 1fr)'">
-                        <template x-for="(col, idx) in activeItems" :key="idx">
-                            <div>
-                                <template x-if="col.href">
-                                    <a :href="col.href" class="block group/title mb-6">
-                                        <div class="flex items-center gap-3 py-2 px-3 border-l-4 border-[var(--primary)] bg-white/5 rounded-r-lg group-hover/title:bg-[var(--primary)] group-hover/title:border-[var(--accent)] transition-all duration-300">
-                                            <h3 class="mega-menu-col-title-new text-xs font-black uppercase tracking-[0.2em] text-[var(--primary-light)] group-hover/title:text-white transition-colors" x-text="col.title"></h3>
-                                            <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-[var(--primary-light)] group-hover/title:text-white transition-all transform group-hover/title:translate-x-1 opacity-0 group-hover/title:opacity-100"></i>
-                                        </div>
-                                    </a>
-                                </template>
-                                <template x-if="!col.href">
-                                    <div class="flex items-center gap-3 py-2 px-3 border-l-4 border-[var(--primary)] bg-white/5 rounded-r-lg mb-6">
-                                        <h3 class="mega-menu-col-title-new text-xs font-black uppercase tracking-[0.2em] text-[var(--primary-light)]" x-text="col.title"></h3>
+        <!-- MEGA MENU PANEL -->
+        <div x-show="activeMenu" 
+             x-cloak
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 -translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 -translate-y-2"
+             @click.away="activeMenu = null"
+             class="absolute top-full left-0 right-0 z-40 shadow-2xl bg-[var(--footer-bg)] border-t-2 border-[var(--primary)]">
+            
+            <div class="max-w-[1200px] mx-auto px-6 lg:px-8 py-8">
+                <!-- Standard Mega Menus -->
+                {% for menu in request.tenant.menus.all %}
+                    {% if menu.slug == 'header' %}
+                        {% for item in menu.items.all %}
+                            {% if item.children.exists %}
+                                <div x-show="activeMenu === '{{ item.title }}'" class="max-w-[1000px] mx-auto">
+                                    <div class="columns-1 sm:columns-2 lg:columns-3 gap-x-8 gap-y-4">
+                                        {% for subitem in item.children.all %}
+                                            <div class="break-inside-avoid mb-4">
+                                                <a href="{{ subitem.url|default:'#' }}" class="group/menu-link relative flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-all duration-300 overflow-hidden border border-transparent hover:border-white/5">
+                                                    <!-- Left Stunning Symbol -->
+                                                    <div class="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center shrink-0 group-hover/menu-link:bg-[var(--primary)]/20 transition-all duration-300">
+                                                        <i data-lucide="minus" class="w-3.5 h-3.5 text-white/40 group-hover/menu-link:text-[var(--accent)] transition-colors transform group-hover/menu-link:scale-110"></i>
+                                                    </div>
+                                                    
+                                                    <span class="text-sm font-bold text-[var(--text-muted)] group-hover/menu-link:text-white transition-colors relative overflow-hidden flex-1">
+                                                        {{ subitem.title }}
+                                                        <!-- Bottom progress line -->
+                                                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] transition-all duration-300 group-hover/menu-link:w-full"></span>
+                                                    </span>
+                                                    
+                                                    <!-- Right Arrow -->
+                                                    <i data-lucide="arrow-right" class="w-4 h-4 ml-auto text-white/10 group-hover/menu-link:text-[var(--accent)] -translate-x-2 opacity-0 group-hover/menu-link:opacity-100 group-hover/menu-link:translate-x-0 transition-all duration-300 shrink-0"></i>
+                                                </a>
+                                                
+                                                <!-- Optional Grandchildren -->
+                                                {% if subitem.children.exists %}
+                                                    <ul class="mt-2 ml-7 space-y-1 mb-2">
+                                                        {% for granditem in subitem.children.all %}
+                                                            <li>
+                                                                <a href="{{ granditem.url|default:'#' }}" class="group flex items-center text-[var(--text-muted)] text-xs px-2 py-2 rounded-md hover:bg-white/5 transition-all duration-200">
+                                                                    <i data-lucide="minus" class="w-3 h-3 mr-2 text-white/20 group-hover:text-[var(--primary)] transition-colors"></i>
+                                                                    <span class="group-hover:text-white transition-colors">{{ granditem.title }}</span>
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                </template>
-                                <ul class="space-y-1">
-                                    <template x-for="(item, itemIdx) in col.items" :key="itemIdx">
-                                        <li>
-                                            <a :href="item.href" class="mega-menu-link group flex items-center text-gray-300/80 text-sm px-3 py-2.5 -mx-1 rounded-md">
-                                                <i data-lucide="chevron-right" class="w-3.5 h-3.5 mr-2 text-white/20 group-hover:text-[var(--accent)] transition-colors"></i>
-                                                <span x-text="item.label"></span>
-                                            </a>
-                                        </li>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+
+                <!-- Dynamic 'More' Mega Menu (Matches design exactly) -->
+                <div x-show="activeMenu === 'More'" class="max-w-[1000px] mx-auto" x-cloak>
+                    <div class="columns-1 sm:columns-2 lg:columns-3 gap-x-8 gap-y-4">
+                        <template x-for="item in overflowItems" :key="item.title">
+                            <div class="break-inside-avoid mb-4">
+                                <a :href="item.url || '#'" class="group/menu-link relative flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-all duration-300 overflow-hidden border border-transparent hover:border-white/5">
+                                    <div class="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center shrink-0 group-hover/menu-link:bg-[var(--primary)]/20 transition-all duration-300">
+                                        <i data-lucide="minus" class="w-3.5 h-3.5 text-white/40 group-hover/menu-link:text-[var(--accent)] transition-colors transform group-hover/menu-link:scale-110"></i>
+                                    </div>
+                                    <span class="text-sm font-bold text-[var(--text-muted)] group-hover/menu-link:text-white transition-colors relative overflow-hidden flex-1" x-text="item.title"></span>
+                                    <template x-if="item.url">
+                                        <i data-lucide="arrow-right" class="w-4 h-4 ml-auto text-white/10 group-hover/menu-link:text-[var(--accent)] -translate-x-2 opacity-0 group-hover/menu-link:opacity-100 group-hover/menu-link:translate-x-0 transition-all duration-300 shrink-0"></i>
                                     </template>
-                                </ul>
+                                </a>
+                                
+                                <template x-if="item.children && item.children.length > 0">
+                                    <ul class="mt-2 ml-7 space-y-1 mb-2">
+                                        <template x-for="child in item.children" :key="child.title">
+                                            <li>
+                                                <a :href="child.url" class="group flex items-center text-[var(--text-muted)] text-xs px-2 py-2 rounded-md hover:bg-white/5 transition-all duration-200">
+                                                    <i data-lucide="minus" class="w-3 h-3 mr-2 text-white/20 group-hover:text-[var(--primary)] transition-colors"></i>
+                                                    <span class="group-hover:text-white transition-colors" x-text="child.title"></span>
+                                                </a>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
                             </div>
                         </template>
                     </div>
@@ -166,9 +238,9 @@ class="relative z-[100]">
         </div>
     </div>
 
-    <!-- Mobile Navigation Menu Flattened -->
+    <!-- Mobile Navigation Menu -->
     <div x-show="isMobileMenuOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-[110] lg:hidden bg-black/60 backdrop-blur-sm" @click="isMobileMenuOpen = false" x-cloak></div>
-    <div x-show="isMobileMenuOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-full" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-full" x-cloak class="fixed right-0 top-0 bottom-0 w-[85%] max-w-[400px] z-[120] overflow-y-auto lg:hidden shadow-2xl" style="background: linear-gradient(180deg, var(--secondary) 0%, #050d24 100%);">
+    <div x-show="isMobileMenuOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-full" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-full" x-cloak class="fixed right-0 top-0 bottom-0 w-[85%] max-w-[400px] z-[120] overflow-y-auto lg:hidden shadow-2xl" style="background: linear-gradient(180deg, var(--secondary) 0%, var(--primary-dark) 100%);">
         <div class="flex items-center justify-between p-4 border-b border-white/10">
             <span class="text-xs font-black text-white/40 uppercase tracking-widest">Navigation</span>
             <button @click="isMobileMenuOpen = false" class="p-2 text-white/60 hover:text-white transition-colors">
@@ -176,47 +248,43 @@ class="relative z-[100]">
             </button>
         </div>
         <nav class="px-4 py-3" x-data="{ openMenus: [] }">
-            <template x-for="item in navigationItems" :key="item.label">
-                <div>
-                    <template x-if="item.hasDropdown">
-                        <div>
-                            <div class="flex items-center justify-between w-full py-3.5 px-4 text-left text-white/90 hover:bg-white/5 border-b border-white/[0.06] transition-all rounded-lg" :class="openMenus.includes(item.label) ? 'bg-[var(--primary)]/10 text-white' : ''">
-                                <template x-if="item.href">
-                                    <a :href="item.href" class="font-semibold text-[15px] flex-1" x-text="item.label" @click.stop="isMobileMenuOpen = false"></a>
-                                </template>
-                                <template x-if="!item.href">
-                                    <span class="font-semibold text-[15px] flex-1" x-text="item.label" @click="openMenus.includes(item.label) ? openMenus = openMenus.filter(m => m !== item.label) : openMenus.push(item.label)"></span>
-                                </template>
-                                <button @click.stop="openMenus.includes(item.label) ? openMenus = openMenus.filter(m => m !== item.label) : openMenus.push(item.label)" class="p-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--primary-light)] transition-transform duration-300" :class="openMenus.includes(item.label) ? 'rotate-180' : ''"><path d="m6 9 6 6 6-6"/></svg>
-                                </button>
-                            </div>
-                            <div x-show="openMenus.includes(item.label)" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="bg-white/[0.03] mx-2 px-2 py-3 rounded-xl mb-1">
-                                <template x-for="(col, colIdx) in item.megaMenu" :key="colIdx">
-                                    <div class="mb-4 last:mb-0">
-                                        <h4 class="text-[var(--primary-light)] text-[11px] font-bold tracking-[0.12em] uppercase pb-2 mb-2 border-b border-white/[0.06] px-3" x-text="col.title"></h4>
-                                        <ul class="space-y-0.5">
-                                            <template x-for="(subItem, subIdx) in col.items" :key="subIdx">
-                                                <li>
-                                                    <a :href="subItem.href" @click="isMobileMenuOpen = false" class="flex items-center py-2.5 px-3 text-sm text-gray-300/80 hover:bg-white/5 hover:text-white rounded-lg transition-all">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-white/20"><path d="m9 18 6-6-6-6"/></svg>
-                                                        <span x-text="subItem.label"></span>
-                                                    </a>
-                                                </li>
-                                            </template>
-                                        </ul>
+            {% for menu in request.tenant.menus.all %}
+                {% if menu.slug == 'header' %}
+                    {% for item in menu.items.all %}
+                        {% if not item.parent %}
+                            <div>
+                                <div class="flex items-center justify-between w-full py-3.5 px-4 text-left text-white/90 hover:bg-white/5 border-b border-white/[0.06] transition-all rounded-lg" :class="openMenus.includes('{{ item.title }}') ? 'bg-[var(--primary)]/10 text-white' : ''">
+                                    <a href="{{ item.url }}" class="font-semibold text-[15px] flex-1" @click="isMobileMenuOpen = false">{{ item.title }}</a>
+                                    {% if item.children.exists %}
+                                        <button @click.stop="openMenus.includes('{{ item.title }}') ? openMenus = openMenus.filter(m => m !== '{{ item.title }}') : openMenus.push('{{ item.title }}')" class="p-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--primary-light)] transition-transform duration-300" :class="openMenus.includes('{{ item.title }}') ? 'rotate-180' : ''"><path d="m6 9 6 6 6-6"/></svg>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                                {% if item.children.exists %}
+                                    <div x-show="openMenus.includes('{{ item.title }}')" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="bg-white/[0.03] mx-2 px-2 py-3 rounded-xl mb-1">
+                                        {% for subitem in item.children.all %}
+                                            <div class="mb-4 last:mb-0">
+                                                <h4 class="text-[var(--primary-light)] text-[11px] font-bold tracking-[0.12em] uppercase pb-2 mb-2 border-b border-white/[0.06] px-3">{{ subitem.title }}</h4>
+                                                <ul class="space-y-0.5">
+                                                    {% for granditem in subitem.children.all %}
+                                                        <li>
+                                                            <a href="{{ granditem.url }}" @click="isMobileMenuOpen = false" class="flex items-center py-2.5 px-3 text-sm text-[var(--text-muted)] hover:bg-white/5 hover:text-white rounded-lg transition-all">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-white/20"><path d="m9 18 6-6-6-6"/></svg>
+                                                                <span>{{ granditem.title }}</span>
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                </template>
+                                {% endif %}
                             </div>
-                        </div>
-                    </template>
-                    <template x-if="!item.hasDropdown">
-                        <a :href="item.href || '#'" @click="isMobileMenuOpen = false" class="flex items-center py-3.5 px-4 text-white/90 hover:bg-white/5 border-b border-white/[0.06] transition-all font-semibold text-[15px] rounded-lg">
-                           <span x-text="item.label"></span>
-                        </a>
-                    </template>
-                </div>
-            </template>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
         </nav>
     </div>
 </div>
