@@ -37,6 +37,8 @@ class HomepageSection(models.Model):
         ('notices', 'Important Notices'),
         ('testimonials', 'Testimonials'),
         ('gallery', 'Gallery'),
+        ('achievements', 'Achievements'),
+        ('staff', 'Faculty & Staff'),
         ('cta', 'Call to Action'),
     ]
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, related_name='homepage_sections')

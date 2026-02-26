@@ -4,9 +4,12 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from tenants.models import Tenant, Domain
 from content.models import HomepageSection
-from cache.models import CachedProgram, CachedNews, CachedEvent, CachedNotice, CachedAlbum
+from cache.models import CachedProgram, CachedNews, CachedEvent, CachedNotice, CachedAlbum, CachedStaff
 from branding.models import ColorPalette, FontPair, BrandAssets
 from navigation.models import Menu, MenuItem
+from achievements.models import Achievement
+from admissions.models import AdmissionForm
+from contact.models import ContactSubmission, AdmissionInquiry
 
 class Command(BaseCommand):
     help = 'Seeds the database with dummy data for multiple schools/tenants'
@@ -182,11 +185,31 @@ class Command(BaseCommand):
 
             HomepageSection.objects.get_or_create(
                 tenant=tenant,
+                section_type='achievements',
+                defaults={
+                    'title': 'Our Notable Achievements',
+                    'subtitle': 'Celebrating the milestones, awards, and recognitions that define our commitment to excellence.',
+                    'order': 8
+                }
+            )
+
+            HomepageSection.objects.get_or_create(
+                tenant=tenant,
+                section_type='staff',
+                defaults={
+                    'title': 'Exceptional Faculty & Staff',
+                    'subtitle': 'Meet the inspiring educators and professionals who are passionate about shaping the future.',
+                    'order': 9
+                }
+            )
+
+            HomepageSection.objects.get_or_create(
+                tenant=tenant,
                 section_type='cta',
                 defaults={
                     'title': 'Ready to Excel? Join Us Today',
                     'subtitle': 'Our admissions team is here to help you navigate the process.',
-                    'order': 9,
+                    'order': 10,
                     'config': {
                         'primary_text': 'Get Started',
                         'primary_link': '/admissions/apply/',
@@ -196,7 +219,8 @@ class Command(BaseCommand):
                 }
             )
 
-            # 3. Dummy Programs
+
+            # 3. Dummy Programs (8 items)
             for idx, p_name in enumerate(school_info['programs']):
                 CachedProgram.objects.get_or_create(
                     tenant=tenant,
@@ -210,8 +234,22 @@ class Command(BaseCommand):
                     }
                 )
 
-            # 4. Dummy News
-            for i in range(1, 4):
+            # Image URLs for News and Events
+            seed_images = [
+                'https://plus.unsplash.com/premium_vector-1682303174219-9018338d4b5d',
+                'https://plus.unsplash.com/premium_vector-1711987353813-68a5bdb6f207',
+                'https://plus.unsplash.com/premium_vector-1720891748699-e91b3606f222',
+                'https://plus.unsplash.com/premium_vector-1720602864608-447c2e3323e9',
+                'https://plus.unsplash.com/premium_vector-1731471747401-fae8e5ef2021',
+                'https://plus.unsplash.com/premium_vector-1721762658788-8af51eb930a',
+                'https://plus.unsplash.com/premium_vector-1721748240192-9ac4be133756',
+                'https://plus.unsplash.com/premium_vector-1722124599095-142c3f7eee93'
+            ]
+
+            # 4. Dummy News (8 items)
+            num_items = 8 if school_info['subdomain'] == 'global' else 3
+            for i in range(1, num_items + 1):
+                img_url = seed_images[i-1] if school_info['subdomain'] == 'global' else f'https://picsum.photos/seed/{school_info["subdomain"]}news{i}/600/400'
                 CachedNews.objects.get_or_create(
                     tenant=tenant,
                     sms_id=f'{school_info["sms_tenant_id"]}_news_{i}',
@@ -220,15 +258,16 @@ class Command(BaseCommand):
                         'slug': f"news-update-{i}",
                         'summary': f"This is a short summary for news item {i}.",
                         'content': 'Full content...',
-                        'featured_image': f'https://picsum.photos/seed/{school_info["subdomain"]}news{i}/600/400',
+                        'featured_image': img_url,
                         'is_published': True,
                         'created_at': timezone.now() - timedelta(days=i),
                         'updated_at': timezone.now() - timedelta(days=i)
                     }
                 )
 
-            # 5. Dummy Events
-            for i in range(1, 4):
+            # 5. Dummy Events (8 items)
+            for i in range(1, num_items + 1):
+                img_url = seed_images[i-1] if school_info['subdomain'] == 'global' else f'https://picsum.photos/seed/{school_info["subdomain"]}event{i}/600/400'
                 CachedEvent.objects.get_or_create(
                     tenant=tenant,
                     sms_id=f'{school_info["sms_tenant_id"]}_event_{i}',
@@ -246,8 +285,8 @@ class Command(BaseCommand):
                     }
                 )
 
-            # 6. Dummy Notices
-            for i in range(1, 4):
+            # 6. Dummy Notices (8 items)
+            for i in range(1, num_items + 1):
                 CachedNotice.objects.get_or_create(
                     tenant=tenant,
                     sms_id=f'{school_info["sms_tenant_id"]}_notice_{i}',
@@ -262,6 +301,79 @@ class Command(BaseCommand):
                         'updated_at': timezone.now()
                     }
                 )
+                
+            if school_info['subdomain'] == 'global':
+                # 7a. Dummy Achievements (8 items)
+                for i in range(1, 9):
+                    Achievement.objects.get_or_create(
+                        tenant=tenant,
+                        title=f"{school_info['name']} Achievement {i}",
+                        defaults={
+                            'description': 'Awarded for excellence in academics and sports.',
+                            'date': timezone.now().date() - timedelta(days=i*30),
+                            'is_published': True,
+                            'order': i
+                        }
+                    )
+                
+                # 7b. Admission Forms (Dummy files)
+                for i in range(1, 9):
+                    AdmissionForm.objects.get_or_create(
+                        tenant=tenant,
+                        title=f"Admission Form {i}",
+                        defaults={
+                            'description': f'Sample admission form {i} description.',
+                            'file': f'admission_forms/dummy_form_{i}.pdf',
+                            'order': i,
+                            'is_published': True
+                        }
+                    )
+                
+                # 7c. Admission Enquiries
+                for i in range(1, 9):
+                    AdmissionInquiry.objects.get_or_create(
+                        tenant=tenant,
+                        email=f"student{i}@example.com",
+                        defaults={
+                            'full_name': f"Prospective Student {i}",
+                            'phone': f"+155512345{i:02d}",
+                            'program_of_interest': school_info['programs'][i-1],
+                            'grade_level': 'Undergraduate',
+                            'message': 'I would like to know more about this program.'
+                        }
+                    )
+                
+                # 7d. Staff
+                for i in range(1, 9):
+                    CachedStaff.objects.get_or_create(
+                        tenant=tenant,
+                        sms_id=f'{school_info["sms_tenant_id"]}_staff_{i}',
+                        defaults={
+                            'name': f"Dr. Staff Member {i}",
+                            'designation': 'Professor',
+                            'department': school_info['programs'][i-1],
+                            'bio': 'Experienced professor with a passion for teaching.',
+                            'photo': f'https://i.pravatar.cc/150?u={i}',
+                            'email': f"staff{i}@global.example.com",
+                            'phone': f"+155598765{i:02d}",
+                            'order': i,
+                            'is_published': True
+                        }
+                    )
+                
+                # 7e. Contact Submissions
+                for i in range(1, 9):
+                    ContactSubmission.objects.get_or_create(
+                        tenant=tenant,
+                        email=f"contact{i}@example.com",
+                        defaults={
+                            'name': f"Contact Person {i}",
+                            'phone': f"+155545678{i:02d}",
+                            'subject': f"General Inquiry {i}",
+                            'message': 'Please send me more information about the school.',
+                            'ip_address': '127.0.0.1'
+                        }
+                    )
 
             # 7. Dummy Gallery Albums
             for i in range(1, 9):

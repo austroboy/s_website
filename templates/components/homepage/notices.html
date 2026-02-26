@@ -4,14 +4,19 @@
     <div class="absolute top-0 left-0 w-[350px] h-[350px] rounded-full opacity-[0.03]" style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
 
     <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
-        <div class="flex items-center justify-between mb-10">
-            <div class="flex items-center space-x-4">
-                <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2.5 rounded-xl text-white shadow-lg shadow-[var(--primary-glow)]">
-                    <i data-lucide="bell" class="w-5 h-5"></i>
+        <div class="flex items-center justify-between mb-10 gap-6">
+            <div class="flex flex-col">
+                <div class="flex items-center space-x-4 mb-2">
+                    <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2.5 rounded-xl text-white shadow-lg shadow-[var(--primary-glow)] shrink-0">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">{{ section.title|default:"Recent Notices" }}</h2>
                 </div>
-                <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">Recent Notices</h2>
+                <div class="pl-14">
+                    <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">{{ section.subtitle|default:"Announcements & Updates" }}</p>
+                </div>
             </div>
-            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex">
+            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0">
                 VIEW ALL
                 <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
             </a>

@@ -28,18 +28,24 @@ class HomeView(TemplateView):
         context['sections'] = sections
 
         # Additional data for direct use in template (fallback if sections not used)
-        context['programs'] = CachedProgram.objects.filter(tenant=tenant, is_published=True).order_by('order')[:4]
-        context['news_list'] = CachedNews.objects.filter(tenant=tenant, is_published=True).order_by('-created_at')[:3]
+        context['programs'] = CachedProgram.objects.filter(tenant=tenant, is_published=True).order_by('order')[:8]
+        context['news_list'] = CachedNews.objects.filter(tenant=tenant, is_published=True).order_by('-created_at')[:8]
         context['events_list'] = CachedEvent.objects.filter(
             tenant=tenant, is_published=True, start_date__gte=now()
-        ).order_by('start_date')[:3]
+        ).order_by('start_date')[:8]
         context['notices_list'] = (
             CachedNotice.objects.filter(tenant=tenant, is_published=True)
             .filter(Q(expiry_date__gte=now()) | Q(expiry_date__isnull=True))
-            .order_by('-created_at')[:5]
+            .order_by('-created_at')[:8]
         )
         # If you have a Testimonial model, add it here
-        context['gallery_albums'] = CachedAlbum.objects.filter(tenant=tenant, is_published=True)[:4]
+        context['gallery_albums'] = CachedAlbum.objects.filter(tenant=tenant, is_published=True)[:8]
+
+        # Fetch Achievements and Staff
+        from achievements.models import Achievement
+        from cache.models import CachedStaff
+        context['achievements'] = Achievement.objects.filter(tenant=tenant, is_published=True).order_by('order', '-date')[:8]
+        context['staff_list'] = CachedStaff.objects.filter(tenant=tenant, is_published=True).order_by('order')[:8]
 
         # Hero section
         hero_section = sections.filter(section_type='hero').first()

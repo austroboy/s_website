@@ -3,19 +3,27 @@
 
 {% block content %}
 
-
-{% include 'components/homepage/hero.html' %}
-
-{% include 'components/homepage/programs.html' %}
-
-{% include 'components/homepage/stats.html' %}
-
-{% include 'components/homepage/news.html' %}
-
-{% include 'components/homepage/news_v2.html' %}
-
-{% include 'components/homepage/notices.html' %}
-
-{% include 'components/homepage/gallery.html' %}
-
+{% for section in sections %}
+    {% if section.section_type == 'hero' %}
+        {% include 'components/homepage/hero.html' with section=section %}
+    {% elif section.section_type == 'features' %}
+        {% include 'components/homepage/programs.html' with section=section %}
+    {% elif section.section_type == 'stats' %}
+        {% include 'components/homepage/stats.html' with section=section %}
+    {% elif section.section_type == 'achievements' %}
+        {% include 'components/homepage/achievements.html' with section=section %}
+    {% elif section.section_type == 'news' %}
+        {% include 'components/homepage/news_v2.html' with section=section %}
+    {% elif section.section_type == 'events' %}
+        {% include 'components/homepage/news.html' with section=section %}
+    {% elif section.section_type == 'notices' %}
+        {% include 'components/homepage/notices.html' with section=section %}
+    {% elif section.section_type == 'staff' %}
+        {% include 'components/homepage/staff.html' with section=section %}
+    {% elif section.section_type == 'gallery' %}
+        {% include 'components/homepage/gallery.html' with section=section %}
+    {% elif section.section_type == 'cta' %}
+        {% include 'components/homepage/cta.html' with section=section %}
+    {% endif %}
+{% endfor %}
 {% endblock %}

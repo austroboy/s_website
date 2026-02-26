@@ -1,17 +1,15 @@
 <!-- ==================== STATS ==================== -->
-{% for section in sections %}
-    {% if section.section_type == 'stats' %}
         <section x-data="{
             stats: [
                 {% if section.config.stats %}
                     {% for stat in section.config.stats %}
-                        { label: '{{ stat.label|upper }}', target: {{ stat.target }}, current: 0, icon: '{{ stat.icon|default:"bar-chart" }}', suffix: '{{ stat.suffix|default:"" }}' }{% if not forloop.last %},{% endif %}
+                        { label: '{{ stat.label|escapejs|upper }}', target: {{ stat.target }}, current: 0, icon: '{{ stat.icon|default:"bar-chart" }}', suffix: '{{ stat.suffix|default:"" }}' }{% if not forloop.last %},{% endif %}
                     {% endfor %}
                 {% else %}
                     {% for key, value in section.config.items %}
                         {% if key != 'bg_image' and key != 'stats' %}
                             { 
-                                label: '{{ key|upper }}', 
+                                label: '{{ key|escapejs|upper }}', 
                                 target: {{ value }}, 
                                 current: 0, 
                                 icon: '{% if "student" in key.lower %}graduation-cap{% elif "teacher" in key.lower %}users{% elif "program" in key.lower %}book-open{% elif "year" in key.lower or "establish" in key.lower %}calendar{% elif "alumni" in key.lower %}award{% else %}bar-chart{% endif %}', 
@@ -58,9 +56,9 @@
             <div class="deco-circle w-[150px] h-[150px] -bottom-16 right-[15%] animate-float-slow opacity-15"></div>
 
             <div class="relative z-10 max-w-[1200px] mx-auto px-6 lg:px-8 reveal-up">
-                <div class="text-center mb-10 space-y-2">
-                    <span class="text-[var(--accent)] font-bold tracking-[0.2em] text-xs uppercase">{{ section.subtitle|default:"The numbers say it all" }}</span>
-                    <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase tracking-wider">{{ section.title|default:"Why Choose Us" }}</h2>
+                <div class="flex flex-col items-center justify-center mb-10 text-center">                     
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white uppercase tracking-wider">{{ section.title|default:"Why Choose Us" }}</h2>
+                    <span class="block text-white text-sm md:text-base opacity-70">{{ section.subtitle|default:"The numbers say it all" }}</span>
                 </div>
 
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0">
@@ -88,5 +86,3 @@
                 </div>
             </div>
         </section>
-    {% endif %}
-{% endfor %}

@@ -4,15 +4,19 @@
     <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-[0.04]" style="background: radial-gradient(circle, var(--accent) 0%, transparent 70%);"></div>
 
     <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
-            <div class="space-y-2">
-                <div class="section-eyebrow">
-                    <i data-lucide="newspaper" class="w-4 h-4 text-[var(--primary)]"></i>
-                    <span class="text-[var(--primary)] font-bold tracking-wider uppercase text-xs">Latest News</span>
+        <div class="flex items-center justify-between mb-10 gap-6">
+            <div class="flex flex-col">
+                <div class="flex items-center space-x-4 mb-2">
+                    <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2.5 rounded-xl text-white shadow-lg shadow-[var(--primary-glow)] shrink-0">
+                        <i data-lucide="newspaper" class="w-5 h-5"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">{{ section.title|default:"Campus News & Updates" }}</h2>
                 </div>
-                <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-[var(--text)] tracking-tight">Campus News & Updates</h2>
+                <div class="pl-14">
+                    <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">{{ section.subtitle|default:"Latest News" }}</p>
+                </div>
             </div>
-            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex self-start sm:self-auto hover:bg-[var(--primary)] hover:text-white transition-all duration-300">
+            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0 hover:bg-[var(--primary)] hover:text-white transition-all duration-300">
                 ALL NEWS
                 <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
             </a>

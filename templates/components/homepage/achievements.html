@@ -1,0 +1,97 @@
+<!-- ==================== ACHIEVEMENTS ==================== -->
+<section class="py-12 md:py-20 bg-white relative overflow-hidden">
+    
+    <!-- Background Decor -->
+    <div class="absolute top-0 left-0 w-full h-[300px] bg-gradient-to-b from-[var(--surface-alt)] to-transparent opacity-50"></div>
+    <div class="absolute -right-[200px] top-[10%] w-[500px] h-[500px] rounded-full opacity-[0.03]" style="background: radial-gradient(circle, var(--accent) 0%, transparent 70%);"></div>
+
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+        
+        <!-- Section Header -->
+        <div class="flex items-center justify-between mb-12 gap-6">
+            <div class="flex flex-col">
+                <div class="flex items-center space-x-4 mb-2">
+                    <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2.5 rounded-xl text-white shadow-lg shadow-[var(--primary-glow)] shrink-0">
+                        <i data-lucide="award" class="w-5 h-5"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">
+                        {{ section.title|safe|default:'Our Notable Achievements' }}
+                    </h2>
+                </div>
+                <div class="pl-14">
+                    <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">{{ section.subtitle|default:"Excellence & Recognition" }}</p>
+                </div>
+            </div>
+            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0">
+                ALL ACHIEVEMENTS
+                <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+            </a>
+        </div>
+
+        {% if achievements %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for achievement in achievements %}
+                    <!-- Achievement Card -->
+                    <div class="group relative bg-[var(--surface-alt)] rounded-2xl overflow-hidden border border-[var(--border)] transition-all duration-500 hover:shadow-xl hover:-translate-y-2 flex flex-col h-full">
+                        
+                        <!-- Optional Image/Icon Area -->
+                        <div class="relative h-40 bg-[var(--surface)] overflow-hidden flex items-center justify-center">
+                            {% if achievement.image %}
+                                <img src="{{ achievement.image.url }}" alt="{{ achievement.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            {% else %}
+                                <!-- Fallback gradient pattern -->
+                                <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary-dark)] opacity-10"></div>
+                                <i data-lucide="trophy" class="w-16 h-16 text-[var(--primary)] opacity-40 transition-transform duration-500 group-hover:scale-125 group-hover:text-[var(--accent)]"></i>
+                            {% endif %}
+                            
+                            <!-- Date Badge -->
+                            {% if achievement.date %}
+                            <div class="absolute top-3 right-3 bg-white/95 backdrop-blur shadow-sm rounded-full px-3 py-1 text-[10px] font-bold text-[var(--text)] flex items-center">
+                                <i data-lucide="calendar" class="w-3 h-3 text-[var(--primary)] mr-1.5 object-cover"></i>
+                                {{ achievement.date|date:"F Y" }}
+                            </div>
+                            {% endif %}
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-[var(--surface-alt)] via-transparent to-transparent"></div>
+                        </div>
+
+                        <!-- Content Area -->
+                        <div class="p-6 flex flex-col flex-1 relative z-10 -mt-2">
+                            <h3 class="text-lg font-bold text-[var(--text)] leading-snug mb-3 group-hover:text-[var(--primary)] transition-colors line-clamp-2">
+                                {{ achievement.title }}
+                            </h3>
+                            <p class="text-[13px] text-[var(--text-muted)] leading-relaxed mb-4 line-clamp-3">
+                                {{ achievement.description }}
+                            </p>
+                            
+                            <!-- Bottom Line -->
+                            <div class="w-12 h-1 bg-[var(--primary)] rounded-full mt-auto opacity-50 group-hover:w-full group-hover:opacity-100 transition-all duration-500"></div>
+                        </div>
+                        
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="mt-10 sm:hidden text-center">
+                <a href="#" class="btn-primary-blue text-xs tracking-wider inline-flex items-center px-6 py-3 rounded-full shadow-lg shadow-[var(--primary)]/20">
+                    VIEW ALL ACHIEVEMENTS
+                    <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+                </a>
+            </div>
+
+        {% else %}
+            <!-- Empty State -->
+            <div class="py-16 text-center bg-[var(--surface-alt)] rounded-3xl border border-[var(--border)] relative overflow-hidden">
+                <div class="absolute inset-0 bg-[var(--primary)]/5 pattern-dots"></div>
+                <div class="relative z-10 flex flex-col items-center justify-center">
+                    <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm">
+                        <i data-lucide="award" class="w-10 h-10 text-[var(--text-muted)] opacity-50"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[var(--text)] mb-2">Recognizing Excellence</h3>
+                    <p class="text-[var(--text-muted)] text-sm max-w-md mx-auto leading-relaxed">Our notable achievements, awards, and milestones will be showcased here.</p>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+</section>
