@@ -21,7 +21,7 @@
         {% if programs %}
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 {% for program in programs %}
-                    <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col border border-[var(--border)]/80">
+                    <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col border border-[var(--border)]">
                         <div class="relative h-44 overflow-hidden">
                             {% with p_image=forloop.counter|stringformat:"s" %}
                                  <img src="{% cycle 'https://plus.unsplash.com/premium_vector-1682303174219-9018338d4b5d' 'https://plus.unsplash.com/premium_vector-1711987353813-68a5bdb6f207' 'https://plus.unsplash.com/premium_vector-1720891748699-e91b3606f222' 'https://plus.unsplash.com/premium_vector-1720602864608-447c2e3323e9' %}" 

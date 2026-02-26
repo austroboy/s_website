@@ -21,7 +21,7 @@
         {% if events_list %}
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 {% for event in events_list %}
-                    <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100/80 flex flex-col overflow-hidden card-hover">
+                    <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 border border-[var(--border)] flex flex-col overflow-hidden card-hover">
                         <div class="relative h-44 overflow-hidden">
                             <img src="{% cycle 'https://plus.unsplash.com/premium_vector-1731471747401-fae8e5ef2021' 'https://plus.unsplash.com/premium_vector-1721748240192-9ac4be133756' 'https://plus.unsplash.com/premium_vector-1722124599095-142c3f7eee93' %}" 
                                  alt="{{ event.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
@@ -46,8 +46,8 @@
                                 {{ event.title }}
                             </h3>
                             <div class="mt-auto flex items-center justify-between">
-                                <span class="text-[10px] text-[var(--text-muted)] font-medium">
-                                    <i data-lucide="map-pin" class="w-3 h-3 inline mr-1 opacity-70"></i>
+                                <span class="flex items-center text-[10px] text-[var(--text-muted)] font-medium">
+                                    <i data-lucide="map-pin" class="w-3 h-3 mr-1.5 opacity-70"></i>
                                     {{ event.venue|default:"Online / Campus" }}
                                 </span>
                                 <a href="#" class="px-4 py-1.5 border border-[var(--primary)]/30 text-[var(--primary)] text-xs font-semibold hover:bg-[var(--primary)] hover:text-white transition-all duration-300 rounded-lg">
