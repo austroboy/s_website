@@ -1,0 +1,72 @@
+<!-- ==================== ACADEMIC PROGRAMS ==================== -->
+<section class="py-12 md:py-20 bg-[var(--surface-alt)] relative overflow-hidden">
+    
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-[0.04]" style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
+
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-8 relative z-10 reveal-up">
+        <div class="flex items-center justify-between mb-10 gap-6">
+            <div class="flex flex-col">
+                <div class="flex items-center space-x-4 mb-2">
+                    <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2.5 rounded-xl text-white shadow-lg shadow-[var(--primary-glow)] shrink-0">
+                        <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">{{ section.title|default:"Explore Our Programs" }}</h2>
+                </div>
+                <div class="pl-14">
+                    <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">{{ section.subtitle|default:"Our Programs" }}</p>
+                </div>
+            </div>
+            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0">
+                VIEW ALL
+                <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+            </a>
+        </div>
+
+        {% if programs %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                {% for program in programs %}
+                    <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col border border-[var(--border)]">
+                        <div class="relative h-44 overflow-hidden">
+                            {% with p_image=forloop.counter|stringformat:"s" %}
+                                 <img src="{% cycle 'https://plus.unsplash.com/premium_vector-1682303174219-9018338d4b5d' 'https://plus.unsplash.com/premium_vector-1711987353813-68a5bdb6f207' 'https://plus.unsplash.com/premium_vector-1720891748699-e91b3606f222' 'https://plus.unsplash.com/premium_vector-1720602864608-447c2e3323e9' %}" 
+                                     alt="{{ program.name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            {% endwith %}
+                            <div class="absolute inset-0 bg-gradient-to-t from-[var(--secondary)]/80 via-black/20 to-transparent"></div>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <h3 class="text-sm font-bold text-[var(--text)] leading-snug mb-3 group-hover:text-[var(--primary)] transition-colors line-clamp-2">
+                                {{ program.name }}
+                            </h3>
+                            <p class="text-[11px] text-[var(--text-muted)] line-clamp-3 mb-4 leading-relaxed">
+                                {{ program.description|truncatewords:20 }}
+                            </p>
+                            
+                            <!-- Detailed Button -->
+                            <div class="mt-auto flex justify-end pt-2">
+                                <a href="{{ program.slug|default:'#' }}" class="px-4 py-1.5 border border-[var(--primary)]/30 text-[var(--primary)] text-xs font-semibold hover:bg-[var(--primary)] hover:text-white transition-all duration-300 rounded-lg">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                        <div class="h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] w-0 group-hover:w-full transition-all duration-500"></div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="py-20 text-center bg-white/50 rounded-3xl border-2 border-dashed border-[var(--border)]">
+                <div class="w-16 h-16 bg-[var(--surface-alt)] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="info" class="w-8 h-8 text-[var(--text-muted)]"></i>
+                </div>
+                <h3 class="text-lg font-bold text-[var(--text-muted)]">No Programs Found</h3>
+                <p class="text-[var(--text-muted)] text-sm">Active academic programs will appear here once configured.</p>
+            </div>
+        {% endif %}
+
+        <div class="mt-8 sm:hidden">
+            <a href="#" class="btn-outline-blue btn-view-all-mobile text-xs tracking-wider group">
+                VIEW ALL PROGRAMS
+                <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+            </a>
+        </div>
+    </div>
+</section>

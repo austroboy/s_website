@@ -11,122 +11,33 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         tenant = self.request.tenant
 
-        # 1. Hero Data
-        context['hero_data'] = {
-            'eyebrow': 'Welcome to NSU',
-            'title_main': 'Step Up With',
-            'title_gradient': 'Admission',
-            'description': 'Join one of the most prestigious private universities in Bangladesh. Shaping leaders since 2003.',
-            'images': [
-                { 'url': 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=1986&auto=format&fit=crop', 'alt': 'University Campus' },
-                { 'url': 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1986&auto=format&fit=crop', 'alt': 'Library' },
-                { 'url': 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1986&auto=format&fit=crop', 'alt': 'Modern Classroom' },
-                { 'url': 'https://plus.unsplash.com/premium_photo-1677567996070-68fa4181775a?q=80&w=1986&auto=format&fit=crop', 'alt': 'Students Group' }
-            ]
-        }
+        # Homepage sections (configured in admin)
+        sections = HomepageSection.objects.filter(tenant=tenant, is_active=True).order_by('order')
+        context['sections'] = sections
 
-        # 2. Academic Programs Data
-        context['programs_data'] = {
-            'categories': ['Undergraduate', 'Graduate'],
-            'items': [
-                { 
-                    'name': 'B.Sc. in Computer Science and Engineering (CSE)', 
-                    'shortCode': 'CSE', 'category': 'Undergraduate', 'duration': '4 Years', 'credits': '140 Credit',
-                    'image': 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop', 'icon': 'computer'
-                },
-                { 
-                    'name': 'B.Sc. in Electrical and Electronic Engineering (EEE)', 
-                    'shortCode': 'EEE', 'category': 'Undergraduate', 'duration': '4 Years', 'credits': '140 Credit',
-                    'image': 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2070&auto=format&fit=crop', 'icon': 'cpu'
-                },
-                { 
-                    'name': 'B.Sc. in Electronic and Telecommunication Engineering', 
-                    'shortCode': 'ETE', 'category': 'Undergraduate', 'duration': '4 Years', 'credits': '140 Credit',
-                    'image': 'https://images.unsplash.com/photo-1551624511-71852021c251?q=80&w=2070&auto=format&fit=crop', 'icon': 'radio'
-                },
-                { 
-                    'name': 'B.Sc. in Civil Engineering (CE)', 
-                    'shortCode': 'CIVIL', 'category': 'Undergraduate', 'duration': '4 Years', 'credits': '146 Credit',
-                    'image': 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop', 'icon': 'building'
-                },
-                { 
-                    'name': 'Master of Business Administration (MBA)', 
-                    'shortCode': 'MBA', 'category': 'Graduate', 'duration': '2 Years', 'credits': '60 Credit',
-                    'image': 'https://images.unsplash.com/photo-1454165833772-d996d49513d7?q=80&w=2070&auto=format&fit=crop', 'icon': 'briefcase'
-                },
-                { 
-                    'name': 'Master in Public Health (MPH)', 
-                    'shortCode': 'MPH', 'category': 'Graduate', 'duration': '2 Years', 'credits': '52 Credit',
-                    'image': 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1999&auto=format&fit=crop', 'icon': 'heart'
-                }
-            ]
-        }
+        # Additional data for direct use in template (fallback if sections not used)
+        context['programs'] = CachedProgram.objects.filter(tenant=tenant, is_published=True).order_by('order')[:8]
+        context['news_list'] = CachedNews.objects.filter(tenant=tenant, is_published=True).order_by('-created_at')[:8]
+        context['events_list'] = CachedEvent.objects.filter(
+            tenant=tenant, is_published=True, start_date__gte=now()
+        ).order_by('start_date')[:8]
+        context['notices_list'] = (
+            CachedNotice.objects.filter(tenant=tenant, is_published=True)
+            .filter(Q(expiry_date__gte=now()) | Q(expiry_date__isnull=True))
+            .order_by('-created_at')[:8]
+        )
+        # If you have a Testimonial model, add it here
+        context['gallery_albums'] = CachedAlbum.objects.filter(tenant=tenant, is_published=True)[:8]
 
-        # 3. News & Events Data
-        context['events_data'] = {
-            'items': [
-                {
-                    'title': 'Think Beyond the Syllabus with Tahsan Khan',
-                    'day': '21', 'month': 'Jul',
-                    'image': 'https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=2070&auto=format&fit=crop',
-                    'href': '#'
-                },
-                {
-                    'title': 'Empowering Voices through Freedom of Association',
-                    'day': '15', 'month': 'Jul',
-                    'image': 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=2070&auto=format&fit=crop',
-                    'href': '#'
-                },
-                {
-                    'title': 'English Department Celebrates Emerging Talents',
-                    'day': '28', 'month': 'Jun',
-                    'image': 'https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=2070&auto=format&fit=crop',
-                    'href': '#'
-                },
-                {
-                    'title': 'Inauguration of the presidency University Library',
-                    'day': '02', 'month': 'Jun',
-                    'image': 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop',
-                    'href': '#'
-                }
-            ]
-        }
+        # Fetch Achievements and Staff
+        from achievements.models import Achievement
+        from cache.models import CachedStaff
+        context['achievements'] = Achievement.objects.filter(tenant=tenant, is_published=True).order_by('order', '-date')[:8]
+        context['staff_list'] = CachedStaff.objects.filter(tenant=tenant, is_published=True).order_by('order')[:8]
 
-        # 4. Notices Data
-        context['notices_data'] = {
-            'items': [
-                { 'title': 'Admission going on for Fall Semester 2026', 'date': '19 Feb', 'year': '2026', 'isNew': True, 'href': '#' },
-                { 'title': 'Holiday Notice for International Mother Language Day', 'date': '21 Feb', 'year': '2026', 'isNew': True, 'href': '#' },
-                { 'title': 'Schedule for Mid-Term Examination Spring 2026', 'date': '15 Feb', 'year': '2026', 'isNew': False, 'href': '#' },
-                { 'title': 'Workshop on Cyber Security for IT Students', 'date': '10 Feb', 'year': '2026', 'isNew': False, 'href': '#' },
-                { 'title': 'Annual Sports Day 2026 - Registration Open', 'date': '05 Feb', 'year': '2026', 'isNew': False, 'href': '#' },
-                { 'title': 'Library Timing Extended for Final Exams', 'date': '01 Feb', 'year': '2026', 'isNew': False, 'href': '#' }
-            ]
-        }
-
-        # 5. Stats Data
-        context['stats_data'] = {
-            'bg_image': 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2070&auto=format&fit=crop',
-            'items': [
-                { 'label': 'ESTABLISHED', 'target': 2003, 'icon': 'landmark', 'suffix': '' },
-                { 'label': 'PROGRAMMES', 'target': 13, 'icon': 'book-open', 'suffix': '' },
-                { 'label': 'TEACHERS', 'target': 100, 'icon': 'users', 'suffix': '+' },
-                { 'label': 'GRADUATES', 'target': 10000, 'icon': 'graduation-cap', 'suffix': '+' }
-            ]
-        }
-
-        # 6. Gallery Data
-        context['gallery_data'] = {
-            'items': [
-                { 'id': 1, 'title': 'Guest Lecture', 'date': '21 Jul', 'image': 'https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=600&auto=format&fit=crop', 'gridClass': 'col-span-1 row-span-1' },
-                { 'id': 2, 'title': 'Cultural Performance', 'date': '15 Jul', 'image': 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=600&auto=format&fit=crop', 'gridClass': 'col-span-1 row-span-1' },
-                { 'id': 3, 'title': 'Student Portrait', 'date': '28 Jun', 'image': 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=800&auto=format&fit=crop', 'gridClass': 'col-span-1 row-span-2' },
-                { 'id': 4, 'title': 'Awards Ceremony 2026', 'date': '10 Jun', 'image': 'https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=1200&auto=format&fit=crop', 'gridClass': 'col-span-2 row-span-1' },
-                { 'id': 5, 'title': 'Inspiring Session', 'date': '24 Apr', 'image': 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop', 'gridClass': 'col-span-2 row-span-1' },
-                { 'id': 6, 'title': 'Grand Iftar', 'date': '14 Mar', 'image': 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop', 'gridClass': 'col-span-1 row-span-1' },
-                { 'id': 7, 'title': 'Presidency Day', 'date': '02 Jan', 'image': 'https://images.unsplash.com/photo-1454165833772-d996d49513d7?q=80&w=600&auto=format&fit=crop', 'gridClass': 'col-span-1 row-span-1' }
-            ]
-        }
+        # Hero section
+        hero_section = sections.filter(section_type='hero').first()
+        context['hero'] = hero_section
         return context
 
 class PageDetailView(DetailView):
