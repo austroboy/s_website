@@ -3,9 +3,9 @@ from .models import Achievement
 
 class AchievementListView(ListView):
     model = Achievement
-    template_name = 'achievements/list.html'
+    template_name = 'components/page/list/achievements.html'
     context_object_name = 'achievements'
-    paginate_by = 12
+    paginate_by = 8
 
     def get_queryset(self):
         return super().get_queryset().filter(tenant=self.request.tenant, is_published=True)

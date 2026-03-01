@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Notices | Presidency University{% endblock %}
+
+{% block content %}
+<!-- Standard Academic Hero Header Flattened -->
+<section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
+    <div class="absolute inset-0 z-0">
+        <img src="https://www.bracu.ac.bd/sites/default/files/styles/banner_dept_landing/public/banner-images/2024/12/31/Departments.JPG" 
+             alt="University Notices" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0F1D40]/90 to-transparent"></div>
+    </div>
+
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 w-full">
+        <div class="reveal-up">
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4">University Notices</h1>
+            <nav class="flex text-white/70 text-sm font-medium">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">Notice Board</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<div class="py-12 md:py-20 bg-[var(--surface-alt)] min-h-screen">
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10">
+        
+        <!-- Header Section -->
+        <div class="flex items-center justify-between mb-10 gap-6 reveal-up">
+            <div class="flex flex-col">
+                <div class="flex items-center space-x-4 mb-2">
+                    <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2.5 rounded-xl text-white shadow-lg shadow-[var(--primary-glow)] shrink-0">
+                        <i data-lucide="megaphone" class="w-5 h-5"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">Official Notice Board</h2>
+                </div>
+                <div>
+                    <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">Stay updated with latest announcements</p>
+                </div>
+            </div>
+        </div>
+
+        {% if page_obj.object_list or notices_list %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 reveal-up">
+                {% for notice in page_obj.object_list|default:notices_list %}
+                    <a href="{{ notice.attachment_url|default:'#' }}" class="group flex items-stretch bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-[var(--border)] hover:border-[var(--primary)]/30 overflow-hidden">
+                        <div class="w-20 sm:w-24 bg-gradient-to-b from-[var(--primary)] to-[var(--primary-dark)] flex flex-col items-center justify-center p-3 transition-all group-hover:from-[var(--primary-light)] group-hover:to-[var(--primary)] group-hover:shadow-[inset_0_0_20px_rgba(0,212,255,0.15)]">
+                            <span class="text-xl font-extrabold text-white">{{ notice.created_at|date:"d" }}</span>
+                            <span class="text-[10px] font-bold text-white/80 uppercase tracking-widest">{{ notice.created_at|date:"M" }}</span>
+                        </div>
+                        <div class="w-1 bg-gradient-to-b from-[var(--primary)] to-[var(--accent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="flex-1 p-4 md:p-5 flex flex-col justify-center">
+                            <div class="flex items-center space-x-2 mb-1">
+                                <span class="text-[11px] font-semibold text-[var(--text-muted)]">{{ notice.created_at|date:"Y" }}</span>
+                            </div>
+                            <h3 class="text-sm md:text-[15px] font-bold text-[var(--text)] leading-snug group-hover:text-[var(--primary)] transition-colors line-clamp-2">{{ notice.title }}</h3>
+                        </div>
+                        <div class="flex items-center px-3 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-[var(--primary)]"></i>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <!-- Enhanced Pagination -->
+            {% if is_paginated %}
+            <div class="mt-16 flex items-center justify-center space-x-3 reveal-up">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </a>
+                {% endif %}
+
+                {% for num in paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <span class="w-10 h-10 flex items-center justify-center rounded-2xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/20">{{ num }}</span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        {% else %}
+            <!-- Empty State -->
+            <div class="py-20 text-center bg-white rounded-3xl border-2 border-dashed border-[var(--border)] reveal-up">
+                <div class="w-20 h-20 bg-[var(--surface-alt)] rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="megaphone" class="w-10 h-10 text-[var(--text-muted)] opacity-50"></i>
+                </div>
+                <h3 class="text-xl font-bold text-[var(--text)]">No Notices Posted</h3>
+                <p class="text-[var(--text-muted)] text-sm max-w-sm mx-auto mt-2">All official university notices and urgent circulars will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

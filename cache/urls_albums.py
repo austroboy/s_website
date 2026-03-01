@@ -5,5 +5,5 @@ app_name = 'albums'
 
 urlpatterns = [
     path('', AlbumListView.as_view(), name='list'),
-    path('<slug:slug>/', AlbumDetailView.as_view(), name='detail'),
+    path('<int:pk>/', AlbumDetailView.as_view(), name='detail'),
 ]

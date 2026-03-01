@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Photo Gallery | Presidency University{% endblock %}
+
+{% block content %}
+<!-- Standard Academic Hero Header Flattened -->
+<section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
+    <div class="absolute inset-0 z-0">
+        <img src="https://cdn.pixabay.com/photo/2022/04/19/03/50/science-doodles-7141847_1280.jpg" 
+             alt="University Gallery" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0F1D40]/90 to-transparent"></div>
+    </div>
+
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 w-full">
+        <div class="reveal-up">
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4">Photo Gallery</h1>
+            <nav class="flex text-white/70 text-sm font-medium">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">Memories</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<div class="py-12 md:py-20 bg-[var(--surface-alt)] min-h-screen">
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10">
+        
+        <!-- Header Section -->
+        <div class="flex items-center justify-between mb-10 gap-6 reveal-up">
+            <div class="flex flex-col">
+                <div class="flex items-center space-x-4 mb-2">
+                    <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2.5 rounded-xl text-white shadow-lg shadow-[var(--primary-glow)] shrink-0">
+                        <i data-lucide="images" class="w-5 h-5"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">University Gallery</h2>
+                </div>
+                <div>
+                    <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">Capturing Moments, Creating Memories</p>
+                </div>
+            </div>
+        </div>
+
+        {% if page_obj.object_list or albums %}
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 h-[auto] min-h-[500px] md:min-h-[700px] reveal-up">
+                {% for album in page_obj.object_list|default:albums %}
+                    <a href="{% url 'albums:detail' album.pk %}" class="{% cycle 'col-span-1 row-span-1' 'col-span-1 row-span-1' 'col-span-1 row-span-2' 'col-span-2 row-span-1' 'col-span-2 row-span-1' 'col-span-1 row-span-1' 'col-span-1 row-span-1' %} group relative overflow-hidden rounded-2xl cursor-pointer glow-border-hover bg-[var(--surface-alt)]">
+                        <img src="{% if album.cover_image %}{{ album.cover_image }}{% else %}{% cycle 'https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=600&auto=format&fit=crop' 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=600&auto=format&fit=crop' 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=800&auto=format&fit=crop' 'https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=1200&auto=format&fit=crop' 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop' 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop' 'https://images.unsplash.com/photo-1454165833772-d996d49513d7?q=80&w=600&auto=format&fit=crop' %}{% endif %}" 
+                             alt="{{ album.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[var(--secondary)]/90 via-black/20 to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        
+                        <!-- Date Badge -->
+                        <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-md rounded-lg p-1.5 shadow-lg flex flex-col items-center min-w-[42px] transition-all duration-500 translate-y-[-110%] group-hover:translate-y-0 opacity-0 group-hover:opacity-100 z-20">
+                            <span class="text-base font-extrabold text-[var(--secondary)] leading-none">{{ album.created_at|date:"d" }}</span>
+                            <span class="text-[9px] font-bold text-[var(--primary)] uppercase tracking-tighter">{{ album.created_at|date:"M" }}</span>
+                        </div>
+
+                        <!-- Media Count -->
+                        <div class="absolute top-3 left-3 bg-black/40 backdrop-blur-md rounded-full px-2 py-1 flex items-center space-x-1.5 transition-opacity duration-500 opacity-0 group-hover:opacity-100 z-20">
+                            <i data-lucide="camera" class="w-3 h-3 text-white"></i>
+                            <span class="text-[9px] font-bold text-white uppercase tracking-widest">{{ album.media_items|length|default:"0" }} PHOTOS</span>
+                        </div>
+
+                        <div class="absolute bottom-0 left-0 p-4 lg:p-6 w-full text-white z-20">
+                            <h4 class="text-xs md:text-sm font-bold leading-tight drop-shadow-lg line-clamp-2">{{ album.title }}</h4>
+                        </div>
+                        <div class="absolute inset-x-[-100%] inset-y-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] duration-[1500ms] group-hover:inset-x-[200%] transition-all"></div>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <!-- Enhanced Pagination -->
+            {% if is_paginated %}
+            <div class="mt-16 flex items-center justify-center space-x-3 reveal-up">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </a>
+                {% endif %}
+
+                {% for num in paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <span class="w-10 h-10 flex items-center justify-center rounded-2xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/20">{{ num }}</span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        {% else %}
+            <!-- Empty State -->
+            <div class="py-20 text-center bg-white rounded-3xl border-2 border-dashed border-[var(--border)] reveal-up shadow-sm">
+                <div class="w-20 h-20 bg-[var(--surface-alt)] rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="image" class="w-10 h-10 text-[var(--text-muted)] opacity-50"></i>
+                </div>
+                <h3 class="text-xl font-bold text-[var(--text)]">No Albums Yet</h3>
+                <p class="text-[var(--text-muted)] text-sm max-w-sm mx-auto mt-2 leading-relaxed italic">The university gallery is coming soon with beautiful memories and event coverage.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

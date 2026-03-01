@@ -58,9 +58,9 @@ from .models import (
 # ---- News ----
 class NewsListView(ListView):
     model = CachedNews
-    template_name = 'content/news_list.html'
+    template_name = 'components/page/list/news.html'
     context_object_name = 'news_list'
-    paginate_by = 12
+    paginate_by = 5
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True).order_by('-created_at')
@@ -76,9 +76,9 @@ class NewsDetailView(DetailView):
 # ---- Events ----
 class EventListView(ListView):
     model = CachedEvent
-    template_name = 'cache/event_list.html'
+    template_name = 'components/page/list/event.html'
     context_object_name = 'events'
-    paginate_by = 12
+    paginate_by = 6
 
     def get_queryset(self):
         # Upcoming events first
@@ -95,9 +95,9 @@ class EventDetailView(DetailView):
 # ---- Notices ----
 class NoticeListView(ListView):
     model = CachedNotice
-    template_name = 'content/notice_list.html'
-    context_object_name = 'notices'
-    paginate_by = 20
+    template_name = 'components/page/list/notice.html'
+    context_object_name = 'notices_list'
+    paginate_by = 6
 
     def get_queryset(self):
         qs = super().get_queryset().filter(is_published=True)
@@ -115,9 +115,9 @@ class NoticeDetailView(DetailView):
 # ---- Staff Directory ----
 class StaffListView(ListView):
     model = CachedStaff
-    template_name = 'cache/staff_list.html'
+    template_name = 'components/page/list/staff.html'
     context_object_name = 'staff_list'
-    paginate_by = 24
+    paginate_by = 6
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True).order_by('order', 'name')
@@ -133,18 +133,27 @@ class StaffDetailView(DetailView):
 # ---- Programs (Academics) ----
 class ProgramListView(ListView):
     model = CachedProgram
-    template_name = 'content/programs.html'
+    template_name = 'components/page/list/programs.html'
     context_object_name = 'programs'
+    paginate_by = 6
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True).order_by('order')
 
+class ProgramDetailView(DetailView):
+    model = CachedProgram
+    template_name = 'content/program_details.html'
+    context_object_name = 'program'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(is_published=True)
+
 # ---- Gallery ----
 class AlbumListView(ListView):
     model = CachedAlbum
-    template_name = 'content/gallery.html'
+    template_name = 'components/page/list/gallery.html'
     context_object_name = 'albums'
-    paginate_by = 12
+    paginate_by = 6
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True).order_by('-created_at')
