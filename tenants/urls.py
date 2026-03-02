@@ -13,6 +13,7 @@ urlpatterns = [
     path('documents/', include('documents.urls')),
     path('search/', include('search.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('dashboard/', include('branding.urls')),
 
     path('', include('content.urls')),
 ]

@@ -1,0 +1,54 @@
+{% comment %}
+  Component: branding/components/color_field.html
+  Args:
+    field    — Django form field (BoundField)
+    label    — human-readable label
+    hint     — help text string
+    required — defaults True; pass False for optional fields
+{% endcomment %}
+
+<div>
+  <label for="{{ field.id_for_label }}" class="block text-xs font-medium text-white mb-1.5">
+    {{ label }}
+    {% if required != False %}
+      <span style="color:#F43F5E">*</span>
+    {% else %}
+      <span class="ml-1 font-normal" style="color:#3D4752">optional</span>
+    {% endif %}
+  </label>
+
+  <div class="flex items-center gap-3">
+    <!-- Color swatch chip — opens native picker on click -->
+    <div id="chip-{{ field.html_name }}"
+         class="color-chip"
+         style="background:{{ field.value|default:'#888888' }}"
+         onclick="document.getElementById('picker-{{ field.html_name }}').click()"
+         title="Click to open color picker">
+    </div>
+
+    <!-- Hidden native color picker -->
+    <input type="color"
+           id="picker-{{ field.html_name }}"
+           value="{{ field.value|default:'#888888' }}"
+           tabindex="-1"/>
+
+    <!-- Visible hex text input — this is the actual form field -->
+    <input type="text"
+           id="hex-{{ field.html_name }}"
+           name="{{ field.html_name }}"
+           value="{{ field.value|default:'' }}"
+           placeholder="#000000"
+           maxlength="7"
+           class="hex-input"
+           autocomplete="off"
+           {% if required != False %}required{% endif %} />
+  </div>
+
+  {% if hint %}
+  <p class="text-[11px] mt-1.5" style="color:#3D4752">{{ hint }}</p>
+  {% endif %}
+
+  {% if field.errors %}
+  <p class="text-xs mt-1" style="color:#F43F5E">{{ field.errors|join:", " }}</p>
+  {% endif %}
+</div>

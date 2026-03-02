@@ -1,0 +1,26 @@
+{% comment %}
+  Component: branding/components/color_token_row.html
+  Args:
+    label    — display name
+    key      — field name
+    value    — hex string
+    is_glow  — True for rgba values
+{% endcomment %}
+<div class="flex items-center gap-3">
+  {% if is_glow %}
+    <div class="w-9 h-9 rounded-xl flex-shrink-0" style="background:{{ value }};border:1px solid rgba(255,255,255,.08)"></div>
+  {% else %}
+    <div class="w-9 h-9 rounded-xl flex-shrink-0" style="background:{{ value }};border:1px solid rgba(255,255,255,.08)"></div>
+  {% endif %}
+  <div class="min-w-0 flex-1">
+    <p class="text-xs font-medium text-white">{{ label }}</p>
+    <p class="text-[11px] font-mono mt-0.5" style="color:#64748B">{{ value|default:"—" }}</p>
+  </div>
+  <button onclick="navigator.clipboard.writeText('{{ value }}')"
+          class="p-1.5 rounded-lg transition-colors flex-shrink-0"
+          style="color:#3D4752" title="Copy"
+          onmouseover="this.style.color='#94A3B8';this.style.background='#232830'"
+          onmouseout="this.style.color='#3D4752';this.style.background='transparent'">
+    <i data-lucide="copy" style="width:13px;height:13px"></i>
+  </button>
+</div>
