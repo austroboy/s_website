@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} | Event{% endblock %}
+
+{% block content %}
+<main class="bg-[var(--surface)] min-h-screen pb-20">
+    <!-- Event Banner -->
+    <div class="relative h-[50vh] lg:h-[60vh] overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="{% if event.featured_image %}{{ event.featured_image }}{% else %}https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1200&auto=format&fit=crop{% endif %}" 
+                 alt="{{ event.title }}" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[var(--surface)] via-[var(--surface)]/60 to-transparent"></div>
+        </div>
+
+        <div class="max-w-[1100px] mx-auto px-6 lg:px-8 relative z-10 h-full flex flex-col justify-end pb-12">
+            <div class="reveal-up">
+                <div class="flex items-center space-x-3 mb-6">
+                    <span class="bg-[var(--secondary)] text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-full shadow-lg">
+                        Event
+                    </span>
+                    <span class="text-[var(--text-muted)] text-xs font-semibold backdrop-blur-md bg-white/10 px-4 py-2 rounded-full border border-white/20 text-white">
+                        Upcoming
+                    </span>
+                </div>
+                
+                <h1 class="text-4xl lg:text-6xl font-black text-[var(--text)] leading-tight mb-8 tracking-tight">
+                    {{ event.title }}
+                </h1>
+
+                <!-- Event Quick Info Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white/40 backdrop-blur-xl border border-white/40 rounded-3xl p-6 flex items-center space-x-4 shadow-sm">
+                        <div class="w-12 h-12 rounded-2xl bg-[var(--primary)] text-white flex items-center justify-center shadow-lg shadow-[var(--primary-glow)]">
+                            <i data-lucide="calendar" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-[var(--text-muted)] text-[10px] uppercase font-black tracking-widest leading-none mb-1">Date</p>
+                            <p class="text-[var(--text)] text-sm font-bold">{{ event.start_date|date:"l, M d" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/40 backdrop-blur-xl border border-white/40 rounded-3xl p-6 flex items-center space-x-4 shadow-sm">
+                        <div class="w-12 h-12 rounded-2xl bg-[var(--secondary)] text-white flex items-center justify-center shadow-lg">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-[var(--text-muted)] text-[10px] uppercase font-black tracking-widest leading-none mb-1">Time</p>
+                            <p class="text-[var(--text)] text-sm font-bold">{{ event.start_date|date:"h:i A" }} - {{ event.end_date|date:"h:i A" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/40 backdrop-blur-xl border border-white/40 rounded-3xl p-6 flex items-center space-x-4 shadow-sm">
+                        <div class="w-12 h-12 rounded-2xl bg-[#10B981] text-white flex items-center justify-center shadow-lg">
+                            <i data-lucide="map-pin" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-[var(--text-muted)] text-[10px] uppercase font-black tracking-widest leading-none mb-1">Venue</p>
+                            <p class="text-[var(--text)] text-sm font-bold">{{ event.venue|default:"Main Campus" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Detail Content -->
+    <div class="max-w-[1100px] mx-auto px-6 lg:px-8 mt-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- Description -->
+            <div class="lg:col-span-8">
+                <div class="bg-white rounded-[2rem] p-8 md:p-12 shadow-xl shadow-gray-200/50 border border-[var(--border)] reveal-up">
+                    <h2 class="text-3xl font-black text-[var(--text)] mb-8">About This Event</h2>
+                    
+                    <div class="prose prose-lg max-w-none prose-p:text-[var(--text-muted)] prose-p:leading-[1.8] mb-12">
+                        {{ event.content|safe }}
+                    </div>
+
+                    {% if event.registration_link %}
+                    <div class="mt-12 p-8 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] rounded-3xl text-white flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div>
+                            <h3 class="text-2xl font-black mb-1">Reserve Your Spot</h3>
+                            <p class="text-white/70">Registration is open for this event.</p>
+                        </div>
+                        <a href="{{ event.registration_link }}" class="px-8 py-4 bg-white text-[var(--primary-dark)] font-black rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95">
+                            Register Now
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sidebar Info -->
+            <aside class="lg:col-span-4 space-y-8">
+                <!-- Add to Calendar -->
+                <div class="bg-white rounded-[2rem] p-8 shadow-lg border border-[var(--border)] reveal-up text-center">
+                    <h3 class="text-xl font-black text-[var(--text)] mb-6">Don't Miss It</h3>
+                    <div class="flex flex-col gap-3">
+                        <button class="w-full py-4 bg-[var(--surface-alt)] text-[var(--text)] font-bold rounded-2xl border border-[var(--border)] hover:bg-[var(--primary)] hover:text-white hover:border-[var(--primary)] transition-all flex items-center justify-center">
+                            <i data-lucide="plus" class="w-5 h-5 mr-3"></i> Google Calendar
+                        </button>
+                        <button class="w-full py-4 bg-[var(--surface-alt)] text-[var(--text)] font-bold rounded-2xl border border-[var(--border)] hover:bg-[var(--secondary)] hover:text-white hover:border-[var(--secondary)] transition-all flex items-center justify-center">
+                            <i data-lucide="plus" class="w-5 h-5 mr-3"></i> iCal Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Events -->
+                <div class="bg-white rounded-[2rem] p-8 shadow-lg border border-[var(--border)] reveal-up">
+                    <h3 class="text-xl font-black text-[var(--text)] mb-6">Related Events</h3>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-16 h-16 rounded-xl bg-[var(--surface-alt)] shrink-0 flex flex-col items-center justify-center border border-[var(--border)]">
+                                <span class="text-[var(--primary-dark)] font-black text-lg leading-none">20</span>
+                                <span class="text-[var(--text-muted)] text-[10px] font-bold uppercase">Mar</span>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-[var(--text)] line-clamp-2">Spring Workshop Series</h4>
+                                <p class="text-[10px] text-[var(--text-muted)] mt-1">10:00 AM - 02:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ news.title }} | News{% endblock %}
+
+{% block content %}
+<main class="bg-white min-h-screen pt-20 pb-20">
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8">
+        
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center space-x-2 text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-6">
+            <a href="/" class="hover:text-[var(--primary)] transition-colors">Home</a>
+            <i data-lucide="chevron-right" class="w-3 h-3 opacity-50"></i>
+            <a href="{% url 'news:list' %}" class="hover:text-[var(--primary)] transition-colors">{{ news.category|default:"News" }}</a>
+            <i data-lucide="chevron-right" class="w-3 h-3 opacity-50"></i>
+            <span class="text-gray-400 line-clamp-1 truncate px-2">{{ news.title }}</span>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- Main Content Section -->
+            <div class="lg:col-span-8">
+                
+                <!-- Category Badge -->
+                <div class="mb-4">
+                    <span class="bg-red-600 text-white text-[10px] font-bold uppercase px-3 py-1 rounded-sm">
+                        {{ news.category|default:"News" }}
+                    </span>
+                </div>
+
+                <!-- Title -->
+                <h1 class="text-3xl md:text-5xl lg:text-5.5xl font-extrabold text-[#111] leading-[1.1] mb-8 tracking-tight">
+                    {{ news.title }}
+                </h1>
+
+                <!-- Meta Info -->
+                <div class="flex flex-wrap items-center justify-between border-b border-gray-100 pb-6 mb-8 gap-4">
+                    <div class="flex items-center space-x-4">
+                        <!-- Author Avatar -->
+                        <div class="w-6 h-6 rounded-full bg-gray-200 overflow-hidden">
+                            <img src="https://ui-avatars.com/api/?name={{ news.author_name|default:'Admin' }}&background=random" alt="Author" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex items-center text-[13px] text-gray-800 font-bold">
+                            <span class="text-gray-500 font-medium mr-1.5">By</span>
+                            <span class="hover:text-red-600 cursor-pointer transition-colors">{{ news.author_name|default:"Administrator" }}</span>
+                        </div>
+                        <div class="h-1 w-1 rounded-full bg-gray-300"></div>
+                        <div class="text-[13px] text-gray-500 font-medium">
+                            {{ news.created_at|date:"F d, Y" }}
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-6 text-gray-500">
+                        <div class="flex items-center space-x-1.5 hover:text-red-600 transition-colors cursor-pointer">
+                            <i data-lucide="eye" class="w-4 h-4 opacity-70"></i>
+                            <span class="text-xs font-bold">60453</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 hover:text-red-600 transition-colors cursor-pointer">
+                            <i data-lucide="message-square" class="w-4 h-4 opacity-70"></i>
+                            <span class="text-xs font-bold">1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Share Bar -->
+                <div class="flex items-center space-x-2 mb-10">
+                    <div class="flex items-center space-x-3 px-4 py-2 bg-gray-50 border border-gray-200 rounded-sm mr-2 group cursor-pointer hover:bg-white transition-all">
+                        <i data-lucide="share-2" class="w-4 h-4 text-gray-600 group-hover:text-red-600"></i>
+                        <span class="text-[11px] font-black uppercase tracking-widest text-gray-700">Share</span>
+                    </div>
+                    
+                    <!-- Facebook -->
+                    <a href="#" class="w-10 h-10 flex items-center justify-center bg-[#4B69B1] text-white rounded-sm hover:opacity-90 transition-opacity">
+                        <i data-lucide="facebook" class="w-5 h-5"></i>
+                    </a>
+                    <!-- Twitter / X -->
+                    <a href="#" class="w-10 h-10 flex items-center justify-center bg-[#00ACEE] text-white rounded-sm hover:opacity-90 transition-opacity">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                    <!-- Pinterest -->
+                    <a href="#" class="w-10 h-10 flex items-center justify-center bg-[#CD2029] text-white rounded-sm hover:opacity-90 transition-opacity">
+                        <i data-lucide="pinterest" class="w-5 h-5"></i>
+                    </a>
+                    <!-- WhatsApp -->
+                    <a href="#" class="w-10 h-10 flex items-center justify-center bg-[#5EB543] text-white rounded-sm hover:opacity-90 transition-opacity">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    </a>
+                </div>
+
+                <!-- Featured Image -->
+                <div class="mb-12 relative overflow-hidden rounded-sm shadow-sm">
+                    <img src="{% if news.featured_image %}{{ news.featured_image }}{% else %}https://images.unsplash.com/photo-1504711432869-efd577311d4e?q=80&w=1200&auto=format&fit=crop{% endif %}" 
+                         alt="{{ news.title }}" 
+                         class="w-full h-auto object-cover max-h-[500px]">
+                </div>
+
+                <!-- Content Body -->
+                <div class="prose prose-lg max-w-none prose-p:text-gray-700 prose-p:leading-[1.8] prose-headings:text-[#111] prose-headings:font-black prose-strong:text-black prose-a:text-red-600">
+                    {{ news.content|safe }}
+                </div>
+
+            </div>
+
+            <!-- Sidebar Section -->
+           <aside class="lg:col-span-4 space-y-12 reveal-up">
+                
+                <!-- Most Popular Section -->
+                <div class="bg-white p-8 rounded-[2rem] shadow-xl shadow-gray-200/40 border border-gray-100">
+                    <div class="flex items-center mb-10">
+                        <h3 class="bg-[#111] text-white text-[10px] font-black uppercase tracking-[0.2em] px-5 py-2.5 mr-3 shadow-lg shadow-black/10">
+                            Most Popular
+                        </h3>
+                        <div class="flex-1 h-[2px] bg-gray-50"></div>
+                    </div>
+
+                    <div class="space-y-10">
+                        {% for popular in popular_news %}
+                        <div class="flex gap-5 group cursor-pointer">
+                            <div class="w-24 h-20 shrink-0 overflow-hidden bg-gray-50 rounded-xl border border-gray-100 shadow-sm">
+                                <img src="{% if popular.featured_image %}{{ popular.featured_image }}{% else %}https://images.unsplash.com/photo-1504711432869-efd577311d4e?q=80&w=200{% endif %}" 
+                                     alt="{{ popular.title }}" 
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-[14px] font-black text-[#111] leading-[1.4] group-hover:text-red-600 transition-colors line-clamp-2 mb-2">
+                                    <a href="{% url 'news:detail' popular.slug %}">{{ popular.title }}</a>
+                                </h4>
+                                <div class="flex items-center text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                                    <i data-lucide="clock" class="w-3 h-3 mr-1.5 opacity-60"></i>
+                                    {{ popular.created_at|date:"M d, Y" }}
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-sm text-gray-400 italic">No other popular news available.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Advertisement / CTA Placeholder -->
+                <div class="bg-white p-10 rounded-[2rem] shadow-xl shadow-gray-200/40 border border-gray-100 text-center relative overflow-hidden group">
+                    <!-- Decorative background for ad -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-600/5 to-blue-600/5 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                    
+                    <p class="text-[9px] text-gray-400 uppercase font-black tracking-[0.3em] mb-6 relative z-10">Advertisement</p>
+                    <div class="aspect-[300/250] bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-gray-300 font-black relative z-10 p-4">
+                        <i data-lucide="layout" class="w-12 h-12 mb-4 opacity-20"></i>
+                        <span class="text-xs">PLACE YOUR AD HERE</span>
+                        <span class="text-[10px] mt-1 opacity-50">300 x 250</span>
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+    </div>
+</main>
+
+<style>
+    /* Custom spacing for the news detail */
+    .text-5\.5xl {
+        font-size: 3.25rem;
+    }
+    @media (max-width: 768px) {
+        .text-5\.5xl {
+            font-size: 2.25rem;
+        }
+    }
+</style>
+{% endblock %}
