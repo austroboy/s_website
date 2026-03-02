@@ -5,12 +5,7 @@ Include in your project urls.py as:
     path('settings/branding/', include('branding.urls', namespace='branding')),
 """
 from django.urls import path
-from .views import (
-    colors_list,
-    colors_create,
-    colors_update,
-    colors_delete,
-)
+from .views import *
 
 app_name = 'branding'
 
@@ -28,4 +23,9 @@ urlpatterns = [
 
     # POST /settings/branding/colors/delete/  — delete (form submit from modal)
     path('colors/delete/',  colors_delete, name='colors-delete'),
+
+    path('fonts/',         fonts_list,   name='fonts-list'),
+    path('fonts/create/',  fonts_create, name='fonts-create'),
+    path('fonts/update/',  fonts_update, name='fonts-update'),
+    path('fonts/delete/',  fonts_delete, name='fonts-delete'),
 ]

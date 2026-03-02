@@ -1,0 +1,472 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}{% if form.instance.pk %}Update{% else %}Create{% endif %} Font Pair — {{ tenant.name }}{% endblock %}
+
+{% block extra_head %}
+{# Preload currently selected fonts for the live preview #}
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<style>
+  .font-select{
+    appearance:none;-webkit-appearance:none;width:100%;
+    background:#1C2026;border:1px solid #2C343D;border-radius:10px;
+    padding:10px 38px 10px 14px;font-size:.875rem;color:#E2E8F0;
+    font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 12px center;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  .font-select:focus{border-color:rgba(240,165,0,.5);box-shadow:0 0 0 3px rgba(240,165,0,.1)}
+  .font-select option{background:#1C2026;color:#E2E8F0}
+  .font-select optgroup{color:#64748B;font-size:.75rem}
+
+  .weight-chip{
+    padding:7px 12px;border-radius:8px;font-size:.8125rem;font-weight:500;
+    cursor:pointer;transition:all .15s;border:1px solid #2C343D;
+    color:#64748B;background:#1C2026;user-select:none;text-align:center;
+  }
+  .weight-chip:hover{border-color:#3D4752;color:#94A3B8}
+  .weight-chip.selected{background:rgba(240,165,0,.12);color:#F0A500;border-color:rgba(240,165,0,.35)}
+
+  .form-card{background:#1C2026;border:1px solid #232830;border-radius:16px;overflow:hidden;margin-bottom:20px}
+  .form-card-header{padding:14px 20px;border-bottom:1px solid #232830;display:flex;align-items:center;gap:10px}
+
+  .font-inline-preview{
+    background:#232830;border:1px solid #2C343D;border-radius:10px;
+    padding:10px 14px;margin-top:8px;font-size:1rem;color:#E2E8F0;
+    transition:font-family .2s;
+  }
+
+  .action-bar{
+    position:sticky;bottom:16px;z-index:10;
+    background:#1C2026;border:1px solid #232830;border-radius:16px;
+    padding:14px;display:flex;gap:12px;backdrop-filter:blur(8px);
+  }
+  .preview-panel{position:sticky;top:24px}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .fade-up{animation:fadeUp .35s ease forwards;opacity:0}
+  .d1{animation-delay:0ms}.d2{animation-delay:60ms}
+</style>
+{% endblock %}
+
+{% block breadcrumb %}
+  <a  style="color:#64748B">Dashboard</a>
+  <i data-lucide="chevron-right" class="w-3 h-3" style="color:#3D4752"></i>
+  <a href="{% url 'branding:fonts-list' %}" style="color:#64748B">Branding</a>
+  <i data-lucide="chevron-right" class="w-3 h-3" style="color:#3D4752"></i>
+  <a href="{% url 'branding:fonts-list' %}" style="color:#64748B">Font Pair</a>
+  <i data-lucide="chevron-right" class="w-3 h-3" style="color:#3D4752"></i>
+  <span class="font-medium text-white">
+    {% if form.instance.pk %}Update{% else %}Create{% endif %}
+  </span>
+{% endblock %}
+
+{% block content %}
+
+<!-- ─── Page Header ─── -->
+<div class="fade-up d1 flex items-center justify-between mb-7">
+  <div>
+    <h1 class="font-bold text-white text-2xl leading-tight" style="font-family:'Syne',sans-serif">
+      {% if form.instance.pk %}Update Font Pair{% else %}Create Font Pair{% endif %}
+    </h1>
+    <p class="mt-0.5 text-sm" style="color:#64748B">
+      {% if form.instance.pk %}Adjust{% else %}Set up{% endif %}
+      heading &amp; body typefaces for <span style="color:#F0A500">{{ tenant.name }}</span>
+    </p>
+  </div>
+  <a href="{% url 'branding:fonts-list' %}"
+     class="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors"
+     style="background:#1C2026;border:1px solid #232830;color:#94A3B8">
+    <i data-lucide="x" class="w-4 h-4"></i> Cancel
+  </a>
+</div>
+
+
+<div class="fade-up d2 flex flex-col xl:flex-row gap-6">
+
+  <!-- ─── FORM (left) ─── -->
+  <div class="flex-1 min-w-0">
+    <form method="post" id="font-form"
+          action="{% if form.instance.pk %}{% url 'branding:fonts-update' %}{% else %}{% url 'branding:fonts-create' %}{% endif %}">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="mb-4 px-4 py-3 rounded-xl text-sm" style="background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.25);color:#F43F5E">
+        {{ form.non_field_errors }}
+      </div>
+      {% endif %}
+
+
+      <!-- ══ HEADING FONT ══ -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="p-2 rounded-xl" style="background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2)">
+            <i data-lucide="heading" style="width:16px;height:16px;color:#A855F7"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-white" style="font-family:'Syne',sans-serif">Heading Font</h3>
+            <p class="text-[11px]" style="color:#64748B">H1–H4, hero text, navigation labels, card titles</p>
+          </div>
+        </div>
+        <div class="p-5 space-y-5">
+
+          <!-- Family select -->
+          <div>
+            <label for="{{ form.heading_font.id_for_label }}" class="block text-xs font-medium text-white mb-2">
+              Font Family <span style="color:#F43F5E">*</span>
+            </label>
+            <select name="{{ form.heading_font.html_name }}"
+                    id="{{ form.heading_font.id_for_label }}"
+                    class="font-select"
+                    onchange="onFontChange('heading', this.value)">
+              {% for group_name, group_choices in form.heading_font.field.choices %}
+                <optgroup label="{{ group_name }}">
+                  {% for value, label in group_choices %}
+                    <option value="{{ value }}" {% if value == form.heading_font.value %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </optgroup>
+              {% endfor %}
+            </select>
+            <!-- Inline font preview -->
+            <div class="font-inline-preview" id="heading-inline-preview">
+              {{ form.heading_font.value|default:"Syne" }} — The quick brown fox jumps over the lazy dog
+            </div>
+            {% if form.heading_font.errors %}
+            <p class="text-xs mt-1" style="color:#F43F5E">{{ form.heading_font.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Weights -->
+          <div>
+            <label class="block text-xs font-medium text-white mb-2">
+              Font Weights
+              <span class="ml-1 font-normal" style="color:#64748B">— select all needed</span>
+            </label>
+            <div class="grid grid-cols-3 sm:grid-cols-5 gap-2" id="heading-weights-grid">
+              {% for w, label in weight_choices %}
+              <div class="weight-chip {% if w in selected_heading_weights %}selected{% endif %}"
+                   data-weight="{{ w }}" data-role="heading"
+                   onclick="toggleWeight('heading','{{ w }}',this)">
+                <div class="font-bold">{{ w }}</div>
+                <div style="font-size:.6rem;opacity:.7;line-height:1">{{ label }}</div>
+              </div>
+              {% endfor %}
+            </div>
+            <!-- Hidden input carries the final comma-separated value -->
+            <input type="hidden" id="heading-weights-input"
+                   name="{{ form.heading_weights.html_name }}"
+                   value="{{ form.heading_weights.value|default:'400,600,700' }}" />
+            <p class="text-[11px] mt-2" style="color:#3D4752">
+              Min: <strong class="text-slate-400">400</strong> + <strong class="text-slate-400">700</strong>.
+              More weights = slightly heavier page load on your public site.
+            </p>
+            {% if form.heading_weights.errors %}
+            <p class="text-xs mt-1" style="color:#F43F5E">{{ form.heading_weights.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ══ BODY FONT ══ -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="p-2 rounded-xl" style="background:rgba(0,194,204,.1);border:1px solid rgba(0,194,204,.2)">
+            <i data-lucide="align-left" style="width:16px;height:16px;color:#00C2CC"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-white" style="font-family:'Syne',sans-serif">Body Font</h3>
+            <p class="text-[11px]" style="color:#64748B">Paragraphs, labels, form inputs, captions, descriptions</p>
+          </div>
+        </div>
+        <div class="p-5 space-y-5">
+
+          <div>
+            <label for="{{ form.body_font.id_for_label }}" class="block text-xs font-medium text-white mb-2">
+              Font Family <span style="color:#F43F5E">*</span>
+            </label>
+            <select name="{{ form.body_font.html_name }}"
+                    id="{{ form.body_font.id_for_label }}"
+                    class="font-select"
+                    onchange="onFontChange('body', this.value)">
+              {% for group_name, group_choices in form.body_font.field.choices %}
+                <optgroup label="{{ group_name }}">
+                  {% for value, label in group_choices %}
+                    <option value="{{ value }}" {% if value == form.body_font.value %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </optgroup>
+              {% endfor %}
+            </select>
+            <div class="font-inline-preview" id="body-inline-preview">
+              {{ form.body_font.value|default:"DM Sans" }} — The quick brown fox jumps over the lazy dog.
+            </div>
+            {% if form.body_font.errors %}
+            <p class="text-xs mt-1" style="color:#F43F5E">{{ form.body_font.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-white mb-2">
+              Font Weights
+              <span class="ml-1 font-normal" style="color:#64748B">— select all needed</span>
+            </label>
+            <div class="grid grid-cols-3 sm:grid-cols-5 gap-2" id="body-weights-grid">
+              {% for w, label in weight_choices %}
+              <div class="weight-chip {% if w in selected_body_weights %}selected{% endif %}"
+                   data-weight="{{ w }}" data-role="body"
+                   onclick="toggleWeight('body','{{ w }}',this)">
+                <div class="font-bold">{{ w }}</div>
+                <div style="font-size:.6rem;opacity:.7;line-height:1">{{ label }}</div>
+              </div>
+              {% endfor %}
+            </div>
+            <input type="hidden" id="body-weights-input"
+                   name="{{ form.body_weights.html_name }}"
+                   value="{{ form.body_weights.value|default:'400,500' }}" />
+            <p class="text-[11px] mt-2" style="color:#3D4752">
+              <strong class="text-slate-400">400</strong> (regular) is required.
+              Add <strong class="text-slate-400">500</strong> or <strong class="text-slate-400">600</strong> if you use semibold in UI elements.
+            </p>
+            {% if form.body_weights.errors %}
+            <p class="text-xs mt-1" style="color:#F43F5E">{{ form.body_weights.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ── Google Fonts URL hint ── -->
+      <div class="rounded-xl px-4 py-3 mb-5 flex items-start gap-3" style="background:rgba(0,194,204,.06);border:1px solid rgba(0,194,204,.15)">
+        <i data-lucide="info" class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:#00C2CC"></i>
+        <div class="text-xs leading-relaxed" style="color:#94A3B8">
+          The system will auto-generate a <strong class="text-white">Google Fonts</strong> embed URL from your selections:
+          <code id="font-url-display" class="mt-1.5 block px-2 py-1.5 rounded-lg font-mono text-[10px] break-all"
+                style="background:#1C2026;color:#00C2CC;border:1px solid #2C343D">
+            fonts.googleapis.com/css2?family=…
+          </code>
+        </div>
+      </div>
+
+
+      <!-- ── Sticky Action Bar ── -->
+      <div class="action-bar">
+        <button type="submit"
+                class="flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all"
+                style="background:#F0A500;color:#0D1012;font-family:'Syne',sans-serif"
+                onmouseover="this.style.background='#FFBE3C'" onmouseout="this.style.background='#F0A500'">
+          <i data-lucide="save" class="w-4 h-4"></i>
+          {% if form.instance.pk %}Save Changes{% else %}Create Font Pair{% endif %}
+        </button>
+        <a href="{% url 'branding:fonts-list' %}"
+           class="px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2"
+           style="background:#232830;color:#94A3B8;border:1px solid #2C343D">
+          Cancel
+        </a>
+      </div>
+
+    </form>
+  </div><!-- /form -->
+
+
+  <!-- ─── STICKY LIVE PREVIEW ─── -->
+  <div class="xl:w-80 flex-shrink-0">
+    <div class="preview-panel rounded-2xl overflow-hidden" style="background:#1C2026;border:1px solid #232830">
+      <!-- Header -->
+      <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid #232830">
+        <div class="flex items-center gap-2">
+          <i data-lucide="eye" class="w-4 h-4" style="color:#00C2CC"></i>
+          <span class="text-xs font-semibold text-white" style="font-family:'Syne',sans-serif">Live Preview</span>
+          <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded ml-1"
+                style="background:rgba(0,194,204,.1);color:#00C2CC;border:1px solid rgba(0,194,204,.2)">Real-time</span>
+        </div>
+        <button id="preview-dark-btn" onclick="togglePreviewDark()"
+                class="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium"
+                style="background:#232830;color:#64748B;border:1px solid #2C343D">
+          <i data-lucide="moon" style="width:11px;height:11px"></i>
+          <span id="preview-mode-label">Light</span>
+        </button>
+      </div>
+      <!-- Specimen (compact) -->
+      <div class="p-3">
+        <div id="mini-specimen" class="rounded-xl p-4 transition-all" style="background:#F8FAFD;border:1px solid #E5E7EB">
+          <div class="text-[9px] font-semibold uppercase tracking-widest mb-2" style="color:#94A3B8">
+            Heading — <span id="prev-h-name">{{ form.heading_font.value|default:"Syne" }}</span>
+          </div>
+          <h1 id="prev-h1" class="leading-tight mb-1" style="font-size:1.4rem;font-weight:700;color:#0F1D40">Shape the Future</h1>
+          <h2 id="prev-h2" class="mb-1" style="font-size:.95rem;font-weight:600;color:#1A2D5A">Academics &amp; Innovation</h2>
+          <h3 id="prev-h3" class="mb-3" style="font-size:.8rem;font-weight:600;color:#2C3E6A">Our Programs</h3>
+          <hr id="prev-hr" style="border:none;border-top:1px solid #E5E7EB;margin-bottom:.75rem"/>
+          <div class="text-[9px] font-semibold uppercase tracking-widest mb-1.5" style="color:#94A3B8">
+            Body — <span id="prev-b-name">{{ form.body_font.value|default:"DM Sans" }}</span>
+          </div>
+          <p id="prev-body1" class="leading-relaxed mb-2" style="font-size:.78rem;color:#374151">
+            Welcome to {{ tenant.name }} — where curiosity meets rigour and students are equipped to lead.
+          </p>
+          <p id="prev-body2" class="leading-relaxed" style="font-size:.7rem;color:#64748B">
+            Applications open for 2026. Merit-based scholarships available.
+          </p>
+        </div>
+      </div>
+      <!-- Summary pills -->
+      <div class="px-4 pb-4 space-y-2">
+        <div class="flex items-center justify-between px-3 py-2 rounded-xl" style="background:#16191D;border:1px solid #232830">
+          <div class="flex items-center gap-2">
+            <i data-lucide="heading" style="width:13px;height:13px;color:#A855F7;flex-shrink:0"></i>
+            <span class="text-[11px] font-medium text-white" id="sum-heading">{{ form.heading_font.value|default:"Syne" }}</span>
+          </div>
+          <span class="text-[10px] font-mono" style="color:#64748B" id="sum-hw">{{ form.heading_weights.value|default:"400,600,700" }}</span>
+        </div>
+        <div class="flex items-center justify-between px-3 py-2 rounded-xl" style="background:#16191D;border:1px solid #232830">
+          <div class="flex items-center gap-2">
+            <i data-lucide="align-left" style="width:13px;height:13px;color:#00C2CC;flex-shrink:0"></i>
+            <span class="text-[11px] font-medium text-white" id="sum-body">{{ form.body_font.value|default:"DM Sans" }}</span>
+          </div>
+          <span class="text-[10px] font-mono" style="color:#64748B" id="sum-bw">{{ form.body_weights.value|default:"400,500" }}</span>
+        </div>
+      </div>
+    </div>
+  </div><!-- /preview -->
+
+</div><!-- /2-col -->
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+  // ── Google Fonts loader ──────────────────────────────────
+  const loadedFonts = new Set();
+  function loadGoogleFont(name, weights) {
+    if(!name || name==='system-ui') return;
+    const key = name + weights;
+    if(loadedFonts.has(key)) return;
+    loadedFonts.add(key);
+    const wStr = weights.split(',').map(w=>`0,${w}`).join(';');
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `https://fonts.googleapis.com/css2?family=${name.replace(/ /g,'+')}:ital,wght@${wStr}&display=swap`;
+    document.head.appendChild(link);
+  }
+
+  // ── Weights helpers ──────────────────────────────────────
+  function getWeights(role) {
+    return [...document.querySelectorAll(`#${role}-weights-grid .weight-chip.selected`)]
+      .map(el => el.dataset.weight).join(',');
+  }
+
+  function toggleWeight(role, w, chip) {
+    chip.classList.toggle('selected');
+    const weights = getWeights(role);
+    // ensure at least one
+    if(!weights) { chip.classList.add('selected'); return; }
+    document.getElementById(`${role}-weights-input`).value = weights;
+    const font = document.getElementById(role==='heading'?'{{ form.heading_font.id_for_label }}':'{{ form.body_font.id_for_label }}').value;
+    loadGoogleFont(font, weights);
+    updatePreview();
+    updateFontUrl();
+    updateSummary();
+  }
+
+  // ── Font change ──────────────────────────────────────────
+  function onFontChange(role, fontName) {
+    const weights = getWeights(role);
+    loadGoogleFont(fontName, weights);
+    const previewEl = document.getElementById(`${role}-inline-preview`);
+    if(previewEl) {
+      const text = role==='heading'
+        ? `${fontName} — The quick brown fox jumps over the lazy dog`
+        : `${fontName} — The quick brown fox jumps over the lazy dog.`;
+      previewEl.textContent = text;
+      previewEl.style.fontFamily = `'${fontName}',sans-serif`;
+    }
+    updatePreview();
+    updateFontUrl();
+    updateSummary();
+  }
+
+  // ── Live specimen update ─────────────────────────────────
+  function updatePreview() {
+    const hf = document.getElementById('{{ form.heading_font.id_for_label }}').value;
+    const bf = document.getElementById('{{ form.body_font.id_for_label }}').value;
+    ['prev-h1','prev-h2','prev-h3'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.style.fontFamily=`'${hf}',serif`;
+    });
+    ['prev-body1','prev-body2'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.style.fontFamily=`'${bf}',sans-serif`;
+    });
+    const hn=document.getElementById('prev-h-name'); if(hn) hn.textContent=hf;
+    const bn=document.getElementById('prev-b-name'); if(bn) bn.textContent=bf;
+  }
+
+  function updateSummary() {
+    const hf = document.getElementById('{{ form.heading_font.id_for_label }}').value;
+    const bf = document.getElementById('{{ form.body_font.id_for_label }}').value;
+    const hw = getWeights('heading'), bw = getWeights('body');
+    const sh=document.getElementById('sum-heading'); if(sh){sh.textContent=hf;sh.style.fontFamily=`'${hf}',sans-serif`;}
+    const sb=document.getElementById('sum-body');    if(sb){sb.textContent=bf;sb.style.fontFamily=`'${bf}',sans-serif`;}
+    const shw=document.getElementById('sum-hw'); if(shw) shw.textContent=hw;
+    const sbw=document.getElementById('sum-bw'); if(sbw) sbw.textContent=bw;
+  }
+
+  function updateFontUrl() {
+    const hf = document.getElementById('{{ form.heading_font.id_for_label }}').value;
+    const bf = document.getElementById('{{ form.body_font.id_for_label }}').value;
+    const hw = getWeights('heading'), bw = getWeights('body');
+    const hStr = hw.split(',').map(w=>`0,${w}`).join(';');
+    const bStr = bw.split(',').map(w=>`0,${w}`).join(';');
+    const el = document.getElementById('font-url-display');
+    if(el) el.textContent = `fonts.googleapis.com/css2?family=${hf.replace(/ /g,'+')}:ital,wght@${hStr}&family=${bf.replace(/ /g,'+')}:ital,wght@${bStr}&display=swap`;
+  }
+
+  // ── Preview dark toggle ──────────────────────────────────
+  let previewDark = false;
+  function togglePreviewDark() {
+    previewDark = !previewDark;
+    const s = document.getElementById('mini-specimen');
+    const btn = document.getElementById('preview-dark-btn');
+    const lbl = document.getElementById('preview-mode-label');
+    const hr  = document.getElementById('prev-hr');
+    if(previewDark) {
+      s.style.background='#0F1D40'; s.style.borderColor='#1A2D5A';
+      document.getElementById('prev-h1').style.color='#F1F5F9';
+      document.getElementById('prev-h2').style.color='#CBD5E1';
+      document.getElementById('prev-h3').style.color='#94A3B8';
+      document.getElementById('prev-body1').style.color='#E2E8F0';
+      document.getElementById('prev-body2').style.color='#94A3B8';
+      if(hr) hr.style.borderColor='#1E293B';
+      btn.style.background='#1C2026'; btn.style.color='#F0A500'; btn.style.borderColor='rgba(240,165,0,.3)';
+      lbl.textContent='Dark';
+    } else {
+      s.style.background='#F8FAFD'; s.style.borderColor='#E5E7EB';
+      document.getElementById('prev-h1').style.color='#0F1D40';
+      document.getElementById('prev-h2').style.color='#1A2D5A';
+      document.getElementById('prev-h3').style.color='#2C3E6A';
+      document.getElementById('prev-body1').style.color='#374151';
+      document.getElementById('prev-body2').style.color='#64748B';
+      if(hr) hr.style.borderColor='#E5E7EB';
+      btn.style.background='#232830'; btn.style.color='#64748B'; btn.style.borderColor='#2C343D';
+      lbl.textContent='Light';
+    }
+  }
+
+  // ── Init ─────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    const hFont = document.getElementById('{{ form.heading_font.id_for_label }}').value;
+    const bFont = document.getElementById('{{ form.body_font.id_for_label }}').value;
+    const hWeights = document.getElementById('heading-weights-input').value;
+    const bWeights = document.getElementById('body-weights-input').value;
+    loadGoogleFont(hFont, hWeights);
+    loadGoogleFont(bFont, bWeights);
+    // Set inline previews
+    const hip = document.getElementById('heading-inline-preview');
+    const bip = document.getElementById('body-inline-preview');
+    if(hip) hip.style.fontFamily = `'${hFont}',serif`;
+    if(bip) bip.style.fontFamily = `'${bFont}',sans-serif`;
+    updatePreview();
+    updateFontUrl();
+    updateSummary();
+  });
+</script>
+{% endblock %}

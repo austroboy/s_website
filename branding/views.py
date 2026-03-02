@@ -15,6 +15,12 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from dashboard.views import build_nav_context
 from .models import ColorPalette
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+from .forms import *
+
 
 
 # ──────────────────────────────────────────────────────────
@@ -184,3 +190,92 @@ def colors_delete(request):
     palette.delete()
     messages.success(request, 'Color palette deleted. Website will use default colors.')
     return redirect('branding:colors-list')
+
+
+
+
+def _base_ctx(request):
+    
+    return {'tenant': request.tenant, **build_nav_context(request)}
+
+
+def _form_ctx(form, font_pair=None):
+    """
+    Extra context needed to render the template:
+      weight_choices          — list of (value, label) for all weight chips
+      selected_heading_weights — set of currently selected heading weight strings
+      selected_body_weights    — set of currently selected body weight strings
+    """
+    hw_raw = form['heading_weights'].value() or '400,600,700'
+    bw_raw = form['body_weights'].value()    or '400,500'
+    return {
+        'weight_choices':         WEIGHT_CHOICES,
+        'selected_heading_weights': set(hw_raw.split(',')),
+        'selected_body_weights':    set(bw_raw.split(',')),
+    }
+
+
+@login_required
+def fonts_list(request):
+    """List page — shows specimen if FontPair exists, else empty state."""
+    font_pair = FontPair.objects.filter(tenant=request.tenant).first()
+
+    # Attach helper property for template weight iteration
+ 
+    return render(request, 'branding/fonts/list.html', {
+        **_base_ctx(request),
+        'font_pair': font_pair,
+    })
+
+
+@login_required
+def fonts_create(request):
+    if FontPair.objects.filter(tenant=request.tenant).exists():
+        return redirect('branding:fonts-update')
+
+    if request.method == 'POST':
+        form = FontPairForm(request.POST)
+        if form.is_valid():
+            fp = form.save(commit=False)
+            fp.tenant = request.tenant
+            fp.save()
+            messages.success(request, 'Font pair created successfully.')
+            return redirect('branding:fonts-list')
+    else:
+        form = FontPairForm()
+
+    return render(request, 'branding/fonts/form.html', {
+        **_base_ctx(request),
+        'form': form,
+        **_form_ctx(form),
+    })
+
+
+@login_required
+def fonts_update(request):
+    font_pair = get_object_or_404(FontPair, tenant=request.tenant)
+
+    if request.method == 'POST':
+        form = FontPairForm(request.POST, instance=font_pair)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Font pair updated successfully.')
+            return redirect('branding:fonts-list')
+    else:
+        form = FontPairForm(instance=font_pair)
+
+    return render(request, 'branding/fonts/form.html', {
+        **_base_ctx(request),
+        'form':      form,
+        'font_pair': font_pair,
+        **_form_ctx(form, font_pair),
+    })
+
+
+@login_required
+@require_POST
+def fonts_delete(request):
+    font_pair = get_object_or_404(FontPair, tenant=request.tenant)
+    font_pair.delete()
+    messages.success(request, 'Font pair deleted. Website will use system fonts.')
+    return redirect('branding:fonts-list')
