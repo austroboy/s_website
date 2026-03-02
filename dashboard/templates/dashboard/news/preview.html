@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Preview: {{ news.title }} - {{ tenant.name }}{% endblock %}
+
+{% block content %}
+<div class="bg-base-900 border-b border-base-700 py-3 sticky top-0 z-50">
+  <div class="container mx-auto px-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="px-2 py-1 bg-gold/10 text-gold text-xs rounded-lg border border-gold/20">PREVIEW MODE</span>
+      <span class="text-sm text-slate-muted">{{ tenant.name }}</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/dashboard/news/{{ news.id }}/edit/" 
+         class="px-4 py-2 bg-gold text-base-900 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors">
+        <i data-lucide="edit-3" class="w-4 h-4 inline mr-1"></i>
+        Edit Article
+      </a>
+      <a href="/dashboard/news/" 
+         class="px-4 py-2 border border-base-600 text-slate-muted rounded-xl text-sm hover:text-white hover:border-base-500 transition-colors">
+        Back to Dashboard
+      </a>
+    </div>
+  </div>
+</div>
+
+<article class="container mx-auto px-4 py-8 max-w-4xl">
+  <!-- Featured Image -->
+  {% if news.featured_image %}
+  <div class="mb-8 rounded-2xl overflow-hidden border border-base-700">
+    <img src="{{ news.featured_image }}" alt="{{ news.title }}" class="w-full">
+  </div>
+  {% endif %}
+  
+  <!-- Meta Info -->
+  <div class="flex items-center gap-3 text-sm text-slate-muted mb-4">
+    <span>{{ news.created_at|date:"F d, Y" }}</span>
+    {% if news.category %}
+    <span class="w-1 h-1 rounded-full bg-base-600"></span>
+    <span class="text-gold">{{ news.category|title }}</span>
+    {% endif %}
+    <span class="w-1 h-1 rounded-full bg-base-600"></span>
+    <span>By {{ news.author_name|default:"Unknown" }}</span>
+  </div>
+  
+  <!-- Title -->
+  <h1 class="font-display text-4xl font-bold text-white mb-6">{{ news.title }}</h1>
+  
+  <!-- Tags -->
+  {% if news.tags %}
+  <div class="flex flex-wrap gap-2 mb-8">
+    {% for tag in news.tags %}
+    <span class="px-3 py-1 bg-base-800 text-slate-soft rounded-full text-sm border border-base-700">#{{ tag }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+  
+  <!-- Summary (if different from content) -->
+  {% if news.summary and news.summary != news.content|truncatechars:300 %}
+  <div class="bg-base-800/50 border border-base-700 rounded-xl p-6 mb-8">
+    <p class="text-lg text-slate-soft italic">{{ news.summary }}</p>
+  </div>
+  {% endif %}
+  
+  <!-- Main Content -->
+  <div class="prose prose-invert max-w-none">
+    {{ news.content|linebreaks }}
+  </div>
+</article>
+{% endblock %}

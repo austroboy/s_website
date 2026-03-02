@@ -1,0 +1,270 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Create Event - {{ tenant.name }}{% endblock %}
+
+{% block breadcrumb %}
+<span class="text-slate-muted">Content</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
+<span class="text-slate-muted">Events</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
+<span class="text-white font-medium">Create Event</span>
+{% endblock %}
+
+{% block content %}
+<div class="fade-up delay-1 mb-7">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="font-display text-2xl font-bold text-white leading-tight">
+        Create New Event
+      </h1>
+      <p class="mt-0.5 text-sm text-slate-muted">
+        Add a new event for {{ tenant.name }}
+      </p>
+    </div>
+    <a href="/dashboard/events/" 
+       class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors">
+      <i data-lucide="arrow-left" class="w-4 h-4"></i>
+      Back to Events
+    </a>
+  </div>
+</div>
+
+<!-- Create Event Form -->
+<div class="fade-up delay-2 grid grid-cols-1 lg:grid-cols-3 gap-5">
+  <!-- Main Form - 2 columns -->
+  <div class="lg:col-span-2">
+    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+      <div class="px-6 py-5 border-b border-base-700">
+        <h2 class="font-display font-semibold text-white">Event Details</h2>
+      </div>
+      
+      <form method="POST" enctype="multipart/form-data" class="p-6 space-y-5">
+        {% csrf_token %}
+        
+        <!-- Title Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            Event Title <span class="text-gold">*</span>
+          </label>
+          <input type="text" 
+                 name="title" 
+                 id="title"
+                 required
+                 placeholder="e.g., Annual Science Fair 2024"
+                 class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+        </div>
+        
+        <!-- Slug Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            URL Slug
+          </label>
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-slate-muted whitespace-nowrap">{{ request.get_host }}/events/</span>
+            <input type="text" 
+                   name="slug" 
+                   id="slug"
+                   placeholder="annual-science-fair-2024"
+                   class="flex-1 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          </div>
+        </div>
+        
+        <!-- Date & Time Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Start Date & Time <span class="text-gold">*</span>
+            </label>
+            <input type="datetime-local" 
+                   name="start_date" 
+                   required
+                   value="{{ now|date:'Y-m-d\TH:i' }}"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              End Date & Time <span class="text-gold">*</span>
+            </label>
+            <input type="datetime-local" 
+                   name="end_date" 
+                   required
+                   value="{{ now|date:'Y-m-d\TH:i' }}"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          </div>
+        </div>
+        
+        <!-- Venue -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            Venue <span class="text-gold">*</span>
+          </label>
+          <input type="text" 
+                 name="venue" 
+                 required
+                 placeholder="e.g., Main Auditorium, Room 101, Online (Zoom)"
+                 class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+        </div>
+        
+        <!-- Registration Link -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            Registration Link
+          </label>
+          <input type="url" 
+                 name="registration_link" 
+                 placeholder="https://forms.google.com/..."
+                 class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          <p class="mt-1.5 text-xs text-slate-muted">
+            Optional: Link for event registration or tickets
+          </p>
+        </div>
+        
+        <!-- Summary Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            Summary <span class="text-gold">*</span>
+          </label>
+          <textarea name="summary" 
+                    id="summary"
+                    required
+                    rows="3"
+                    placeholder="Brief overview of the event..."
+                    class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"></textarea>
+        </div>
+        
+        <!-- Content Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            Full Description <span class="text-gold">*</span>
+          </label>
+          <textarea name="content" 
+                    id="content"
+                    required
+                    rows="10"
+                    placeholder="Write detailed event description, schedule, speakers, etc..."
+                    class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"></textarea>
+        </div>
+        
+        <!-- Form Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-base-700">
+          <a href="/dashboard/events/" 
+             class="px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors">
+            Cancel
+          </a>
+          <button type="submit" name="action" value="draft"
+                  class="px-5 py-2.5 rounded-xl border border-gold/30 text-gold hover:bg-gold/10 transition-colors">
+            Save as Draft
+          </button>
+          <button type="submit" name="action" value="publish"
+                  class="px-5 py-2.5 rounded-xl bg-gold text-base-900 font-semibold hover:bg-gold-light transition-colors shadow-glow-gold">
+            Publish Event
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Sidebar - 1 column -->
+  <div class="lg:col-span-1 space-y-5">
+    <!-- Featured Image Card -->
+    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+      <div class="px-5 py-4 border-b border-base-700">
+        <h3 class="font-display font-semibold text-white">Event Image</h3>
+      </div>
+      <div class="p-5">
+        <div class="border-2 border-dashed border-base-600 rounded-xl p-6 text-center hover:border-gold/50 transition-colors cursor-pointer group"
+             onclick="document.getElementById('image-input').click()">
+          <i data-lucide="image" class="w-10 h-10 text-base-500 mx-auto mb-3 group-hover:text-gold transition-colors"></i>
+          <p class="text-sm text-slate-soft mb-1">Click to upload</p>
+          <p class="text-xs text-slate-muted">PNG, JPG, WebP up to 5MB</p>
+          <input type="file" 
+                 id="image-input"
+                 name="featured_image" 
+                 accept="image/*" 
+                 class="hidden"
+                 onchange="previewImage(this)">
+        </div>
+        <div id="image-preview" class="hidden mt-4">
+          <img src="" alt="Preview" class="w-full rounded-xl border border-base-600">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Quick Tips -->
+    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+      <div class="px-5 py-4 border-b border-base-700">
+        <h3 class="font-display font-semibold text-white">Event Tips</h3>
+      </div>
+      <div class="p-5 space-y-3">
+        <div class="flex items-start gap-3">
+          <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="clock" class="w-3 h-3"></i>
+          </div>
+          <p class="text-sm text-slate-soft">Set correct start and end times</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="map-pin" class="w-3 h-3"></i>
+          </div>
+          <p class="text-sm text-slate-soft">Include complete venue address</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="link" class="w-3 h-3"></i>
+          </div>
+          <p class="text-sm text-slate-soft">Add registration link if applicable</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="calendar" class="w-3 h-3"></i>
+          </div>
+          <p class="text-sm text-slate-soft">Past events are automatically filtered</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const titleInput = document.querySelector('#title');
+  const slugInput = document.querySelector('#slug');
+  
+  // Auto-generate slug from title
+  if (titleInput && slugInput) {
+    titleInput.addEventListener('input', function() {
+      if (!slugInput.value || slugInput.dataset.auto === 'true') {
+        const slug = this.value.toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        slugInput.value = slug;
+        slugInput.dataset.auto = 'true';
+      }
+    });
+  }
+  
+  if (slugInput) {
+    slugInput.addEventListener('input', function() {
+      this.dataset.auto = 'false';
+    });
+  }
+});
+
+function previewImage(input) {
+  const preview = document.getElementById('image-preview');
+  const previewImg = preview.querySelector('img');
+  
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      preview.classList.remove('hidden');
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+</script>
+{% endblock %}

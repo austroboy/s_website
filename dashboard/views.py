@@ -67,21 +67,38 @@ def build_nav_context(request):
 
     nav_content = [
         {
-            'label': 'News & Stories',
-            'url':   '#',
-            'icon':  'newspaper',
-            'active': is_active('/news/'),
-            'children': [
-                {'label': 'All Articles',  'url': '/news/',             'active': path == '/news/'},
-                {'label': 'Create Article','url': '/news/create/',      'active': is_active('/news/create/')},
-                {'label': 'Categories',    'url': '/news/categories/',  'active': is_active('/news/categories/')},
-            ],
-        },
+        'label': 'News & Stories',
+        'url':   '#',
+        'icon':  'newspaper',
+        'active': is_active('/dashboard/news/'),
+        'children': [
+            {'label': 'All News',  'url': '/dashboard/news/', 'active': is_active('/dashboard/news/')},
+            {'label': 'Create Article', 'url': '/dashboard/news/create/', 'active': is_active('/dashboard/news/create/')},
+            {'label': 'Categories', 'url': '/news/categories/', 'active': is_active('/news/categories/')},
+        ],
+    },
         {
             'label': 'Events',
-            'url':   '/events/',
+            'url':   '#',
             'icon':  'calendar-days',
-            'active': is_active('/events/'),
+            'active': is_active('/dashboard/events/') or is_active('/events/'),
+            'children': [
+                {
+                    'label': 'All Events',  
+                    'url': '/dashboard/events/', 
+                    'active': is_active('/dashboard/events/'),
+                },
+                {
+                    'label': 'Create Event', 
+                    'url': '/dashboard/events/create/', 
+                    'active': is_active('/dashboard/events/create/')
+                },
+                {
+                    'label': 'Calendar View', 
+                    'url': '/events/calendar/', 
+                    'active': is_active('/events/calendar/')
+                },
+            ],
         },
         {
             'label': 'Notices',

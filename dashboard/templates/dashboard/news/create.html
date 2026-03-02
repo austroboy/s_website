@@ -1,0 +1,312 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Create News - {{ tenant.name }}{% endblock %}
+
+{% block breadcrumb %}
+<span class="text-slate-muted">Content</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
+<span class="text-slate-muted">News</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
+<span class="text-white font-medium">Create Article</span>
+{% endblock %}
+
+{% block content %}
+<div class="fade-up delay-1 mb-7">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="font-display text-2xl font-bold text-white leading-tight">
+        Create New Article
+      </h1>
+      <p class="mt-0.5 text-sm text-slate-muted">
+        Add a new news article for {{ tenant.name }}
+      </p>
+    </div>
+    <a href="/dashboard/news/" 
+       class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors">
+      <i data-lucide="arrow-left" class="w-4 h-4"></i>
+      Back to News
+    </a>
+  </div>
+</div>
+
+<!-- Create News Form -->
+<div class="fade-up delay-2 grid grid-cols-1 lg:grid-cols-3 gap-5">
+  <!-- Main Form - 2 columns -->
+  <div class="lg:col-span-2">
+    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+      <div class="px-6 py-5 border-b border-base-700">
+        <h2 class="font-display font-semibold text-white">Article Details</h2>
+      </div>
+      
+      <form method="POST" enctype="multipart/form-data" class="p-6 space-y-5">
+        {% csrf_token %}
+        
+        <!-- Title Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            Article Title <span class="text-gold">*</span>
+          </label>
+          <input type="text" 
+                 name="title" 
+                 id="title"
+                 required
+                 placeholder="e.g., Annual Sports Day 2024"
+                 class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          <p class="mt-1.5 text-xs text-slate-muted">
+            Use a clear, descriptive title (max 200 characters)
+          </p>
+        </div>
+        
+        <!-- Slug Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            URL Slug
+          </label>
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-slate-muted whitespace-nowrap">{{ request.get_host }}/news/</span>
+            <input type="text" 
+                   name="slug" 
+                   id="slug"
+                   placeholder="annual-sports-day-2024"
+                   class="flex-1 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          </div>
+          <p class="mt-1.5 text-xs text-slate-muted">
+            Leave empty to auto-generate from title
+          </p>
+        </div>
+        
+        <!-- Category -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            Category
+          </label>
+          <select name="category" 
+                  class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            <option value="" class="bg-base-800">Select a category</option>
+            <option value="academic" class="bg-base-800">Academic</option>
+            <option value="event" class="bg-base-800">Event</option>
+            <option value="achievement" class="bg-base-800">Achievement</option>
+            <option value="announcement" class="bg-base-800">Announcement</option>
+            <option value="general" class="bg-base-800">General</option>
+          </select>
+        </div>
+        
+        <!-- Summary Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            Summary <span class="text-gold">*</span>
+          </label>
+          <textarea name="summary" 
+                    id="summary"
+                    required
+                    rows="3"
+                    placeholder="Brief overview of the article..."
+                    class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"></textarea>
+          <p class="mt-1.5 text-xs text-slate-muted">
+            A short summary that appears in news listings
+          </p>
+        </div>
+        
+        <!-- Content Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-soft mb-2">
+            Full Content <span class="text-gold">*</span>
+          </label>
+          <textarea name="content" 
+                    id="content"
+                    required
+                    rows="12"
+                    placeholder="Write your article content here..."
+                    class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors font-mono"></textarea>
+          <p class="mt-1.5 text-xs text-slate-muted">
+            You can use HTML tags for formatting
+          </p>
+        </div>
+        
+        <!-- Author & Tags Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Author -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Author Name
+            </label>
+            <input type="text" 
+                   name="author_name" 
+                   value="{{ request.user.get_full_name|default:request.user.username }}"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          </div>
+          
+          <!-- Tags -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Tags
+            </label>
+            <input type="text" 
+                   name="tags" 
+                   placeholder="sports, annual, 2024"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            <p class="mt-1.5 text-xs text-slate-muted">
+              Comma-separated tags
+            </p>
+          </div>
+        </div>
+        
+        <!-- Form Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-base-700">
+          <a href="/dashboard/news/" 
+             class="px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors">
+            Cancel
+          </a>
+          <button type="submit" name="action" value="draft"
+                  class="px-5 py-2.5 rounded-xl border border-gold/30 text-gold hover:bg-gold/10 transition-colors">
+            Save as Draft
+          </button>
+          <button type="submit" name="action" value="publish"
+                  class="px-5 py-2.5 rounded-xl bg-gold text-base-900 font-semibold hover:bg-gold-light transition-colors shadow-glow-gold">
+            Publish Article
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Sidebar - 1 column -->
+  <div class="lg:col-span-1 space-y-5">
+    <!-- Featured Image Card -->
+    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+      <div class="px-5 py-4 border-b border-base-700">
+        <h3 class="font-display font-semibold text-white">Featured Image</h3>
+      </div>
+      <div class="p-5">
+        <div class="border-2 border-dashed border-base-600 rounded-xl p-6 text-center hover:border-gold/50 transition-colors cursor-pointer group"
+             onclick="document.getElementById('image-input').click()">
+          <i data-lucide="image" class="w-10 h-10 text-base-500 mx-auto mb-3 group-hover:text-gold transition-colors"></i>
+          <p class="text-sm text-slate-soft mb-1">Click to upload</p>
+          <p class="text-xs text-slate-muted">PNG, JPG, WebP up to 5MB</p>
+          <input type="file" 
+                 id="image-input"
+                 name="featured_image" 
+                 accept="image/*" 
+                 class="hidden"
+                 onchange="previewImage(this)">
+        </div>
+        <div id="image-preview" class="hidden mt-4">
+          <img src="" alt="Preview" class="w-full rounded-xl border border-base-600">
+        </div>
+        <p class="text-xs text-slate-muted mt-3">
+          Recommended size: 1200 × 630 pixels
+        </p>
+      </div>
+    </div>
+    
+    <!-- SEO Preview Card -->
+    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+      <div class="px-5 py-4 border-b border-base-700">
+        <h3 class="font-display font-semibold text-white">SEO Preview</h3>
+      </div>
+      <div class="p-5">
+        <div class="bg-base-900 rounded-xl p-4 border border-base-700">
+          <p class="text-xs text-emerald-400 mb-1">{{ request.get_host }}/news/<span id="preview-slug">article-title</span></p>
+          <p class="text-sm text-gold font-medium" id="preview-title">Article Title</p>
+          <p class="text-xs text-slate-soft mt-1" id="preview-description">Article summary will appear here...</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Writing Tips -->
+    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+      <div class="px-5 py-4 border-b border-base-700">
+        <h3 class="font-display font-semibold text-white">Writing Tips</h3>
+      </div>
+      <div class="p-5 space-y-3 text-sm">
+        <div class="flex items-start gap-3">
+          <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="check" class="w-3 h-3"></i>
+          </div>
+          <p class="text-slate-soft">Keep titles clear and descriptive (50-60 chars)</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="check" class="w-3 h-3"></i>
+          </div>
+          <p class="text-slate-soft">Write compelling summaries (150-160 chars)</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="check" class="w-3 h-3"></i>
+          </div>
+          <p class="text-slate-soft">Use subheadings and short paragraphs</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide="check" class="w-3 h-3"></i>
+          </div>
+          <p class="text-slate-soft">Add 1-3 relevant tags for better discovery</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for Live Preview -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const titleInput = document.querySelector('#title');
+  const slugInput = document.querySelector('#slug');
+  const summaryInput = document.querySelector('#summary');
+  const previewTitle = document.querySelector('#preview-title');
+  const previewSlug = document.querySelector('#preview-slug');
+  const previewDesc = document.querySelector('#preview-description');
+  
+  // Auto-generate slug from title
+  if (titleInput && slugInput) {
+    titleInput.addEventListener('input', function() {
+      const title = this.value;
+      previewTitle.textContent = title || 'Article Title';
+      
+      // Only auto-generate if slug is empty or was auto-generated
+      if (!slugInput.value || slugInput.dataset.auto === 'true') {
+        const slug = title.toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        slugInput.value = slug;
+        slugInput.dataset.auto = 'true';
+        previewSlug.textContent = slug || 'article-title';
+      }
+    });
+  }
+  
+  // Manual slug input
+  if (slugInput) {
+    slugInput.addEventListener('input', function() {
+      this.dataset.auto = 'false';
+      previewSlug.textContent = this.value || 'article-title';
+    });
+  }
+  
+  // Summary preview
+  if (summaryInput && previewDesc) {
+    summaryInput.addEventListener('input', function() {
+      previewDesc.textContent = this.value.substring(0, 150) || 'Article summary will appear here...';
+    });
+  }
+});
+
+// Image preview
+function previewImage(input) {
+  const preview = document.getElementById('image-preview');
+  const previewImg = preview.querySelector('img');
+  
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      preview.classList.remove('hidden');
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+</script>
+{% endblock %}
