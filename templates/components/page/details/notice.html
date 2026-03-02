@@ -1,73 +1,227 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ notice.title }} | Notice{% endblock %}
+{% block title %}{{ notice.title }} | Official Notice{% endblock %}
 
 {% block content %}
-<main class="bg-[var(--surface-alt)] min-h-screen py-20">
-    <div class="max-w-[900px] mx-auto px-6">
-        
-        <!-- Notice Header -->
-        <div class="text-center mb-16 reveal-up">
-            <span class="inline-flex items-center space-x-2 px-4 py-2 bg-[var(--primary)]/10 text-[var(--primary)] rounded-full text-[10px] font-black uppercase tracking-widest mb-6 border border-[var(--primary)]/20 shadow-sm">
-                <i data-lucide="bell" class="w-3 h-3"></i>
-                <span>Official Notice</span>
-            </span>
-            
-            <h1 class="text-3xl md:text-5xl font-black text-[var(--text)] leading-tight mb-6">
-                {{ notice.title }}
-            </h1>
-            
-            <div class="flex items-center justify-center space-x-6 text-[var(--text-muted)] text-sm font-medium">
-                <span class="flex items-center">
-                    <i data-lucide="calendar" class="w-4 h-4 mr-2 opacity-60"></i>
-                    Issued: {{ notice.created_at|date:"d M Y" }}
-                </span>
-                {% if notice.expiry_date %}
-                <span class="h-4 w-[1px] bg-[var(--border)]"></span>
-                <span class="flex items-center text-red-500">
-                    <i data-lucide="clock-alert" class="w-4 h-4 mr-2 opacity-60"></i>
-                    Expires: {{ notice.expiry_date|date:"d M Y" }}
-                </span>
-                {% endif %}
+<main class="bg-[var(--surface)] min-h-screen">
+    <!-- Premium Hero Banner -->
+    <section class="relative h-[300px] lg:h-[450px] overflow-hidden flex items-center">
+        <div class="absolute inset-0 z-0">
+            <img src="{% if notice.featured_image %}{{ notice.featured_image }}{% else %}https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1200&auto=format&fit=crop{% endif %}" 
+                 alt="{{ notice.title }}" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0" 
+                 style="background: linear-gradient(to right, color-mix(in srgb, var(--primary-dark) 45%, transparent), color-mix(in srgb, var(--primary-dark) 60%, transparent), transparent);">
             </div>
         </div>
 
-        <!-- Notice Card -->
-        <div class="bg-white rounded-[2.5rem] p-8 md:p-16 shadow-2xl shadow-gray-200/50 border border-[var(--border)] relative overflow-hidden reveal-up">
-            <!-- Decorative Seal -->
-            <div class="absolute top-8 right-8 w-24 h-24 opacity-[0.05] pointer-events-none">
-                <i data-lucide="shield-check" class="w-full h-full text-[var(--primary)]"></i>
+        <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 w-full">
+            <div class="reveal-up">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-4">
+                    <i data-lucide="bell" class="w-4 h-4 text-[var(--accent)]"></i>
+                    <span class="text-[11px] font-bold text-white/90 uppercase tracking-widest">Official Notice</span>
+                </div>
+                <h1 class="text-3xl lg:text-5xl font-extrabold text-white mb-4 tracking-tight leading-tight transition-all duration-700">{{ notice.title }}</h1>
+                <nav class="flex text-white/60 text-sm font-medium">
+                    <a href="/" class="hover:text-white transition-colors">Home</a>
+                    <span class="mx-2">/</span>
+                    <a href="{% url 'notices:list' %}" class="hover:text-white transition-colors">Notices</a>
+                    <span class="mx-2">/</span>
+                    <span class="text-white truncate max-w-[200px]">{{ notice.title }}</span>
+                </nav>
             </div>
-            
-            <!-- Content -->
-            <div class="prose prose-lg max-w-none prose-p:text-[var(--text-muted)] prose-p:leading-[1.8] prose-headings:text-[var(--text)] prose-headings:font-black">
-                {{ notice.content|safe }}
-            </div>
+        </div>
+    </section>
 
-            <!-- Footer Section -->
-            <div class="mt-16 pt-12 border-t border-[var(--border)] flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="text-center md:text-left">
-                    <p class="text-[10px] uppercase font-black tracking-widest text-[var(--text-muted)] mb-2">Authenticated By</p>
-                    <p class="text-[var(--text)] font-bold">Office of the Registrar</p>
+    <!-- Main Content Area (2-Column Layout) -->
+    <div class="bg-[var(--surface)] py-8 lg:py-20">
+        <div class="max-w-[1240px] mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+                <!-- Left Column: Content -->
+                <div class="lg:col-span-8 space-y-8 reveal-up">
+                    <div class="bg-white rounded-2xl lg:rounded-3xl p-5 lg:p-10 border border-[var(--border)] shadow-xl shadow-gray-200/50">
+                        <div class="flex items-center gap-3 mb-6 lg:mb-8 bg-[var(--surface-alt)] px-3 lg:px-4 py-2 rounded-md">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center shadow-lg shadow-[var(--primary-glow)]">
+                                <i data-lucide="file-text" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <h3 class="text-lg lg:text-xl font-black text-[var(--secondary)] tracking-tight">Notice Content</h3>
+                        </div>
+                        <div class="prose prose-lg lg:prose-xl pl-2 lg:pl-5 max-w-none text-[var(--text-muted)] leading-relaxed prose-headings:text-[var(--secondary)] prose-headings:font-black prose-a:text-[var(--primary)] prose-strong:text-[var(--secondary)]">
+                            {{ notice.content|safe }}
+                        </div>
+
+                        {% if notice.attachment_url %}
+                        <div class="mt-8 pt-8 border-t border-gray-50 reveal-up">
+                            <p class="text-[var(--secondary)] text-md font-medium bg-[var(--surface-alt)] px-3 lg:px-4 py-2 rounded-md font-black">
+                                Attachment: 
+                                <a href="{{ notice.attachment_url }}" target="_blank" class="italic text-blue-600 text-sm hover:text-blue-800 transition-colors break-all">
+                                    {{ notice.attachment_url }}
+                                </a>
+                            </p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
                 </div>
 
-                {% if notice.attachment_url %}
-                <a href="{{ notice.attachment_url }}" target="_blank" class="flex items-center px-8 py-4 bg-[var(--primary)] text-white font-black rounded-2xl shadow-lg shadow-[var(--primary-glow)] hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95">
-                    <i data-lucide="download" class="w-5 h-5 mr-3"></i>
-                    Download PDF
-                </a>
-                {% endif %}
+                <!-- Right Column: Sidebar -->
+                <aside class="lg:col-span-4 space-y-6 reveal-up">
+                    
+                    <!-- Summary Card -->
+                    {% if notice.summary %}
+                    <div class="bg-white rounded-2xl p-6 border border-[var(--border)] shadow-sm">
+                        <h3 class="text-sm font-black text-[var(--secondary)] uppercase tracking-wider mb-5 flex items-center gap-2">
+                            <i data-lucide="info" class="w-4 h-4 text-[var(--primary)]"></i>
+                            Executive Summary
+                        </h3>
+                        <p class="text-[14px] text-[var(--text-muted)] leading-relaxed italic font-medium">"{{ notice.summary }}"</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Notice Information Card -->
+                    <div class="bg-white rounded-2xl p-6 border border-[var(--border)] shadow-sm">
+                        <h3 class="text-sm font-black text-[var(--secondary)] uppercase tracking-wider mb-5 flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-4 h-4 text-[var(--primary)]"></i>
+                            Notice Details
+                        </h3>
+                        <div class="space-y-4">
+                            <!-- Issued Date -->
+                            <div class="flex items-start gap-3 py-3 border-b border-[var(--border)]/50">
+                                <div class="w-8 h-8 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i data-lucide="calendar-check" class="w-4 h-4 text-[var(--primary)]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-wider mb-0.5">Issued Date</p>
+                                    <p class="text-[13px] text-[var(--secondary)] font-bold">{{ notice.created_at|date:"F d, Y" }}</p>
+                                </div>
+                            </div>
+                            <!-- Expiry Date -->
+                            {% if notice.expiry_date %}
+                            <div class="flex items-start gap-3 py-3 border-b border-[var(--border)]/50">
+                                <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i data-lucide="clock" class="w-4 h-4 text-red-500"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-red-400 font-bold uppercase tracking-wider mb-0.5">Expiry Date</p>
+                                    <p class="text-[13px] text-red-600 font-bold">{{ notice.expiry_date|date:"F d, Y" }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <!-- Authenticated By -->
+                            <div class="flex items-start gap-3 py-3 border-b border-[var(--border)]/50">
+                                <div class="w-8 h-8 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i data-lucide="shield-check" class="w-4 h-4 text-[var(--primary)]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-wider mb-0.5">Authenticated By</p>
+                                    <p class="text-[13px] text-[var(--secondary)] font-bold">Office of the Registrar</p>
+                                </div>
+                            </div>
+                            <!-- Attachment Link -->
+                            {% if notice.attachment_url %}
+                            <div class="pt-4">
+                                <a href="{{ notice.attachment_url }}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--primary)] text-white text-xs font-black rounded-xl shadow-lg shadow-[var(--primary-glow)] hover:-translate-y-0.5 transition-all">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                    Download Document
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Social Share Card -->
+                    <div class="bg-white rounded-2xl p-6 border border-[var(--border)] shadow-sm" x-data="{ copied: false }">
+                        <h3 class="text-sm font-black text-[var(--secondary)] uppercase tracking-wider mb-5 flex items-center gap-2">
+                            <i data-lucide="share-2" class="w-4 h-4 text-[var(--primary)]"></i>
+                            Share Notice
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <a :href="'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href)" target="_blank" rel="noopener noreferrer"
+                               class="w-10 h-10 flex items-center justify-center bg-[#4B69B1] text-white rounded-lg hover:opacity-90 transition-opacity">
+                                <i data-lucide="facebook" class="w-4 h-4"></i>
+                            </a>
+                            <a :href="'https://twitter.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(document.title)" target="_blank" rel="noopener noreferrer"
+                               class="w-10 h-10 flex items-center justify-center bg-[#00ACEE] text-white rounded-lg hover:opacity-90 transition-opacity">
+                                <i data-lucide="twitter" class="w-4 h-4"></i>
+                            </a>
+                            <a :href="'https://api.whatsapp.com/send?text=' + encodeURIComponent(document.title + ' ' + window.location.href)" target="_blank" rel="noopener noreferrer"
+                               class="w-10 h-10 flex items-center justify-center bg-[#5EB543] text-white rounded-lg hover:opacity-90 transition-opacity">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            </a>
+                            <button @click="navigator.clipboard.writeText(window.location.href); copied = true; setTimeout(() => copied = false, 2000)"
+                                    class="w-10 h-10 flex items-center justify-center bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--text-muted)] rounded-lg hover:bg-[var(--primary)] hover:text-white hover:border-[var(--primary)] transition-all">
+                                <i x-show="!copied" data-lucide="copy" class="w-4 h-4"></i>
+                                <i x-show="copied" data-lucide="check" class="w-4 h-4 text-green-400" x-cloak></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Navigation -->
+                    <div class="bg-white rounded-2xl p-6 border border-[var(--border)] shadow-sm">
+                        <h3 class="text-sm font-black text-[var(--secondary)] uppercase tracking-wider mb-5 flex items-center gap-2">
+                            <i data-lucide="navigation" class="w-4 h-4 text-[var(--primary)]"></i>
+                            Quick Navigation
+                        </h3>
+                        <div class="space-y-2">
+                            <a href="{% url 'notices:list' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--primary)]/10 transition-colors group">
+                                <i data-lucide="bell-ring" class="w-4 h-4 text-[var(--primary)]"></i>
+                                <span class="text-[13px] font-bold text-[var(--text)] group-hover:text-[var(--primary)] transition-colors">All Notices</span>
+                            </a>
+                            <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--primary)]/10 transition-colors group">
+                                <i data-lucide="home" class="w-4 h-4 text-[var(--primary)]"></i>
+                                <span class="text-[13px] font-bold text-[var(--text)] group-hover:text-[var(--primary)] transition-colors">Home</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </aside>
             </div>
         </div>
-
-        <!-- Back to list -->
-        <div class="mt-12 text-center reveal-up">
-            <a href="{% url 'notices:list' %}" class="inline-flex items-center text-[var(--text-muted)] hover:text-[var(--primary)] font-bold transition-colors">
-                <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
-                Back to All Notices
-            </a>
-        </div>
     </div>
+
+    <!-- Stunning Admission CTA Section -->
+    <section class="relative overflow-hidden py-20 lg:py-28">
+        <div class="absolute inset-0 bg-gradient-to-br from-[var(--secondary)] via-[var(--primary-dark)] to-[var(--primary)]"></div>
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,<svg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;><g fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.4&quot;><path d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/></g></g></svg>');"></div>
+
+        <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-white/5 animate-float"></div>
+        <div class="absolute bottom-10 right-20 w-32 h-32 rounded-full bg-[var(--accent)]/10 animate-float-slow"></div>
+
+        <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col items-center text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-6">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-[var(--accent)]"></i>
+                    <span class="text-[11px] font-bold text-white/90 uppercase tracking-widest">Start Your Journey</span>
+                </div>
+                
+                <h2 class="text-3xl lg:text-5xl font-extrabold text-white leading-tight mb-4 tracking-tight">
+                    Ready to Shape<br>
+                    <span class="text-[var(--accent)]">Your Future?</span>
+                </h2>
+                
+                <p class="text-white/70 text-base lg:text-lg max-w-2xl leading-relaxed mb-8">
+                    Stay informed with our latest notices and join our vibrant academic community. Our admission process is simple and student-friendly.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center w-full max-w-lg mx-auto">
+                    <a href="/admissions/" 
+                        class="w-full sm:w-auto group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-[var(--primary-dark)] font-extrabold rounded-xl shadow-2xl hover:shadow-[var(--accent)]/30 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                        <span class="relative z-10 flex items-center gap-3">
+                            <i data-lucide="rocket" class="w-5 h-5"></i>
+                            Apply for Admission
+                            <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+                    <a href="/contact/" 
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white/30 text-white font-bold rounded-xl hover:bg-white/10 transition-all duration-300">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 {% endblock %}

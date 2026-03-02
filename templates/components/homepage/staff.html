@@ -21,7 +21,7 @@
                     <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">{{ section.subtitle|default:"Our Dedicated Team" }}</p>
                 </div>
             </div>
-            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0">
+            <a href="{% url 'staff:list' %}" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0">
                 MEET ALL STAFF
                 <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
             </a>
@@ -88,7 +88,7 @@
                                     <i data-lucide="phone" class="w-3.5 h-3.5"></i>
                                 </a>
                                 {% endif %}
-                                <a href="#" class="w-8 h-8 rounded-full bg-[var(--surface-alt)] text-[var(--text-muted)] flex items-center justify-center hover:bg-[var(--primary)] hover:text-white transition-colors duration-300" title="Profile Details" aria-label="View {{ staff.name }} Profile">
+                                <a href="{% url 'staff:detail' staff.pk %}" class="w-8 h-8 rounded-full bg-[var(--surface-alt)] text-[var(--text-muted)] flex items-center justify-center hover:bg-[var(--primary)] hover:text-white transition-colors duration-300" title="Profile Details" aria-label="View {{ staff.name }} Profile">
                                     <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                                 </a>
                             </div>
@@ -99,7 +99,7 @@
             
             <!-- Mobile View All Button -->
             <div class="mt-12 text-center sm:hidden">
-                <a href="#" class="btn-outline-blue text-xs tracking-wider group inline-flex items-center w-full justify-center py-4">
+                <a href="{% url 'staff:list' %}" class="btn-outline-blue text-xs tracking-wider group inline-flex items-center w-full justify-center py-4">
                     VIEW ALL FACULTY
                     <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                 </a>

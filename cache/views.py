@@ -151,7 +151,7 @@ class ProgramListView(ListView):
 
 class ProgramDetailView(DetailView):
     model = CachedProgram
-    template_name = 'content/program_details.html'
+    template_name = 'components/page/details/programs.html'
     context_object_name = 'program'
 
     def get_queryset(self):

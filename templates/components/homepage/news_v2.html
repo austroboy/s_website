@@ -16,7 +16,7 @@
                     <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">{{ section.subtitle|default:"Latest News" }}</p>
                 </div>
             </div>
-            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0 hover:bg-[var(--primary)] hover:text-white transition-all duration-300">
+            <a href="{% url 'news:list' %}" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0 hover:bg-[var(--primary)] hover:text-white transition-all duration-300">
                 ALL NEWS
                 <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
             </a>
@@ -86,7 +86,7 @@
                                         <i data-lucide="calendar" class="w-3 h-3 mr-1.5 opacity-70"></i>
                                         {{ news.created_at|date:"d M Y" }}
                                     </span>
-                                    <a href="#" class="px-3 py-1 border border-[var(--primary)]/30 text-[var(--primary)] text-[11px] font-semibold hover:bg-[var(--primary)] hover:text-white transition-all duration-300 rounded-lg">
+                                    <a href="{% url 'news:detail' news.slug %}" class="px-3 py-1 border border-[var(--primary)]/30 text-[var(--primary)] text-[11px] font-semibold hover:bg-[var(--primary)] hover:text-white transition-all duration-300 rounded-lg">
                                         Read More
                                     </a>
                                 </div>
@@ -106,7 +106,7 @@
         {% endif %}
 
         <div class="mt-8 sm:hidden text-center">
-            <a href="#" class="btn-primary-blue text-xs tracking-wider inline-flex items-center px-6 py-3 rounded-full shadow-lg shadow-[var(--primary)]/20">
+            <a href="{% url 'news:list' %}" class="btn-primary-blue text-xs tracking-wider inline-flex items-center px-6 py-3 rounded-full shadow-lg shadow-[var(--primary)]/20">
                 VIEW ALL NEWS
                 <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
             </a>

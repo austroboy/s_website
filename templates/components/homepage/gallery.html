@@ -14,7 +14,7 @@
                     <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">{{ section.subtitle|default:"Gallery Preview" }}</p>
                 </div>
             </div>
-            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0">
+            <a href="{% url 'albums:list' %}" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0">
                 VIEW FULL GALLERY
                 <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
             </a>
@@ -23,7 +23,7 @@
         {% if gallery_albums %}
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 h-[auto] min-h-[500px] md:min-h-[700px]">
                 {% for album in gallery_albums %}
-                    <div class="{% cycle 'col-span-1 row-span-1' 'col-span-1 row-span-1' 'col-span-1 row-span-2' 'col-span-2 row-span-1' 'col-span-2 row-span-1' 'col-span-1 row-span-1' 'col-span-1 row-span-1' %} group relative overflow-hidden rounded-2xl cursor-pointer glow-border-hover bg-[var(--surface-alt)]">
+                    <a href="{% url 'albums:detail' album.pk %}" class="{% cycle 'col-span-1 row-span-1' 'col-span-1 row-span-1' 'col-span-1 row-span-2' 'col-span-2 row-span-1' 'col-span-2 row-span-1' 'col-span-1 row-span-1' 'col-span-1 row-span-1' %} group relative overflow-hidden rounded-2xl cursor-pointer glow-border-hover bg-[var(--surface-alt)]">
                         <img src="{% if album.cover_image %}{{ album.cover_image }}{% else %}{% cycle 'https://images.unsplash.com/photo-1475721027785-f74ecd5ed996?q=80&w=600&auto=format&fit=crop' 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=600&auto=format&fit=crop' 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=800&auto=format&fit=crop' 'https://images.unsplash.com/photo-1523580494863-6f303125d906?q=80&w=1200&auto=format&fit=crop' 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop' 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop' 'https://images.unsplash.com/photo-1454165833772-d996d49513d7?q=80&w=600&auto=format&fit=crop' %}{% endif %}" 
                              alt="{{ album.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-[var(--secondary)]/90 via-black/20 to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -33,18 +33,18 @@
                             <span class="text-base font-extrabold text-[var(--secondary)] leading-none">{{ album.created_at|date:"d" }}</span>
                             <span class="text-[9px] font-bold text-[var(--primary)] uppercase tracking-tighter">{{ album.created_at|date:"M" }}</span>
                         </div>
-
+ 
                         <!-- Media Count -->
                         <div class="absolute top-3 left-3 bg-black/40 backdrop-blur-md rounded-full px-2 py-1 flex items-center space-x-1.5 transition-opacity duration-500 opacity-0 group-hover:opacity-100 z-20">
                             <i data-lucide="camera" class="w-3 h-3 text-white"></i>
                             <span class="text-[9px] font-bold text-white uppercase tracking-widest">{{ album.media_items|length|default:"0" }} PHOTOS</span>
                         </div>
-
+ 
                         <div class="absolute bottom-0 left-0 p-4 lg:p-6 w-full text-white z-20">
                             <h4 class="text-xs md:text-sm font-bold leading-tight drop-shadow-lg line-clamp-2">{{ album.title }}</h4>
                         </div>
                         <div class="absolute inset-x-[-100%] inset-y-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] duration-[1500ms] group-hover:inset-x-[200%] transition-all"></div>
-                    </div>
+                    </a>
                 {% endfor %}
             </div>
         {% else %}
@@ -56,7 +56,7 @@
         {% endif %}
 
         <div class="mt-8 sm:hidden">
-            <a href="#" class="btn-outline-blue btn-view-all-mobile text-xs tracking-wider group">
+            <a href="{% url 'albums:list' %}" class="btn-outline-blue btn-view-all-mobile text-xs tracking-wider group">
                 VIEW ALL PHOTOS
                 <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
             </a>
