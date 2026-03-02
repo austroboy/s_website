@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'achievements',
     'documents',
     'search',
+    'dashboard',
 ]
 
 MIDDLEWARE = [

@@ -12,6 +12,7 @@ urlpatterns = [
     path('achievements/', include('achievements.urls')),
     path('documents/', include('documents.urls')),
     path('search/', include('search.urls')),
+    path('dashboard/', include('dashboard.urls')),
 
     path('', include('content.urls')),
 ]
