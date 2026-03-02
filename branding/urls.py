@@ -28,4 +28,16 @@ urlpatterns = [
     path('fonts/create/',  fonts_create, name='fonts-create'),
     path('fonts/update/',  fonts_update, name='fonts-update'),
     path('fonts/delete/',  fonts_delete, name='fonts-delete'),
+
+       # ── Brand Assets ────────────────────────────────────────────────
+    path(
+        'settings/branding/assets/',
+        brand_assets_view,
+        name='brand_assets',
+    ),
+    path(
+        'settings/branding/assets/delete/',
+        brand_assets_delete,
+        name='brand_assets_delete',
+    ),
 ]

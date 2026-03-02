@@ -20,6 +20,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from .forms import *
+from .models import *
 
 
 
@@ -279,3 +280,77 @@ def fonts_delete(request):
     font_pair.delete()
     messages.success(request, 'Font pair deleted. Website will use system fonts.')
     return redirect('branding:fonts-list')
+
+
+
+
+
+@login_required
+def brand_assets_view(request):
+    """
+    GET  → Show current assets + upload form.
+    POST → Save new uploads; honours per-field clear checkboxes.
+    """
+    tenant = request.tenant
+    assets = BrandAssets.objects.filter(tenant=tenant).first()
+
+    FIELDS = ['logo_light', 'logo_dark', 'favicon', 'og_image', 'footer_logo']
+
+    if request.method == 'POST':
+        assets = assets or BrandAssets(tenant=tenant)
+
+        for field in FIELDS:
+            # Handle "clear" checkbox (Django convention: <field>-clear)
+            clear_key = f'{field}-clear'
+            if request.POST.get(clear_key):
+                # Delete old file and clear field
+                current = getattr(assets, field)
+                if current:
+                    current.delete(save=False)
+                setattr(assets, field, None)
+
+            # Handle new upload
+            if field in request.FILES:
+                # Remove old file before replacing
+                current = getattr(assets, field)
+                if current:
+                    current.delete(save=False)
+                setattr(assets, field, request.FILES[field])
+
+        assets.save()
+        messages.success(request, 'Brand assets saved successfully.')
+        return redirect('branding:brand_assets')
+
+    context = {
+        'tenant': tenant,
+        'assets': assets,
+        **build_nav_context(request),
+    }
+    return render(request, 'branding/assets/brand_assets.html', context)
+
+
+# ──────────────────────────────────────────────────────────
+#  Brand Assets — Delete All
+# ──────────────────────────────────────────────────────────
+
+@login_required
+@require_POST
+def brand_assets_delete(request):
+    """
+    POST → Delete all brand asset files and the BrandAssets record.
+    """
+    tenant = request.tenant
+    assets = BrandAssets.objects.filter(tenant=tenant).first()
+
+    if assets:
+        FIELDS = ['logo_light', 'logo_dark', 'favicon', 'og_image', 'footer_logo']
+        for field in FIELDS:
+            current = getattr(assets, field)
+            if current:
+                current.delete(save=False)
+        assets.delete()
+        messages.success(request, 'All brand assets have been removed.')
+    else:
+        messages.error(request, 'No assets found to delete.')
+
+    return redirect('branding:brand_assets')

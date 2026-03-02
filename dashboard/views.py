@@ -122,7 +122,7 @@ def build_nav_context(request):
             'children': [
                 {'label': 'Colors', 'url': '/dashboard/settings/branding/colors/', 'active': is_active('/settings/branding/colors/')},
                 {'label': 'Fonts', 'url': '/dashboard/fonts', 'active': is_active('/fonts')},
-                {'label': 'Logo & Assets',  'url': '/settings/branding/assets/', 'active': is_active('/settings/branding/assets/')},
+                {'label': 'Logo & Assets',  'url': '/dashboard/settings/branding/assets/', 'active': is_active('/settings/branding/assets/')},
             ],
         },
         {
