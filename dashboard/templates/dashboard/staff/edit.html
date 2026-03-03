@@ -1,0 +1,371 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Edit Staff - {{ tenant.name }}{% endblock %}
+
+{% block breadcrumb %}
+<span class="text-slate-muted">Directory</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
+<span class="text-slate-muted">Staff</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
+<span class="text-white font-medium">Edit: {{ staff.name }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="fade-up delay-1 mb-7">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="font-display text-2xl font-bold text-white leading-tight">
+        Edit Staff Member
+      </h1>
+      <p class="mt-0.5 text-sm text-slate-muted">
+        Update staff information for {{ tenant.name }}
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="/dashboard/staff/" 
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to Staff
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Staff Form - সবকিছু একটি ফর্মের ভিতরে -->
+<div class="fade-up delay-2">
+  <form method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+    {% csrf_token %}
+    
+    <!-- Main Form - 2 columns -->
+    <div class="lg:col-span-2">
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-6 py-5 border-b border-base-700 flex items-center justify-between">
+          <h2 class="font-display font-semibold text-white">Edit Staff Details</h2>
+          <span class="text-xs text-slate-muted">
+            <i data-lucide="clock" class="w-3 h-3 inline mr-1"></i>
+            Last updated: {{ staff.last_synced|date:"M d, Y H:i" }}
+          </span>
+        </div>
+        
+        <div class="p-6 space-y-5">
+          <!-- Name Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Full Name <span class="text-gold">*</span>
+            </label>
+            <input type="text" 
+                   name="name" 
+                   id="name"
+                   value="{{ staff.name }}"
+                   required
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          </div>
+          
+          <!-- Designation -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Designation <span class="text-gold">*</span>
+            </label>
+            <input type="text" 
+                   name="designation" 
+                   id="designation"
+                   value="{{ staff.designation }}"
+                   required
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          </div>
+          
+          <!-- Department -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Department
+            </label>
+            <input type="text" 
+                   name="department" 
+                   id="department"
+                   value="{{ staff.department }}"
+                   list="department-list"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            <datalist id="department-list">
+              {% for dept in departments %}
+              <option value="{{ dept }}">{{ dept }}</option>
+              {% endfor %}
+            </datalist>
+          </div>
+          
+          <!-- Bio Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Biography
+            </label>
+            <textarea name="bio" 
+                      id="bio"
+                      rows="5"
+                      class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">{{ staff.bio }}</textarea>
+          </div>
+          
+          <!-- Contact Info Row -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Email -->
+            <div>
+              <label class="block text-sm font-medium text-slate-soft mb-2">
+                Email Address
+              </label>
+              <input type="email" 
+                     name="email" 
+                     id="email"
+                     value="{{ staff.email }}"
+                     class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            </div>
+            
+            <!-- Phone -->
+            <div>
+              <label class="block text-sm font-medium text-slate-soft mb-2">
+                Phone Number
+              </label>
+              <input type="text" 
+                     name="phone" 
+                     id="phone"
+                     value="{{ staff.phone }}"
+                     class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            </div>
+          </div>
+          
+          <!-- Order Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Display Order
+            </label>
+            <input type="number" 
+                   name="order" 
+                   id="order"
+                   value="{{ staff.order }}"
+                   min="0"
+                   class="w-32 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            <p class="mt-1.5 text-xs text-slate-muted">
+              Lower numbers appear first in listings
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sidebar - 1 column (এখন ফর্মের ভিতরে) -->
+    <div class="lg:col-span-1 space-y-5">
+      
+      <!-- Status Card -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-base-700">
+          <h3 class="font-display font-semibold text-white">Status</h3>
+        </div>
+        <div class="p-5">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-sm text-slate-soft">Current Status</span>
+            {% if staff.is_published %}
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+              Published
+            </span>
+            {% else %}
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-base-600/50 text-slate-soft border border-base-600">
+              <span class="w-1.5 h-1.5 bg-base-500 rounded-full"></span>
+              Draft
+            </span>
+            {% endif %}
+          </div>
+          
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-slate-muted">SMS ID</span>
+              <span class="text-white font-mono text-xs">{{ staff.sms_id }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-muted">Last Synced</span>
+              <span class="text-white">{{ staff.last_synced|date:"M d, Y H:i" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Photo URL Card -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-base-700">
+          <h3 class="font-display font-semibold text-white">Profile Photo URL</h3>
+        </div>
+        <div class="p-5">
+          <!-- Current Photo Preview (if exists) -->
+          {% if staff.photo %}
+          <div class="mb-4" id="current-photo-container">
+            <p class="text-xs text-slate-muted mb-2">Current photo:</p>
+            <div class="relative">
+              <img src="{{ staff.photo }}" alt="{{ staff.name }}" class="w-full rounded-xl border border-base-600 max-h-48 object-cover">
+              <button type="button" 
+                      onclick="removeCurrentPhoto()"
+                      class="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/80 text-white hover:bg-red-600 transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <input type="hidden" name="remove_photo" id="remove-photo" value="false">
+          </div>
+          {% endif %}
+          
+          <!-- Photo URL Input -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              {% if staff.photo %}New Photo URL (optional){% else %}Photo URL{% endif %}
+            </label>
+            <input type="url" 
+                   name="photo" 
+                   id="photo_url"
+                   value=""
+                   placeholder="https://example.com/photo.jpg"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"
+                   onchange="previewPhotoFromUrl(this.value)">
+            <p class="mt-1.5 text-xs text-slate-muted">
+              Enter a direct URL to an image (JPG, PNG, WebP)
+            </p>
+          </div>
+          
+          <!-- New Photo Preview -->
+          <div id="new-photo-preview-container" class="mt-4 hidden">
+            <p class="text-xs text-slate-muted mb-2">New photo preview:</p>
+            <img id="new-photo-preview" src="" alt="Preview" class="w-full rounded-xl border border-base-600 max-h-48 object-cover">
+            <button type="button" 
+                    onclick="clearNewPhotoUrl()"
+                    class="mt-2 text-xs text-red-400 hover:text-red-300 transition-colors">
+              <i data-lucide="x" class="w-3 h-3 inline mr-1"></i>
+              Clear new photo
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Danger Zone -->
+      <div class="bg-base-800 border border-red-500/30 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-red-500/30 bg-red-500/5">
+          <h3 class="font-display font-semibold text-red-400">Danger Zone</h3>
+        </div>
+        <div class="p-5">
+          <p class="text-sm text-slate-soft mb-4">
+            Once you delete a staff member, it cannot be recovered. Please be certain.
+          </p>
+          <button type="button" onclick="confirmDelete({{ staff.id }}, '{{ staff.name|escapejs }}')"
+                  class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-red-500/50 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition-colors">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+            Delete Staff Member
+          </button>
+        </div>
+      </div>
+      
+      <!-- Form Action Buttons -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="p-5">
+          <div class="flex flex-col gap-3">
+            <a href="/dashboard/staff/" 
+               class="w-full px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors text-center">
+              Cancel
+            </a>
+            <button type="submit" name="action" value="draft"
+                    class="w-full px-5 py-2.5 rounded-xl border border-gold/30 text-gold hover:bg-gold/10 transition-colors">
+              {% if staff.is_published %}Unpublish & Save Draft{% else %}Save as Draft{% endif %}
+            </button>
+            <button type="submit" name="action" value="publish"
+                    class="w-full px-5 py-2.5 rounded-xl bg-gold text-base-900 font-semibold hover:bg-gold-light transition-colors shadow-glow-gold">
+              {% if staff.is_published %}Update & Publish{% else %}Publish Staff{% endif %}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+  <div class="bg-base-800 border border-base-700 rounded-2xl max-w-md w-full mx-4 overflow-hidden shadow-2xl">
+    <div class="px-6 py-4 border-b border-base-700">
+      <h3 class="font-display font-semibold text-white text-lg">Confirm Delete</h3>
+    </div>
+    <div class="p-6">
+      <p class="text-slate-soft mb-2">Are you sure you want to delete:</p>
+      <p class="text-white font-medium mb-4" id="delete-title"></p>
+      <p class="text-sm text-red-400">This action cannot be undone.</p>
+    </div>
+    <div class="px-6 py-4 border-t border-base-700 flex items-center justify-end gap-3">
+      <button onclick="closeDeleteModal()" 
+              class="px-4 py-2 border border-base-600 text-slate-muted rounded-xl hover:text-white hover:border-base-500 transition-colors">
+        Cancel
+      </button>
+      <form id="delete-form" method="POST" action="/dashboard/staff/{{ staff.id }}/delete/" class="inline">
+        {% csrf_token %}
+        <button type="submit" 
+                class="px-4 py-2 bg-red-500/10 text-red-400 border border-red-500/30 rounded-xl hover:bg-red-500/20 hover:text-red-300 transition-colors">
+          Delete Permanently
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+// Photo handling
+function removeCurrentPhoto() {
+  document.getElementById('current-photo-container').remove();
+  document.getElementById('remove-photo').value = 'true';
+  document.getElementById('photo_url').value = '';
+}
+
+function previewPhotoFromUrl(url) {
+  const previewContainer = document.getElementById('new-photo-preview-container');
+  const previewImg = document.getElementById('new-photo-preview');
+  const currentContainer = document.getElementById('current-photo-container');
+  
+  if (url && url.trim() !== '') {
+    previewImg.src = url;
+    previewContainer.classList.remove('hidden');
+    
+    if (currentContainer) {
+      currentContainer.style.display = 'none';
+    }
+    
+    previewImg.onerror = function() {
+      previewImg.src = '';
+      previewContainer.classList.add('hidden');
+      alert('Invalid image URL or image cannot be loaded');
+    };
+  } else {
+    previewContainer.classList.add('hidden');
+    if (currentContainer) {
+      currentContainer.style.display = 'block';
+    }
+  }
+}
+
+function clearNewPhotoUrl() {
+  document.getElementById('photo_url').value = '';
+  document.getElementById('new-photo-preview-container').classList.add('hidden');
+  const currentContainer = document.getElementById('current-photo-container');
+  if (currentContainer) {
+    currentContainer.style.display = 'block';
+  }
+}
+
+// Delete confirmation
+function confirmDelete(id, title) {
+  document.getElementById('delete-title').textContent = title;
+  document.getElementById('deleteModal').classList.remove('hidden');
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.add('hidden');
+}
+
+// Close modal when clicking outside
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeDeleteModal();
+  }
+});
+</script>
+{% endblock %}

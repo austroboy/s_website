@@ -1,0 +1,56 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Delete Event - {{ tenant.name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-[60vh] flex items-center justify-center">
+  <div class="max-w-md w-full bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+    <div class="px-6 py-5 border-b border-base-700 bg-red-500/5">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+          <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400"></i>
+        </div>
+        <h2 class="font-display font-semibold text-white text-lg">Delete Event</h2>
+      </div>
+    </div>
+    
+    <div class="p-6">
+      <p class="text-slate-soft mb-4">
+        Are you sure you want to delete the following event?
+      </p>
+      
+      <div class="bg-base-900 border border-base-700 rounded-xl p-4 mb-6">
+        <h3 class="text-white font-medium mb-1">{{ event.title }}</h3>
+        <p class="text-sm text-slate-muted">{{ event.start_date|date:"M d, Y" }} • {{ event.venue }}</p>
+        {% if event.start_date > now %}
+        <span class="inline-block mt-2 px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs border border-emerald-500/20">
+          Upcoming
+        </span>
+        {% endif %}
+      </div>
+      
+      <div class="bg-red-500/5 border border-red-500/20 rounded-xl p-4 mb-6">
+        <p class="text-sm text-red-400">
+          <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
+          This action cannot be undone. The event will be permanently deleted.
+        </p>
+      </div>
+      
+      <form method="POST">
+        {% csrf_token %}
+        <div class="flex items-center gap-3">
+          <a href="/dashboard/events/" 
+             class="flex-1 px-4 py-2.5 border border-base-600 text-slate-muted rounded-xl hover:text-white hover:border-base-500 transition-colors text-center">
+            Cancel
+          </a>
+          <button type="submit" 
+                  class="flex-1 px-4 py-2.5 bg-red-500/10 text-red-400 border border-red-500/30 rounded-xl hover:bg-red-500/20 hover:text-red-300 transition-colors">
+            Delete Permanently
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,567 @@
+{% extends "dashboard_base.html" %} {% load static %} {% block title %}Dashboard
+— {{ tenant.name|default:"SchoolOS" }}{% endblock %} {% block breadcrumb %}
+<span class="text-slate-muted">Dashboard</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500 flex-shrink-0"></i>
+<span class="text-white font-medium">Overview</span>
+{% endblock %} {% block content %}
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE HEADER
+══════════════════════════════════════════════════════ -->
+<div class="fade-up delay-1 mb-7">
+  <div
+    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+  >
+    <div>
+      <h1 class="font-display text-2xl font-bold text-white leading-tight">
+        Good morning, {{ request.user.first_name|default:"Admin" }} 👋
+      </h1>
+      <p class="mt-0.5 text-sm text-slate-muted">
+        Here's what's happening across
+        <span class="text-gold font-medium"
+          >{{ tenant.name|default:"Global Tech Academy" }}</span
+        >
+        today.
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <a
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gold text-base-900 text-sm font-semibold hover:bg-gold-light transition-colors shadow-glow-gold"
+      >
+        <i data-lucide="plus" class="w-4 h-4"></i>
+        New Admission
+      </a>
+      <button
+        class="p-2 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors"
+      >
+        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     STATS GRID — 4 KPI CARDS
+══════════════════════════════════════════════════════ -->
+<div class="fade-up delay-2 grid grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+  <!-- Total Students -->
+  <div
+    class="stat-card bg-base-800 border border-base-700 rounded-2xl p-5 shadow-card relative overflow-hidden"
+  >
+    <div
+      class="absolute -top-5 -right-5 w-20 h-20 bg-cyan/10 rounded-full blur-xl pointer-events-none"
+    ></div>
+    <div class="flex items-start justify-between mb-4">
+      <div class="p-2.5 bg-cyan/10 border border-cyan/20 rounded-xl">
+        <i data-lucide="users" class="w-5 h-5 text-cyan"></i>
+      </div>
+      <span
+        class="text-xs font-semibold px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+        >+4.2%</span
+      >
+    </div>
+    <p class="font-display text-2xl font-bold text-white">
+      {{ stats.students|default:"2,500" }}
+    </p>
+    <p class="text-xs text-slate-muted mt-1">Enrolled Students</p>
+    <div class="mt-3 h-1 bg-base-700 rounded-full overflow-hidden">
+      <div
+        class="progress-bar-fill bg-cyan h-full rounded-full"
+        style="width: 78%"
+      ></div>
+    </div>
+  </div>
+
+  <!-- Faculty & Staff -->
+  <div
+    class="stat-card bg-base-800 border border-base-700 rounded-2xl p-5 shadow-card relative overflow-hidden"
+  >
+    <div
+      class="absolute -top-5 -right-5 w-20 h-20 bg-gold/10 rounded-full blur-xl pointer-events-none"
+    ></div>
+    <div class="flex items-start justify-between mb-4">
+      <div class="p-2.5 bg-gold/10 border border-gold/20 rounded-xl">
+        <i data-lucide="briefcase" class="w-5 h-5 text-gold"></i>
+      </div>
+      <span
+        class="text-xs font-semibold px-2 py-1 rounded-lg bg-gold/10 text-gold border border-gold/20"
+        >+1</span
+      >
+    </div>
+    <p class="font-display text-2xl font-bold text-white">
+      {{ stats.teachers|default:"200" }}
+    </p>
+    <p class="text-xs text-slate-muted mt-1">Faculty & Staff</p>
+    <div class="mt-3 h-1 bg-base-700 rounded-full overflow-hidden">
+      <div
+        class="progress-bar-fill bg-gold h-full rounded-full"
+        style="width: 60%"
+      ></div>
+    </div>
+  </div>
+
+  <!-- Active Programs -->
+  <div
+    class="stat-card bg-base-800 border border-base-700 rounded-2xl p-5 shadow-card relative overflow-hidden"
+  >
+    <div
+      class="absolute -top-5 -right-5 w-20 h-20 bg-purple-500/10 rounded-full blur-xl pointer-events-none"
+    ></div>
+    <div class="flex items-start justify-between mb-4">
+      <div
+        class="p-2.5 bg-purple-500/10 border border-purple-500/20 rounded-xl"
+      >
+        <i data-lucide="book-open" class="w-5 h-5 text-purple-400"></i>
+      </div>
+      <span
+        class="text-xs font-semibold px-2 py-1 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20"
+        >Active</span
+      >
+    </div>
+    <p class="font-display text-2xl font-bold text-white">
+      {{ stats.programs|default:"45" }}
+    </p>
+    <p class="text-xs text-slate-muted mt-1">Academic Programs</p>
+    <div class="mt-3 h-1 bg-base-700 rounded-full overflow-hidden">
+      <div
+        class="progress-bar-fill bg-purple-500 h-full rounded-full"
+        style="width: 90%"
+      ></div>
+    </div>
+  </div>
+
+  <!-- Years of Excellence -->
+  <div
+    class="stat-card bg-base-800 border border-base-700 rounded-2xl p-5 shadow-card relative overflow-hidden"
+  >
+    <div
+      class="absolute -top-5 -right-5 w-20 h-20 bg-rose-500/10 rounded-full blur-xl pointer-events-none"
+    ></div>
+    <div class="flex items-start justify-between mb-4">
+      <div class="p-2.5 bg-rose-500/10 border border-rose-500/20 rounded-xl">
+        <i data-lucide="award" class="w-5 h-5 text-rose-400"></i>
+      </div>
+      <span
+        class="text-xs font-semibold px-2 py-1 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20"
+        >Legacy</span
+      >
+    </div>
+    <p class="font-display text-2xl font-bold text-white">
+      {{ stats.years|default:"50" }}
+    </p>
+    <p class="text-xs text-slate-muted mt-1">Years of Excellence</p>
+    <div class="mt-3 h-1 bg-base-700 rounded-full overflow-hidden">
+      <div
+        class="progress-bar-fill bg-rose-500 h-full rounded-full"
+        style="width: 100%"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     CONTENT ROW — Left: Recent News + Right: Upcoming Events
+══════════════════════════════════════════════════════ -->
+<div class="fade-up delay-3 grid grid-cols-1 lg:grid-cols-5 gap-5 mb-5">
+  <!-- ─── Recent News (3 cols) ────────────────────────── -->
+  <div
+    class="lg:col-span-3 bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card"
+  >
+    <div
+      class="flex items-center justify-between px-5 py-4 border-b border-base-700"
+    >
+      <div class="flex items-center gap-2.5">
+        <div class="p-1.5 bg-cyan/10 rounded-lg border border-cyan/20">
+          <i data-lucide="newspaper" class="w-4 h-4 text-cyan"></i>
+        </div>
+        <h2 class="font-display font-semibold text-white text-sm">
+          Latest News
+        </h2>
+      </div>
+      <a
+        class="text-xs text-gold hover:text-gold-light transition-colors flex items-center gap-1"
+      >
+        View all <i data-lucide="arrow-right" class="w-3 h-3"></i>
+      </a>
+    </div>
+
+    <div class="divide-y divide-base-700">
+      {% for news in recent_news %}
+      <div
+        class="flex items-start gap-4 px-5 py-4 hover:bg-base-700/40 transition-colors group"
+      >
+        {% if news.featured_image %}
+        <img
+          src="{{ news.featured_image }}"
+          alt="{{ news.title }}"
+          class="w-14 h-14 rounded-xl object-cover flex-shrink-0 border border-base-600"
+        />
+        {% else %}
+        <div
+          class="w-14 h-14 rounded-xl bg-base-700 border border-base-600 flex items-center justify-center flex-shrink-0"
+        >
+          <i data-lucide="image" class="w-5 h-5 text-base-500"></i>
+        </div>
+        {% endif %}
+        <div class="min-w-0 flex-1">
+          <p
+            class="text-sm font-medium text-white leading-snug group-hover:text-gold transition-colors truncate"
+          >
+            {{ news.title }}
+          </p>
+          <p
+            class="text-xs text-slate-muted mt-0.5 line-clamp-2 leading-relaxed"
+          >
+            {{ news.summary }}
+          </p>
+          <div class="flex items-center gap-3 mt-2">
+            <span class="text-[11px] text-slate-muted"
+              >{{ news.created_at|date:"M d, Y" }}</span
+            >
+            {% if news.is_published %}
+            <span
+              class="inline-flex items-center gap-1 text-[11px] text-emerald-400"
+            >
+              <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+              Published
+            </span>
+            {% else %}
+            <span
+              class="inline-flex items-center gap-1 text-[11px] text-slate-muted"
+            >
+              <span class="w-1.5 h-1.5 bg-base-500 rounded-full"></span> Draft
+            </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="px-5 py-12 text-center">
+        <i data-lucide="inbox" class="w-8 h-8 text-base-500 mx-auto mb-2"></i>
+        <p class="text-sm text-slate-muted">No news published yet</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- ─── Upcoming Events (2 cols) ───────────────────── -->
+  <div
+    class="lg:col-span-2 bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card"
+  >
+    <div
+      class="flex items-center justify-between px-5 py-4 border-b border-base-700"
+    >
+      <div class="flex items-center gap-2.5">
+        <div class="p-1.5 bg-gold/10 rounded-lg border border-gold/20">
+          <i data-lucide="calendar-days" class="w-4 h-4 text-gold"></i>
+        </div>
+        <h2 class="font-display font-semibold text-white text-sm">
+          Upcoming Events
+        </h2>
+      </div>
+      <a
+        class="text-xs text-gold hover:text-gold-light transition-colors flex items-center gap-1"
+      >
+        View all <i data-lucide="arrow-right" class="w-3 h-3"></i>
+      </a>
+    </div>
+
+    <div class="px-4 py-3 space-y-2.5">
+      {% for event in upcoming_events %}
+      <div
+        class="flex items-start gap-3 p-3 rounded-xl hover:bg-base-700/50 transition-colors cursor-pointer group"
+      >
+        <!-- Date pill -->
+        <div class="w-10 text-center flex-shrink-0">
+          <p class="text-xs font-bold text-gold uppercase leading-none">
+            {{ event.start_date|date:"M" }}
+          </p>
+          <p
+            class="font-display text-xl font-bold text-white leading-none mt-0.5"
+          >
+            {{ event.start_date|date:"d" }}
+          </p>
+        </div>
+        <div class="min-w-0 flex-1">
+          <p
+            class="text-sm font-medium text-white group-hover:text-gold transition-colors leading-snug truncate"
+          >
+            {{ event.title }}
+          </p>
+          <div class="flex items-center gap-1.5 mt-1">
+            <i
+              data-lucide="map-pin"
+              class="w-3 h-3 text-slate-muted flex-shrink-0"
+            ></i>
+            <span class="text-xs text-slate-muted truncate"
+              >{{ event.venue }}</span
+            >
+          </div>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <i
+              data-lucide="clock"
+              class="w-3 h-3 text-slate-muted flex-shrink-0"
+            ></i>
+            <span class="text-xs text-slate-muted"
+              >{{ event.start_date|date:"g:i A" }}</span
+            >
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="py-10 text-center">
+        <i
+          data-lucide="calendar-x"
+          class="w-8 h-8 text-base-500 mx-auto mb-2"
+        ></i>
+        <p class="text-sm text-slate-muted">No upcoming events</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     CONTENT ROW — Notices + Programs + Quick Actions
+══════════════════════════════════════════════════════ -->
+<div class="fade-up delay-4 grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
+  <!-- ─── Active Notices ──────────────────────────────── -->
+  <div
+    class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card"
+  >
+    <div
+      class="flex items-center justify-between px-5 py-4 border-b border-base-700"
+    >
+      <div class="flex items-center gap-2.5">
+        <div class="p-1.5 bg-rose-500/10 rounded-lg border border-rose-500/20">
+          <i data-lucide="megaphone" class="w-4 h-4 text-rose-400"></i>
+        </div>
+        <h2 class="font-display font-semibold text-white text-sm">Notices</h2>
+        {% if notices_count %}<span
+          class="notif-badge bg-rose-500/80 text-white"
+          >{{ notices_count }}</span
+        >{% endif %}
+      </div>
+      <a class="text-xs text-gold hover:text-gold-light transition-colors"
+        >All</a
+      >
+    </div>
+    <div class="divide-y divide-base-700">
+      {% for notice in active_notices %}
+      <div class="px-5 py-3.5 hover:bg-base-700/30 transition-colors">
+        <div class="flex items-start gap-2.5">
+          <div
+            class="w-1.5 h-1.5 rounded-full bg-rose-400 mt-1.5 flex-shrink-0"
+          ></div>
+          <div class="min-w-0">
+            <p class="text-sm text-white leading-snug truncate">
+              {{ notice.title }}
+            </p>
+            <p class="text-xs text-slate-muted mt-0.5">
+              Expires {{ notice.expiry_date|date:"M d" }}
+            </p>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="py-10 text-center">
+        <p class="text-sm text-slate-muted">No active notices</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- ─── Programs ────────────────────────────────────── -->
+  <div
+    class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card"
+  >
+    <div
+      class="flex items-center justify-between px-5 py-4 border-b border-base-700"
+    >
+      <div class="flex items-center gap-2.5">
+        <div
+          class="p-1.5 bg-purple-500/10 rounded-lg border border-purple-500/20"
+        >
+          <i data-lucide="layers" class="w-4 h-4 text-purple-400"></i>
+        </div>
+        <h2 class="font-display font-semibold text-white text-sm">Programs</h2>
+      </div>
+      <a class="text-xs text-gold hover:text-gold-light transition-colors"
+        >Manage</a
+      >
+    </div>
+    <div class="px-4 py-3 space-y-1.5">
+      {% for prog in programs %}
+      <div
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-base-700/50 transition-colors group cursor-pointer"
+      >
+        <div
+          class="w-7 h-7 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center flex-shrink-0"
+        >
+          <i
+            data-lucide="{{ prog.icon|default:'book' }}"
+            class="w-3.5 h-3.5 text-purple-400"
+          ></i>
+        </div>
+        <span
+          class="text-sm text-slate-soft group-hover:text-white transition-colors truncate flex-1"
+          >{{ prog.name }}</span
+        >
+        <i
+          data-lucide="chevron-right"
+          class="w-3.5 h-3.5 text-base-500 flex-shrink-0"
+        ></i>
+      </div>
+      {% empty %}
+      <div class="py-8 text-center">
+        <p class="text-sm text-slate-muted">No programs configured</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- ─── Quick Actions ───────────────────────────────── -->
+  <div
+    class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card"
+  >
+    <div class="px-5 py-4 border-b border-base-700">
+      <div class="flex items-center gap-2.5">
+        <div
+          class="p-1.5 bg-emerald-500/10 rounded-lg border border-emerald-500/20"
+        >
+          <i data-lucide="zap" class="w-4 h-4 text-emerald-400"></i>
+        </div>
+        <h2 class="font-display font-semibold text-white text-sm">
+          Quick Actions
+        </h2>
+      </div>
+    </div>
+    <div class="p-4 grid grid-cols-2 gap-2.5">
+      {% include "components/quick_action.html" with icon="file-plus" label="Add News" url="news:create" color="cyan" %} 
+      {% include "components/quick_action.html" with icon="file-plus" label="Add Data" url="news:create" color="cyan" %} 
+      {% include "components/quick_action.html" with icon="calendar-plus" label="Add Event" url="events:create" color="gold" %} 
+      
+      {% include "components/quick_action.html" with icon="user-plus" label="Add Staff" url="staff:create" color="purple" %} 
+      
+      
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     BOTTOM ROW — Recent Staff + Admission Inquiries
+══════════════════════════════════════════════════════ -->
+<div class="fade-up delay-5 grid grid-cols-1 lg:grid-cols-2 gap-5">
+  <!-- ─── Staff Spotlight ─────────────────────────────── -->
+  <div
+    class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card"
+  >
+    <div
+      class="flex items-center justify-between px-5 py-4 border-b border-base-700"
+    >
+      <div class="flex items-center gap-2.5">
+        <div class="p-1.5 bg-gold/10 rounded-lg border border-gold/20">
+          <i data-lucide="contact" class="w-4 h-4 text-gold"></i>
+        </div>
+        <h2 class="font-display font-semibold text-white text-sm">
+          Staff Directory
+        </h2>
+      </div>
+      <a
+        class="text-xs text-gold hover:text-gold-light transition-colors flex items-center gap-1"
+      >
+        View all <i data-lucide="arrow-right" class="w-3 h-3"></i>
+      </a>
+    </div>
+    <div class="p-4 space-y-2">
+      {% for member in staff_members %}
+      <div
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-base-700/50 transition-colors group"
+      >
+        <img
+          src="{{ member.photo|default:'https://i.pravatar.cc/40' }}"
+          alt="{{ member.name }}"
+          class="w-9 h-9 rounded-full object-cover border-2 border-base-600 flex-shrink-0"
+        />
+        <div class="min-w-0 flex-1">
+          <p
+            class="text-sm font-medium text-white truncate group-hover:text-gold transition-colors"
+          >
+            {{ member.name }}
+          </p>
+          <p class="text-xs text-slate-muted truncate">
+            {{ member.designation }} · {{ member.department }}
+          </p>
+        </div>
+        <span class="flex-shrink-0 w-2 h-2 rounded-full bg-emerald-400"></span>
+      </div>
+      {% empty %}
+      <div class="py-8 text-center">
+        <p class="text-sm text-slate-muted">No staff records found</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- ─── Admission Inquiries ──────────────────────────── -->
+  <div
+    class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card"
+  >
+    <div
+      class="flex items-center justify-between px-5 py-4 border-b border-base-700"
+    >
+      <div class="flex items-center gap-2.5">
+        <div class="p-1.5 bg-cyan/10 rounded-lg border border-cyan/20">
+          <i data-lucide="inbox" class="w-4 h-4 text-cyan"></i>
+        </div>
+        <h2 class="font-display font-semibold text-white text-sm">
+          Admission Inquiries
+        </h2>
+        {% if inquiries_count %}<span class="notif-badge"
+          >{{ inquiries_count }}</span
+        >{% endif %}
+      </div>
+      <a
+        class="text-xs text-gold hover:text-gold-light transition-colors flex items-center gap-1"
+      >
+        View all <i data-lucide="arrow-right" class="w-3 h-3"></i>
+      </a>
+    </div>
+    <div class="divide-y divide-base-700">
+      {% for inquiry in recent_inquiries %}
+      <div
+        class="flex items-start gap-3 px-5 py-3.5 hover:bg-base-700/30 transition-colors"
+      >
+        <div
+          class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan to-cyan-dark flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-0.5"
+        >
+          {{ inquiry.full_name|make_list|first|upper }}
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center justify-between gap-2">
+            <p class="text-sm font-medium text-white truncate">
+              {{ inquiry.full_name }}
+            </p>
+            <span class="text-[11px] text-slate-muted flex-shrink-0"
+              >{{ inquiry.created_at|timesince }} ago</span
+            >
+          </div>
+          <p class="text-xs text-slate-muted truncate mt-0.5">
+            {{ inquiry.program_of_interest }} · {{ inquiry.grade_level }}
+          </p>
+        </div>
+      </div>
+      {% empty %}
+      <div class="py-10 text-center">
+        <i
+          data-lucide="mail-open"
+          class="w-8 h-8 text-base-500 mx-auto mb-2"
+        ></i>
+        <p class="text-sm text-slate-muted">No inquiries yet</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

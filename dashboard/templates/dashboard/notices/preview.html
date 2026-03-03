@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Preview: {{ notice.title }} - {{ tenant.name }}{% endblock %}
+
+{% block content %}
+<div class="bg-base-900 border-b border-base-700 py-3 sticky top-0 z-50">
+  <div class="container mx-auto px-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="px-2 py-1 bg-gold/10 text-gold text-xs rounded-lg border border-gold/20">PREVIEW MODE</span>
+      <span class="text-sm text-slate-muted">{{ tenant.name }}</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/dashboard/notices/{{ notice.id }}/edit/"
+         class="px-4 py-2 bg-gold text-base-900 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors">
+        <i data-lucide="edit-3" class="w-4 h-4 inline mr-1"></i>
+        Edit Notice
+      </a>
+      <a href="/dashboard/notices/"
+         class="px-4 py-2 border border-base-600 text-slate-muted rounded-xl text-sm hover:text-white hover:border-base-500 transition-colors">
+        Back to Dashboard
+      </a>
+    </div>
+  </div>
+</div>
+
+<article class="container mx-auto px-4 py-8 max-w-4xl">
+  <!-- Featured Image -->
+  {% if notice.featured_image %}
+  <div class="mb-8 rounded-2xl overflow-hidden border border-base-700">
+    <img src="{{ notice.featured_image }}" alt="{{ notice.title }}" class="w-full">
+  </div>
+  {% endif %}
+
+  <!-- Meta -->
+  <div class="flex flex-wrap items-center gap-3 text-sm text-slate-muted mb-4">
+    <span>{{ notice.created_at|date:"F d, Y" }}</span>
+    {% if notice.expiry_date %}
+    <span class="w-1 h-1 rounded-full bg-base-600"></span>
+    <span class="text-gold">Expires: {{ notice.expiry_date|date:"M d, Y" }}</span>
+    {% endif %}
+    {% if not notice.is_published %}
+    <span class="w-1 h-1 rounded-full bg-base-600"></span>
+    <span class="px-2 py-0.5 rounded-full bg-base-700 text-xs text-slate-soft border border-base-600">Draft</span>
+    {% endif %}
+  </div>
+
+  <!-- Title -->
+  <h1 class="font-display text-4xl font-bold text-white mb-6">{{ notice.title }}</h1>
+
+  <!-- Summary -->
+  {% if notice.summary %}
+  <div class="bg-base-800/50 border border-base-700 rounded-xl p-6 mb-8">
+    <p class="text-lg text-slate-soft italic">{{ notice.summary }}</p>
+  </div>
+  {% endif %}
+
+  <!-- Attachment -->
+  {% if notice.attachment_url %}
+  <div class="mb-8">
+    <a href="{{ notice.attachment_url }}" target="_blank"
+       class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-gold/30 text-gold hover:bg-gold/10 transition-colors">
+      <i data-lucide="paperclip" class="w-5 h-5"></i>
+      Download Attachment
+    </a>
+  </div>
+  {% endif %}
+
+  <!-- Content -->
+  <div class="prose prose-invert max-w-none">
+    {{ notice.content|linebreaks }}
+  </div>
+</article>
+{% endblock %}

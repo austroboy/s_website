@@ -1,0 +1,57 @@
+{% if items %}
+<div class="mb-1">
+  {% if label %}
+  <p
+    class="nav-section-label px-3 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-base-500"
+  >
+    {{ label }}
+  </p>
+  {% endif %} {% for item in items %} {% if item.children %}
+  <!-- Parent nav item with children -->
+  <div
+    class="nav-item has-children {% if item.active %}active{% endif %}"
+    role="button"
+    tabindex="0"
+    aria-expanded="{% if item.active %}true{% else %}false{% endif %}"
+  >
+    <i data-lucide="{{ item.icon }}" class="nav-icon"></i>
+    <span class="nav-label flex-1">{{ item.label }}</span>
+    {% if item.badge %}
+    <span class="nav-label notif-badge">{{ item.badge }}</span>
+    {% endif %}
+    <i
+      data-lucide="chevron-right"
+      class="chevron nav-label w-3.5 h-3.5 transition-transform duration-200 text-base-500"
+    ></i>
+  </div>
+
+  <!-- Submenu -->
+  <div class="submenu {% if item.active %}open{% endif %}">
+    {% for child in item.children %}
+    <a
+      href="{{ child.url }}"
+      class="submenu-item {% if child.active %}active{% endif %}"
+    >
+      <span class="submenu-dot"></span>
+      {{ child.label }} {% if child.badge %}
+      <span class="ml-auto notif-badge">{{ child.badge }}</span>
+      {% endif %}
+    </a>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <!-- Regular nav item -->
+  <a
+    href="{{ item.url }}"
+    class="nav-item {% if item.active %}active{% endif %}"
+  >
+    <i data-lucide="{{ item.icon }}" class="nav-icon"></i>
+    <span class="nav-label flex-1">{{ item.label }}</span>
+    {% if item.badge %}
+    <span class="notif-badge nav-label">{{ item.badge }}</span>
+    {% endif %}
+  </a>
+  {% endif %} {% endfor %}
+</div>
+{% endif %}

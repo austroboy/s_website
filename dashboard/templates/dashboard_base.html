@@ -1,0 +1,475 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}SchoolOS Dashboard{% endblock %}</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Syne (display) + DM Sans (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              base: {
+                950: "#0D1012",
+                900: "#16191D",
+                800: "#1C2026",
+                700: "#232830",
+                600: "#2C343D",
+                500: "#3D4752",
+              },
+              gold: { DEFAULT: "#F0A500", light: "#FFBE3C", dark: "#C47F00" },
+              cyan: { DEFAULT: "#00C2CC", light: "#34D9E3", dark: "#008C94" },
+              emerald: { pulse: "#10B981" },
+              slate: { muted: "#64748B", soft: "#94A3B8" },
+            },
+            fontFamily: {
+              display: ["Syne", "sans-serif"],
+              body: ["DM Sans", "sans-serif"],
+            },
+            boxShadow: {
+              "glow-gold": "0 0 24px rgba(240,165,0,0.18)",
+              "glow-cyan": "0 0 20px rgba(0,194,204,0.15)",
+              card: "0 1px 3px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.2)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background-color: #0D1012;
+        color: #E2E8F0;
+      }
+
+      /* ─── SCROLLBAR ─────────────────────────────────────── */
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: #16191D; }
+      ::-webkit-scrollbar-thumb { background: #2C343D; border-radius: 2px; }
+      ::-webkit-scrollbar-thumb:hover { background: #F0A500; }
+
+      /* ─── NAV SIDEBAR ───────────────────────────────────── */
+      #sidebar {
+        width: 268px;
+        min-width: 268px;
+        transition: width 0.25s ease, min-width 0.25s ease;
+        overflow: hidden;
+      }
+      #sidebar.collapsed { width: 68px; min-width: 68px; }
+      #sidebar.collapsed .nav-label,
+      #sidebar.collapsed .nav-section-label,
+      #sidebar.collapsed .brand-name,
+      #sidebar.collapsed .brand-tag,
+      #sidebar.collapsed .user-details,
+      #sidebar.collapsed .submenu,
+      #sidebar.collapsed .chevron { display: none !important; }
+      #sidebar.collapsed .nav-icon { margin: 0 auto; }
+
+      /* ─── NAV ITEMS ─────────────────────────────────────── */
+      .nav-item {
+        display: flex; align-items: center; gap: 10px;
+        padding: 9px 14px; border-radius: 10px;
+        font-size: 0.875rem; font-weight: 500; color: #94A3B8;
+        cursor: pointer; transition: all 0.15s ease;
+        text-decoration: none; white-space: nowrap;
+        position: relative;
+      }
+      .nav-item:hover { background: #232830; color: #E2E8F0; }
+      .nav-item.active {
+        background: linear-gradient(135deg, rgba(240,165,0,0.18), rgba(240,165,0,0.08));
+        color: #F0A500;
+        border: 1px solid rgba(240,165,0,0.2);
+      }
+      .nav-item.active .nav-icon { color: #F0A500; }
+      .nav-item.has-children.open .chevron { transform: rotate(90deg); }
+      .nav-icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+      /* ─── SUBMENU ───────────────────────────────────────── */
+      .submenu {
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.25s ease;
+      }
+      .submenu.open { max-height: 500px; }
+      .submenu-item {
+        display: flex; align-items: center; gap: 8px;
+        padding: 7px 14px 7px 42px;
+        font-size: 0.8125rem; color: #64748B;
+        border-radius: 8px; cursor: pointer;
+        text-decoration: none; transition: all 0.15s;
+      }
+      .submenu-item:hover { color: #CBD5E1; background: #1C2026; }
+      .submenu-item.active { color: #FFBE3C; }
+      .submenu-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+      /* ─── ACTIVE NAV ACCENT BAR ─────────────────────────── */
+      .nav-item.active::before {
+        content: '';
+        position: absolute; left: 0; top: 20%; height: 60%;
+        width: 3px; border-radius: 0 2px 2px 0;
+        background: #F0A500;
+      }
+
+      /* ─── STAT CARD GLOW ────────────────────────────────── */
+      .stat-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+      .stat-card:hover { transform: translateY(-2px); }
+
+      /* ─── PROGRESS BAR ──────────────────────────────────── */
+      .progress-bar-fill {
+        height: 4px; border-radius: 2px;
+        transition: width 0.8s cubic-bezier(0.22,1,0.36,1);
+      }
+
+      /* ─── PULSE DOT ─────────────────────────────────────── */
+      @keyframes pulse-ring {
+        0%   { transform: scale(1); opacity: 0.8; }
+        100% { transform: scale(2.2); opacity: 0; }
+      }
+      .pulse-dot::after {
+        content: ''; position: absolute; inset: 0; border-radius: 50%;
+        background: inherit; animation: pulse-ring 1.8s ease-out infinite;
+      }
+
+      /* ─── NOTIFICATION BADGE ────────────────────────────── */
+      .notif-badge {
+        font-size: 0.65rem; min-width: 17px; height: 17px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 999px; background: #F0A500; color: #0D1012;
+        font-weight: 700; padding: 0 4px;
+      }
+
+      /* ─── FADE IN ───────────────────────────────────────── */
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .fade-up { animation: fadeUp 0.4s ease forwards; opacity: 0; }
+      {% for i in "12345678" %}.delay-{{ forloop.counter }} { animation-delay: {{ forloop.counter0 }}00ms; }{% endfor %}
+    </style>
+
+    {% block extra_head %}{% endblock %}
+  </head>
+
+  <body class="h-full flex flex-col">
+    <!-- ═══════════════════════════════════════════════════
+       TOP HEADER BAR
+  ═══════════════════════════════════════════════════ -->
+    <header
+      class="bg-base-900 border-b border-base-700 h-14 flex items-center px-5 flex-shrink-0 z-30 sticky top-0"
+      style="margin-left: 268px"
+      id="main-header"
+    >
+      <div class="flex items-center gap-3 flex-1 min-w-0">
+        <!-- Mobile sidebar toggle -->
+        <button
+          id="sidebar-toggle"
+          class="p-2 rounded-lg text-slate-muted hover:text-white hover:bg-base-700 transition-colors lg:hidden"
+        >
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Collapse toggle (desktop) -->
+        <button
+          id="collapse-toggle"
+          class="p-2 rounded-lg text-slate-muted hover:text-white hover:bg-base-700 transition-colors hidden lg:flex"
+        >
+          <i data-lucide="panel-right" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-2 text-sm min-w-0 overflow-hidden">
+          {% block breadcrumb %}
+          <span class="text-slate-muted">Dashboard</span>
+          <i
+            data-lucide="chevron-right"
+            class="w-3 h-3 text-base-500 flex-shrink-0"
+          ></i>
+          <span class="text-white font-medium truncate">Overview</span>
+          {% endblock %}
+        </nav>
+      </div>
+
+      <!-- Right Actions -->
+      <div class="flex items-center gap-2 flex-shrink-0 ml-4">
+        <!-- School Switcher (multi-tenant) -->
+        <div
+          class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-base-800 border border-base-600 rounded-lg cursor-pointer hover:border-base-500 transition-colors"
+        >
+          <div
+            class="w-5 h-5 rounded-full bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center"
+          >
+            <i data-lucide="building-2" class="w-3 h-3 text-base-900"></i>
+          </div>
+          <span
+            class="text-sm font-medium text-slate-soft truncate max-w-[130px]"
+            >{{ request.tenant.name|default:"Global Tech Academy" }}</span
+          >
+          <i
+            data-lucide="chevrons-up-down"
+            class="w-3.5 h-3.5 text-slate-muted"
+          ></i>
+        </div>
+
+        <!-- Search -->
+        <button
+          class="p-2 rounded-lg text-slate-muted hover:text-white hover:bg-base-800 transition-colors"
+        >
+          <i data-lucide="search" class="w-4.5 h-4.5"></i>
+        </button>
+
+        <!-- Notifications -->
+        <button
+          class="relative p-2 rounded-lg text-slate-muted hover:text-white hover:bg-base-800 transition-colors"
+        >
+          <i data-lucide="bell" class="w-4.5 h-4.5"></i>
+          <span
+            class="absolute top-1.5 right-1.5 w-2 h-2 bg-gold rounded-full pulse-dot"
+          ></span>
+        </button>
+
+        <!-- Admin Avatar -->
+        <div class="flex items-center gap-2 pl-2 ml-1 border-l border-base-700">
+          <div
+            class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan to-cyan-dark flex items-center justify-center text-xs font-bold text-white"
+          >
+            {{ request.user.get_initials|default:"AD" }}
+          </div>
+          <span class="hidden md:block text-sm font-medium text-slate-soft"
+            >{{ request.user.get_short_name|default:"Admin" }}</span
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════
+       MAIN CONTENT + RIGHT SIDEBAR WRAPPER
+  ═══════════════════════════════════════════════════ -->
+    <div class="flex flex-1 overflow-hidden relative">
+      <!-- ─── MAIN CONTENT AREA ──────────────────────────── -->
+      <main
+        class="flex-1 overflow-y-auto min-w-0"
+        id="main-content"
+        style="margin-left: 268px; transition: margin-right 0.25s ease"
+      >
+        <div class="p-6 max-w-7xl mx-auto">
+          {% block content %}{% endblock %}
+        </div>
+      </main>
+
+      <!-- ─── RIGHT SIDEBAR NAVIGATION ──────────────────── -->
+      <aside
+        id="sidebar"
+        class="fixed left-0 top-0 h-full bg-base-900 border-l border-base-700 flex flex-col z-40 overflow-y-auto"
+        style="top: 0"
+      >
+        <!-- Brand / Logo Area -->
+        <div
+          class="flex items-center gap-3 px-5 py-4 border-b border-base-700 flex-shrink-0"
+          style="height: 56px"
+        >
+          <div
+            class="w-8 h-8 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center flex-shrink-0 shadow-glow-gold"
+          >
+            <i data-lucide="graduation-cap" class="w-4 h-4 text-base-900"></i>
+          </div>
+          <div class="brand-name min-w-0">
+            <p
+              class="text-sm font-display font-bold text-white leading-tight truncate"
+            >
+              SchoolOS
+            </p>
+            <p
+              class="brand-tag text-[10px] text-slate-muted leading-tight uppercase tracking-widest"
+            >
+              Platform Admin
+            </p>
+          </div>
+          <div class="ml-auto">
+            <span
+              class="brand-tag inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-gold/20 text-gold border border-gold/30"
+              >v2</span
+            >
+          </div>
+        </div>
+
+        <!-- Tenant Badge -->
+        <div class="nav-label px-4 pt-3 pb-1.5">
+          <div
+            class="flex items-center gap-2 px-3 py-2 bg-base-800 border border-base-700 rounded-xl"
+          >
+            <div class="relative flex-shrink-0">
+              <div
+                class="w-2 h-2 bg-emerald-pulse rounded-full pulse-dot"
+              ></div>
+            </div>
+            <div class="min-w-0">
+              <p
+                class="text-[11px] font-semibold text-white truncate leading-tight"
+              >
+                {{ request.tenant.name|default:"Global Tech Academy" }}
+              </p>
+              <p class="text-[10px] text-slate-muted truncate">
+                {{ request.tenant.subdomain|default:"global" }}.schoolos.app
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Sections -->
+        <nav class="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
+          {% include "includes/nav_section.html" with label="Main" items=nav_main %}
+          
+          {% include "includes/nav_section.html" with label="Content" items=nav_content %} 
+          
+          {% include "includes/nav_section.html" with label="System" items=nav_system %}
+        </nav>
+
+        <!-- Bottom: User Profile -->
+        <div class="border-t border-base-700 p-3 flex-shrink-0">
+          <div
+            class="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-base-800 cursor-pointer transition-colors group"
+          >
+            <div
+              class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan to-cyan-dark flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+            >
+              {{ request.user.get_initials|default:"AD" }}
+            </div>
+            <div class="user-details min-w-0 flex-1">
+              <p class="text-sm font-medium text-white leading-tight truncate">
+                {{ request.user.get_full_name|default:"Platform Admin" }}
+              </p>
+              <p class="text-[11px] text-slate-muted truncate">
+                {{ request.user.email|default:"admin@schoolos.app" }}
+              </p>
+            </div>
+           <form method="POST" action="{% url 'logout' %}" onsubmit="return confirm('Are you sure you want to logout?');">
+              {% csrf_token %}
+              <button
+                  type="submit"
+                  class="text-slate-muted hover:text-red-400 transition-colors p-1 rounded-lg hover:bg-red-500/10"
+              >
+                  <i data-lucide="log-out" class="w-4 h-4"></i>
+              </button>
+          </form>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <!-- end wrapper -->
+
+    <!-- ─── MOBILE OVERLAY ─────────────────────────────── -->
+    <div
+      id="mobile-overlay"
+      class="fixed inset-0 bg-black/60 z-30 hidden lg:hidden backdrop-blur-sm"
+      onclick="closeSidebar()"
+    ></div>
+
+    <script>
+      // Init Lucide icons
+      lucide.createIcons();
+
+      // ── Collapse sidebar (desktop) ──────────────────────
+      const sidebar = document.getElementById("sidebar");
+      const mainContent = document.getElementById("main-content");
+      const mainHeader = document.getElementById("main-header");
+      const collapseBtn = document.getElementById("collapse-toggle");
+
+      function updateMainMargin() {
+        const w = sidebar.classList.contains("collapsed") ? "68px" : "268px";
+        mainContent.style.marginRight = w;
+        mainHeader.style.marginRight = w;
+      }
+
+      collapseBtn &&
+        collapseBtn.addEventListener("click", () => {
+          sidebar.classList.toggle("collapsed");
+          updateMainMargin();
+        });
+
+      // ── Mobile sidebar toggle ────────────────────────────
+      const toggleBtn = document.getElementById("sidebar-toggle");
+      const overlay = document.getElementById("mobile-overlay");
+
+      function closeSidebar() {
+        sidebar.style.transform = "translateX(100%)";
+        overlay.classList.add("hidden");
+      }
+
+      toggleBtn &&
+        toggleBtn.addEventListener("click", () => {
+          sidebar.style.transform = "translateX(0)";
+          overlay.classList.remove("hidden");
+        });
+
+      // Mobile: sidebar starts offscreen
+      if (window.innerWidth < 1024) {
+        sidebar.style.transform = "translateX(100%)";
+        sidebar.style.transition = "transform 0.25s ease";
+        mainContent.style.marginRight = "0";
+        mainHeader.style.marginRight = "0";
+      }
+
+      // ── Submenu accordion ───────────────────────────────
+      document.querySelectorAll(".nav-item.has-children").forEach((item) => {
+        item.addEventListener("click", () => {
+          const submenu = item.nextElementSibling;
+          if (!submenu || !submenu.classList.contains("submenu")) return;
+          const isOpen = submenu.classList.contains("open");
+
+          // Close all
+          document
+            .querySelectorAll(".submenu.open")
+            .forEach((m) => m.classList.remove("open"));
+          document
+            .querySelectorAll(".nav-item.has-children.open")
+            .forEach((i) => i.classList.remove("open"));
+
+          if (!isOpen) {
+            submenu.classList.add("open");
+            item.classList.add("open");
+          }
+        });
+      });
+
+      // ── Mark active nav items ────────────────────────────
+      const path = window.location.pathname;
+      document
+        .querySelectorAll(".nav-item[href], .submenu-item[href]")
+        .forEach((el) => {
+          if (
+            el.getAttribute("href") === path ||
+            (path !== "/" && path.startsWith(el.getAttribute("href") + "/"))
+          ) {
+            el.classList.add("active");
+            // Open parent submenu if child is active
+            const parent = el.closest(".submenu");
+            if (parent) {
+              parent.classList.add("open");
+              parent.previousElementSibling?.classList.add("open", "active");
+            }
+          }
+        });
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Preview: {{ event.title }} - {{ tenant.name }}{% endblock %}
+
+{% block content %}
+<div class="bg-base-900 border-b border-base-700 py-3 sticky top-0 z-50">
+  <div class="container mx-auto px-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="px-2 py-1 bg-gold/10 text-gold text-xs rounded-lg border border-gold/20">PREVIEW MODE</span>
+      <span class="text-sm text-slate-muted">{{ tenant.name }}</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/dashboard/events/{{ event.id }}/edit/" 
+         class="px-4 py-2 bg-gold text-base-900 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors">
+        <i data-lucide="edit-3" class="w-4 h-4 inline mr-1"></i>
+        Edit Event
+      </a>
+      <a href="/dashboard/events/" 
+         class="px-4 py-2 border border-base-600 text-slate-muted rounded-xl text-sm hover:text-white hover:border-base-500 transition-colors">
+        Back to Dashboard
+      </a>
+    </div>
+  </div>
+</div>
+
+<article class="container mx-auto px-4 py-8 max-w-4xl">
+  <!-- Featured Image -->
+  {% if event.featured_image %}
+  <div class="mb-8 rounded-2xl overflow-hidden border border-base-700">
+    <img src="{{ event.featured_image }}" alt="{{ event.title }}" class="w-full">
+  </div>
+  {% endif %}
+  
+  <!-- Event Date Badge -->
+  <div class="inline-flex items-center gap-2 px-4 py-2 bg-gold/10 text-gold rounded-full border border-gold/20 mb-6">
+    <i data-lucide="calendar" class="w-4 h-4"></i>
+    <span class="text-sm font-medium">
+      {{ event.start_date|date:"l, F j, Y" }} • {{ event.start_date|date:"g:i A" }} - {{ event.end_date|date:"g:i A" }}
+    </span>
+  </div>
+  
+  <!-- Title -->
+  <h1 class="font-display text-4xl font-bold text-white mb-4">{{ event.title }}</h1>
+  
+  <!-- Venue -->
+  {% if event.venue %}
+  <div class="flex items-center gap-2 text-slate-soft mb-6">
+    <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
+    <span>{{ event.venue }}</span>
+  </div>
+  {% endif %}
+  
+  <!-- Registration Link -->
+  {% if event.registration_link %}
+  <div class="mb-8">
+    <a href="{{ event.registration_link }}" target="_blank"
+       class="inline-flex items-center gap-2 px-6 py-3 bg-gold text-base-900 font-semibold rounded-xl hover:bg-gold-light transition-colors">
+      <i data-lucide="external-link" class="w-5 h-5"></i>
+      Register Now
+    </a>
+  </div>
+  {% endif %}
+  
+  <!-- Summary (if different from content) -->
+  {% if event.summary and event.summary != event.content|truncatechars:300 %}
+  <div class="bg-base-800/50 border border-base-700 rounded-xl p-6 mb-8">
+    <p class="text-lg text-slate-soft italic">{{ event.summary }}</p>
+  </div>
+  {% endif %}
+  
+  <!-- Main Content -->
+  <div class="prose prose-invert max-w-none">
+    {{ event.content|linebreaks }}
+  </div>
+</article>
+{% endblock %}

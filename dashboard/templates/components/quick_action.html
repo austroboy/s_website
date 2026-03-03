@@ -1,0 +1,34 @@
+{% url url as action_url %}
+
+{% if color == "cyan" %}
+    {% with bg="bg-cyan/10" border="border-cyan/20" text="text-cyan" hover="hover:bg-cyan/20" %}
+    {% endwith %}
+{% elif color == "gold" %}
+    {% with bg="bg-gold/10" border="border-gold/20" text="text-gold" hover="hover:bg-gold/20" %}
+    {% endwith %}
+{% elif color == "rose" %}
+    {% with bg="bg-rose-500/10" border="border-rose-500/20" text="text-rose-400" hover="hover:bg-rose-500/20" %}
+    {% endwith %}
+{% elif color == "purple" %}
+    {% with bg="bg-purple-500/10" border="border-purple-500/20" text="text-purple-400" hover="hover:bg-purple-500/20" %}
+    {% endwith %}
+{% elif color == "emerald" %}
+    {% with bg="bg-emerald-500/10" border="border-emerald-500/20" text="text-emerald-400" hover="hover:bg-emerald-500/20" %}
+    {% endwith %}
+{% elif color == "orange" %}
+    {% with bg="bg-orange-500/10" border="border-orange-500/20" text="text-orange-400" hover="hover:bg-orange-500/20" %}
+    {% endwith %}
+{% else %}
+    {% with bg="bg-base-700" border="border-base-600" text="text-slate-soft" hover="hover:bg-base-600" %}
+    {% endwith %}
+{% endif %}
+
+    <a href="{{ action_url }}"
+       class="flex flex-col items-center gap-2 p-3 rounded-xl border {{ border }} {{ bg }} {{ hover }} transition-all group cursor-pointer">
+        <div class="w-8 h-8 rounded-lg {{ bg }} border {{ border }} flex items-center justify-center">
+            <i data-lucide="{{ icon }}" class="w-4 h-4 {{ text }}"></i>
+        </div>
+        <span class="text-xs font-medium text-slate-soft group-hover:text-white transition-colors text-center leading-tight">
+            {{ label }}
+        </span>
+    </a>

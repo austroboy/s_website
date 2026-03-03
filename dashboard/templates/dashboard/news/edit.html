@@ -1,0 +1,394 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Edit News - {{ tenant.name }}{% endblock %}
+
+{% block breadcrumb %}
+<span class="text-slate-muted">Content</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
+<span class="text-slate-muted">News</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
+<span class="text-white font-medium">Edit: {{ news.title|truncatechars:30 }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="fade-up delay-1 mb-7">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="font-display text-2xl font-bold text-white leading-tight">
+        Edit Article
+      </h1>
+      <p class="mt-0.5 text-sm text-slate-muted">
+        Update news article for {{ tenant.name }}
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="/dashboard/news/" 
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back to News
+      </a>
+      <a href="{% url 'news:detail' news.slug %}" target="_blank" 
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-base-700 text-white hover:bg-base-600 transition-colors">
+        <i data-lucide="external-link" class="w-4 h-4"></i>
+        View Live
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Edit News Form - সবকিছু একটি ফর্মের ভিতরে -->
+<div class="fade-up delay-2">
+  <form method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+    {% csrf_token %}
+    
+    <!-- Main Form - 2 columns -->
+    <div class="lg:col-span-2">
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-6 py-5 border-b border-base-700 flex items-center justify-between">
+          <h2 class="font-display font-semibold text-white">Edit Article Details</h2>
+          <span class="text-xs text-slate-muted">
+            <i data-lucide="clock" class="w-3 h-3 inline mr-1"></i>
+            Last updated: {{ news.updated_at|date:"M d, Y H:i" }}
+          </span>
+        </div>
+        
+        <div class="p-6 space-y-5">
+          <!-- Title Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Article Title <span class="text-gold">*</span>
+            </label>
+            <input type="text" 
+                   name="title" 
+                   id="title"
+                   value="{{ news.title }}"
+                   required
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          </div>
+          
+          <!-- Slug Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              URL Slug
+            </label>
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-slate-muted whitespace-nowrap">{{ request.get_host }}/news/</span>
+              <input type="text" 
+                     name="slug" 
+                     id="slug"
+                     value="{{ news.slug }}"
+                     class="flex-1 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            </div>
+          </div>
+          
+          <!-- Category -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Category
+            </label>
+            <select name="category" 
+                    class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+              <option value="" class="bg-base-800">Select a category</option>
+              <option value="academic" class="bg-base-800" {% if news.category == 'academic' %}selected{% endif %}>Academic</option>
+              <option value="event" class="bg-base-800" {% if news.category == 'event' %}selected{% endif %}>Event</option>
+              <option value="achievement" class="bg-base-800" {% if news.category == 'achievement' %}selected{% endif %}>Achievement</option>
+              <option value="announcement" class="bg-base-800" {% if news.category == 'announcement' %}selected{% endif %}>Announcement</option>
+              <option value="general" class="bg-base-800" {% if news.category == 'general' %}selected{% endif %}>General</option>
+            </select>
+          </div>
+          
+          <!-- Summary Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Summary <span class="text-gold">*</span>
+            </label>
+            <textarea name="summary" 
+                      id="summary"
+                      required
+                      rows="3"
+                      class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">{{ news.summary }}</textarea>
+          </div>
+          
+          <!-- Content Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Full Content <span class="text-gold">*</span>
+            </label>
+            <textarea name="content" 
+                      id="content"
+                      required
+                      rows="12"
+                      class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors font-mono">{{ news.content }}</textarea>
+          </div>
+          
+          <!-- Author & Tags Row -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Author -->
+            <div>
+              <label class="block text-sm font-medium text-slate-soft mb-2">
+                Author Name
+              </label>
+              <input type="text" 
+                     name="author_name" 
+                     value="{{ news.author_name|default:request.user.get_full_name }}"
+                     class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            </div>
+            
+            <!-- Tags -->
+            <div>
+              <label class="block text-sm font-medium text-slate-soft mb-2">
+                Tags
+              </label>
+              <input type="text" 
+                     name="tags" 
+                     value="{{ tags_string }}"
+                     placeholder="sports, annual, 2024"
+                     class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+              <p class="mt-1.5 text-xs text-slate-muted">
+                Comma-separated tags
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sidebar - 1 column (এখন ফর্মের ভিতরে) -->
+    <div class="lg:col-span-1 space-y-5">
+      <!-- Status Card -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-base-700">
+          <h3 class="font-display font-semibold text-white">Article Status</h3>
+        </div>
+        <div class="p-5">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-sm text-slate-soft">Current Status</span>
+            {% if news.is_published %}
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+              Published
+            </span>
+            {% else %}
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-base-600/50 text-slate-soft border border-base-600">
+              <span class="w-1.5 h-1.5 bg-base-500 rounded-full"></span>
+              Draft
+            </span>
+            {% endif %}
+          </div>
+          
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-slate-muted">SMS ID</span>
+              <span class="text-white font-mono text-xs">{{ news.sms_id }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-muted">Created</span>
+              <span class="text-white">{{ news.created_at|date:"M d, Y" }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-muted">Last Modified</span>
+              <span class="text-white">{{ news.updated_at|date:"M d, Y H:i" }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-muted">Last Synced</span>
+              <span class="text-white">{{ news.last_synced|date:"M d, Y H:i" }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-muted">Views</span>
+              <span class="text-white">{{ news.view_count|default:"0" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Featured Image URL Card -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-base-700">
+          <h3 class="font-display font-semibold text-white">Featured Image URL</h3>
+        </div>
+        <div class="p-5">
+          <!-- Current Image Preview (if exists) -->
+          {% if news.featured_image %}
+          <div class="mb-4" id="current-image-container">
+            <p class="text-xs text-slate-muted mb-2">Current image:</p>
+            <div class="relative">
+              <img src="{{ news.featured_image }}" alt="{{ news.title }}" class="w-full rounded-xl border border-base-600 max-h-48 object-cover">
+              <button type="button" 
+                      onclick="removeCurrentImage()"
+                      class="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/80 text-white hover:bg-red-600 transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <input type="hidden" name="remove_image" id="remove-image" value="false">
+          </div>
+          {% endif %}
+          
+          <!-- Image URL Input -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              {% if news.featured_image %}New Image URL (optional){% else %}Image URL{% endif %}
+            </label>
+            <input type="url" 
+                   name="featured_image" 
+                   id="featured_image_url"
+                   value="{{ news.featured_image }}"
+                   placeholder="https://example.com/image.jpg"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"
+                   onchange="previewImageFromUrl(this.value)">
+            <p class="mt-1.5 text-xs text-slate-muted">
+              Enter a direct URL to an image
+            </p>
+          </div>
+          
+          <!-- New Image Preview -->
+          <div id="new-image-preview-container" class="mt-4 hidden">
+            <p class="text-xs text-slate-muted mb-2">New image preview:</p>
+            <img id="new-image-preview" src="" alt="Preview" class="w-full rounded-xl border border-base-600 max-h-48 object-cover">
+            <button type="button" 
+                    onclick="clearNewImageUrl()"
+                    class="mt-2 text-xs text-red-400 hover:text-red-300 transition-colors">
+              <i data-lucide="x" class="w-3 h-3 inline mr-1"></i>
+              Clear new image
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tags Preview -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-base-700">
+          <h3 class="font-display font-semibold text-white">Tags</h3>
+        </div>
+        <div class="p-5">
+          {% if news.tags %}
+          <div class="flex flex-wrap gap-2">
+            {% for tag in news.tags %}
+            <span class="px-2 py-1 rounded-lg bg-base-700 text-xs text-slate-soft border border-base-600">
+              #{{ tag }}
+            </span>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="text-sm text-slate-muted text-center py-2">No tags added</p>
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- Danger Zone -->
+      <div class="bg-base-800 border border-red-500/30 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-red-500/30 bg-red-500/5">
+          <h3 class="font-display font-semibold text-red-400">Danger Zone</h3>
+        </div>
+        <div class="p-5">
+          <p class="text-sm text-slate-soft mb-4">
+            Once you delete an article, it cannot be recovered. Please be certain.
+          </p>
+          <button type="button" onclick="confirmDelete({{ news.id }}, '{{ news.title|escapejs }}')"
+                  class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-red-500/50 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition-colors">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+            Delete Article
+          </button>
+        </div>
+      </div>
+      
+      <!-- Form Action Buttons (এখন এখানে) -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="p-5">
+          <div class="flex flex-col gap-3">
+            <a href="/dashboard/news/" 
+               class="w-full px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors text-center">
+              Cancel
+            </a>
+            <button type="submit" name="action" value="draft"
+                    class="w-full px-5 py-2.5 rounded-xl border border-gold/30 text-gold hover:bg-gold/10 transition-colors">
+              {% if news.is_published %}Unpublish & Save Draft{% else %}Save as Draft{% endif %}
+            </button>
+            <button type="submit" name="action" value="publish"
+                    class="w-full px-5 py-2.5 rounded-xl bg-gold text-base-900 font-semibold hover:bg-gold-light transition-colors shadow-glow-gold">
+              {% if news.is_published %}Update & Publish{% else %}Publish Article{% endif %}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+  <div class="bg-base-800 border border-base-700 rounded-2xl max-w-md w-full mx-4 overflow-hidden shadow-2xl">
+    <div class="px-6 py-4 border-b border-base-700">
+      <h3 class="font-display font-semibold text-white text-lg">Confirm Delete</h3>
+    </div>
+    <div class="p-6">
+      <p class="text-slate-soft mb-2">Are you sure you want to delete:</p>
+      <p class="text-white font-medium mb-4" id="delete-title"></p>
+      <p class="text-sm text-red-400">This action cannot be undone.</p>
+    </div>
+    <div class="px-6 py-4 border-t border-base-700 flex items-center justify-end gap-3">
+      <button onclick="closeDeleteModal()" 
+              class="px-4 py-2 border border-base-600 text-slate-muted rounded-xl hover:text-white hover:border-base-500 transition-colors">
+        Cancel
+      </button>
+      <form id="delete-form" method="POST" action="/dashboard/news/{{ news.id }}/delete/" class="inline">
+        {% csrf_token %}
+        <button type="submit" 
+                class="px-4 py-2 bg-red-500/10 text-red-400 border border-red-500/30 rounded-xl hover:bg-red-500/20 hover:text-red-300 transition-colors">
+          Delete Permanently
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+// Image handling
+function removeCurrentImage() {
+  document.getElementById('current-image-container').remove();
+  document.getElementById('remove-image').value = 'true';
+}
+
+function previewImageFromUrl(url) {
+  const previewContainer = document.getElementById('new-image-preview-container');
+  const previewImg = document.getElementById('new-image-preview');
+  
+  if (url && url.trim() !== '') {
+    previewImg.src = url;
+    previewContainer.classList.remove('hidden');
+    
+    // Handle error if image fails to load
+    previewImg.onerror = function() {
+      previewImg.src = '';
+      previewContainer.classList.add('hidden');
+      alert('Invalid image URL or image cannot be loaded');
+    };
+  } else {
+    previewContainer.classList.add('hidden');
+  }
+}
+
+function clearNewImageUrl() {
+  document.getElementById('featured_image_url').value = '';
+  document.getElementById('new-image-preview-container').classList.add('hidden');
+}
+
+// Delete confirmation
+function confirmDelete(id, title) {
+  document.getElementById('delete-title').textContent = title;
+  document.getElementById('deleteModal').classList.remove('hidden');
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.add('hidden');
+}
+
+// Close modal when clicking outside
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeDeleteModal();
+  }
+});
+</script>
+{% endblock %}
