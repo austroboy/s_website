@@ -107,9 +107,9 @@ def build_nav_context(request):
         },
         {
             'label': 'Achievements',
-            'url':   '/achievements/',
+            'url':   '/achievements/dashboard/achievements/',
             'icon':  'trophy',
-            'active': is_active('/achievements/'),
+            'active': is_active('/achievements/dashboard/achievements/'),
         },
     ]
 
