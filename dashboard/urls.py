@@ -11,6 +11,8 @@ from . import views_programs  # Add this import
 
 urlpatterns = [
     path('', views.dashboard_home, name='home'),
+    path('logout/', views.logout_view, name='logout'),
+    path("login/", views.login_view, name="login"),
     
     # News management
     path('news/', views_news.dashboard_news_list, name='news_list'),
