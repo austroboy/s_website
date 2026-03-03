@@ -127,9 +127,9 @@ def build_nav_context(request):
         },
         {
             'label': 'Navigation',
-            'url':   '/settings/navigation/',
+            'url':   '/navigation/menus/',
             'icon':  'menu',
-            'active': is_active('/settings/navigation/'),
+            'active': is_active('/navigation/'),
         },
         {
             'label': 'Homepage Builder',
