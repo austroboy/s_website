@@ -47,6 +47,27 @@ class FontPair(models.Model):
     heading_weights = models.CharField(max_length=50, default='400,600,700')
     body_weights = models.CharField(max_length=50, default='400,500')
 
+    @property
+    def heading_weights_list(self):
+        return [w.strip() for w in self.heading_weights.split(',')]
+
+    @property
+    def body_weights_list(self):
+        return [w.strip() for w in self.body_weights.split(',')]
+
+    def google_fonts_url(self):
+        """Returns the full Google Fonts embed URL for this pair."""
+        h = self.heading_font.replace(' ', '+')
+        b = self.body_font.replace(' ', '+')
+        hw = ';'.join(f'0,{w}' for w in self.heading_weights_list)
+        bw = ';'.join(f'0,{w}' for w in self.body_weights_list)
+        return (
+            f'https://fonts.googleapis.com/css2?'
+            f'family={h}:ital,wght@{hw}'
+            f'&family={b}:ital,wght@{bw}'
+            f'&display=swap'
+        )
+
     def __str__(self):
         return f"Fonts for {self.tenant.name}"
 

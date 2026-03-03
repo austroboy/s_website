@@ -1,0 +1,97 @@
+
+
+<div class="asset-card fade-up">
+  
+  <div class="flex items-center gap-3 px-5 py-3.5 border-b border-base-700">
+    <div class="w-8 h-8 rounded-xl border flex items-center justify-center flex-shrink-0 {{ icon_bg }}">
+      <i data-lucide="{{ icon }}" class="w-4 h-4 {{ icon_color }}"></i>
+    </div>
+    <div class="min-w-0 flex-1">
+      <p class="text-sm font-semibold text-white leading-tight">{{ field_label }}</p>
+      <p class="text-[11px] text-slate-muted leading-tight mt-0.5">{{ field_hint }}</p>
+    </div>
+    {% if current_image %}
+    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex-shrink-0">
+      Uploaded
+    </span>
+    {% else %}
+    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-base-700 text-slate-muted border border-base-600 flex-shrink-0">
+      Empty
+    </span>
+    {% endif %}
+  </div>
+
+  
+  <div class="p-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+      {# Current / preview pane #}
+      <div>
+        <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Current</p>
+        <div class="rounded-xl {{ checker_bg }} border border-base-700 flex items-center justify-center p-4"
+             style="min-height: 100px;">
+          {% if current_image %}
+            <img src="{{ current_image.url }}"
+                 class="max-h-16 max-w-full object-contain rounded"
+                 alt="{{ field_label }}">
+          {% else %}
+            <div class="flex flex-col items-center gap-2 text-base-500">
+              <i data-lucide="{{ icon }}" class="w-8 h-8 opacity-30"></i>
+              <span class="text-[11px]">No image</span>
+            </div>
+          {% endif %}
+        </div>
+
+        
+        {% if current_image %}
+        <label class="mt-2 flex items-center gap-2 cursor-pointer group" id="clear-label-{{ field_key }}">
+          <input type="checkbox"
+                 name="{{ field_key }}-clear"
+                 id="id_{{ field_key }}-clear"
+                 class="sr-only"
+                 onchange="toggleClear('{{ field_key }}', this.checked)">
+          <span class="clear-check" id="clear-check-{{ field_key }}">
+            <i data-lucide="x" class="w-2.5 h-2.5 text-white hidden" id="clear-icon-{{ field_key }}"></i>
+          </span>
+          <span class="text-xs text-slate-muted group-hover:text-rose-400 transition-colors">Remove current image</span>
+        </label>
+        {% endif %}
+      </div>
+
+     
+      <div class="field-wrap">
+        <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Upload New</p>
+        <div class="drop-zone" id="drop-{{ field_key }}">
+          <input type="file"
+                 name="{{ field_key }}"
+                 id="id_{{ field_key }}"
+                 accept="image/*"
+                 onchange="handleFileChange('{{ field_key }}', this)">
+          <div class="pointer-events-none">
+            <div class="w-9 h-9 rounded-xl bg-base-700 border border-base-600 flex items-center justify-center mx-auto mb-2">
+              <i data-lucide="upload-cloud" class="w-4 h-4 text-slate-muted"></i>
+            </div>
+            <p class="text-xs font-medium text-white" id="file-name-{{ field_key }}">
+              Drop file or <span class="text-gold underline">browse</span>
+            </p>
+            <p class="text-[10px] text-base-500 mt-0.5">PNG, SVG, JPG, ICO</p>
+          </div>
+        </div>
+
+        
+        <div class="img-preview mt-2" id="img-preview-{{ field_key }}">
+          <img src="" alt="" class="w-full rounded-xl object-contain max-h-24">
+          <div class="absolute top-1.5 right-1.5">
+            <button type="button" onclick="clearSelection('{{ field_key }}')"
+              class="w-5 h-5 rounded-full bg-black/60 flex items-center justify-center hover:bg-rose-500 transition-colors">
+              <i data-lucide="x" class="w-3 h-3 text-white"></i>
+            </button>
+          </div>
+        </div>
+
+        <p class="text-[10px] text-base-500 mt-2">{{ recommended }}</p>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -41,7 +41,7 @@ def build_nav_context(request):
             'icon':  'clipboard-list',
             'active': is_active('/admissions/'),
             'children': [
-                {'label': 'Inquiries',     'url': '/admissions/inquiries/',    'active': is_active('/admissions/inquiries/')},
+                {'label': 'Inquiries',     'url': '/contact/admissions/inquiries/',    'active': is_active('/dashboard/admissions/inquiries/')},
                 {'label': 'Forms',         'url': '/admissions/forms/',        'active': is_active('/admissions/forms/')},
                 {'label': 'Applications',  'url': '/admissions/applications/', 'active': is_active('/admissions/applications/')},
             ],
@@ -107,9 +107,9 @@ def build_nav_context(request):
         },
         {
             'label': 'Achievements',
-            'url':   '/achievements/',
+            'url':   '/achievements/dashboard/achievements/',
             'icon':  'trophy',
-            'active': is_active('/achievements/'),
+            'active': is_active('/achievements/dashboard/achievements/'),
         },
     ]
 
@@ -120,19 +120,20 @@ def build_nav_context(request):
             'icon':  'palette',
             'active': is_active('/settings/branding/'),
             'children': [
-                {'label': 'Colors & Fonts', 'url': '/dashboard/settings/branding/colors/', 'active': is_active('/settings/branding/colors/')},
-                {'label': 'Logo & Assets',  'url': '/settings/branding/assets/', 'active': is_active('/settings/branding/assets/')},
+                {'label': 'Colors', 'url': '/dashboard/settings/branding/colors/', 'active': is_active('/settings/branding/colors/')},
+                {'label': 'Fonts', 'url': '/dashboard/fonts', 'active': is_active('/fonts')},
+                {'label': 'Logo & Assets',  'url': '/dashboard/settings/branding/assets/', 'active': is_active('/settings/branding/assets/')},
             ],
         },
         {
             'label': 'Navigation',
-            'url':   '/settings/navigation/',
+            'url':   '/navigation/menus/',
             'icon':  'menu',
-            'active': is_active('/settings/navigation/'),
+            'active': is_active('/navigation/'),
         },
         {
             'label': 'Homepage Builder',
-            'url':   '/settings/homepage/',
+            'url':   '/settings/homepage/', 
             'icon':  'layout-template',
             'active': is_active('/settings/homepage/'),
         },
@@ -144,7 +145,7 @@ def build_nav_context(request):
         },
         {
             'label': 'Contact & Forms',
-            'url':   '/contact/submissions/',
+            'url':   '/contact/contact-submissions/',
             'icon':  'mail',
             'active': is_active('/contact/'),
         },
