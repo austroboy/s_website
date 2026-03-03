@@ -71,6 +71,12 @@
           {{ item.url }} {% if item.page %}(Page: {{ item.page.title }}){% endif %}
         </p>
       </div>
+      <div>
+       <form method="POST" action="{% url 'navigation:delete_menu_item_manager' item.id %}">
+            {% csrf_token %}
+            <button type="submit" class="text-red-500">Delete</button>
+        </form>
+      </div>
     </div>
   </div>
   {% endfor %}

@@ -83,7 +83,6 @@ def menu_item_manager(request, menu_id):
 
             messages.success(request, "Menu item updated.")
             return redirect("navigation:menu_item_manager", menu_id=menu.id)
-
     context = {
         "menu": menu,
         "items": items,
@@ -92,3 +91,9 @@ def menu_item_manager(request, menu_id):
     }
 
     return render(request, "dashboard/navigation/menu_item_manager.html", context)
+@login_required
+def delete_menu_item_manager(request, menu_item_id):
+    menu_item = get_object_or_404(MenuItem, pk=menu_item_id)
+    menu_item.delete()
+    messages.success(request, "Menu item deleted.")
+    return redirect("navigation:menu_list")
