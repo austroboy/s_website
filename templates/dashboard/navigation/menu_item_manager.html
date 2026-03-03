@@ -1,0 +1,79 @@
+{% extends "dashboard_base.html" %}
+
+{% block content %}
+
+<h1 class="text-2xl font-display font-bold text-white mb-6">
+  Manage Items — {{ menu.name }}
+</h1>
+
+<form method="post" class="mb-6 bg-base-800 p-6 rounded-2xl border border-base-700">
+  {% csrf_token %}
+  <input type="hidden" name="action" value="create">
+
+  <div class="grid grid-cols-2 gap-4">
+
+    <!-- Parent -->
+    <select name="parent"
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+      <option value="">Top Level</option>
+      {% for item in items %}
+        {% if not item.parent %}
+        <option value="{{ item.id }}">{{ item.title }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+
+    <!-- Page -->
+    <select name="page"
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+      <option value="">No Page</option>
+      {% for page in pages %}
+      <option value="{{ page.id }}">{{ page.title }}</option>
+      {% endfor %}
+    </select>
+
+    <input type="text" name="title" placeholder="Title"
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+    <input type="text" name="url" placeholder="URL"
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+    <input type="number" name="order" placeholder="Order"
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+  </div>
+
+  <div class="flex gap-4 mt-4">
+    <label class="text-sm text-slate-soft">
+      <input type="checkbox" name="target_blank"> Open in new tab
+    </label>
+    <label class="text-sm text-slate-soft">
+      <input type="checkbox" name="is_active" checked> Active
+    </label>
+  </div>
+
+  <button class="mt-4 px-4 py-2 bg-gold text-base-900 font-bold rounded-xl">
+    Add Item
+  </button>
+</form>
+
+<!-- LIST -->
+<div class="space-y-2">
+  {% for item in items %}
+  <div class="bg-base-800 border border-base-700 p-4 rounded-xl">
+    <div class="flex justify-between">
+      <div>
+        <p class="text-white font-semibold">
+          {% if item.parent %}— {% endif %}
+          {{ item.title }}
+        </p>
+        <p class="text-xs text-slate-muted">
+          {{ item.url }} {% if item.page %}(Page: {{ item.page.title }}){% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
