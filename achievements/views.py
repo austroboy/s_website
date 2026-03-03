@@ -12,7 +12,7 @@ class AchievementListView(ListView):
 
 class AchievementDetailView(DetailView):
     model = Achievement
-    template_name = 'achievements/detail.html'
+    template_name = 'components/page/details/achievement.html'
     context_object_name = 'achievement'
 
     def get_queryset(self):

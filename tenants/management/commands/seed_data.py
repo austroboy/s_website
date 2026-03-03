@@ -305,11 +305,13 @@ class Command(BaseCommand):
             if school_info['subdomain'] == 'global':
                 # 7a. Dummy Achievements (8 items)
                 for i in range(1, 9):
+                    img_url = f'https://picsum.photos/seed/achievement{i}/800/600'
                     Achievement.objects.get_or_create(
                         tenant=tenant,
                         title=f"{school_info['name']} Achievement {i}",
                         defaults={
-                            'description': 'Awarded for excellence in academics and sports.',
+                            'description': f'<p>Awarded for excellence in academics and sports at {school_info["name"]}. This milestone represents our dedication to student success and institutional growth.</p><p>We are proud of our students and faculty for their hard work and commitment.</p>',
+                            'image': img_url,
                             'date': timezone.now().date() - timedelta(days=i*30),
                             'is_published': True,
                             'order': i

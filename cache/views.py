@@ -133,11 +133,20 @@ class StaffListView(ListView):
 
 class StaffDetailView(DetailView):
     model = CachedStaff
-    template_name = 'cache/staff_detail.html'
+    template_name = 'components/page/details/staff.html'
     context_object_name = 'staff'
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get 5-6 other staff members from the same tenant for the sidebar
+        context['other_staff'] = CachedStaff.objects.filter(
+            tenant=self.object.tenant, 
+            is_published=True
+        ).exclude(id=self.object.id).order_by('?')[:6]
+        return context
 
 # ---- Programs (Academics) ----
 class ProgramListView(ListView):
