@@ -41,7 +41,7 @@ def build_nav_context(request):
             'icon':  'clipboard-list',
             'active': is_active('/admissions/'),
             'children': [
-                {'label': 'Inquiries',     'url': '/admissions/inquiries/',    'active': is_active('/admissions/inquiries/')},
+                {'label': 'Inquiries',     'url': '/contact/admissions/inquiries/',    'active': is_active('/dashboard/admissions/inquiries/')},
                 {'label': 'Forms',         'url': '/admissions/forms/',        'active': is_active('/admissions/forms/')},
                 {'label': 'Applications',  'url': '/admissions/applications/', 'active': is_active('/admissions/applications/')},
             ],
