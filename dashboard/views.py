@@ -145,7 +145,7 @@ def build_nav_context(request):
         },
         {
             'label': 'Contact & Forms',
-            'url':   '/contact/submissions/',
+            'url':   '/contact/contact-submissions/',
             'icon':  'mail',
             'active': is_active('/contact/'),
         },
