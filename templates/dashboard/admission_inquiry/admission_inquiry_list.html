@@ -1,0 +1,113 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Admission Inquiries — {{ tenant.name }}{% endblock %}
+
+{% block breadcrumb %}
+<span class="text-slate-muted">Dashboard</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
+<span class="text-slate-muted">Content</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
+<span class="text-white font-medium">Admission Inquiries</span>
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+  {% for message in messages %}
+  <div class="mb-4 px-4 py-3 rounded-xl border bg-emerald-500/10 border-emerald-500/20 text-emerald-400">
+    {{ message }}
+  </div>
+  {% endfor %}
+{% endif %}
+
+<!-- Header -->
+<div class="mb-6">
+  <h1 class="text-2xl font-display font-bold text-white">
+    Admission Inquiries
+  </h1>
+  <p class="text-sm text-slate-muted">
+    All incoming inquiries for {{ tenant.name }}
+  </p>
+</div>
+
+{% if inquiries %}
+<div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden">
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-sm text-left text-slate-soft">
+      <thead class="bg-base-900 border-b border-base-700 text-xs uppercase text-slate-muted tracking-wider">
+        <tr>
+          <th class="px-4 py-3">Name</th>
+          <th class="px-4 py-3">Email</th>
+          <th class="px-4 py-3">Phone</th>
+          <th class="px-4 py-3">Program</th>
+          <th class="px-4 py-3">Grade</th>
+          <th class="px-4 py-3">Message</th>
+          <th class="px-4 py-3">Date</th>
+          <th class="px-4 py-3 text-center">Status</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-base-700">
+        {% for inquiry in inquiries %}
+        <tr class="hover:bg-base-900/40 transition">
+          <td class="px-4 py-3 font-medium text-white">
+            {{ inquiry.full_name }}
+          </td>
+          <td class="px-4 py-3">
+            {{ inquiry.email }}
+          </td>
+          <td class="px-4 py-3">
+            {{ inquiry.phone }}
+          </td>
+          <td class="px-4 py-3">
+            {{ inquiry.program_of_interest|default:"—" }}
+          </td>
+          <td class="px-4 py-3">
+            {{ inquiry.grade_level|default:"—" }}
+          </td>
+          <td class="px-4 py-3 max-w-md ">
+            {{ inquiry.message|default:"—" }}
+          </td>
+          <td class="px-4 py-3 whitespace-nowrap">
+            {{ inquiry.created_at|date:"M d, Y H:i" }}
+          </td>
+
+          <!-- Status Toggle -->
+          <td class="px-4 py-3 text-center">
+            <form method="post"
+              action="{% url 'contact:admission_inquiry_toggle' inquiry.id %}">
+              {% csrf_token %}
+              <button type="submit"
+                class="px-3 py-1 rounded-lg text-xs font-semibold transition
+                {% if inquiry.is_contacted %}
+                  bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20
+                {% else %}
+                  bg-rose-500/10 text-rose-400 hover:bg-rose-500/20
+                {% endif %}
+                ">
+                {% if inquiry.is_contacted %}
+                  Contacted
+                {% else %}
+                  Pending
+                {% endif %}
+              </button>
+            </form>
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% else %}
+<div class="bg-base-800 border border-dashed border-base-700 rounded-2xl p-12 text-center text-slate-muted">
+  No admission inquiries yet.
+</div>
+{% endif %}
+
+{% endblock %}

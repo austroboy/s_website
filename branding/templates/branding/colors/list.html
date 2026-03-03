@@ -1,0 +1,280 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Color Palette — {{ tenant.name }}{% endblock %}
+
+{% block breadcrumb %}
+  <a  class="transition-colors" style="color:#64748B">Dashboard</a>
+  <i data-lucide="chevron-right" class="w-3 h-3" style="color:#3D4752"></i>
+  <span style="color:#64748B">Branding</span>
+  <i data-lucide="chevron-right" class="w-3 h-3" style="color:#3D4752"></i>
+  <span class="font-medium text-white">Color Palette</span>
+{% endblock %}
+
+{% block content %}
+
+<!-- ─── Page Header ─── -->
+<div class="fade-up d1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
+  <div>
+    <h1 class="font-bold text-white text-2xl leading-tight" style="font-family:'Syne',sans-serif">Color Palette</h1>
+    <p class="mt-0.5 text-sm" style="color:#64748B">
+      Token-based theme colors for <span style="color:#F0A500">{{ tenant.name }}</span>
+    </p>
+  </div>
+
+  {% if palette %}
+  <div class="flex items-center gap-2.5">
+    <a href="{% url 'branding:colors-update' %}"
+       class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+       style="background:rgba(240,165,0,.12);color:#F0A500;border:1px solid rgba(240,165,0,.3)">
+      <i data-lucide="pencil" class="w-4 h-4"></i> Update Colors
+    </a>
+    <form method="post" action="{% url 'branding:colors-delete' %}" id="delete-form">
+      {% csrf_token %}
+      <button type="button" onclick="openDeleteModal()"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+              style="background:rgba(244,63,94,.1);color:#F43F5E;border:1px solid rgba(244,63,94,.25)">
+        <i data-lucide="trash-2" class="w-4 h-4"></i> Delete
+      </button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+
+
+{% if palette %}
+
+  <!-- ─── Live Preview ─── -->
+  <div class="fade-up d2 rounded-2xl p-5 mb-6 relative overflow-hidden" style="background:#1C2026;border:1px solid #232830">
+    <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(0,81,255,.06);border-radius:50%;filter:blur(24px);pointer-events:none"></div>
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2.5">
+        <div class="p-1.5 rounded-lg" style="background:rgba(0,194,204,.1);border:1px solid rgba(0,194,204,.2)">
+          <i data-lucide="eye" class="w-4 h-4" style="color:#00C2CC"></i>
+        </div>
+        <span class="text-sm font-semibold text-white" style="font-family:'Syne',sans-serif">Live Theme Preview</span>
+      </div>
+      <span class="text-xs px-2 py-1 rounded-lg font-semibold" style="background:rgba(16,185,129,.1);color:#10B981;border:1px solid rgba(16,185,129,.2)">
+        Active
+      </span>
+    </div>
+    <!-- Site simulator driven by actual palette values -->
+    <div class="rounded-xl overflow-hidden" style="border:1px solid #2C343D">
+      <div class="flex items-center justify-between px-5 py-3"
+           style="background:{{ palette.secondary }}; color:{{ palette.footer_text }}">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-lg" style="background:{{ palette.primary }}"></div>
+          <span class="text-xs font-bold" style="font-family:'Syne',sans-serif">{{ tenant.name }}</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-xs" style="opacity:.6">About</span>
+          <span class="text-xs" style="opacity:.6">Academics</span>
+          <button class="text-xs px-3 py-1 rounded-lg font-semibold text-white"
+                  style="background:{{ palette.primary }}">Apply Now</button>
+        </div>
+      </div>
+      <div class="px-5 py-6 flex items-center justify-between"
+           style="background:linear-gradient(135deg, {{ palette.secondary }}, {{ palette.secondary_light }})">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold mb-2"
+               style="background:{{ palette.accent }}22;color:{{ palette.accent }};border:1px solid {{ palette.accent }}44">
+            <span class="w-1.5 h-1.5 rounded-full bg-white opacity-80"></span>
+            Excellence Since 1974
+          </div>
+          <h3 class="text-lg font-bold text-white mb-1" style="font-family:'Syne',sans-serif">Discover Your Potential</h3>
+          <p class="text-xs mb-3 max-w-xs text-white" style="opacity:.6">Shaping tomorrow's leaders through world-class education.</p>
+          <div class="flex gap-2">
+            <button class="text-xs px-3 py-1.5 rounded-lg font-semibold text-white"
+                    style="background:{{ palette.primary }}">Apply Now</button>
+            <button class="text-xs px-3 py-1.5 rounded-lg font-semibold text-white"
+                    style="border:1px solid rgba(255,255,255,.3)">Learn More</button>
+          </div>
+        </div>
+        <div class="hidden sm:block w-28 rounded-xl p-3"
+             style="background:{{ palette.primary }}22;border:1px solid {{ palette.primary }}44">
+          <div class="text-xs font-bold text-white" style="font-family:'Syne',sans-serif">2,500+</div>
+          <div class="text-xs text-white" style="opacity:.5">Students</div>
+        </div>
+      </div>
+      <div class="px-5 py-3 flex items-center justify-between"
+           style="background:{{ palette.footer_bg }};color:{{ palette.footer_text }}">
+        <span class="text-xs">© 2026 {{ tenant.name }}</span>
+        <div class="flex gap-3">
+          <span class="text-xs" style="opacity:.5">Privacy</span>
+          <span class="text-xs" style="opacity:.5">Contact</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Token Grid ─── -->
+  <div class="fade-up d3 grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+    <!-- Primary -->
+    <div class="rounded-2xl overflow-hidden" style="background:#1C2026;border:1px solid #232830">
+      <div class="px-4 py-3" style="border-bottom:1px solid #232830">
+        <p class="text-xs font-semibold text-white" style="font-family:'Syne',sans-serif">Primary Brand</p>
+      </div>
+      <div class="p-4 space-y-2.5">
+        {% include "branding/components/color_token_row.html" with label="Primary" key="primary" value=palette.primary %}
+        {% include "branding/components/color_token_row.html" with label="Primary Dark" key="primary_dark" value=palette.primary_dark %}
+        {% include "branding/components/color_token_row.html" with label="Primary Light" key="primary_light" value=palette.primary_light %}
+        {% include "branding/components/color_token_row.html" with label="Primary Glow" key="primary_glow" value=palette.primary_glow is_glow=True %}
+      </div>
+    </div>
+
+    <!-- Secondary & Accent -->
+    <div class="rounded-2xl overflow-hidden" style="background:#1C2026;border:1px solid #232830">
+      <div class="px-4 py-3" style="border-bottom:1px solid #232830">
+        <p class="text-xs font-semibold text-white" style="font-family:'Syne',sans-serif">Secondary & Accent</p>
+      </div>
+      <div class="p-4 space-y-2.5">
+        {% include "branding/components/color_token_row.html" with label="Secondary" key="secondary" value=palette.secondary %}
+        {% include "branding/components/color_token_row.html" with label="Secondary Light" key="secondary_light" value=palette.secondary_light %}
+        {% include "branding/components/color_token_row.html" with label="Accent" key="accent" value=palette.accent %}
+      </div>
+    </div>
+
+    <!-- Surfaces -->
+    <div class="rounded-2xl overflow-hidden" style="background:#1C2026;border:1px solid #232830">
+      <div class="px-4 py-3" style="border-bottom:1px solid #232830">
+        <p class="text-xs font-semibold text-white" style="font-family:'Syne',sans-serif">Surfaces & Layout</p>
+      </div>
+      <div class="p-4 space-y-2.5">
+        {% include "branding/components/color_token_row.html" with label="Surface" key="surface" value=palette.surface %}
+        {% include "branding/components/color_token_row.html" with label="Surface Alt" key="surface_alt" value=palette.surface_alt %}
+        {% include "branding/components/color_token_row.html" with label="Border" key="border" value=palette.border %}
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="rounded-2xl overflow-hidden" style="background:#1C2026;border:1px solid #232830">
+      <div class="px-4 py-3" style="border-bottom:1px solid #232830">
+        <p class="text-xs font-semibold text-white" style="font-family:'Syne',sans-serif">Typography</p>
+      </div>
+      <div class="p-4 space-y-2.5">
+        {% include "branding/components/color_token_row.html" with label="Body Text" key="text" value=palette.text %}
+        {% include "branding/components/color_token_row.html" with label="Muted Text" key="text_muted" value=palette.text_muted %}
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="rounded-2xl overflow-hidden" style="background:#1C2026;border:1px solid #232830">
+      <div class="px-4 py-3" style="border-bottom:1px solid #232830">
+        <p class="text-xs font-semibold text-white" style="font-family:'Syne',sans-serif">Footer</p>
+      </div>
+      <div class="p-4 space-y-2.5">
+        {% include "branding/components/color_token_row.html" with label="Footer Background" key="footer_bg" value=palette.footer_bg %}
+        {% include "branding/components/color_token_row.html" with label="Footer Text" key="footer_text" value=palette.footer_text %}
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="rounded-2xl overflow-hidden" style="background:#1C2026;border:1px solid #232830">
+      <div class="px-4 py-3" style="border-bottom:1px solid #232830">
+        <p class="text-xs font-semibold text-white" style="font-family:'Syne',sans-serif">Semantic / Status</p>
+      </div>
+      <div class="p-4 space-y-2.5">
+        {% include "branding/components/color_token_row.html" with label="Success" key="success" value=palette.success %}
+        {% include "branding/components/color_token_row.html" with label="Warning" key="warning" value=palette.warning %}
+        {% include "branding/components/color_token_row.html" with label="Error" key="error" value=palette.error %}
+      </div>
+    </div>
+
+    <!-- Dark mode (if set) -->
+    {% if palette.dark_primary or palette.dark_surface or palette.dark_text %}
+    <div class="rounded-2xl overflow-hidden" style="background:#1C2026;border:1px solid #232830">
+      <div class="px-4 py-3" style="border-bottom:1px solid #232830">
+        <p class="text-xs font-semibold text-white" style="font-family:'Syne',sans-serif">Dark Mode Overrides</p>
+      </div>
+      <div class="p-4 space-y-2.5">
+        {% if palette.dark_primary %}{% include "branding/components/color_token_row.html" with label="Dark Primary" key="dark_primary" value=palette.dark_primary %}{% endif %}
+        {% if palette.dark_surface %}{% include "branding/components/color_token_row.html" with label="Dark Surface" key="dark_surface" value=palette.dark_surface %}{% endif %}
+        {% if palette.dark_text %}{% include "branding/components/color_token_row.html" with label="Dark Text" key="dark_text" value=palette.dark_text %}{% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <!-- ─── Status bar ─── -->
+  <div class="fade-up d4 flex items-center gap-3 px-5 py-3.5 rounded-xl" style="background:#1C2026;border:1px solid #232830">
+    <div class="w-2 h-2 rounded-full pulse-dot" style="background:#10B981"></div>
+    <p class="text-sm" style="color:#94A3B8">
+      Color palette is <span class="font-semibold text-white">configured</span> and applied to your public website.
+    </p>
+    <a href="{% url 'branding:colors-update' %}" class="ml-auto text-xs font-semibold transition-colors" style="color:#F0A500">
+      Edit →
+    </a>
+  </div>
+
+
+{% else %}
+  <!-- ─── Empty State ─── -->
+  <div class="fade-up d2 flex flex-col items-center justify-center py-24 text-center">
+    <div class="w-20 h-20 rounded-3xl flex items-center justify-center mb-5"
+         style="background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.2)">
+      <i data-lucide="palette" class="w-9 h-9" style="color:#F0A500"></i>
+    </div>
+    <h2 class="text-xl font-bold text-white mb-2" style="font-family:'Syne',sans-serif">No Color Palette Configured</h2>
+    <p class="text-sm mb-8 max-w-sm leading-relaxed" style="color:#64748B">
+      Your school's public website is using default colors. Set up a custom palette to match your brand identity.
+    </p>
+    <a href="{% url 'branding:colors-create' %}"
+       class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold"
+       style="background:#F0A500;color:#0D1012;font-family:'Syne',sans-serif">
+      <i data-lucide="plus" class="w-4 h-4"></i>
+      Create Color Palette
+    </a>
+  </div>
+{% endif %}
+
+
+<!-- ── Delete Confirm Modal ── -->
+<div id="delete-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4"
+     style="background:rgba(0,0,0,.7);backdrop-filter:blur(4px)">
+  <div class="w-full max-w-md rounded-2xl p-6" style="background:#1C2026;border:1px solid #2C343D">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center"
+           style="background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.2)">
+        <i data-lucide="trash-2" class="w-5 h-5" style="color:#F43F5E"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-white" style="font-family:'Syne',sans-serif">Delete Color Palette</h3>
+        <p class="text-xs" style="color:#64748B">This action cannot be undone</p>
+      </div>
+    </div>
+    <p class="text-sm mb-6 leading-relaxed" style="color:#94A3B8">
+      Are you sure you want to delete the color palette for
+      <strong class="text-white">{{ tenant.name }}</strong>?
+      The website will immediately fall back to default colors.
+    </p>
+    <div class="flex gap-3">
+      <button onclick="closeDeleteModal()"
+              class="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors"
+              style="background:#232830;color:#94A3B8;border:1px solid #2C343D">
+        Cancel
+      </button>
+      <button onclick="document.getElementById('delete-form').submit()"
+              class="flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all"
+              style="background:rgba(244,63,94,.15);color:#F43F5E;border:1px solid rgba(244,63,94,.3)">
+        Yes, Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  function openDeleteModal() {
+    document.getElementById('delete-modal').classList.remove('hidden');
+    document.getElementById('delete-modal').classList.add('flex');
+  }
+  function closeDeleteModal() {
+    document.getElementById('delete-modal').classList.add('hidden');
+    document.getElementById('delete-modal').classList.remove('flex');
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,458 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block title %}Brand Assets — {{ tenant.name|default:"SchoolOS" }}{% endblock %}
+
+{% block breadcrumb %}
+<span class="text-slate-muted">Dashboard</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500 flex-shrink-0"></i>
+<span class="text-slate-muted">Branding</span>
+<i data-lucide="chevron-right" class="w-3 h-3 text-base-500 flex-shrink-0"></i>
+<span class="text-white font-medium">Logo &amp; Assets</span>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ─── Asset card ─────────────────────────────────── */
+  .asset-card {
+    background: #1C2026;
+    border: 1px solid #232830;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .asset-card:hover {
+    border-color: #2C343D;
+    box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  }
+
+  /* ─── Checkerboard transparent indicator ─────────── */
+  .checker {
+    background-image:
+      linear-gradient(45deg,  #2C343D 25%, transparent 25%),
+      linear-gradient(-45deg, #2C343D 25%, transparent 25%),
+      linear-gradient(45deg,  transparent 75%, #2C343D 75%),
+      linear-gradient(-45deg, transparent 75%, #2C343D 75%);
+    background-size: 12px 12px;
+    background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+  }
+
+  /* ─── Drop zone ──────────────────────────────────── */
+  .drop-zone {
+    border: 2px dashed #2C343D;
+    border-radius: 14px;
+    background: #16191D;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    padding: 24px 16px;
+    min-height: 120px;
+    position: relative;
+  }
+  .drop-zone:hover,
+  .drop-zone.dragover {
+    border-color: rgba(240,165,0,.5);
+    background: rgba(240,165,0,.04);
+  }
+  .drop-zone input[type=file] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ─── Clear checkbox ─────────────────────────────── */
+  .clear-check {
+    width: 14px; height: 14px;
+    border-radius: 4px;
+    border: 1px solid #2C343D;
+    background: #1C2026;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background .15s, border-color .15s;
+    cursor: pointer;
+  }
+  input[name*="clear_"]:checked ~ label .clear-check,
+  .clear-active .clear-check {
+    background: #F43F5E;
+    border-color: #F43F5E;
+  }
+
+  /* ─── Preview mockup ─────────────────────────────── */
+  .preview-panel { position: sticky; top: 24px; }
+
+  /* ─── Toast ──────────────────────────────────────── */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    opacity: 0; transition: all .3s; z-index: 999;
+    pointer-events: none;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ─── Image preview state ────────────────────────── */
+  .field-wrap { position: relative; }
+  .img-preview {
+    display: none;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #2C343D;
+  }
+  .img-preview.has-image { display: block; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+{% if messages %}
+  {% for message in messages %}
+  <div class="fade-up mb-4 flex items-center gap-3 px-4 py-3 rounded-xl border
+    {% if message.tags == 'success' %}bg-emerald-500/10 border-emerald-500/20 text-emerald-400
+    {% elif message.tags == 'error' %}bg-rose-500/10 border-rose-500/20 text-rose-400
+    {% else %}bg-gold/10 border-gold/20 text-gold{% endif %}">
+    <i data-lucide="{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}alert-circle{% else %}info{% endif %}" class="w-4 h-4 flex-shrink-0"></i>
+    <p class="text-sm font-medium">{{ message }}</p>
+  </div>
+  {% endfor %}
+{% endif %}
+
+<div class="fade-up delay-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
+  <div>
+    <h1 class="font-display text-2xl font-bold text-white leading-tight">Logo &amp; Assets</h1>
+    <p class="mt-0.5 text-sm text-slate-muted">
+      Brand imagery for
+      <span class="text-gold font-medium">{{ tenant.name|default:"Global Tech Academy" }}</span>
+    </p>
+  </div>
+
+  {% if assets %}
+  <div class="flex items-center gap-2">
+    <button type="button" onclick="openDeleteModal()"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-400 text-sm font-semibold hover:bg-rose-500/20 transition-colors">
+      <i data-lucide="trash-2" class="w-4 h-4"></i>
+      Delete All
+    </button>
+  </div>
+  {% endif %}
+</div>
+
+
+<form method="post" enctype="multipart/form-data" id="assets-form">
+  {% csrf_token %}
+  <div class="fade-up delay-2 grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+
+    <div class="xl:col-span-2 space-y-5">
+
+      {% include "branding/assets/asset_field.html" with field_key="logo_light" field_label="Logo — Light Version" field_hint="Used on dark backgrounds. PNG/SVG recommended." icon="sun" icon_color="text-gold" icon_bg="bg-gold/10 border-gold/20" current_image=assets.logo_light checker_bg="bg-base-900" recommended="Recommended: 300×80px, transparent PNG or SVG" %}
+
+
+      {% include "branding/assets/asset_field.html" with field_key="logo_dark" field_label="Logo — Dark Version" field_hint="Used on light backgrounds." icon="moon" icon_color="text-cyan" icon_bg="bg-cyan/10 border-cyan/20" current_image=assets.logo_dark checker_bg="bg-white/90" recommended="Recommended: 300×80 px, transparent PNG or SVG" %}
+
+
+      {% include "branding/assets/asset_field.html" with field_key="favicon" field_label="Favicon" field_hint="Browser tab icon. ICO or square PNG." icon="globe" icon_color="text-purple-400" icon_bg="bg-purple-500/10 border-purple-500/20" current_image=assets.favicon checker_bg="checker" recommended="Recommended: 32×32 px or 64×64 px ICO/PNG" %}
+
+
+      {% include "branding/assets/asset_field.html" with field_key="og_image" field_label="Social Sharing Image (OG Image)" field_hint="Default image for link previews on social media." icon="share-2" icon_color="text-emerald-400" icon_bg="bg-emerald-500/10 border-emerald-500/20" current_image=assets.og_image checker_bg="checker" recommended="Recommended: 1200×630 px JPG/PNG" %}
+
+
+      {% include "branding/assets/asset_field.html" with field_key="footer_logo" field_label="Footer Logo" field_hint="Typically a smaller or white-inverted version of the logo." icon="layout-panel-bottom" icon_color="text-slate-soft" icon_bg="bg-base-700 border-base-600" current_image=assets.footer_logo checker_bg="bg-base-900" recommended="Recommended: 200×60 px, transparent PNG" %}
+
+    </div><!-- /left col -->
+
+
+    <div class="preview-panel space-y-4">
+
+
+      <div class="asset-card">
+        <div class="flex items-center gap-2 px-4 py-3 border-b border-base-700">
+          <i data-lucide="eye" class="w-4 h-4 text-slate-muted"></i>
+          <p class="text-sm font-semibold text-white">Live Preview</p>
+        </div>
+        <div class="p-4 space-y-4">
+
+          {# Dark header mock #}
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Header (dark bg)</p>
+            <div class="bg-base-900 rounded-xl px-4 py-3 flex items-center gap-3 border border-base-700">
+              <div id="preview-logo-light" class="h-8 flex items-center">
+                {% if assets.logo_light %}
+                  <img src="{{ assets.logo_light.url }}" class="h-7 max-w-[120px] object-contain" alt="Logo light">
+                {% else %}
+                  <div class="h-7 w-24 rounded-md bg-base-700 animate-pulse flex items-center justify-center">
+                    <i data-lucide="image" class="w-4 h-4 text-base-500"></i>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="ml-auto flex items-center gap-1.5">
+                <div class="w-12 h-1.5 bg-base-700 rounded-full"></div>
+                <div class="w-10 h-1.5 bg-base-700 rounded-full"></div>
+                <div class="w-8 h-1.5 bg-base-700 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          {# Light header mock #}
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Header (light bg)</p>
+            <div class="bg-white rounded-xl px-4 py-3 flex items-center gap-3 border border-slate-200">
+              <div id="preview-logo-dark" class="h-8 flex items-center">
+                {% if assets.logo_dark %}
+                  <img src="{{ assets.logo_dark.url }}" class="h-7 max-w-[120px] object-contain" alt="Logo dark">
+                {% else %}
+                  <div class="h-7 w-24 rounded-md bg-slate-200 animate-pulse flex items-center justify-center">
+                    <i data-lucide="image" class="w-4 h-4 text-slate-400"></i>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="ml-auto flex items-center gap-1.5">
+                <div class="w-12 h-1.5 bg-slate-200 rounded-full"></div>
+                <div class="w-10 h-1.5 bg-slate-200 rounded-full"></div>
+                <div class="w-8 h-1.5 bg-slate-200 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          {# Favicon mock #}
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Browser Tab</p>
+            <div class="bg-base-800 rounded-xl px-3 py-2 flex items-center gap-2 border border-base-700">
+              <div id="preview-favicon" class="w-4 h-4 rounded-sm overflow-hidden flex-shrink-0 checker flex items-center justify-center">
+                {% if assets.favicon %}
+                  <img src="{{ assets.favicon.url }}" class="w-4 h-4 object-contain" alt="Favicon">
+                {% else %}
+                  <div class="w-3 h-3 rounded-sm bg-base-600"></div>
+                {% endif %}
+              </div>
+              <span class="text-xs text-slate-muted truncate">{{ tenant.name|default:"SchoolOS" }} — Home</span>
+              <div class="ml-auto w-2.5 h-2.5 rounded-full bg-base-600 flex-shrink-0"></div>
+            </div>
+          </div>
+
+          {# OG Image mock #}
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Social Sharing</p>
+            <div id="preview-og" class="rounded-xl overflow-hidden border border-base-700 aspect-video checker flex items-center justify-center relative">
+              {% if assets.og_image %}
+                <img src="{{ assets.og_image.url }}" class="w-full h-full object-cover" alt="OG Image">
+              {% else %}
+                <div class="flex flex-col items-center gap-1 text-base-500">
+                  <i data-lucide="share-2" class="w-6 h-6"></i>
+                  <span class="text-[10px]">No OG image</span>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          {# Footer mock #}
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Footer</p>
+            <div class="bg-base-900 rounded-xl px-4 py-4 border border-base-700 flex flex-col items-center gap-2">
+              <div id="preview-footer-logo" class="h-7 flex items-center">
+                {% if assets.footer_logo %}
+                  <img src="{{ assets.footer_logo.url }}" class="h-6 max-w-[100px] object-contain" alt="Footer logo">
+                {% else %}
+                  <div class="h-6 w-20 rounded-md bg-base-700 animate-pulse"></div>
+                {% endif %}
+              </div>
+              <div class="flex gap-2">
+                <div class="w-10 h-1 bg-base-700 rounded-full"></div>
+                <div class="w-10 h-1 bg-base-700 rounded-full"></div>
+                <div class="w-10 h-1 bg-base-700 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {# Tips card #}
+      <div class="bg-gold/5 border border-gold/20 rounded-2xl p-4 space-y-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="lightbulb" class="w-4 h-4 text-gold flex-shrink-0"></i>
+          <p class="text-sm font-semibold text-gold">Best Practices</p>
+        </div>
+        <ul class="space-y-2 text-xs text-slate-muted leading-relaxed">
+          <li class="flex gap-2"><span class="text-gold mt-0.5">•</span> Use SVG or transparent PNG for logos to ensure crisp rendering at any size.</li>
+          <li class="flex gap-2"><span class="text-gold mt-0.5">•</span> The OG image should be exactly 1200×630 px to avoid cropping on all platforms.</li>
+          <li class="flex gap-2"><span class="text-gold mt-0.5">•</span> Provide both light and dark logo variants to support all theme modes.</li>
+          <li class="flex gap-2"><span class="text-gold mt-0.5">•</span> Keep favicon simple — it will be rendered at 16×16 px on most screens.</li>
+        </ul>
+      </div>
+
+    </div><!-- /right col -->
+  </div><!-- /grid -->
+
+  {# ── STICKY SAVE BAR ──────────────────────────────── #}
+  <div class="fade-up delay-5 sticky bottom-5 mt-6 z-10">
+    <div class="bg-base-800/90 backdrop-blur-md border border-base-700 rounded-2xl p-4 flex items-center justify-between gap-4 shadow-card">
+      <p class="text-sm text-slate-muted hidden sm:block">
+        <i data-lucide="info" class="w-3.5 h-3.5 inline-block mr-1 text-base-500"></i>
+        Changes apply immediately after saving.
+      </p>
+      <div class="flex gap-3 ml-auto">
+        <a href="{% url 'dashboard_home' %}"
+           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted text-sm font-semibold hover:text-white hover:border-base-500 transition-colors">
+          Cancel
+        </a>
+        <button type="submit"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gold text-base-900 text-sm font-bold hover:bg-gold-light transition-colors shadow-glow-gold">
+          <i data-lucide="save" class="w-4 h-4"></i>
+          Save Assets
+        </button>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+{% if assets %}
+<div id="delete-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm">
+  <div class="bg-base-800 border border-base-700 rounded-2xl p-6 max-w-sm w-full mx-4 shadow-card">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="trash-2" class="w-5 h-5 text-rose-400"></i>
+      </div>
+      <div>
+        <p class="text-white font-semibold">Delete All Assets</p>
+        <p class="text-xs text-slate-muted">This action cannot be undone.</p>
+      </div>
+    </div>
+    <p class="text-sm text-slate-muted mb-6">
+      All uploaded brand assets (logos, favicon, OG image, footer logo) will be permanently removed from
+      <span class="text-white font-medium">{{ tenant.name }}</span>.
+    </p>
+    <div class="flex gap-3">
+      <button type="button" onclick="closeDeleteModal()"
+        class="flex-1 px-4 py-2.5 rounded-xl border border-base-600 text-slate-muted text-sm font-semibold hover:text-white transition-colors">
+        Cancel
+      </button>
+      <form method="post" action="{% url 'branding:brand_assets_delete' %}" class="flex-1">
+        {% csrf_token %}
+        <button type="submit"
+          class="w-full px-4 py-2.5 rounded-xl bg-rose-500 text-white text-sm font-bold hover:bg-rose-400 transition-colors">
+          Delete All
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div id="toast"
+  class="flex items-center gap-3 px-4 py-3 rounded-xl border border-base-600 bg-base-800 shadow-card min-w-[220px]">
+  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
+  <span class="text-sm font-medium text-white" id="toast-msg">Saved!</span>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // ── Clear checkbox toggle ─────────────────────────────
+  function toggleClear(key, checked) {
+    const chk  = document.getElementById(`clear-check-${key}`);
+    const icon = document.getElementById(`clear-icon-${key}`);
+    if (!chk) return;
+    if (checked) {
+      chk.style.background   = '#F43F5E';
+      chk.style.borderColor  = '#F43F5E';
+      if (icon) icon.classList.remove('hidden');
+    } else {
+      chk.style.background   = '';
+      chk.style.borderColor  = '';
+      if (icon) icon.classList.add('hidden');
+    }
+    lucide.createIcons();
+  }
+
+  // ── File selection handler ────────────────────────────
+  function handleFileChange(key, input) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    const url  = URL.createObjectURL(file);
+
+    // Update file name label
+    const nameEl = document.getElementById(`file-name-${key}`);
+    if (nameEl) nameEl.textContent = file.name;
+
+    // Show inline preview
+    const previewWrap = document.getElementById(`img-preview-${key}`);
+    if (previewWrap) {
+      const img = previewWrap.querySelector('img');
+      if (img) { img.src = url; }
+      previewWrap.classList.add('has-image');
+    }
+
+    // Update live preview panel
+    const panelMap = {
+      logo_light:  'preview-logo-light',
+      logo_dark:   'preview-logo-dark',
+      favicon:     'preview-favicon',
+      og_image:    'preview-og',
+      footer_logo: 'preview-footer-logo',
+    };
+    const panelId = panelMap[key];
+    if (!panelId) return;
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+
+    if (key === 'favicon') {
+      panel.innerHTML = `<img src="${url}" class="w-4 h-4 object-contain" alt="Favicon">`;
+    } else if (key === 'og_image') {
+      panel.innerHTML = `<img src="${url}" class="w-full h-full object-cover" alt="OG preview">`;
+    } else {
+      const cls = key === 'footer_logo'
+        ? 'h-6 max-w-[100px] object-contain'
+        : 'h-7 max-w-[120px] object-contain';
+      panel.innerHTML = `<img src="${url}" class="${cls}" alt="${key}">`;
+    }
+  }
+
+  // ── Clear file selection ──────────────────────────────
+  function clearSelection(key) {
+    const input = document.getElementById(`id_${key}`);
+    if (input) input.value = '';
+    const nameEl = document.getElementById(`file-name-${key}`);
+    if (nameEl) nameEl.innerHTML = 'Drop file or <span class="text-gold underline">browse</span>';
+    const previewWrap = document.getElementById(`img-preview-${key}`);
+    if (previewWrap) previewWrap.classList.remove('has-image');
+  }
+
+  // ── Drop zone drag feedback ───────────────────────────
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); });
+  });
+
+  // ── Delete modal ──────────────────────────────────────
+  function openDeleteModal()  { document.getElementById('delete-modal')?.classList.replace('hidden','flex'); }
+  function closeDeleteModal() { document.getElementById('delete-modal')?.classList.replace('flex','hidden'); }
+  document.getElementById('delete-modal')?.addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteModal();
+  });
+
+  // ── Auto-show toast if Django message present ─────────
+  {% if messages %}
+  (function() {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  })();
+  {% endif %}
+</script>
+{% endblock %}
