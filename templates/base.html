@@ -21,7 +21,7 @@
         <!-- Tailwind CSS via CDN (for development; use a build system for production) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Global custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+   
     <style>
         :root {
             --primary: {{ colors.primary }};
@@ -146,6 +146,7 @@ h1, h2, h3, h4, h5, h6, .outfit {
     white-space: nowrap;
     position: relative;
     overflow: hidden;
+    isolation: isolate;
 }
 
 .btn-primary-blue::before {
@@ -155,6 +156,7 @@ h1, h2, h3, h4, h5, h6, .outfit {
     background: linear-gradient(135deg, var(--accent), var(--primary-light), var(--primary));
     opacity: 0;
     transition: opacity var(--transition-base);
+    z-index: 0;
 }
 
 .btn-primary-blue:hover {

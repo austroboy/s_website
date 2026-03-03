@@ -4,7 +4,7 @@
 {% block title %}{{ news.title }} | News{% endblock %}
 
 {% block content %}
-<main class="bg-white min-h-screen pt-20 pb-20" x-data="{ showToast: false }">
+<main class="bg-white min-h-screen py-6 lg:py-12" x-data="{ showToast: false }">
     <div class="max-w-[1240px] mx-auto px-6 lg:px-8">
         
         <!-- Breadcrumbs -->
@@ -37,17 +37,16 @@
                 <div class="flex flex-wrap items-center border-b border-gray-100 pb-5 mb-6 gap-4">
                     <div class="flex items-center space-x-4">
                         <!-- Author Avatar -->
-                        <div class="w-6 h-6 rounded-full bg-gray-200 overflow-hidden">
-                            <img src="https://ui-avatars.com/api/?name={{ news.author_name|default:'Admin' }}&background=random" alt="Author" class="w-full h-full object-cover">
-                        </div>
-                        <div class="flex items-center text-[13px] text-[var(--text)] font-bold">
-                            <span class="text-[var(--text-muted)] font-medium mr-1.5">By</span>
+                       
+                        <div class="flex items-center justify-center text-[13px] text-[var(--text)] font-bold">
+                            <span class="text-[var(--text-muted)] font-medium mr-1.5">Author :</span>
                             <span class="hover:text-[var(--primary)] cursor-pointer transition-colors">{{ news.author_name|default:"Administrator" }}</span>
                         </div>
-                        <div class="h-1 w-1 rounded-full bg-gray-300"></div>
-                        <div class="text-[13px] text-[var(--text-muted)] font-medium">
-                            {{ news.created_at|date:"F d, Y" }}
+                        <div class="flex items-center justify-center text-[13px] text-[var(--text)] font-bold">
+                            <span class="text-[var(--text-muted)] font-medium mr-1.5">Published :</span>
+                            <span class="hover:text-[var(--primary)] cursor-pointer transition-colors">{{ news.created_at|date:"F d, Y" }}</span>
                         </div>
+                       
                     </div>
 
                     <!-- Tags -->

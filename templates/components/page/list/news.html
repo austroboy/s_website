@@ -7,10 +7,12 @@
 <!-- Standard Academic Hero Header Flattened -->
 <section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
     <div class="absolute inset-0 z-0">
-        <img src="https://www.bracu.ac.bd/sites/default/files/styles/banner_dept_landing/public/banner-images/2024/12/31/Departments.JPG" 
+        <img src="{% static 'assets/layout_images/hero_header.jpg' %}" 
              alt="News & Events" 
              class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-r from-[#0F1D40]/90 to-transparent"></div>
+        <div class="absolute inset-0" 
+             style="background: linear-gradient(to right, color-mix(in srgb, var(--primary-dark) 95%, transparent), color-mix(in srgb, var(--primary-dark) 60%, transparent), transparent);">
+        </div>
     </div>
 
     <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 w-full">
@@ -25,7 +27,7 @@
     </div>
 </section>
 
-<section class="py-12 md:py-20 bg-[var(--surface-alt)] relative overflow-hidden">
+<section class="py-6 lg:py-12 bg-[var(--surface-alt)] relative overflow-hidden">
     <!-- Decorative -->
     <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-[0.04]" style="background: radial-gradient(circle, var(--accent) 0%, transparent 70%);"></div>
 

@@ -7,10 +7,12 @@
 {% block content %}
 <section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
     <div class="absolute inset-0 z-0">
-        <img src="https://cdn.pixabay.com/photo/2022/04/19/03/50/science-doodles-7141847_1280.jpg" 
-             alt="University Gallery" 
+        <img src="{% static 'assets/layout_images/hero_header.jpg' %}" 
+             alt="{{ page.title }}" 
              class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-r from-[#0F1D40]/90 to-transparent"></div>
+        <div class="absolute inset-0" 
+             style="background: linear-gradient(to right, color-mix(in srgb, var(--primary-dark) 95%, transparent), color-mix(in srgb, var(--primary-dark) 60%, transparent), transparent);">
+        </div>
     </div>
 
     <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 w-full">

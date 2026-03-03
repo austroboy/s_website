@@ -147,6 +147,7 @@ h1, h2, h3, h4, h5, h6 {
     white-space: nowrap;
     position: relative;
     overflow: hidden;
+    isolation: isolate;
 }
 
 .btn-primary-blue::before {
@@ -156,6 +157,7 @@ h1, h2, h3, h4, h5, h6 {
     background: linear-gradient(135deg, var(--accent), var(--primary-light), var(--primary));
     opacity: 0;
     transition: opacity var(--transition-base);
+    z-index: -1;
 }
 
 .btn-primary-blue:hover {
