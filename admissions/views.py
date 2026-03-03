@@ -1,39 +1,47 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import ListView, DetailView, TemplateView
 from .models import AdmissionForm
 from contact.forms import AdmissionInquiryForm
 
-class AdmissionsOverviewView(TemplateView):
-    template_name = 'admissions/overview.html'
+class AdmissionsOverviewView(ListView):
+    model = AdmissionForm
+    template_name = 'components/page/list/admissions_form.html'
+    context_object_name = 'forms'
+    paginate_by = 12
+
+    def get_queryset(self):
+        return AdmissionForm.objects.filter(
+            tenant=self.request.tenant, is_published=True
+        ).order_by('order')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['forms'] = AdmissionForm.objects.filter(
-            tenant=self.request.tenant, is_published=True
-        ).order_by('order')
         context['inquiry_form'] = AdmissionInquiryForm()
         return context
 
-# You may also want a separate inquiry page, but we already have /contact/admissions/.
-# To keep consistent, we'll include the inquiry form on the overview page and handle POST there.
-from django.urls import reverse_lazy
-from django.shortcuts import redirect
-from contact.models import AdmissionInquiry
-
-class AdmissionsOverviewView(TemplateView):
+class AdmissionDetailView(DetailView):
+    model = AdmissionForm
     template_name = 'components/page/details/admissions.html'
+    context_object_name = 'form'
+
+    def get_queryset(self):
+        return AdmissionForm.objects.filter(
+            tenant=self.request.tenant, is_published=True
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Fetch all published admission forms for the current tenant
-        context['forms'] = AdmissionForm.objects.filter(
-            tenant=self.request.tenant, is_published=True
-        ).order_by('order')
-        
-        # Add the inquiry form for the sidebar/bottom section
         context['inquiry_form'] = AdmissionInquiryForm()
-        
-        return context
+        # Fetch other forms (excluding current one)
+        context['other_forms'] = AdmissionForm.objects.filter(
+            tenant=self.request.tenant, 
+            is_published=True
+        ).exclude(pk=self.object.pk).order_by('order')[:5]
         return context
 
 class AdmissionThankYouView(TemplateView):
-    template_name = 'admissions/thank_you.html'
+    template_name = 'components/page/details/thank_you.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['inquiry_form'] = AdmissionInquiryForm()
+        return context

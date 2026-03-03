@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Thank You | Admissions{% endblock %}
+
+{% block content %}
+<!-- Standard Header -->
+<section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
+    <div class="absolute inset-0 z-0">
+        <img src="{% static 'assets/layout_images/hero_header.jpg' %}" 
+             alt="Thank You" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0" 
+             style="background: linear-gradient(to right, color-mix(in srgb, var(--primary-dark) 95%, transparent), color-mix(in srgb, var(--primary-dark) 60%, transparent), transparent);">
+        </div>
+    </div>
+
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 w-full">
+        <div class="reveal-up">
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4">Success</h1>
+            <nav class="flex text-white/70 text-sm font-medium">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <span class="mx-2">/</span>
+                <a href="{% url 'admissions:overview' %}" class="hover:text-white transition-colors">Admissions</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">Thank You</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<div class="bg-[var(--surface)] py-12 lg:py-20 min-h-[60vh] flex items-center">
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8 w-full">
+        <div class="max-w-2xl mx-auto text-center reveal-up">
+            <div class="mb-8 relative inline-block">
+                <div class="w-24 h-24 rounded-3xl bg-green-100 flex items-center justify-center mx-auto text-green-600 shadow-xl shadow-green-100/50 relative z-10">
+                    <i data-lucide="check-circle" class="w-12 h-12"></i>
+                </div>
+                <!-- Decorative Circles -->
+                <div class="absolute -top-4 -right-4 w-12 h-12 bg-blue-100 rounded-full blur-xl opacity-60"></div>
+                <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-purple-100 rounded-full blur-xl opacity-60"></div>
+            </div>
+            
+            <h2 class="text-3xl lg:text-4xl font-extrabold text-[var(--secondary)] mb-6 tracking-tight">
+                Thank You for Your Interest!
+            </h2>
+            
+            <p class="text-lg text-[var(--text-muted)] leading-relaxed mb-10 opacity-80">
+                Your request has been received. If you were downloading a form, it should have started automatically. 
+                If you submitted an inquiry, our admissions team will review it and get back to you shortly.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="{% url 'admissions:overview' %}" class="group relative inline-flex items-center gap-3 px-8 py-4 bg-[var(--primary)] text-white font-medium rounded-xl shadow-xl shadow-[var(--primary-glow)]/30 hover:shadow-[var(--primary-glow)]/50 transition-all duration-300 hover:-translate-y-1">
+                    <i data-lucide="grid" class="w-5 h-5"></i>
+                    Back to Admissions
+                    <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
+                </a>
+                
+                <a href="/" class="inline-flex items-center gap-2 px-8 py-4 border-2 border-[var(--border)] text-[var(--secondary)] font-bold rounded-xl hover:bg-[var(--surface-alt)] hover:border-[var(--primary)]/30 transition-all duration-300">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                    Return Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
