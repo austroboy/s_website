@@ -42,7 +42,7 @@ def build_nav_context(request):
             'active': is_active('/admissions/'),
             'children': [
                 {'label': 'Inquiries',     'url': '/contact/admissions/inquiries/',    'active': is_active('/dashboard/admissions/inquiries/')},
-                {'label': 'Forms',         'url': '/admissions/forms/',        'active': is_active('/admissions/forms/')},
+                {'label': 'Forms',         'url': '/admissions/admission-forms/',        'active': is_active('/admissions/admission-forms/')},
                 {'label': 'Applications',  'url': '/admissions/applications/', 'active': is_active('/admissions/applications/')},
             ],
         },
