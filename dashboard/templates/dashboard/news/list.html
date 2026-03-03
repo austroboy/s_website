@@ -177,6 +177,9 @@
                 <p class="text-sm font-medium text-white group-hover:text-gold transition-colors">
                   {{ news.title|truncatechars:50 }}
                 </p>
+                <p class="text-sm font-medium text-white group-hover:text-gold transition-colors">
+                  {{ news.slug }}
+                </p>
                 <p class="text-xs text-slate-muted mt-0.5 flex items-center gap-1">
                   <i data-lucide="eye" class="w-3 h-3"></i>
                   {{ news.view_count|default:"0" }} views

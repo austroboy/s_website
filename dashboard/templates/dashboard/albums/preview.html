@@ -1,0 +1,487 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ album.title }} - Album Preview | {{ tenant.name }}{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Album Preview Unique Styles - prefixed with ap- (album preview) */
+  
+  /* Lightbox Animation */
+  .ap-lightbox-enter {
+    animation: ap-fadeIn 0.3s ease-out;
+  }
+  
+  @keyframes ap-fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  /* Grid Layout */
+  .ap-media-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 1024px) {
+    .ap-media-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .ap-media-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  /* Hover Effects */
+  .ap-media-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);
+  }
+  
+  /* Loading Skeleton */
+  .ap-skeleton {
+    background: linear-gradient(90deg, #1C2026 25%, #232830 50%, #1C2026 75%);
+    background-size: 200% 100%;
+    animation: ap-loading 1.5s infinite;
+  }
+  
+  @keyframes ap-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  /* Card Styles */
+  .ap-media-card {
+    transition: all 0.3s ease;
+  }
+  
+  .ap-media-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.2), 0 10px 10px -5px rgba(59, 130, 246, 0.1);
+  }
+  
+  /* Badge Styles */
+  .ap-badge-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3B82F6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+  
+  .ap-badge-emerald {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10B981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+  
+  .ap-badge-amber {
+    background: rgba(245, 158, 11, 0.15);
+    color: #F59E0B;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  /* Custom Background Color */
+  .ap-bg-custom {
+    background-color: rgb(26, 26, 46);
+  }
+
+  /* Text Colors */
+  .ap-text-primary {
+    color: #FFFFFF;
+  }
+
+  .ap-text-secondary {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .ap-text-tertiary {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .ap-text-muted {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Border Colors */
+  .ap-border-custom {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .ap-border-custom-light {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Gradient Backgrounds */
+  .ap-gradient-header {
+    background: linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1), transparent);
+  }
+
+  .ap-gradient-cover {
+    background: linear-gradient(to top, rgb(26, 26, 46), rgba(26, 26, 46, 0.8), transparent);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Preview Mode Banner -->
+<div class="ap-gradient-header border-b border-blue-500/20 py-2 sticky top-0 z-50 backdrop-blur-sm" style="background-color: rgb(26, 26, 46);">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 px-3 py-1.5 ap-badge-blue rounded-full">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          </span>
+          <span class="text-xs font-medium text-blue-500 uppercase tracking-wider">Preview Mode</span>
+        </div>
+        <span class="text-sm ap-text-secondary hidden sm:block">
+          <i data-lucide="eye" class="w-3.5 h-3.5 inline mr-1"></i>
+          You're viewing a draft version
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="/dashboard/albums/{{ album.id }}/edit/" 
+           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-xl text-sm font-semibold hover:bg-blue-600 transition-all transform hover:scale-105 shadow-lg shadow-blue-500/20">
+          <i data-lucide="edit-3" class="w-4 h-4"></i>
+          Edit Album
+        </a>
+        <a href="/dashboard/albums/" 
+           class="inline-flex items-center gap-2 px-4 py-2 border ap-border-custom text-white rounded-xl text-sm hover:text-white hover:border-blue-500 hover:bg-white/5 transition-all">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mx-auto px-5 py-8 w-full" style="background-color: rgb(26, 26, 46);">
+  
+  <!-- Album Header with Cover -->
+  <div class="relative mb-12 rounded-3xl overflow-hidden">
+    <!-- Background Blur (if cover exists) -->
+    {% if album.cover_image %}
+    <div class="absolute inset-0">
+      <img src="{{ album.cover_image }}" alt="" class="w-full h-full object-cover blur-2xl scale-110 opacity-30">
+      <div class="absolute inset-0 ap-gradient-cover"></div>
+    </div>
+    {% endif %}
+    
+    <div class="relative z-10 p-8 md:p-12">
+      <div class="flex flex-col md:flex-row items-start md:items-end gap-8">
+        <!-- Cover Image Thumbnail -->
+        {% if album.cover_image %}
+        <div class="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden border-4 border-blue-500/30 shadow-2xl shadow-blue-500/10 transform hover:scale-105 transition-transform">
+          <img src="{{ album.cover_image }}" alt="{{ album.title }}" class="w-full h-full object-cover">
+        </div>
+        {% else %}
+        <div class="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-500/5 border-2 border-dashed border-blue-500/30 flex items-center justify-center">
+          <i data-lucide="images" class="w-12 h-12 text-blue-500/40"></i>
+        </div>
+        {% endif %}
+        
+        <!-- Album Info -->
+        <div class="flex-1">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="px-3 py-1 ap-badge-blue rounded-full text-xs font-medium">
+              {{ album.media_items|length }} {% if album.media_items|length == 1 %}Item{% else %}Items{% endif %}
+            </span>
+            {% if album.is_published %}
+            <span class="px-3 py-1 ap-badge-emerald rounded-full text-xs font-medium">
+              <span class="relative flex h-1.5 w-1.5 inline mr-1">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
+              </span>
+              Published
+            </span>
+            {% else %}
+            <span class="px-3 py-1 ap-badge-amber rounded-full text-xs font-medium">
+              <span class="relative flex h-1.5 w-1.5 inline mr-1">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-400"></span>
+              </span>
+              Draft
+            </span>
+            {% endif %}
+          </div>
+          
+          <h1 class="font-display text-4xl md:text-5xl font-bold ap-text-primary mb-3 leading-tight">
+            {{ album.title }}
+          </h1>
+          
+          {% if album.description %}
+          <p class="text-lg ap-text-secondary max-w-3xl leading-relaxed">
+            {{ album.description }}
+          </p>
+          {% endif %}
+          
+          <div class="flex items-center gap-4 mt-4 text-sm ap-text-tertiary">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="calendar" class="w-4 h-4"></i>
+              <span>Created {{ album.created_at|date:"F j, Y" }}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="clock" class="w-4 h-4"></i>
+              <span>Last updated {{ album.last_synced|date:"M j, Y" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Media Grid Section -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="font-display text-2xl font-semibold ap-text-primary flex items-center gap-2">
+        <i data-lucide="images" class="w-6 h-6 text-blue-500"></i>
+        Gallery
+        <span class="text-base font-normal ap-text-tertiary ml-2">({{ album.media_items|length }} items)</span>
+      </h2>
+    </div>
+    
+    {% if album.media_items %}
+    <!-- Grid View - Always Grid Layout -->
+    <div class="ap-media-grid">
+      {% for item in album.media_items %}
+      <div class="ap-media-card group relative aspect-square rounded-xl overflow-hidden border ap-border-custom-light" style="background-color: rgba(255, 255, 255, 0.05);"
+           onclick="apOpenLightbox('{{ item.url }}', '{% if item.type == 'video' or item.url|slice:'-4:' == '.mp4' or item.url|slice:'-5:' == '.webm' or item.url|slice:'-4:' == '.ogg' %}video{% else %}image{% endif %}', {{ forloop.counter0 }})">
+        
+        <!-- Media -->
+        {% if item.type == 'video' or item.url|slice:'-4:' == '.mp4' or item.url|slice:'-5:' == '.webm' or item.url|slice:'-4:' == '.ogg' %}
+        <video src="{{ item.url }}" class="w-full h-full object-cover"></video>
+        <div class="absolute top-2 left-2 px-2 py-1 bg-black/60 backdrop-blur-sm rounded-lg ap-text-primary text-xs border border-white/10">
+          <i data-lucide="video" class="w-3 h-3 inline mr-1"></i> Video
+        </div>
+        {% else %}
+        <img src="{{ item.url }}" alt="{{ item.caption }}" class="w-full h-full object-cover" loading="lazy">
+        {% endif %}
+        
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div class="absolute bottom-0 left-0 right-0 p-3">
+            {% if item.caption %}
+            <p class="ap-text-primary text-sm font-medium line-clamp-2">{{ item.caption }}</p>
+            {% endif %}
+            <p class="text-xs ap-text-tertiary mt-1 flex items-center gap-1">
+              <i data-lucide="maximize-2" class="w-3 h-3"></i>
+              Click to enlarge
+            </p>
+          </div>
+        </div>
+        
+        <!-- Caption Badge (if exists) -->
+        {% if item.caption %}
+        <div class="absolute top-2 right-2 px-2 py-1 bg-blue-500/90 backdrop-blur-sm rounded-lg text-xs font-medium ap-text-primary">
+          <i data-lucide="message-circle" class="w-3 h-3 inline mr-1"></i>
+          Caption
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-16 px-4 rounded-3xl border-2 border-dashed ap-border-custom" style="background-color: rgba(255, 255, 255, 0.02);">
+      <div class="w-24 h-24 mx-auto mb-4 rounded-full" style="background-color: rgba(255, 255, 255, 0.05); flex items-center justify-center">
+        <i data-lucide="images" class="w-12 h-12" style="color: rgba(255, 255, 255, 0.2);"></i>
+      </div>
+      <h3 class="text-xl font-display font-semibold ap-text-primary mb-2">No Media Items</h3>
+      <p class="ap-text-secondary mb-6 max-w-md mx-auto">This album doesn't have any media items yet. Add some images or videos to make it come alive.</p>
+      <a href="/dashboard/albums/{{ album.id }}/edit/#media-manager" 
+         class="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 ap-text-primary rounded-xl font-semibold hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20">
+        <i data-lucide="plus" class="w-5 h-5"></i>
+        Add Media Items
+      </a>
+    </div>
+    {% endif %}
+  </div>
+  
+  <!-- Album Stats -->
+  {% if album.media_items %}
+  <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="backdrop-blur-sm rounded-xl p-4 border ap-border-custom text-center" style="background-color: rgba(255, 255, 255, 0.02);">
+      <div class="text-2xl font-bold text-blue-500 mb-1">{{ album.media_items|length }}</div>
+      <div class="text-xs ap-text-tertiary uppercase tracking-wider">Total Items</div>
+    </div>
+    <div class="backdrop-blur-sm rounded-xl p-4 border ap-border-custom text-center" style="background-color: rgba(255, 255, 255, 0.02);">
+      <div class="text-2xl font-bold text-emerald-400 mb-1">
+        {% with images=album.media_items %}
+          {{ images|length }}
+        {% endwith %}
+      </div>
+      <div class="text-xs ap-text-tertiary uppercase tracking-wider">Images</div>
+    </div>
+    <div class="backdrop-blur-sm rounded-xl p-4 border ap-border-custom text-center" style="background-color: rgba(255, 255, 255, 0.02);">
+      <div class="text-2xl font-bold text-purple-400 mb-1">
+        {% with videos=album.media_items %}
+          0
+        {% endwith %}
+      </div>
+      <div class="text-xs ap-text-tertiary uppercase tracking-wider">Videos</div>
+    </div>
+    <div class="backdrop-blur-sm rounded-xl p-4 border ap-border-custom text-center" style="background-color: rgba(255, 255, 255, 0.02);">
+      <div class="text-2xl font-bold text-cyan-400 mb-1">{{ album.created_at|date:"M Y" }}</div>
+      <div class="text-xs ap-text-tertiary uppercase tracking-wider">Created</div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Professional Lightbox Modal (with unique prefix) -->
+<div id="ap-lightbox" class="fixed inset-0 z-[100] hidden items-center justify-center" style="background-color: rgb(26, 26, 46);">
+  <!-- Close Button -->
+  <button onclick="apCloseLightbox()" 
+          class="absolute top-4 right-4 z-10 p-3 rounded-full backdrop-blur-sm ap-text-primary hover:bg-blue-500 hover:text-white transition-all border ap-border-custom hover:border-blue-500/50" style="background-color: rgba(255, 255, 255, 0.1);">
+    <i data-lucide="x" class="w-5 h-5"></i>
+  </button>
+  
+  <!-- Navigation Buttons -->
+  <button onclick="apNavigateLightbox('prev')" 
+          class="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full backdrop-blur-sm ap-text-primary hover:bg-blue-500 hover:text-white transition-all border ap-border-custom hover:border-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed" style="background-color: rgba(255, 255, 255, 0.1);"
+          id="ap-lightbox-prev">
+    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+  </button>
+  
+  <button onclick="apNavigateLightbox('next')" 
+          class="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full backdrop-blur-sm ap-text-primary hover:bg-blue-500 hover:text-white transition-all border ap-border-custom hover:border-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed" style="background-color: rgba(255, 255, 255, 0.1);"
+          id="ap-lightbox-next">
+    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+  </button>
+  
+  <!-- Counter -->
+  <div class="absolute top-4 left-4 z-10 px-3 py-1.5 backdrop-blur-sm rounded-full text-sm ap-text-primary border ap-border-custom" style="background-color: rgba(255, 255, 255, 0.1);">
+    <span id="ap-lightbox-current">1</span> / <span id="ap-lightbox-total">{{ album.media_items|length }}</span>
+  </div>
+  
+  <!-- Content -->
+  <div id="ap-lightbox-content" class="max-w-7xl max-h-[85vh] w-full px-4 ap-lightbox-enter">
+    <!-- Content will be dynamically inserted here -->
+  </div>
+  
+  <!-- Caption -->
+  <div id="ap-lightbox-caption" class="absolute bottom-4 left-1/2 -translate-x-1/2 max-w-2xl w-full px-4 text-center">
+    <div class="inline-block px-4 py-2 backdrop-blur-sm rounded-full text-sm ap-text-primary border ap-border-custom" style="background-color: rgba(255, 255, 255, 0.1);">
+      <!-- Caption will be dynamically inserted here -->
+    </div>
+  </div>
+</div>
+
+<script>
+// Album Preview JavaScript with unique prefix
+(function() {
+  // Lightbox state
+  let apCurrentIndex = 0;
+  const apMediaItems = {{ album.media_items|safe }};
+
+  // Expose functions globally with unique prefix
+  window.apOpenLightbox = function(url, type, index) {
+    apCurrentIndex = index;
+    const lightbox = document.getElementById('ap-lightbox');
+    const content = document.getElementById('ap-lightbox-content');
+    const captionDiv = document.getElementById('ap-lightbox-caption').querySelector('div');
+    const currentSpan = document.getElementById('ap-lightbox-current');
+    const totalSpan = document.getElementById('ap-lightbox-total');
+    const prevBtn = document.getElementById('ap-lightbox-prev');
+    const nextBtn = document.getElementById('ap-lightbox-next');
+    
+    // Update content
+    apUpdateLightboxContent();
+    
+    // Update caption
+    captionDiv.textContent = apMediaItems[index].caption || 'No caption';
+    
+    // Update counter
+    currentSpan.textContent = index + 1;
+    totalSpan.textContent = apMediaItems.length;
+    
+    // Update navigation buttons
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === apMediaItems.length - 1;
+    
+    // Show lightbox
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+  };
+
+  function apUpdateLightboxContent() {
+    const content = document.getElementById('ap-lightbox-content');
+    const item = apMediaItems[apCurrentIndex];
+    const type = item.type || (item.url && item.url.match(/\.(mp4|webm|ogg)$/i) ? 'video' : 'image');
+    
+    if (type === 'video') {
+      content.innerHTML = `
+        <video src="${item.url}" controls autoplay class="max-h-[85vh] max-w-full rounded-lg shadow-2xl"></video>
+      `;
+    } else {
+      content.innerHTML = `
+        <img src="${item.url}" alt="${item.caption || ''}" class="max-h-[85vh] max-w-full object-contain rounded-lg shadow-2xl">
+      `;
+    }
+  }
+
+  window.apNavigateLightbox = function(direction) {
+    if (direction === 'prev' && apCurrentIndex > 0) {
+      apCurrentIndex--;
+    } else if (direction === 'next' && apCurrentIndex < apMediaItems.length - 1) {
+      apCurrentIndex++;
+    } else {
+      return;
+    }
+    
+    const captionDiv = document.getElementById('ap-lightbox-caption').querySelector('div');
+    const currentSpan = document.getElementById('ap-lightbox-current');
+    const prevBtn = document.getElementById('ap-lightbox-prev');
+    const nextBtn = document.getElementById('ap-lightbox-next');
+    
+    apUpdateLightboxContent();
+    captionDiv.textContent = apMediaItems[apCurrentIndex].caption || 'No caption';
+    currentSpan.textContent = apCurrentIndex + 1;
+    prevBtn.disabled = apCurrentIndex === 0;
+    nextBtn.disabled = apCurrentIndex === apMediaItems.length - 1;
+  };
+
+  window.apCloseLightbox = function() {
+    const lightbox = document.getElementById('ap-lightbox');
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.getElementById('ap-lightbox-content').innerHTML = '';
+    document.body.style.overflow = '';
+  };
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    const lightbox = document.getElementById('ap-lightbox');
+    if (lightbox && !lightbox.classList.contains('hidden')) {
+      if (e.key === 'Escape') {
+        apCloseLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        apNavigateLightbox('prev');
+      } else if (e.key === 'ArrowRight') {
+        apNavigateLightbox('next');
+      }
+    }
+  });
+
+  // Preload adjacent images for smooth navigation
+  function apPreloadAdjacent(index) {
+    if (index > 0 && apMediaItems[index - 1]) {
+      const img = new Image();
+      img.src = apMediaItems[index - 1].url;
+    }
+    if (index < apMediaItems.length - 1 && apMediaItems[index + 1]) {
+      const img = new Image();
+      img.src = apMediaItems[index + 1].url;
+    }
+  }
+})();
+</script>
+{% endblock %}

@@ -49,7 +49,7 @@ def dashboard_event_list(request):
     event_list = event_list.order_by('start_date')
     
     # Pagination
-    paginator = Paginator(event_list, 10)
+    paginator = Paginator(event_list, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     

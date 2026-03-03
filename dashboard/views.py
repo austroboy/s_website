@@ -46,22 +46,23 @@ def build_nav_context(request):
                 {'label': 'Applications',  'url': '/admissions/applications/', 'active': is_active('/admissions/applications/')},
             ],
         },
+        # Academics section
         {
             'label': 'Academics',
             'url':   '#',
             'icon':  'graduation-cap',
-            'active': is_active('/academics/'),
+            'active': is_active('/dashboard/programs/'),
             'children': [
-                {'label': 'Programs',    'url': '/academics/programs/',    'active': is_active('/academics/programs/')},
-                {'label': 'Departments', 'url': '/academics/departments/', 'active': is_active('/academics/departments/')},
-                {'label': 'Curriculum',  'url': '/academics/curriculum/',  'active': is_active('/academics/curriculum/')},
+                {'label': 'Programs',    'url': '/dashboard/programs/',    'active': is_active('/dashboard/programs/')},
+                # {'label': 'Departments', 'url': '/academics/departments/', 'active': is_active('/academics/departments/')},
+                # {'label': 'Curriculum',  'url': '/academics/curriculum/',  'active': is_active('/academics/curriculum/')},
             ],
         },
         {
             'label': 'Staff Directory',
-            'url':   '/staff/',
+            'url':   '/dashboard/staff/',  
             'icon':  'contact',
-            'active': is_active('/staff/'),
+            'active': is_active('/dashboard/staff/'),
         },
     ]
 
@@ -74,7 +75,7 @@ def build_nav_context(request):
         'children': [
             {'label': 'All News',  'url': '/dashboard/news/', 'active': is_active('/dashboard/news/')},
             {'label': 'Create Article', 'url': '/dashboard/news/create/', 'active': is_active('/dashboard/news/create/')},
-            {'label': 'Categories', 'url': '/news/categories/', 'active': is_active('/news/categories/')},
+            # {'label': 'Categories', 'url': '/news/categories/', 'active': is_active('/news/categories/')},
         ],
     },
         {
@@ -93,33 +94,39 @@ def build_nav_context(request):
                     'url': '/dashboard/events/create/', 
                     'active': is_active('/dashboard/events/create/')
                 },
-                {
-                    'label': 'Calendar View', 
-                    'url': '/events/calendar/', 
-                    'active': is_active('/events/calendar/')
-                },
+                # {
+                #     'label': 'Calendar View', 
+                #     'url': '/events/calendar/', 
+                #     'active': is_active('/events/calendar/')
+                # },
             ],
         },
         {
             'label': 'Notices',
-            'url':   '/notices/',
+            'url':   '#',
             'icon':  'megaphone',
-            'active': is_active('/notices/'),
+            'active': is_active('/dashboard/notices/'),
+            'children': [
+                {'label': 'All Notices',    'url': '/dashboard/notices/',        'active': is_active('/dashboard/notices/')},
+                {'label': 'Create Notice',  'url': '/dashboard/notices/create/', 'active': is_active('/dashboard/notices/create/')},
+            ],
             # Badge: count of active notices
             'badge': CachedNotice.objects.filter(
                 tenant=request.tenant,
                 is_published=True,
-                expiry_date__gte=timezone.now()
+                expiry_date__gte=timezone.now().date()
             ).count() or None,
         },
+        # In dashboard/views.py, update the Gallery entry in nav_content
         {
             'label': 'Gallery',
             'url':   '#',
             'icon':  'image',
-            'active': is_active('/gallery/'),
+            'active': is_active('/dashboard/albums/') or is_active('/gallery/'),
             'children': [
-                {'label': 'Albums',      'url': '/gallery/albums/',  'active': is_active('/gallery/albums/')},
-                {'label': 'Upload Media','url': '/gallery/upload/',  'active': is_active('/gallery/upload/')},
+                {'label': 'All Albums',      'url': '/dashboard/albums/',  'active': is_active('/dashboard/albums/')},
+                {'label': 'Create Album',    'url': '/dashboard/albums/create/',  'active': is_active('/dashboard/albums/create/')},
+                # {'label': 'Upload Media',    'url': '/dashboard/albums/create/#upload',  'active': False},
             ],
         },
         {

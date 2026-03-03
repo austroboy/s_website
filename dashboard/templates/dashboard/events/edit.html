@@ -37,277 +37,298 @@
   </div>
 </div>
 
-<!-- Edit Event Form -->
-<div class="fade-up delay-2 grid grid-cols-1 lg:grid-cols-3 gap-5">
-  <!-- Main Form - 2 columns -->
-  <div class="lg:col-span-2">
-    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
-      <div class="px-6 py-5 border-b border-base-700 flex items-center justify-between">
-        <h2 class="font-display font-semibold text-white">Edit Event Details</h2>
-        <span class="text-xs text-slate-muted">
-          <i data-lucide="clock" class="w-3 h-3 inline mr-1"></i>
-          Last updated: {{ event.updated_at|date:"M d, Y H:i" }}
-        </span>
-      </div>
-      
-      <form method="POST" enctype="multipart/form-data" class="p-6 space-y-5">
-        {% csrf_token %}
-        
-        <!-- Title Field -->
-        <div>
-          <label class="block text-sm font-medium text-slate-soft mb-2">
-            Event Title <span class="text-gold">*</span>
-          </label>
-          <input type="text" 
-                 name="title" 
-                 id="title"
-                 value="{{ event.title }}"
-                 required
-                 class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+<!-- Edit Event Form - সবকিছু একটি ফর্মের ভিতরে -->
+<div class="fade-up delay-2">
+  <form method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+    {% csrf_token %}
+    
+    <!-- Main Form - 2 columns -->
+    <div class="lg:col-span-2">
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-6 py-5 border-b border-base-700 flex items-center justify-between">
+          <h2 class="font-display font-semibold text-white">Edit Event Details</h2>
+          <span class="text-xs text-slate-muted">
+            <i data-lucide="clock" class="w-3 h-3 inline mr-1"></i>
+            Last updated: {{ event.updated_at|date:"M d, Y H:i" }}
+          </span>
         </div>
         
-        <!-- Slug Field -->
-        <div>
-          <label class="block text-sm font-medium text-slate-soft mb-2">
-            URL Slug
-          </label>
-          <div class="flex items-center gap-2">
-            <span class="text-sm text-slate-muted whitespace-nowrap">{{ request.get_host }}/events/</span>
+        <div class="p-6 space-y-5">
+          <!-- Title Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Event Title <span class="text-gold">*</span>
+            </label>
             <input type="text" 
-                   name="slug" 
-                   id="slug"
-                   value="{{ event.slug }}"
-                   class="flex-1 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
-          </div>
-        </div>
-        
-        <!-- Date & Time Row -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-slate-soft mb-2">
-              Start Date & Time <span class="text-gold">*</span>
-            </label>
-            <input type="datetime-local" 
-                   name="start_date" 
+                   name="title" 
+                   id="title"
+                   value="{{ event.title }}"
                    required
-                   value="{{ event.start_date|date:'Y-m-d\TH:i' }}"
                    class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
           </div>
+          
+          <!-- Slug Field -->
           <div>
             <label class="block text-sm font-medium text-slate-soft mb-2">
-              End Date & Time <span class="text-gold">*</span>
+              URL Slug
             </label>
-            <input type="datetime-local" 
-                   name="end_date" 
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-slate-muted whitespace-nowrap">{{ request.get_host }}/events/</span>
+              <input type="text" 
+                     name="slug" 
+                     id="slug"
+                     value="{{ event.slug }}"
+                     class="flex-1 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            </div>
+          </div>
+          
+          <!-- Date & Time Row -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-soft mb-2">
+                Start Date & Time <span class="text-gold">*</span>
+              </label>
+              <input type="datetime-local" 
+                     name="start_date" 
+                     required
+                     value="{{ event.start_date|date:'Y-m-d\TH:i' }}"
+                     class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-soft mb-2">
+                End Date & Time <span class="text-gold">*</span>
+              </label>
+              <input type="datetime-local" 
+                     name="end_date" 
+                     required
+                     value="{{ event.end_date|date:'Y-m-d\TH:i' }}"
+                     class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            </div>
+          </div>
+          
+          <!-- Venue -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Venue <span class="text-gold">*</span>
+            </label>
+            <input type="text" 
+                   name="venue" 
                    required
-                   value="{{ event.end_date|date:'Y-m-d\TH:i' }}"
+                   value="{{ event.venue }}"
                    class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
           </div>
+          
+          <!-- Registration Link -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Registration Link
+            </label>
+            <input type="url" 
+                   name="registration_link" 
+                   value="{{ event.registration_link }}"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+          </div>
+          
+          <!-- Summary Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Summary <span class="text-gold">*</span>
+            </label>
+            <textarea name="summary" 
+                      id="summary"
+                      required
+                      rows="3"
+                      class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">{{ event.summary }}</textarea>
+          </div>
+          
+          <!-- Content Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              Full Description <span class="text-gold">*</span>
+            </label>
+            <textarea name="content" 
+                      id="content"
+                      required
+                      rows="10"
+                      class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">{{ event.content }}</textarea>
+          </div>
         </div>
-        
-        <!-- Venue -->
-        <div>
-          <label class="block text-sm font-medium text-slate-soft mb-2">
-            Venue <span class="text-gold">*</span>
-          </label>
-          <input type="text" 
-                 name="venue" 
-                 required
-                 value="{{ event.venue }}"
-                 class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
-        </div>
-        
-        <!-- Registration Link -->
-        <div>
-          <label class="block text-sm font-medium text-slate-soft mb-2">
-            Registration Link
-          </label>
-          <input type="url" 
-                 name="registration_link" 
-                 value="{{ event.registration_link }}"
-                 class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
-        </div>
-        
-        <!-- Summary Field -->
-        <div>
-          <label class="block text-sm font-medium text-slate-soft mb-2">
-            Summary <span class="text-gold">*</span>
-          </label>
-          <textarea name="summary" 
-                    id="summary"
-                    required
-                    rows="3"
-                    class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">{{ event.summary }}</textarea>
-        </div>
-        
-        <!-- Content Field -->
-        <div>
-          <label class="block text-sm font-medium text-slate-soft mb-2">
-            Full Description <span class="text-gold">*</span>
-          </label>
-          <textarea name="content" 
-                    id="content"
-                    required
-                    rows="10"
-                    class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">{{ event.content }}</textarea>
-        </div>
-        
-        <!-- Form Actions -->
-        <div class="flex items-center justify-end gap-3 pt-4 border-t border-base-700">
-          <a href="/dashboard/events/" 
-             class="px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors">
-            Cancel
-          </a>
-          <button type="submit" name="action" value="draft"
-                  class="px-5 py-2.5 rounded-xl border border-gold/30 text-gold hover:bg-gold/10 transition-colors">
-            {% if event.is_published %}Unpublish & Save Draft{% else %}Save as Draft{% endif %}
-          </button>
-          <button type="submit" name="action" value="publish"
-                  class="px-5 py-2.5 rounded-xl bg-gold text-base-900 font-semibold hover:bg-gold-light transition-colors shadow-glow-gold">
-            {% if event.is_published %}Update & Publish{% else %}Publish Event{% endif %}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-  
-  <!-- Sidebar - 1 column -->
-  <div class="lg:col-span-1 space-y-5">
-    <!-- Status Card -->
-    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
-      <div class="px-5 py-4 border-b border-base-700">
-        <h3 class="font-display font-semibold text-white">Event Status</h3>
       </div>
-      <div class="p-5">
-        <div class="flex items-center justify-between mb-4">
-          <span class="text-sm text-slate-soft">Current Status</span>
-          {% if event.is_published %}
-            {% if event.start_date > now %}
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
-              Published & Upcoming
-            </span>
-            {% elif event.end_date < now %}
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-base-500/10 text-base-400 border border-base-500/20">
-              <span class="w-1.5 h-1.5 bg-base-400 rounded-full"></span>
-              Published & Past
-            </span>
+    </div>
+    
+    <!-- Sidebar - 1 column (এখন ফর্মের ভিতরে) -->
+    <div class="lg:col-span-1 space-y-5">
+      <!-- Status Card -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-base-700">
+          <h3 class="font-display font-semibold text-white">Event Status</h3>
+        </div>
+        <div class="p-5">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-sm text-slate-soft">Current Status</span>
+            {% if event.is_published %}
+              {% if event.start_date > now %}
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                Published & Upcoming
+              </span>
+              {% elif event.end_date < now %}
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-base-500/10 text-base-400 border border-base-500/20">
+                <span class="w-1.5 h-1.5 bg-base-400 rounded-full"></span>
+                Published & Past
+              </span>
+              {% else %}
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-gold/10 text-gold border border-gold/20">
+                <span class="w-1.5 h-1.5 bg-gold rounded-full"></span>
+                Ongoing
+              </span>
+              {% endif %}
             {% else %}
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-gold/10 text-gold border border-gold/20">
-              <span class="w-1.5 h-1.5 bg-gold rounded-full"></span>
-              Ongoing
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-base-600/50 text-slate-soft border border-base-600">
+              <span class="w-1.5 h-1.5 bg-base-500 rounded-full"></span>
+              Draft
             </span>
             {% endif %}
-          {% else %}
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-base-600/50 text-slate-soft border border-base-600">
-            <span class="w-1.5 h-1.5 bg-base-500 rounded-full"></span>
-            Draft
-          </span>
+          </div>
+          
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-slate-muted">SMS ID</span>
+              <span class="text-white font-mono text-xs">{{ event.sms_id }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-muted">Created</span>
+              <span class="text-white">{{ event.created_at|date:"M d, Y" }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-muted">Last Synced</span>
+              <span class="text-white">{{ event.last_synced|date:"M d, Y H:i" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Featured Image URL Card -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-base-700">
+          <h3 class="font-display font-semibold text-white">Event Image URL</h3>
+        </div>
+        <div class="p-5">
+          <!-- Current Image Preview (if exists) -->
+          {% if event.featured_image %}
+          <div class="mb-4" id="current-image-container">
+            <p class="text-xs text-slate-muted mb-2">Current image:</p>
+            <div class="relative">
+              <img src="{{ event.featured_image }}" alt="{{ event.title }}" class="w-full rounded-xl border border-base-600 max-h-48 object-cover">
+              <button type="button" 
+                      onclick="removeCurrentImage()"
+                      class="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/80 text-white hover:bg-red-600 transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <input type="hidden" name="remove_image" id="remove-image" value="false">
+          </div>
+          {% endif %}
+          
+          <!-- Image URL Input -->
+          <div>
+            <label class="block text-sm font-medium text-slate-soft mb-2">
+              {% if event.featured_image %}New Image URL (optional){% else %}Image URL{% endif %}
+            </label>
+            <input type="url" 
+                   name="featured_image" 
+                   id="featured_image_url"
+                   value="{{ event.featured_image }}"
+                   placeholder="https://example.com/event-image.jpg"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"
+                   onchange="previewImageFromUrl(this.value)">
+            <p class="mt-1.5 text-xs text-slate-muted">
+              Enter a direct URL to an image
+            </p>
+          </div>
+          
+          <!-- New Image Preview -->
+          <div id="new-image-preview-container" class="mt-4 hidden">
+            <p class="text-xs text-slate-muted mb-2">New image preview:</p>
+            <img id="new-image-preview" src="" alt="Preview" class="w-full rounded-xl border border-base-600 max-h-48 object-cover">
+            <button type="button" 
+                    onclick="clearNewImageUrl()"
+                    class="mt-2 text-xs text-red-400 hover:text-red-300 transition-colors">
+              <i data-lucide="x" class="w-3 h-3 inline mr-1"></i>
+              Clear new image
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Event Info -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-base-700">
+          <h3 class="font-display font-semibold text-white">Event Info</h3>
+        </div>
+        <div class="p-5 space-y-3">
+          <div class="flex items-start gap-3">
+            <i data-lucide="calendar" class="w-4 h-4 text-gold flex-shrink-0 mt-0.5"></i>
+            <div>
+              <p class="text-sm text-white">{{ event.start_date|date:"l, F j, Y" }}</p>
+              <p class="text-xs text-slate-muted">{{ event.start_date|date:"g:i A" }} - {{ event.end_date|date:"g:i A" }}</p>
+            </div>
+          </div>
+          {% if event.venue %}
+          <div class="flex items-start gap-3">
+            <i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0 mt-0.5"></i>
+            <p class="text-sm text-slate-soft">{{ event.venue }}</p>
+          </div>
+          {% endif %}
+          {% if event.registration_link %}
+          <div class="flex items-start gap-3">
+            <i data-lucide="link" class="w-4 h-4 text-gold flex-shrink-0 mt-0.5"></i>
+            <a href="{{ event.registration_link }}" target="_blank" class="text-sm text-cyan-400 hover:text-cyan-300 break-all">
+              Registration Link
+            </a>
+          </div>
           {% endif %}
         </div>
-        
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between">
-            <span class="text-slate-muted">SMS ID</span>
-            <span class="text-white font-mono text-xs">{{ event.sms_id }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-muted">Created</span>
-            <span class="text-white">{{ event.created_at|date:"M d, Y" }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-muted">Last Synced</span>
-            <span class="text-white">{{ event.last_synced|date:"M d, Y H:i" }}</span>
-          </div>
+      </div>
+      
+      <!-- Danger Zone -->
+      <div class="bg-base-800 border border-red-500/30 rounded-2xl overflow-hidden shadow-card">
+        <div class="px-5 py-4 border-b border-red-500/30 bg-red-500/5">
+          <h3 class="font-display font-semibold text-red-400">Danger Zone</h3>
         </div>
-      </div>
-    </div>
-    
-    <!-- Featured Image Card -->
-    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
-      <div class="px-5 py-4 border-b border-base-700">
-        <h3 class="font-display font-semibold text-white">Event Image</h3>
-      </div>
-      <div class="p-5">
-        {% if event.featured_image %}
-        <div class="relative mb-4" id="current-image-container">
-          <img src="{{ event.featured_image }}" alt="{{ event.title }}" class="w-full rounded-xl border border-base-600">
-          <button type="button" 
-                  onclick="removeCurrentImage()"
-                  class="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/80 text-white hover:bg-red-600 transition-colors">
-            <i data-lucide="x" class="w-4 h-4"></i>
+        <div class="p-5">
+          <p class="text-sm text-slate-soft mb-4">
+            Once you delete an event, it cannot be recovered.
+          </p>
+          <button type="button" onclick="confirmDelete({{ event.id }}, '{{ event.title|escapejs }}')"
+                  class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-red-500/50 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition-colors">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+            Delete Event
           </button>
-          <input type="hidden" name="remove_image" id="remove-image" value="false">
-        </div>
-        {% endif %}
-        
-        <div class="border-2 border-dashed border-base-600 rounded-xl p-6 text-center hover:border-gold/50 transition-colors cursor-pointer group"
-             onclick="document.getElementById('edit-image-input').click()">
-          <i data-lucide="image" class="w-10 h-10 text-base-500 mx-auto mb-3 group-hover:text-gold transition-colors"></i>
-          <p class="text-sm text-slate-soft mb-1">Click to {% if event.featured_image %}replace{% else %}upload{% endif %}</p>
-          <p class="text-xs text-slate-muted">PNG, JPG, WebP up to 5MB</p>
-          <input type="file" 
-                 id="edit-image-input"
-                 name="featured_image" 
-                 accept="image/*" 
-                 class="hidden"
-                 onchange="previewEditImage(this)">
-        </div>
-        
-        <div id="edit-image-preview" class="hidden mt-4">
-          <p class="text-xs text-slate-muted mb-2">New image preview:</p>
-          <img src="" alt="Preview" class="w-full rounded-xl border border-base-600">
         </div>
       </div>
-    </div>
-    
-    <!-- Event Info -->
-    <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
-      <div class="px-5 py-4 border-b border-base-700">
-        <h3 class="font-display font-semibold text-white">Event Info</h3>
-      </div>
-      <div class="p-5 space-y-3">
-        <div class="flex items-start gap-3">
-          <i data-lucide="calendar" class="w-4 h-4 text-gold flex-shrink-0 mt-0.5"></i>
-          <div>
-            <p class="text-sm text-white">{{ event.start_date|date:"l, F j, Y" }}</p>
-            <p class="text-xs text-slate-muted">{{ event.start_date|date:"g:i A" }} - {{ event.end_date|date:"g:i A" }}</p>
+      
+      <!-- Form Action Buttons (এখন এখানে) -->
+      <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
+        <div class="p-5">
+          <div class="flex flex-col gap-3">
+            <a href="/dashboard/events/" 
+               class="w-full px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors text-center">
+              Cancel
+            </a>
+            <button type="submit" name="action" value="draft"
+                    class="w-full px-5 py-2.5 rounded-xl border border-gold/30 text-gold hover:bg-gold/10 transition-colors">
+              {% if event.is_published %}Unpublish & Save Draft{% else %}Save as Draft{% endif %}
+            </button>
+            <button type="submit" name="action" value="publish"
+                    class="w-full px-5 py-2.5 rounded-xl bg-gold text-base-900 font-semibold hover:bg-gold-light transition-colors shadow-glow-gold">
+              {% if event.is_published %}Update & Publish{% else %}Publish Event{% endif %}
+            </button>
           </div>
         </div>
-        {% if event.venue %}
-        <div class="flex items-start gap-3">
-          <i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0 mt-0.5"></i>
-          <p class="text-sm text-slate-soft">{{ event.venue }}</p>
-        </div>
-        {% endif %}
-        {% if event.registration_link %}
-        <div class="flex items-start gap-3">
-          <i data-lucide="link" class="w-4 h-4 text-gold flex-shrink-0 mt-0.5"></i>
-          <a href="{{ event.registration_link }}" target="_blank" class="text-sm text-cyan-400 hover:text-cyan-300 break-all">
-            Registration Link
-          </a>
-        </div>
-        {% endif %}
       </div>
     </div>
-    
-    <!-- Danger Zone -->
-    <div class="bg-base-800 border border-red-500/30 rounded-2xl overflow-hidden shadow-card">
-      <div class="px-5 py-4 border-b border-red-500/30 bg-red-500/5">
-        <h3 class="font-display font-semibold text-red-400">Danger Zone</h3>
-      </div>
-      <div class="p-5">
-        <p class="text-sm text-slate-soft mb-4">
-          Once you delete an event, it cannot be recovered.
-        </p>
-        <button onclick="confirmDelete({{ event.id }}, '{{ event.title|escapejs }}')"
-                class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-red-500/50 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition-colors">
-          <i data-lucide="trash-2" class="w-4 h-4"></i>
-          Delete Event
-        </button>
-      </div>
-    </div>
-  </div>
+  </form>
 </div>
 
 <!-- Delete Confirmation Modal -->
@@ -344,18 +365,28 @@ function removeCurrentImage() {
   document.getElementById('remove-image').value = 'true';
 }
 
-function previewEditImage(input) {
-  const preview = document.getElementById('edit-image-preview');
-  const previewImg = preview.querySelector('img');
+function previewImageFromUrl(url) {
+  const previewContainer = document.getElementById('new-image-preview-container');
+  const previewImg = document.getElementById('new-image-preview');
   
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      previewImg.src = e.target.result;
-      preview.classList.remove('hidden');
-    }
-    reader.readAsDataURL(input.files[0]);
+  if (url && url.trim() !== '') {
+    previewImg.src = url;
+    previewContainer.classList.remove('hidden');
+    
+    // Handle error if image fails to load
+    previewImg.onerror = function() {
+      previewImg.src = '';
+      previewContainer.classList.add('hidden');
+      alert('Invalid image URL or image cannot be loaded');
+    };
+  } else {
+    previewContainer.classList.add('hidden');
   }
+}
+
+function clearNewImageUrl() {
+  document.getElementById('featured_image_url').value = '';
+  document.getElementById('new-image-preview-container').classList.add('hidden');
 }
 
 function confirmDelete(id, title) {
