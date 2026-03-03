@@ -133,7 +133,7 @@ def build_nav_context(request):
         },
         {
             'label': 'Homepage Builder',
-            'url':   '/settings/homepage/',
+            'url':   '/settings/homepage/', 
             'icon':  'layout-template',
             'active': is_active('/settings/homepage/'),
         },
