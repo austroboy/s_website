@@ -1,0 +1,150 @@
+{% extends "dashboard_base.html" %}
+
+{% block content %}
+
+<div class="mb-6">
+  <h1 class="text-2xl font-display font-bold text-white">
+    Pages
+  </h1>
+</div>
+
+<!-- FORM -->
+<div class="bg-base-800 border border-base-700 rounded-2xl p-6 mb-6">
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="{% if edit_obj %}update{% else %}create{% endif %}">
+    {% if edit_obj %}
+      <input type="hidden" name="page_id" value="{{ edit_obj.id }}">
+    {% endif %}
+
+    <div class="grid grid-cols-2 gap-4">
+
+      <!-- Title -->
+      <input type="text"
+             id="title"
+             name="title"
+             value="{{ edit_obj.title|default:'' }}"
+             placeholder="Title"
+             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+      <!-- Slug -->
+      <input type="text"
+             id="slug"
+             name="slug"
+             value="{{ edit_obj.slug|default:'' }}"
+             placeholder="Slug"
+             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+      <!-- Meta -->
+      <input type="text"
+             name="meta_description"
+             value="{{ edit_obj.meta_description|default:'' }}"
+             placeholder="Meta Description"
+             class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+      <!-- Content -->
+      <textarea name="content"
+                rows="6"
+                placeholder="HTML Content Allowed"
+                class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">{{ edit_obj.content|default:'' }}</textarea>
+
+    </div>
+
+    <div class="mt-4 flex gap-6">
+
+      <label class="text-sm text-slate-soft">
+        <input type="checkbox" name="published"
+          {% if edit_obj %}
+            {% if edit_obj.published %}checked{% endif %}
+          {% endif %}>
+        Published
+      </label>
+
+      <label class="text-sm text-slate-soft">
+        <input type="checkbox" name="show_in_footer"
+          {% if edit_obj %}
+            {% if edit_obj.show_in_footer %}checked{% endif %}
+          {% endif %}>
+        Show in Footer
+      </label>
+
+    </div>
+
+    <button class="mt-4 px-4 py-2 bg-gold text-base-900 font-bold rounded-xl">
+      {% if edit_obj %}Update{% else %}Create{% endif %}
+    </button>
+
+  </form>
+</div>
+
+
+<!-- LIST -->
+<div class="space-y-3">
+
+  {% for page in pages %}
+  <div class="bg-base-800 border border-base-700 rounded-xl p-4 flex justify-between items-center">
+
+    <div>
+      <p class="text-white font-semibold">{{ page.title }}</p>
+      <p class="text-xs text-slate-muted">
+        /{{ page.slug }} |
+        {% if page.published %}
+          <span class="text-green-400">Published</span>
+        {% else %}
+          <span class="text-red-400">Unpublished</span>
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="flex gap-2">
+
+      <!-- Edit -->
+      <a href="?edit={{ page.id }}"
+         class="px-3 py-1 bg-gold/20 text-gold rounded-lg text-sm">
+         Edit
+      </a>
+
+      <!-- Toggle -->
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="toggle">
+        <input type="hidden" name="page_id" value="{{ page.id }}">
+        <button class="px-3 py-1 bg-purple-600/20 text-purple-400 rounded-lg text-sm">
+          Toggle
+        </button>
+      </form>
+
+      <!-- Delete -->
+      <form method="post" onsubmit="return confirm('Delete this page?')">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="page_id" value="{{ page.id }}">
+        <button class="px-3 py-1 bg-red-600/20 text-red-400 rounded-lg text-sm">
+          Delete
+        </button>
+      </form>
+
+    </div>
+
+  </div>
+  {% endfor %}
+
+</div>
+
+<!-- AUTO SLUG SCRIPT -->
+<script>
+  const titleInput = document.getElementById("title");
+  const slugInput = document.getElementById("slug");
+
+  if (titleInput) {
+    titleInput.addEventListener("keyup", function() {
+      slugInput.value = titleInput.value
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w\-]+/g, "");
+    });
+  }
+</script>
+
+{% endblock %}

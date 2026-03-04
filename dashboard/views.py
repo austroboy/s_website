@@ -172,6 +172,12 @@ def build_nav_context(request):
             'active': is_active('/settings/homepage/'),
         },
         {
+            'label': 'Pages',
+            'url':   '/settings/pages/', 
+            'icon':  'layout-template',
+            'active': is_active('/settings/pages/'),
+        },
+        {
             'label': 'SMS Integration',
             'url':   '/settings/sms/',
             'icon':  'plug-2',
