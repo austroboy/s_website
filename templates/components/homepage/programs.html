@@ -16,7 +16,7 @@
                     <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">{{ section.subtitle|default:"Our Programs" }}</p>
                 </div>
             </div>
-            <a href="#" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0">
+            <a href="{% url 'programs:list' %}" class="btn-outline-blue text-xs tracking-wider group hidden sm:inline-flex shrink-0">
                 VIEW ALL
                 <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
             </a>
@@ -43,7 +43,7 @@
                             
                             <!-- Detailed Button -->
                             <div class="mt-auto flex justify-end pt-2">
-                                <a href="{{ program.slug|default:'#' }}" class="px-4 py-1.5 border border-[var(--primary)]/30 text-[var(--primary)] text-xs font-semibold hover:bg-[var(--primary)] hover:text-white transition-all duration-300 rounded-lg">
+                                <a href="{% url 'programs:detail' program.pk %}" class="px-4 py-1.5 border border-[var(--primary)]/30 text-[var(--primary)] text-xs font-semibold hover:bg-[var(--primary)] hover:text-white transition-all duration-300 rounded-lg">
                                     Details
                                 </a>
                             </div>
@@ -63,7 +63,7 @@
         {% endif %}
 
         <div class="mt-8 sm:hidden">
-            <a href="#" class="btn-outline-blue btn-view-all-mobile text-xs tracking-wider group">
+            <a href="{% url 'programs:list' %}" class="btn-outline-blue btn-view-all-mobile text-xs tracking-wider group">
                 VIEW ALL PROGRAMS
                 <i data-lucide="move-right" class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"></i>
             </a>

@@ -67,11 +67,20 @@ class NewsListView(ListView):
 
 class NewsDetailView(DetailView):
     model = CachedNews
-    template_name = 'content/news_detail.html'
+    template_name = 'components/page/details/news.html'
     context_object_name = 'news'
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get 5 most popular/recent news for the sidebar (excluding current)
+        context['popular_news'] = CachedNews.objects.filter(
+            tenant=self.object.tenant, 
+            is_published=True
+        ).exclude(id=self.object.id).order_by('-created_at')[:5]
+        return context
 
 # ---- Events ----
 class EventListView(ListView):
@@ -86,7 +95,7 @@ class EventListView(ListView):
 
 class EventDetailView(DetailView):
     model = CachedEvent
-    template_name = 'cache/event_detail.html'
+    template_name = 'components/page/details/event.html'
     context_object_name = 'event'
 
     def get_queryset(self):
@@ -106,7 +115,7 @@ class NoticeListView(ListView):
 
 class NoticeDetailView(DetailView):
     model = CachedNotice
-    template_name = 'content/notice_detail.html'
+    template_name = 'components/page/details/notice.html'
     context_object_name = 'notice'
 
     def get_queryset(self):
@@ -124,11 +133,20 @@ class StaffListView(ListView):
 
 class StaffDetailView(DetailView):
     model = CachedStaff
-    template_name = 'cache/staff_detail.html'
+    template_name = 'components/page/details/staff.html'
     context_object_name = 'staff'
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get 5-6 other staff members from the same tenant for the sidebar
+        context['other_staff'] = CachedStaff.objects.filter(
+            tenant=self.object.tenant, 
+            is_published=True
+        ).exclude(id=self.object.id).order_by('?')[:6]
+        return context
 
 # ---- Programs (Academics) ----
 class ProgramListView(ListView):
@@ -142,7 +160,7 @@ class ProgramListView(ListView):
 
 class ProgramDetailView(DetailView):
     model = CachedProgram
-    template_name = 'content/program_details.html'
+    template_name = 'components/page/details/programs.html'
     context_object_name = 'program'
 
     def get_queryset(self):
@@ -160,7 +178,7 @@ class AlbumListView(ListView):
 
 class AlbumDetailView(DetailView):
     model = CachedAlbum
-    template_name = 'content/gallery_detail.html'
+    template_name = 'components/page/details/gallery.html'
     context_object_name = 'album'
 
     def get_queryset(self):

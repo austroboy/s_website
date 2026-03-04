@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ staff.name }} | Faculty Profile{% endblock %}
+
+{% block content %}
+<div class="bg-[var(--surface)] min-h-screen">
+    <!-- Main Content Container (No Hero) -->
+    <div class="max-w-[1240px] mx-auto px-4 lg:px-8 py-6 lg:py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+            <!-- Left Main Column: Profile & Info -->
+            <div class="lg:col-span-8 space-y-10 reveal-up">
+                
+                <!-- Profile Header Card -->
+                <div class="bg-white rounded-3xl p-6 lg:p-10 border border-[var(--border)] shadow-xl shadow-gray-200/50 overflow-hidden relative group">
+                    <!-- Subtle Decorative Background -->
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[var(--primary)]/5 to-transparent rounded-full -mr-20 -mt-20 transition-transform duration-700 group-hover:scale-110"></div>
+                    
+                    <div class="flex flex-col md:flex-row gap-8 lg:gap-12 items-center  relative z-10">
+                        <!-- Profile Picture -->
+                        <div class="relative shrink-0 mx-auto md:mx-0">
+                            <div class="w-48 h-48 lg:w-56 lg:h-56 rounded-lg overflow-hidden shadow-2xl border-4 border-white transform transition-transform duration-500 hover:scale-[1.02]">
+                                <img src="{% if staff.photo %}{{ staff.photo }}{% else %}https://i.pravatar.cc/300?u={{ staff.name }}{% endif %}" 
+                                     alt="{{ staff.name }}" 
+                                     class="w-full h-full object-cover">
+                            </div>
+                        </div>
+
+                        <!-- Basic Information -->
+                        <div class="flex-1 text-center md:text-left">
+                            <h1 class="text-lg lg:text-2xl font-black text-[var(--secondary)] mb-2 tracking-tight">{{ staff.name }}</h1>
+                            <p class="text-md lg:text-lg font-bold text-[var(--primary)] mb-6">{{ staff.designation }}</p>
+                            
+                            <div class="grid grid-cols-1 gap-4">
+                                <div class="flex items-center gap-3 p-3 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border)]/30 group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover/item:text-[var(--primary)] transition-colors">
+                                        <i data-lucide="building-2" class="w-5 h-5"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-wider">Department</p>
+                                        <p class="text-[13px] text-[var(--secondary)] font-bold">{{ staff.department|default:"Academic Faculty" }}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-3 p-3 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border)]/30 group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover/item:text-[var(--primary)] transition-colors">
+                                        <i data-lucide="mail" class="w-5 h-5"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-wider">Email</p>
+                                        <p class="text-[13px] text-[var(--secondary)] font-bold truncate ">{{ staff.email|default:"contact@institution.edu" }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3 p-3 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border)]/30 group/item">
+                                    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover/item:text-[var(--primary)] transition-colors">
+                                        <i data-lucide="phone" class="w-5 h-5"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-wider">Phone</p>
+                                        <p class="text-[13px] text-[var(--secondary)] font-bold">{{ staff.phone|default:"+1 (555) 000-0000" }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Academic Profile Section -->
+              
+                    <div class="flex items-center gap-3 mt-10 mb-4 lg:mb-6 bg-[var(--surface-alt)] px-3 lg:px-4 py-2 rounded-md">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center shadow-lg">
+                            <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <h2 class="text-lg font-black text-[var(--secondary)] tracking-tight">Biography & Background</h2>
+                    </div>
+                    
+                    <div class="prose prose-lg max-w-none text-[var(--text-muted)] text-[16px] leading-[1.8] space-y-6">
+                        {% if staff.bio %}
+                            {{ staff.bio|safe }}
+                        {% else %}
+                            <p>An accomplished educator and professional with extensive experience in their field. Committed to academic excellence and nurturing the next generation of leaders. They have contributed significantly to the institution's growth and student success through their expertise and dedication.</p>
+                            <p>Their research interests include modern pedagogical techniques and practical applications in their respective department.</p>
+                        {% endif %}
+                    </div>
+               
+
+                </div>
+
+               
+
+            </div>
+
+            <!-- Right Column: Sidebar -->
+            <aside class="lg:col-span-4 space-y-8 reveal-up">
+                
+                <!-- Faculty Directory / Other Staff -->
+                <div class="bg-white rounded-3xl p-6 border border-[var(--border)] shadow-xl shadow-gray-200/50">
+                    <h3 class="text-sm font-black text-[var(--secondary)] uppercase tracking-wider mb-6 flex items-center gap-2">
+                        <i data-lucide="users" class="w-4 h-4 text-[var(--primary)]"></i>
+                        Faculty Directory
+                    </h3>
+                    <div class="space-y-4">
+                        {% for other in other_staff %}
+                        <a href="{% url 'staff:detail' other.pk %}" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-[var(--surface-alt)] transition-all group/staff">
+                            <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 border-2 border-transparent group-hover/staff:border-[var(--primary)]/30 transition-all shadow-sm">
+                                <img src="{% if other.photo %}{{ other.photo }}{% else %}https://i.pravatar.cc/100?u={{ other.name }}{% endif %}" 
+                                     alt="{{ other.name }}" 
+                                     class="w-full h-full object-cover">
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-[13px] font-bold text-[var(--secondary)] group-hover/staff:text-[var(--primary)] transition-colors truncate">{{ other.name }}</p>
+                                <p class="text-[11px] text-[var(--text-muted)] font-medium">{{ other.designation }}</p>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    
+                    <a href="{% url 'staff:list' %}" class="mt-8 flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-[var(--surface-alt)] text-[var(--secondary)] font-bold text-[13px] hover:bg-[var(--primary)] hover:text-white transition-all group">
+                        <span>View All Faculty</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+
+                <!-- Connect & Socials -->
+                <div class="bg-white rounded-3xl p-6 border border-[var(--border)] shadow-xl shadow-gray-200/50">
+                    <h3 class="text-sm font-black text-[var(--secondary)] uppercase tracking-wider mb-6 flex items-center gap-2">
+                        <i data-lucide="share-2" class="w-4 h-4 text-[var(--primary)]"></i>
+                        Share This Page
+                    </h3>
+                    <div class="flex items-center gap-3">
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ staff.name }}" class="w-12 h-12 flex items-center justify-center bg-[#0077B5] text-white rounded-xl hover:shadow-lg transition-all transform hover:-translate-y-1">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ staff.name }}" class="w-12 h-12 flex items-center justify-center bg-[#1DA1F2] text-white rounded-xl hover:shadow-lg transition-all transform hover:-translate-y-1">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="mailto:{{ staff.email }}" class="w-12 h-12 flex items-center justify-center bg-[var(--primary)] text-white rounded-xl hover:shadow-lg transition-all transform hover:-translate-y-1">
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                        </a>
+                        <button class="w-12 h-12 flex items-center justify-center bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--text-muted)] rounded-xl hover:bg-[var(--primary)] hover:text-white transition-all transform hover:-translate-y-1"
+                                @click="navigator.clipboard.writeText(window.location.href); alert('Profile link copied!')">
+                            <i data-lucide="copy" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="bg-white rounded-3xl p-6 border border-[var(--border)] shadow-xl shadow-gray-200/50">
+                    <h3 class="text-sm font-black text-[var(--secondary)] uppercase tracking-wider mb-6 flex items-center gap-2">
+                        <i data-lucide="link" class="w-4 h-4 text-[var(--primary)]"></i>
+                        Resources
+                    </h3>
+                    <div class="space-y-3">
+                        <a href="/admissions/" class="flex items-center gap-3 p-4 rounded-2xl bg-[var(--surface-alt)] hover:bg-[var(--primary)] hover:text-white transition-all group">
+                            <i data-lucide="file-text" class="w-4 h-4 text-[var(--primary)] group-hover:text-white"></i>
+                            <span class="text-[13px] font-bold">Apply for Admission</span>
+                        </a>
+                        <a href="/academics/" class="flex items-center gap-3 p-4 rounded-2xl bg-[var(--surface-alt)] hover:bg-[var(--primary)] hover:text-white transition-all group">
+                            <i data-lucide="layout-grid" class="w-4 h-4 text-[var(--primary)] group-hover:text-white"></i>
+                            <span class="text-[13px] font-bold">Our Academics</span>
+                        </a>
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+    </div>
+</div>
+
+<!-- Admission CTA Section -->
+<section class="relative overflow-hidden py-6 lg:py-12">
+    <div class="absolute inset-0 bg-gradient-to-br from-[var(--secondary)] via-[var(--primary-dark)] to-[var(--primary)]"></div>
+    <!-- Pattern Overlay -->
+    <div class="absolute inset-0 opacity-[0.05]" style="background-image: url('data:image/svg+xml,<svg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;><g fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.4&quot;><path d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/></g></g></svg>');"></div>
+
+    <!-- Decorative Blobs -->
+    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white/5 to-transparent"></div>
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-[var(--accent)]/10 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-[var(--primary-light)]/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10">
+        <div class="flex flex-col items-center text-center">
+            <div class="inline-flex items-center gap-4 px-6 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 mb-8 reveal-up">
+                <i data-lucide="sparkles" class="w-5 h-5 text-[var(--accent)]"></i>
+                <span class="text-xs lg:text-sm font-black text-white uppercase tracking-[0.2em]">Excellence in Education</span>
+            </div>
+            
+            <h2 class="text-4xl lg:text-6xl font-black text-white leading-tight mb-8 tracking-tighter reveal-up">
+                Start Your Journey<br>
+                <span class="text-[var(--accent)]">With Our Best.</span>
+            </h2>
+            
+            <p class="text-white/80 text-lg lg:text-xl max-w-2xl leading-relaxed mb-12 reveal-up">
+                Learn from world-class faculty members like {{ staff.name }} and shape your future at an institution that prioritizes your success and growth.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center gap-6 justify-center w-full max-w-2xl mx-auto reveal-up">
+                <a href="/admissions/" 
+                    class="w-full sm:w-auto group relative inline-flex items-center justify-center gap-4 px-10 py-5 bg-white text-[var(--primary-dark)] font-black rounded-2xl shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[var(--accent)]/40 overflow-hidden">
+                    <span class="relative z-10 flex items-center gap-3">
+                        <i data-lucide="rocket" class="w-6 h-6"></i>
+                        Begin Admission
+                        <i data-lucide="arrow-right" class="w-6 h-6 transition-transform group-hover:translate-x-2"></i>
+                    </span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-[var(--accent)]/20 to-transparent translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-700"></div>
+                </a>
+                
+                <a href="/contact/" 
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-black rounded-2xl hover:bg-white/10 hover:border-white/60 transition-all duration-500 hover:-translate-y-1">
+                    <i data-lucide="message-square" class="w-6 h-6"></i>
+                    Get in Touch
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

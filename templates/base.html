@@ -17,11 +17,11 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
         <!-- Tailwind CSS via CDN (for development; use a build system for production) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Optional custom CSS -->
-    <!-- <link rel="stylesheet" href="{% static 'css/custom.css' %}"> -->
+    <!-- Global custom CSS -->
+   
     <style>
         :root {
             --primary: {{ colors.primary }};
@@ -88,8 +88,8 @@ body {
 }
 
 /* ---- Headings ---- */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', system-ui, sans-serif;
+h1, h2, h3, h4, h5, h6, .outfit {
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
     line-height: 1.2;
     letter-spacing: -0.02em;
 }
@@ -146,6 +146,7 @@ h1, h2, h3, h4, h5, h6 {
     white-space: nowrap;
     position: relative;
     overflow: hidden;
+    isolation: isolate;
 }
 
 .btn-primary-blue::before {
@@ -155,6 +156,7 @@ h1, h2, h3, h4, h5, h6 {
     background: linear-gradient(135deg, var(--accent), var(--primary-light), var(--primary));
     opacity: 0;
     transition: opacity var(--transition-base);
+    z-index: 0;
 }
 
 .btn-primary-blue:hover {

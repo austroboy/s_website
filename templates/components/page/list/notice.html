@@ -7,10 +7,12 @@
 <!-- Standard Academic Hero Header Flattened -->
 <section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
     <div class="absolute inset-0 z-0">
-        <img src="https://www.bracu.ac.bd/sites/default/files/styles/banner_dept_landing/public/banner-images/2024/12/31/Departments.JPG" 
+        <img src="{% static 'assets/layout_images/hero_header.jpg' %}" 
              alt="University Notices" 
              class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-r from-[#0F1D40]/90 to-transparent"></div>
+        <div class="absolute inset-0" 
+             style="background: linear-gradient(to right, color-mix(in srgb, var(--primary-dark) 95%, transparent), color-mix(in srgb, var(--primary-dark) 60%, transparent), transparent);">
+        </div>
     </div>
 
     <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 w-full">
@@ -25,7 +27,7 @@
     </div>
 </section>
 
-<div class="py-12 md:py-20 bg-[var(--surface-alt)] min-h-screen">
+<div class="py-6 lg:py-12 bg-[var(--surface-alt)] min-h-screen">
     <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10">
         
         <!-- Header Section -->
@@ -46,7 +48,7 @@
         {% if page_obj.object_list or notices_list %}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 reveal-up">
                 {% for notice in page_obj.object_list|default:notices_list %}
-                    <a href="{{ notice.attachment_url|default:'#' }}" class="group flex items-stretch bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-[var(--border)] hover:border-[var(--primary)]/30 overflow-hidden">
+                    <a href="{% url 'notices:detail' notice.slug %}" class="group flex items-stretch bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-[var(--border)] hover:border-[var(--primary)]/30 overflow-hidden">
                         <div class="w-20 sm:w-24 bg-gradient-to-b from-[var(--primary)] to-[var(--primary-dark)] flex flex-col items-center justify-center p-3 transition-all group-hover:from-[var(--primary-light)] group-hover:to-[var(--primary)] group-hover:shadow-[inset_0_0_20px_rgba(0,212,255,0.15)]">
                             <span class="text-xl font-extrabold text-white">{{ notice.created_at|date:"d" }}</span>
                             <span class="text-[10px] font-bold text-white/80 uppercase tracking-widest">{{ notice.created_at|date:"M" }}</span>

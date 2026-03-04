@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import AdmissionsOverviewView, AdmissionThankYouView
 from .import dashboard_views
+from .views import AdmissionsOverviewView, AdmissionDetailView, AdmissionThankYouView
 
 app_name = 'admissions'
 
@@ -15,4 +16,5 @@ urlpatterns = [
     path("admission-forms/<int:pk>/download/",
      dashboard_views.admission_form_download,
      name="admission_form_download"),
+    path('<int:pk>/', AdmissionDetailView.as_view(), name='detail'),
 ]

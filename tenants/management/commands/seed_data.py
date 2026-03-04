@@ -9,6 +9,7 @@ from branding.models import ColorPalette, FontPair, BrandAssets
 from navigation.models import Menu, MenuItem
 from achievements.models import Achievement
 from admissions.models import AdmissionForm
+from documents.models import Document, DocumentCategory
 from contact.models import ContactSubmission, AdmissionInquiry
 
 class Command(BaseCommand):
@@ -305,11 +306,13 @@ class Command(BaseCommand):
             if school_info['subdomain'] == 'global':
                 # 7a. Dummy Achievements (8 items)
                 for i in range(1, 9):
+                    img_url = f'https://picsum.photos/seed/achievement{i}/800/600'
                     Achievement.objects.get_or_create(
                         tenant=tenant,
                         title=f"{school_info['name']} Achievement {i}",
                         defaults={
-                            'description': 'Awarded for excellence in academics and sports.',
+                            'description': f'<p>Awarded for excellence in academics and sports at {school_info["name"]}. This milestone represents our dedication to student success and institutional growth.</p><p>We are proud of our students and faculty for their hard work and commitment.</p>',
+                            'image': img_url,
                             'date': timezone.now().date() - timedelta(days=i*30),
                             'is_published': True,
                             'order': i
@@ -389,7 +392,36 @@ class Command(BaseCommand):
                     }
                 )
 
-            # 8. Menus (Header & Footer)
+            # 8. Dummy Documents
+            doc_categories = [
+                ('Academic Calendar', 'academic-calendar'),
+                ('Syllabus', 'syllabus'),
+                ('Exam Routine', 'exam-routine'),
+                ('Office Forms', 'office-forms'),
+                ('Institutional Policies', 'institutional-policies'),
+            ]
+
+            for cat_name, cat_slug in doc_categories:
+                category, _ = DocumentCategory.objects.get_or_create(
+                    tenant=tenant,
+                    slug=cat_slug,
+                    defaults={'name': cat_name}
+                )
+
+                for i in range(1, 4):
+                    Document.objects.get_or_create(
+                        tenant=tenant,
+                        title=f"{cat_name} Document {i}",
+                        category=category,
+                        defaults={
+                            'description': f'Official {cat_name} document for the academic year 2026.',
+                            'file': f'documents/sample_{cat_slug}_{i}.pdf',
+                            'is_published': True,
+                            'order': i
+                        }
+                    )
+
+            # 9. Menus (Header & Footer)
             header_menu, _ = Menu.objects.get_or_create(tenant=tenant, name='Header Menu', slug='header')
             footer_menu, _ = Menu.objects.get_or_create(tenant=tenant, name='Footer Menu', slug='footer')
 
