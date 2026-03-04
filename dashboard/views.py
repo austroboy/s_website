@@ -174,7 +174,7 @@ def build_nav_context(request):
         {
             'label': 'Pages',
             'url':   '/settings/pages/', 
-            'icon':  'layout-template',
+            'icon':  'book',
             'active': is_active('/settings/pages/'),
         },
         {
