@@ -1,0 +1,106 @@
+{% extends "dashboard_base.html" %}
+
+{% block content %}
+
+<div class="mb-6">
+  <h1 class="text-2xl font-display font-bold text-white">
+    Document Categories
+  </h1>
+</div>
+
+<!-- FORM -->
+<div class="bg-base-800 border border-base-700 rounded-2xl p-6 mb-6">
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="{% if edit_obj %}update{% else %}create{% endif %}">
+    {% if edit_obj %}
+      <input type="hidden" name="category_id" value="{{ edit_obj.id }}">
+    {% endif %}
+
+    <div class="grid grid-cols-2 gap-4">
+
+      <!-- Name -->
+      <input type="text"
+             id="name"
+             name="name"
+             value="{{ edit_obj.name|default:'' }}"
+             placeholder="Category Name"
+             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+      <!-- Slug -->
+      <input type="text"
+             id="slug"
+             name="slug"
+             value="{{ edit_obj.slug|default:'' }}"
+             placeholder="Slug"
+             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+      <!-- Order -->
+      <input type="number"
+             name="order"
+             value="{{ edit_obj.order|default:'0' }}"
+             placeholder="Order"
+             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+    </div>
+
+    <button class="mt-4 px-4 py-2 bg-gold text-base-900 font-bold rounded-xl">
+      {% if edit_obj %}Update{% else %}Create{% endif %}
+    </button>
+
+  </form>
+</div>
+
+<!-- LIST -->
+<div class="space-y-3">
+  {% for category in categories %}
+  <div class="bg-base-800 border border-base-700 rounded-xl p-4 flex justify-between items-center">
+
+    <div>
+      <p class="text-white font-semibold">{{ category.name }}</p>
+      <p class="text-xs text-slate-muted">
+        /{{ category.slug }} | Order: {{ category.order }}
+      </p>
+    </div>
+
+    <div class="flex gap-2">
+
+      <!-- Edit -->
+      <a href="?edit={{ category.id }}"
+         class="px-3 py-1 bg-gold/20 text-gold rounded-lg text-sm">
+         Edit
+      </a>
+
+      <!-- Delete -->
+      <form method="post" onsubmit="return confirm('Delete this category?')">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="category_id" value="{{ category.id }}">
+        <button class="px-3 py-1 bg-red-600/20 text-red-400 rounded-lg text-sm">
+          Delete
+        </button>
+      </form>
+
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
+
+<!-- AUTO SLUG SCRIPT -->
+<script>
+  const nameInput = document.getElementById("name");
+  const slugInput = document.getElementById("slug");
+
+  if (nameInput) {
+    nameInput.addEventListener("keyup", function() {
+      slugInput.value = nameInput.value
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w\-]+/g, "");
+    });
+  }
+</script>
+
+{% endblock %}

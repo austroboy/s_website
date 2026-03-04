@@ -87,7 +87,16 @@ def build_nav_context(request):
             {'label': 'Create Article', 'url': '/dashboard/news/create/', 'active': is_active('/dashboard/news/create/')},
             # {'label': 'Categories', 'url': '/news/categories/', 'active': is_active('/news/categories/')},
         ],
-    },
+        },
+        {
+        'label': 'Documents',
+        'url':   '#',
+        'icon':  'file-text',
+        'active': is_active('/documents/'),
+        'children': [
+            {'label': 'Documents Category',  'url': '/documents/dashboard/category/', 'active': is_active('/documents/dashboard/category/')},
+        ],
+        },
         {
             'label': 'Events',
             'url':   '#',
