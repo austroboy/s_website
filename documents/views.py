@@ -1,11 +1,11 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .models import Document, DocumentCategory
 
 class DocumentListView(ListView):
     model = Document
-    template_name = 'documents/list.html'
+    template_name = 'components/page/list/documents.html'
     context_object_name = 'documents'
-    paginate_by = 20
+    paginate_by = 12
 
     def get_queryset(self):
         qs = super().get_queryset().filter(tenant=self.request.tenant, is_published=True)
@@ -22,4 +22,26 @@ class DocumentListView(ListView):
             context['current_category'] = DocumentCategory.objects.filter(
                 tenant=self.request.tenant, slug=self.kwargs['category_slug']
             ).first()
+        return context
+
+class DocumentDetailView(DetailView):
+    model = Document
+    template_name = 'components/page/details/documents.html'
+    context_object_name = 'document'
+
+    def get_queryset(self):
+        return Document.objects.filter(
+            tenant=self.request.tenant, is_published=True
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Fetch other documents (excluding current one)
+        context['other_documents'] = Document.objects.filter(
+            tenant=self.request.tenant, 
+            is_published=True
+        ).exclude(pk=self.object.pk).order_by('order')[:5]
+        
+        # Fetch categories for sidebar
+        context['categories'] = DocumentCategory.objects.filter(tenant=self.request.tenant)
         return context
