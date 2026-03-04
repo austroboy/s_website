@@ -94,11 +94,7 @@
 
                 <!-- Featured Image -->
                 <div class="mb-8 relative overflow-hidden rounded-sm shadow-sm">
-                    {% if news.featured_image %}
-                    <img src="{{ news.featured_image }}" 
-                         alt="{{ news.title }}" 
-                         class="w-full h-auto object-cover max-h-[500px]">
-                    {% endif %}
+                    <img src="{% if news.featured_image %}{{ news.featured_image }}{% else %}{% static 'assets/placeholder.jpg' %}{% endif %}" 
                 </div>
 
                 <!-- Summary -->
@@ -131,11 +127,7 @@
                         {% for popular in popular_news %}
                         <a href="{% url 'news:detail' popular.slug %}" class="flex gap-4 group cursor-pointer">
                             <div class="w-24 h-20 shrink-0 overflow-hidden bg-gray-50 rounded-lg border border-gray-100 shadow-sm">
-                                {% if popular.featured_image %}
-                                <img src="{{ popular.featured_image }}" 
-                                     alt="{{ popular.title }}" 
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                {% endif %}
+                                <img src="{% if popular.featured_image %}{{ popular.featured_image }}{% else %}{% static 'assets/placeholder.jpg' %}{% endif %}" 
                             </div>
                             <div class="flex-1">
                                 <h4 class="text-[14px] font-black text-[var(--secondary)] leading-[1.4] group-hover:text-[var(--primary)] transition-colors line-clamp-2 mb-2">

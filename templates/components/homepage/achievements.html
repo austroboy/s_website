@@ -1,3 +1,4 @@
+{% load static %}
 <!-- ==================== ACHIEVEMENTS ==================== -->
 <section class="py-12 md:py-20 bg-white relative overflow-hidden">
     
@@ -36,13 +37,7 @@
                         
                         <!-- Optional Image/Icon Area -->
                         <div class="relative h-40 bg-[var(--surface)] overflow-hidden flex items-center justify-center">
-                            {% if achievement.image %}
-                                <img src="{{ achievement.image.url }}" alt="{{ achievement.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                            {% else %}
-                                <!-- Fallback gradient pattern -->
-                                <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary-dark)] opacity-10"></div>
-                                <i data-lucide="trophy" class="w-16 h-16 text-[var(--primary)] opacity-40 transition-transform duration-500 group-hover:scale-125 group-hover:text-[var(--accent)]"></i>
-                            {% endif %}
+                            <img src="{% if achievement.image %}{{ achievement.image.url }}{% else %}{% static 'assets/placeholder.jpg' %}{% endif %}" alt="{{ achievement.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                             
                             <!-- Date Badge -->
                             {% if achievement.date %}

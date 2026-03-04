@@ -78,7 +78,7 @@
             <div
                 class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col border border-[var(--border)]">
                 <div class="relative h-44 overflow-hidden">
-                    <img src="{% cycle 'https://plus.unsplash.com/premium_vector-1682303174219-9018338d4b5d' 'https://plus.unsplash.com/premium_vector-1711987353813-68a5bdb6f207' 'https://plus.unsplash.com/premium_vector-1720891748699-e91b3606f222' 'https://plus.unsplash.com/premium_vector-1720602864608-447c2e3323e9' %}"
+                    <img src="{% cycle 'assets/documents/document_1.jpg' 'assets/documents/document_2.jpg' 'assets/documents/document_3.jpg' 'assets/documents/document_4.jpg' as d_img silent %}{% static d_img %}"
                         alt="{{ doc.title }}"
                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                     <div
@@ -135,15 +135,12 @@
             {% endif %}
 
             {% for num in paginator.page_range %}
-            {% if page_obj.number == num %}
-            <span
-                class="w-10 h-10 flex items-center justify-center rounded-2xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/20">{{
-                num }}</span>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a href="?page={{ num }}"
-                class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">
-                {{ num }}</a>
+                {% if page_obj.number == num %}
+                <span class="w-10 h-10 flex items-center justify-center rounded-2xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/20">{{ num }}</span>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">{{ num }}</a>
                 {% endif %}
-                {% endfor %}
+            {% endfor %}
 
                 {% if page_obj.has_next %}
                 <a href="?page={{ page_obj.next_page_number }}"

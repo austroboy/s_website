@@ -7,7 +7,7 @@
 <!-- Hero Banner -->
 <section class="relative h-[300px] lg:h-[450px] overflow-hidden flex items-center">
     <div class="absolute inset-0 z-0">
-        <img src="{% if event.featured_image %}{{ event.featured_image }}{% else %}https://plus.unsplash.com/premium_vector-1720602864608-447c2e3323e9{% endif %}" 
+        <img src="{% if event.featured_image %}{{ event.featured_image }}{% else %}{% static 'assets/layout_images/hero_header.jpg' %}{% endif %}" 
              alt="{{ event.title }}" 
              class="w-full h-full object-cover">
         <div class="absolute inset-0" 

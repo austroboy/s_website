@@ -50,7 +50,7 @@
                 {% for form in page_obj.object_list|default:forms %}
                     <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col border border-[var(--border)]">
                         <div class="relative h-44 overflow-hidden">
-                            <img src="{% cycle 'https://plus.unsplash.com/premium_vector-1682303174219-9018338d4b5d' 'https://plus.unsplash.com/premium_vector-1711987353813-68a5bdb6f207' 'https://plus.unsplash.com/premium_vector-1720891748699-e91b3606f222' 'https://plus.unsplash.com/premium_vector-1720602864608-447c2e3323e9' %}" 
+                            <img src="{% cycle 'assets/programs/program_1.png' 'assets/programs/program_2.png' 'assets/programs/program_3.png' 'assets/programs/program_4.png' 'assets/programs/program_5.png' as p_img silent %}{% static p_img %}" 
                                  alt="{{ form.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-[var(--secondary)]/80 via-black/20 to-transparent"></div>
                         </div>

@@ -1,3 +1,4 @@
+{% load static %}
 <!-- ==================== LATEST NEWS & EVENTS ==================== -->
 <section class="py-12 md:py-20 bg-white relative overflow-hidden">
     
@@ -27,7 +28,7 @@
                 {% for event in events_list %}
                     <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 border border-[var(--border)] flex flex-col overflow-hidden card-hover">
                         <div class="relative h-44 overflow-hidden">
-                            <img src="{% cycle 'https://plus.unsplash.com/premium_vector-1731471747401-fae8e5ef2021' 'https://plus.unsplash.com/premium_vector-1721748240192-9ac4be133756' 'https://plus.unsplash.com/premium_vector-1722124599095-142c3f7eee93' %}" 
+                            <img src="{% if event.featured_image %}{{ event.featured_image }}{% else %}{% static 'assets/placeholder.jpg' %}{% endif %}" 
                                  alt="{{ event.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                             <div class="absolute bottom-0 left-0 w-full leading-[0]">
                                 <svg class="relative block w-full h-[30px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
