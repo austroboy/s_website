@@ -1,0 +1,130 @@
+{% extends "dashboard_base.html" %}
+
+{% block content %}
+
+<div class="mb-6">
+  <h1 class="text-2xl font-display font-bold text-white">
+    Documents
+  </h1>
+</div>
+
+<!-- FORM -->
+<div class="bg-base-800 border border-base-700 rounded-2xl p-6 mb-6">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="{% if edit_obj %}update{% else %}create{% endif %}">
+    {% if edit_obj %}
+      <input type="hidden" name="document_id" value="{{ edit_obj.id }}">
+    {% endif %}
+
+    <div class="grid grid-cols-2 gap-4">
+
+      <!-- Category -->
+      <select name="category"
+        class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+        <option value="">No Category</option>
+        {% for cat in categories %}
+          <option value="{{ cat.id }}"
+            {% if edit_obj and edit_obj.category_id == cat.id %}selected{% endif %}>
+            {{ cat.name }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <input type="number" name="order"
+        value="{{ edit_obj.order|default:'0' }}"
+        placeholder="Order"
+        class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+      <input type="text" name="title"
+        value="{{ edit_obj.title|default:'' }}"
+        placeholder="Title"
+        class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+      <textarea name="description"
+        rows="4"
+        placeholder="Description"
+        class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">{{ edit_obj.description|default:'' }}</textarea>
+
+      <input type="file" name="file"
+        class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+
+    </div>
+
+    <div class="mt-4">
+      <label class="text-sm text-slate-soft">
+        <input type="checkbox" name="is_published"
+          {% if edit_obj %}
+            {% if edit_obj.is_published %}checked{% endif %}
+          {% else %}
+            checked
+          {% endif %}>
+        Published
+      </label>
+    </div>
+
+    <button class="mt-4 px-4 py-2 bg-gold text-base-900 font-bold rounded-xl">
+      {% if edit_obj %}Update{% else %}Create{% endif %}
+    </button>
+  </form>
+</div>
+
+
+<!-- LIST -->
+<div class="space-y-3">
+  {% for doc in documents %}
+  <div class="bg-base-800 border border-base-700 rounded-xl p-4 flex justify-between items-center">
+
+    <div>
+      <p class="text-white font-semibold">{{ doc.title }}</p>
+      <p class="text-xs text-slate-muted">
+        {% if doc.category %}{{ doc.category.name }} |{% endif %}
+        Order: {{ doc.order }} |
+        {% if doc.is_published %}
+          <span class="text-green-400">Published</span>
+        {% else %}
+          <span class="text-red-400">Unpublished</span>
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="flex gap-2">
+
+      <!-- Download -->
+      <a href="{% url 'documents:document_download' doc.id %}"
+         class="px-3 py-1 bg-blue-600/20 text-blue-400 rounded-lg text-sm">
+         Download
+      </a>
+
+      <!-- Edit -->
+      <a href="?edit={{ doc.id }}"
+         class="px-3 py-1 bg-gold/20 text-gold rounded-lg text-sm">
+         Edit
+      </a>
+
+      <!-- Toggle -->
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="toggle">
+        <input type="hidden" name="document_id" value="{{ doc.id }}">
+        <button class="px-3 py-1 bg-purple-600/20 text-purple-400 rounded-lg text-sm">
+          Toggle
+        </button>
+      </form>
+
+      <!-- Delete -->
+      <form method="post" onsubmit="return confirm('Delete this document?')">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete">
+        <input type="hidden" name="document_id" value="{{ doc.id }}">
+        <button class="px-3 py-1 bg-red-600/20 text-red-400 rounded-lg text-sm">
+          Delete
+        </button>
+      </form>
+
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

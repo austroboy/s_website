@@ -12,5 +12,12 @@ urlpatterns = [
     "dashboard/category/",
     dashboard_views.document_category_list,
     name="document_category_list",
-),
+    ),
+    path("dashboard/documents/",
+     dashboard_views.document_list,
+     name="document_list"),
+
+    path("dashboard/documents/<int:pk>/download/",
+     dashboard_views.document_download,
+     name="document_download"),
 ]

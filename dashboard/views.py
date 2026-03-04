@@ -95,6 +95,7 @@ def build_nav_context(request):
         'active': is_active('/documents/'),
         'children': [
             {'label': 'Documents Category',  'url': '/documents/dashboard/category/', 'active': is_active('/documents/dashboard/category/')},
+            {'label': 'Documents',  'url': '/documents/dashboard/documents/', 'active': is_active('/documents/dashboard/documents/')},
         ],
         },
         {
