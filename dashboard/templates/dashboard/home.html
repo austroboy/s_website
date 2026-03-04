@@ -14,7 +14,7 @@
   >
     <div>
       <h1 class="font-display text-2xl font-bold text-white leading-tight">
-        Good morning, {{ request.user.first_name|default:"Admin" }} 👋
+        Good morning, {{ request.user.username|default:"Admin"|capfirst }} 👋
       </h1>
       <p class="mt-0.5 text-sm text-slate-muted">
         Here's what's happening across
@@ -26,12 +26,14 @@
     </div>
     <div class="flex items-center gap-2">
       <a
+        href={% url "admissions:admission_form_list" %}
         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gold text-base-900 text-sm font-semibold hover:bg-gold-light transition-colors shadow-glow-gold"
       >
         <i data-lucide="plus" class="w-4 h-4"></i>
         New Admission
       </a>
       <button
+        onclick="window.location.reload();"
         class="p-2 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors"
       >
         <i data-lucide="refresh-cw" class="w-4 h-4"></i>
