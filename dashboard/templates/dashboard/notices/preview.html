@@ -3,72 +3,474 @@
 
 {% block title %}Preview: {{ notice.title }} - {{ tenant.name }}{% endblock %}
 
+{% block extra_head %}
+<style>
+  /* Notice Preview Unique Styles - prefixed with notep- (notice preview) */
+  
+  /* Custom Background Color */
+  .notep-bg-custom {
+    background-color: rgb(26, 26, 46);
+  }
+
+  /* Text Colors */
+  .notep-text-primary {
+    color: #FFFFFF;
+  }
+
+  .notep-text-secondary {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .notep-text-tertiary {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .notep-text-muted {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Border Colors */
+  .notep-border-custom {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .notep-border-custom-light {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .notep-border-blue {
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  .notep-border-amber {
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  /* Badge Styles */
+  .notep-badge-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3B82F6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .notep-badge-amber {
+    background: rgba(245, 158, 11, 0.15);
+    color: #F59E0B;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .notep-badge-emerald {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10B981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .notep-badge-red {
+    background: rgba(239, 68, 68, 0.15);
+    color: #EF4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  /* Notice Card */
+  .notep-notice-card {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Featured Image */
+  .notep-featured-image {
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Meta Info */
+  .notep-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+  }
+
+  .notep-meta-divider {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .notep-expiry {
+    color: #F59E0B;
+    font-weight: 500;
+  }
+
+  .notep-expiry-urgent {
+    color: #EF4444;
+    font-weight: 500;
+  }
+
+  /* Title */
+  .notep-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .notep-title {
+      font-size: 2rem;
+    }
+  }
+
+  /* Summary Box */
+  .notep-summary-box {
+    background-color: rgba(59, 130, 246, 0.05);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .notep-summary-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  /* Attachment Button */
+  .notep-attachment-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 0.75rem;
+    color: #3B82F6;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .notep-attachment-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: #3B82F6;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+  }
+
+  /* Content */
+  .notep-content {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+
+  .notep-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .notep-content h2 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .notep-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .notep-content ul, .notep-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .notep-content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .notep-content a {
+    color: #3B82F6;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+    transition: border-color 0.2s ease;
+  }
+
+  .notep-content a:hover {
+    border-bottom-color: #3B82F6;
+  }
+
+  .notep-content blockquote {
+    border-left: 4px solid #3B82F6;
+    padding-left: 1.5rem;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* Expiry Banner */
+  .notep-expiry-banner {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .notep-expiry-banner-urgent {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  /* Animation */
+  .notep-fade-in {
+    animation: notepFadeIn 0.5s ease-out;
+  }
+
+  @keyframes notepFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="bg-base-900 border-b border-base-700 py-3 sticky top-0 z-50">
-  <div class="container mx-auto px-4 flex items-center justify-between">
-    <div class="flex items-center gap-2">
-      <span class="px-2 py-1 bg-gold/10 text-gold text-xs rounded-lg border border-gold/20">PREVIEW MODE</span>
-      <span class="text-sm text-slate-muted">{{ tenant.name }}</span>
-    </div>
-    <div class="flex items-center gap-3">
-      <a href="/dashboard/notices/{{ notice.id }}/edit/"
-         class="px-4 py-2 bg-gold text-base-900 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors">
-        <i data-lucide="edit-3" class="w-4 h-4 inline mr-1"></i>
-        Edit Notice
-      </a>
-      <a href="/dashboard/notices/"
-         class="px-4 py-2 border border-base-600 text-slate-muted rounded-xl text-sm hover:text-white hover:border-base-500 transition-colors">
-        Back to Dashboard
-      </a>
+<!-- Preview Mode Banner -->
+<div class="notep-bg-custom border-b notep-border-custom py-2 sticky top-0 z-50 backdrop-blur-sm" style="background-color: rgb(26, 26, 46);">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 px-3 py-1.5 notep-badge-blue rounded-full">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          </span>
+          <span class="text-xs font-medium text-blue-500 uppercase tracking-wider">Preview Mode</span>
+        </div>
+        <span class="text-sm notep-text-tertiary hidden sm:block">
+          <i data-lucide="eye" class="w-3.5 h-3.5 inline mr-1"></i>
+          You're viewing a draft version
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="/dashboard/notices/{{ notice.id }}/edit/" 
+           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-xl text-sm font-semibold hover:bg-blue-600 transition-all transform hover:scale-105 shadow-lg shadow-blue-500/20">
+          <i data-lucide="edit-3" class="w-4 h-4"></i>
+          Edit Notice
+        </a>
+        <a href="/dashboard/notices/" 
+           class="inline-flex items-center gap-2 px-4 py-2 border notep-border-custom text-white rounded-xl text-sm hover:text-white hover:border-blue-500 hover:bg-white/5 transition-all">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          Dashboard
+        </a>
+      </div>
     </div>
   </div>
 </div>
 
-<article class="container mx-auto px-4 py-8 max-w-4xl">
-  <!-- Featured Image -->
-  {% if notice.featured_image %}
-  <div class="mb-8 rounded-2xl overflow-hidden border border-base-700">
-    <img src="{{ notice.featured_image }}" alt="{{ notice.title }}" class="w-full">
-  </div>
-  {% endif %}
-
-  <!-- Meta -->
-  <div class="flex flex-wrap items-center gap-3 text-sm text-slate-muted mb-4">
-    <span>{{ notice.created_at|date:"F d, Y" }}</span>
+<article class="container mx-auto px-5 py-8  notep-fade-in" style="background-color: rgb(26, 26, 46);">
+  
+  <!-- Notice Card -->
+  <div class="notep-notice-card">
+    
+    <!-- Expiry Banner (if expiring soon) -->
     {% if notice.expiry_date %}
-    <span class="w-1 h-1 rounded-full bg-base-600"></span>
-    <span class="text-gold">Expires: {{ notice.expiry_date|date:"M d, Y" }}</span>
+      {% with days_left=notice.expiry_date|timeuntil:notice.created_at %}
+      <div class="notep-expiry-banner {% if days_left.days < 7 %}notep-expiry-banner-urgent{% endif %} mb-6">
+        <div class="p-2 rounded-lg {% if days_left.days < 7 %}bg-red-500/10{% else %}bg-amber-500/10{% endif %}">
+          <i data-lucide="clock" class="w-5 h-5 {% if days_left.days < 7 %}text-red-500{% else %}text-amber-500{% endif %}"></i>
+        </div>
+        <div>
+          <p class="notep-text-secondary text-sm font-medium">This notice expires on</p>
+          <p class="{% if days_left.days < 7 %}notep-expiry-urgent{% else %}notep-expiry{% endif %} font-semibold">
+            {{ notice.expiry_date|date:"l, F j, Y" }}
+            {% if days_left.days %}
+              ({{ days_left.days }} days remaining)
+            {% endif %}
+          </p>
+        </div>
+      </div>
+      {% endwith %}
     {% endif %}
-    {% if not notice.is_published %}
-    <span class="w-1 h-1 rounded-full bg-base-600"></span>
-    <span class="px-2 py-0.5 rounded-full bg-base-700 text-xs text-slate-soft border border-base-600">Draft</span>
+    
+    <!-- Featured Image -->
+    {% if notice.featured_image %}
+    <div class="notep-featured-image mb-8">
+      <img src="{{ notice.featured_image }}" alt="{{ notice.title }}" class="w-full h-auto">
+    </div>
     {% endif %}
-  </div>
 
-  <!-- Title -->
-  <h1 class="font-display text-4xl font-bold text-white mb-6">{{ notice.title }}</h1>
+    <!-- Meta Info -->
+    <div class="flex flex-wrap items-center gap-3 notep-text-tertiary mb-6">
+      <div class="notep-meta-item">
+        <i data-lucide="calendar" class="w-4 h-4"></i>
+        <span>Posted {{ notice.created_at|date:"F d, Y" }}</span>
+      </div>
+      
+      {% if notice.expiry_date %}
+      <span class="notep-meta-divider"></span>
+      <div class="notep-meta-item">
+        <i data-lucide="hourglass" class="w-4 h-4"></i>
+        <span class="notep-expiry">Expires {{ notice.expiry_date|date:"M d, Y" }}</span>
+      </div>
+      {% endif %}
+      
+      {% if not notice.is_published %}
+      <span class="notep-meta-divider"></span>
+      <div class="notep-meta-item">
+        <span class="relative flex h-2 w-2 mr-1">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
+        </span>
+        <span class="text-amber-400">Draft</span>
+      </div>
+      {% endif %}
 
-  <!-- Summary -->
-  {% if notice.summary %}
-  <div class="bg-base-800/50 border border-base-700 rounded-xl p-6 mb-8">
-    <p class="text-lg text-slate-soft italic">{{ notice.summary }}</p>
-  </div>
-  {% endif %}
+      <!-- SMS ID Badge (optional) -->
+      {% if notice.sms_id and notice.sms_id|slice:":5" != "temp_" %}
+      <span class="notep-meta-divider"></span>
+      <div class="notep-meta-item">
+        <i data-lucide="fingerprint" class="w-4 h-4"></i>
+        <span class="text-xs font-mono notep-text-muted">ID: {{ notice.sms_id|truncatechars:12 }}</span>
+      </div>
+      {% endif %}
+    </div>
 
-  <!-- Attachment -->
-  {% if notice.attachment_url %}
-  <div class="mb-8">
-    <a href="{{ notice.attachment_url }}" target="_blank"
-       class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-gold/30 text-gold hover:bg-gold/10 transition-colors">
-      <i data-lucide="paperclip" class="w-5 h-5"></i>
-      Download Attachment
-    </a>
-  </div>
-  {% endif %}
+    <!-- Title -->
+    <h1 class="notep-title">{{ notice.title }}</h1>
 
-  <!-- Content -->
-  <div class="prose prose-invert max-w-none">
-    {{ notice.content|linebreaks }}
+    <!-- Summary -->
+    {% if notice.summary %}
+    <div class="notep-summary-box mb-8">
+      <div class="flex items-start gap-3">
+        <div class="p-2 rounded-lg" style="background-color: rgba(59, 130, 246, 0.1);">
+          <i data-lucide="info" class="w-5 h-5 text-blue-500"></i>
+        </div>
+        <div class="flex-1">
+          <p class="notep-summary-text">{{ notice.summary }}</p>
+          <p class="notep-text-muted text-sm mt-2">— Notice summary</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Attachment -->
+    {% if notice.attachment_url %}
+    <div class="mb-8">
+      <a href="{{ notice.attachment_url }}" target="_blank" class="notep-attachment-btn">
+        <i data-lucide="paperclip" class="w-5 h-5"></i>
+        Download Attachment
+        <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
+      </a>
+      <p class="notep-text-muted text-xs mt-2">
+        <i data-lucide="file-text" class="w-3 h-3 inline mr-1"></i>
+        Click to download or view the attached document
+      </p>
+    </div>
+    {% endif %}
+
+    <!-- Content -->
+    <div class="notep-content">
+      {{ notice.content|linebreaks }}
+    </div>
+
+    <!-- Notice Footer -->
+    <div class="mt-12 pt-8 border-t notep-border-custom">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: rgba(59, 130, 246, 0.1);">
+            <i data-lucide="clock" class="w-4 h-4 text-blue-500"></i>
+          </div>
+          <div>
+            <p class="notep-text-secondary text-sm font-medium">Last updated</p>
+            <p class="notep-text-tertiary text-xs">{{ notice.updated_at|date:"F d, Y \a\t g:i A" }}</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <div class="text-right">
+            <p class="notep-text-tertiary text-xs">Last synced</p>
+            <p class="notep-text-muted text-xs">{{ notice.last_synced|date:"M d, Y H:i" }}</p>
+          </div>
+          
+          {% if notice.sms_id and notice.sms_id|slice:":5" != "temp_" %}
+          <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.05);">
+            <i data-lucide="database" class="w-4 h-4 text-blue-500"></i>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   </div>
 </article>
+
+<!-- Reading Progress Bar -->
+<div id="notep-reading-progress" class="fixed top-0 left-0 h-1 bg-blue-500 z-[60] transition-all duration-300" style="width: 0%;"></div>
+
+<script>
+(function() {
+  // Reading progress bar
+  const progressBar = document.getElementById('notep-reading-progress');
+  
+  function updateReadingProgress() {
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight - windowHeight;
+    const scrollTop = window.scrollY;
+    const progress = (scrollTop / documentHeight) * 100;
+    
+    if (progressBar) {
+      progressBar.style.width = progress + '%';
+    }
+  }
+
+  window.addEventListener('scroll', updateReadingProgress);
+  window.addEventListener('resize', updateReadingProgress);
+
+  // Initialize Lucide icons
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+
+  // Calculate days until expiry (for dynamic updates)
+  {% if notice.expiry_date %}
+  const expiryDate = new Date("{{ notice.expiry_date|date:'Y-m-d' }}");
+  const today = new Date();
+  const diffTime = expiryDate - today;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays <= 7 && diffDays > 0) {
+    console.log(`Notice expires in ${diffDays} days`);
+  }
+  {% endif %}
+
+  // Smooth scroll for anchor links (if any)
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+})();
+</script>
 {% endblock %}

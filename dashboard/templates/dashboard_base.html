@@ -223,38 +223,20 @@
             class="text-sm font-medium text-slate-soft truncate max-w-[130px]"
             >{{ request.tenant.name|default:"Global Tech Academy" }}</span
           >
-          <i
-            data-lucide="chevrons-up-down"
-            class="w-3.5 h-3.5 text-slate-muted"
-          ></i>
         </div>
 
-        <!-- Search -->
-        <button
-          class="p-2 rounded-lg text-slate-muted hover:text-white hover:bg-base-800 transition-colors"
-        >
-          <i data-lucide="search" class="w-4.5 h-4.5"></i>
-        </button>
 
-        <!-- Notifications -->
-        <button
-          class="relative p-2 rounded-lg text-slate-muted hover:text-white hover:bg-base-800 transition-colors"
-        >
-          <i data-lucide="bell" class="w-4.5 h-4.5"></i>
-          <span
-            class="absolute top-1.5 right-1.5 w-2 h-2 bg-gold rounded-full pulse-dot"
-          ></span>
-        </button>
+    
 
         <!-- Admin Avatar -->
         <div class="flex items-center gap-2 pl-2 ml-1 border-l border-base-700">
           <div
             class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan to-cyan-dark flex items-center justify-center text-xs font-bold text-white"
           >
-            {{ request.user.get_initials|default:"AD" }}
+            {{ request.user.username|default:"AD"|slice:":2" }}
           </div>
           <span class="hidden md:block text-sm font-medium text-slate-soft"
-            >{{ request.user.get_short_name|default:"Admin" }}</span
+            >{{ request.user.username|default:"Admin" }}</span
           >
         </div>
       </div>
@@ -351,15 +333,13 @@
             <div
               class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan to-cyan-dark flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
             >
-              {{ request.user.get_initials|default:"AD" }}
+              {{ request.user.username|default:"AD"|slice:":2" }}
             </div>
             <div class="user-details min-w-0 flex-1">
               <p class="text-sm font-medium text-white leading-tight truncate">
-                {{ request.user.get_full_name|default:"Platform Admin" }}
+                {{ request.user.username|default:"Platform Admin" }}
               </p>
-              <p class="text-[11px] text-slate-muted truncate">
-                {{ request.user.email|default:"admin@schoolos.app" }}
-              </p>
+              
             </div>
            <form method="POST" action="{% url 'logout' %}" onsubmit="return confirm('Are you sure you want to logout?');">
               {% csrf_token %}

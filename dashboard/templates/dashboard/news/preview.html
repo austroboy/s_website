@@ -3,68 +3,368 @@
 
 {% block title %}Preview: {{ news.title }} - {{ tenant.name }}{% endblock %}
 
+{% block extra_head %}
+<style>
+  /* News Preview Unique Styles - prefixed with np- (news preview) */
+  
+  /* Custom Background Color */
+  .np-bg-custom {
+    background-color: rgb(26, 26, 46);
+  }
+
+  /* Text Colors */
+  .np-text-primary {
+    color: #FFFFFF;
+  }
+
+  .np-text-secondary {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .np-text-tertiary {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .np-text-muted {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Border Colors */
+  .np-border-custom {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .np-border-custom-light {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .np-border-blue {
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  /* Badge Styles */
+  .np-badge-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3B82F6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .np-badge-gold {
+    background: rgba(245, 158, 11, 0.15);
+    color: #F59E0B;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  /* Tag Styles */
+  .np-tag {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+  }
+
+  .np-tag:hover {
+    background-color: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #3B82F6;
+  }
+
+  /* Summary Box */
+  .np-summary-box {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+
+  .np-summary-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  /* Featured Image */
+  .np-featured-image {
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Meta Info */
+  .np-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+  }
+
+  .np-meta-divider {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .np-category {
+    color: #3B82F6;
+    font-weight: 500;
+  }
+
+  /* Title */
+  .np-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .np-title {
+      font-size: 2rem;
+    }
+  }
+
+  /* Content */
+  .np-content {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+
+  .np-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .np-content h2 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .np-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .np-content ul, .np-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .np-content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .np-content a {
+    color: #3B82F6;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+    transition: border-color 0.2s ease;
+  }
+
+  .np-content a:hover {
+    border-bottom-color: #3B82F6;
+  }
+
+  .np-content blockquote {
+    border-left: 4px solid #3B82F6;
+    padding-left: 1.5rem;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* Animation */
+  .np-fade-in {
+    animation: npFadeIn 0.5s ease-out;
+  }
+
+  @keyframes npFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="bg-base-900 border-b border-base-700 py-3 sticky top-0 z-50">
-  <div class="container mx-auto px-4 flex items-center justify-between">
-    <div class="flex items-center gap-2">
-      <span class="px-2 py-1 bg-gold/10 text-gold text-xs rounded-lg border border-gold/20">PREVIEW MODE</span>
-      <span class="text-sm text-slate-muted">{{ tenant.name }}</span>
-    </div>
-    <div class="flex items-center gap-3">
-      <a href="/dashboard/news/{{ news.id }}/edit/" 
-         class="px-4 py-2 bg-gold text-base-900 rounded-xl text-sm font-medium hover:bg-gold-light transition-colors">
-        <i data-lucide="edit-3" class="w-4 h-4 inline mr-1"></i>
-        Edit Article
-      </a>
-      <a href="/dashboard/news/" 
-         class="px-4 py-2 border border-base-600 text-slate-muted rounded-xl text-sm hover:text-white hover:border-base-500 transition-colors">
-        Back to Dashboard
-      </a>
+<!-- Preview Mode Banner -->
+<div class="np-bg-custom border-b np-border-custom py-2 sticky top-0 z-50 backdrop-blur-sm" style="background-color: rgb(26, 26, 46);">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 px-3 py-1.5 np-badge-blue rounded-full">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          </span>
+          <span class="text-xs font-medium text-blue-500 uppercase tracking-wider">Preview Mode</span>
+        </div>
+        <span class="text-sm np-text-tertiary hidden sm:block">
+          <i data-lucide="eye" class="w-3.5 h-3.5 inline mr-1"></i>
+          You're viewing a draft version
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="/dashboard/news/{{ news.id }}/edit/" 
+           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-xl text-sm font-semibold hover:bg-blue-600 transition-all transform hover:scale-105 shadow-lg shadow-blue-500/20">
+          <i data-lucide="edit-3" class="w-4 h-4"></i>
+          Edit Article
+        </a>
+        <a href="/dashboard/news/" 
+           class="inline-flex items-center gap-2 px-4 py-2 border np-border-custom text-white rounded-xl text-sm hover:text-white hover:border-blue-500 hover:bg-white/5 transition-all">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          Dashboard
+        </a>
+      </div>
     </div>
   </div>
 </div>
 
-<article class="container mx-auto px-4 py-8 max-w-4xl">
+<article class="container mx-auto px-5 py-8  np-fade-in" style="background-color: rgb(26, 26, 46);">
+  
   <!-- Featured Image -->
   {% if news.featured_image %}
-  <div class="mb-8 rounded-2xl overflow-hidden border border-base-700">
-    <img src="{{ news.featured_image }}" alt="{{ news.title }}" class="w-full">
+  <div class="np-featured-image mb-8">
+    <img src="{{ news.featured_image }}" alt="{{ news.title }}" class="w-full h-auto">
   </div>
   {% endif %}
   
   <!-- Meta Info -->
-  <div class="flex items-center gap-3 text-sm text-slate-muted mb-4">
-    <span>{{ news.created_at|date:"F d, Y" }}</span>
+  <div class="flex flex-wrap items-center gap-3 np-text-tertiary mb-6">
+    <div class="np-meta-item">
+      <i data-lucide="calendar" class="w-4 h-4"></i>
+      <span>{{ news.created_at|date:"F d, Y" }}</span>
+    </div>
+    
     {% if news.category %}
-    <span class="w-1 h-1 rounded-full bg-base-600"></span>
-    <span class="text-gold">{{ news.category|title }}</span>
+    <span class="np-meta-divider"></span>
+    <div class="np-meta-item">
+      <i data-lucide="folder" class="w-4 h-4"></i>
+      <span class="np-category">{{ news.category|title }}</span>
+    </div>
     {% endif %}
-    <span class="w-1 h-1 rounded-full bg-base-600"></span>
-    <span>By {{ news.author_name|default:"Unknown" }}</span>
+    
+    <span class="np-meta-divider"></span>
+    <div class="np-meta-item">
+      <i data-lucide="user" class="w-4 h-4"></i>
+      <span>By {{ news.author_name|default:"Unknown" }}</span>
+    </div>
+
+    {% if news.is_published %}
+    <span class="np-meta-divider"></span>
+    <div class="np-meta-item">
+      <span class="relative flex h-2 w-2 mr-1">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+      </span>
+      <span class="text-emerald-400">Published</span>
+    </div>
+    {% endif %}
   </div>
   
   <!-- Title -->
-  <h1 class="font-display text-4xl font-bold text-white mb-6">{{ news.title }}</h1>
+  <h1 class="np-title">{{ news.title }}</h1>
   
   <!-- Tags -->
   {% if news.tags %}
   <div class="flex flex-wrap gap-2 mb-8">
     {% for tag in news.tags %}
-    <span class="px-3 py-1 bg-base-800 text-slate-soft rounded-full text-sm border border-base-700">#{{ tag }}</span>
+    <span class="np-tag px-3 py-1 rounded-full text-sm transition-colors cursor-default">#{{ tag }}</span>
     {% endfor %}
   </div>
   {% endif %}
   
-  <!-- Summary (if different from content) -->
+  <!-- Summary Box -->
   {% if news.summary and news.summary != news.content|truncatechars:300 %}
-  <div class="bg-base-800/50 border border-base-700 rounded-xl p-6 mb-8">
-    <p class="text-lg text-slate-soft italic">{{ news.summary }}</p>
+  <div class="np-summary-box mb-8">
+    <div class="flex items-start gap-3">
+      <div class="p-2 rounded-lg" style="background-color: rgba(59, 130, 246, 0.1);">
+        <i data-lucide="quote" class="w-5 h-5 text-blue-500"></i>
+      </div>
+      <div>
+        <p class="np-summary-text">{{ news.summary }}</p>
+        <p class="np-text-muted text-sm mt-2">— Article summary</p>
+      </div>
+    </div>
   </div>
   {% endif %}
   
   <!-- Main Content -->
-  <div class="prose prose-invert max-w-none">
+  <div class="np-content prose prose-invert max-w-none">
     {{ news.content|linebreaks }}
   </div>
+
+  <!-- Article Footer -->
+  <div class="mt-12 pt-8 border-t np-border-custom">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: rgba(59, 130, 246, 0.1);">
+          <i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>
+        </div>
+        <div>
+          <p class="np-text-secondary text-sm font-medium">Last updated</p>
+          <p class="np-text-tertiary text-xs">{{ news.updated_at|date:"F d, Y \a\t g:i A" }}</p>
+        </div>
+      </div>
+      
+      {% if news.sms_id %}
+      <div class="text-right">
+        <p class="np-text-tertiary text-xs">SMS ID</p>
+        <p class="np-text-muted text-xs font-mono">{{ news.sms_id }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
 </article>
+
+<!-- Reading Progress Bar (optional enhancement) -->
+<div id="np-reading-progress" class="fixed top-0 left-0 h-1 bg-blue-500 z-[60] transition-all duration-300" style="width: 0%;"></div>
+
+<script>
+(function() {
+  // Reading progress bar
+  const progressBar = document.getElementById('np-reading-progress');
+  
+  function updateReadingProgress() {
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight - windowHeight;
+    const scrollTop = window.scrollY;
+    const progress = (scrollTop / documentHeight) * 100;
+    
+    if (progressBar) {
+      progressBar.style.width = progress + '%';
+    }
+  }
+
+  window.addEventListener('scroll', updateReadingProgress);
+  window.addEventListener('resize', updateReadingProgress);
+
+  // Initialize Lucide icons
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+
+  // Smooth scroll for anchor links (if any)
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+})();
+</script>
 {% endblock %}

@@ -1,4 +1,6 @@
 from django.urls import path
+from .views import DocumentListView
+from . import dashboard_views
 from .views import DocumentListView, DocumentDetailView
 
 app_name = 'documents'
@@ -6,5 +8,18 @@ app_name = 'documents'
 urlpatterns = [
     path('', DocumentListView.as_view(), name='list'),
     path('category/<slug:category_slug>/', DocumentListView.as_view(), name='category'),
+    #dashboard
+    path(
+    "dashboard/category/",
+    dashboard_views.document_category_list,
+    name="document_category_list",
+    ),
+    path("dashboard/documents/",
+     dashboard_views.document_list,
+     name="document_list"),
+
+    path("dashboard/documents/<int:pk>/download/",
+     dashboard_views.document_download,
+     name="document_download"),
     path('<int:pk>/', DocumentDetailView.as_view(), name='detail'),
 ]

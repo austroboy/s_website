@@ -53,7 +53,7 @@ def build_nav_context(request):
             'children': [
                 {'label': 'Inquiries',     'url': '/contact/admissions/inquiries/',    'active': is_active('/dashboard/admissions/inquiries/')},
                 {'label': 'Forms',         'url': '/admissions/admission-forms/',        'active': is_active('/admissions/admission-forms/')},
-                {'label': 'Applications',  'url': '/admissions/applications/', 'active': is_active('/admissions/applications/')},
+              
             ],
         },
         # Academics section
@@ -87,7 +87,17 @@ def build_nav_context(request):
             {'label': 'Create Article', 'url': '/dashboard/news/create/', 'active': is_active('/dashboard/news/create/')},
             # {'label': 'Categories', 'url': '/news/categories/', 'active': is_active('/news/categories/')},
         ],
-    },
+        },
+        {
+        'label': 'Documents',
+        'url':   '#',
+        'icon':  'file-text',
+        'active': is_active('/documents/'),
+        'children': [
+            {'label': 'Documents Category',  'url': '/documents/dashboard/category/', 'active': is_active('/documents/dashboard/category/')},
+            {'label': 'Documents',  'url': '/documents/dashboard/documents/', 'active': is_active('/documents/dashboard/documents/')},
+        ],
+        },
         {
             'label': 'Events',
             'url':   '#',
@@ -172,10 +182,10 @@ def build_nav_context(request):
             'active': is_active('/settings/homepage/'),
         },
         {
-            'label': 'SMS Integration',
-            'url':   '/settings/sms/',
-            'icon':  'plug-2',
-            'active': is_active('/settings/sms/'),
+            'label': 'Pages',
+            'url':   '/settings/pages/', 
+            'icon':  'book',
+            'active': is_active('/settings/pages/'),
         },
         {
             'label': 'Contact & Forms',

@@ -133,3 +133,81 @@ def homepage_section_delete(request, pk):
     section.delete()
     messages.success(request, 'Section deleted.')
     return redirect('content:homepage_builder')
+
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.utils.text import slugify
+from .models import Page
+
+
+@login_required
+def page_list(request):
+    tenant = request.tenant
+    pages = Page.objects.filter(tenant=tenant)
+
+    edit_obj = None
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        # CREATE
+        if action == "create":
+            Page.objects.create(
+                tenant=tenant,
+                title=request.POST.get("title", "").strip(),
+                slug=slugify(request.POST.get("slug", "").strip()),
+                content=request.POST.get("content", ""),
+                meta_description=request.POST.get("meta_description", "").strip(),
+                published="published" in request.POST,
+                show_in_footer="show_in_footer" in request.POST,
+            )
+            messages.success(request, "Page created.")
+            return redirect("content:page_list")
+
+        # UPDATE
+        elif action == "update":
+            pk = request.POST.get("page_id")
+            page = get_object_or_404(Page, pk=pk, tenant=tenant)
+
+            page.title = request.POST.get("title", "").strip()
+            page.slug = slugify(request.POST.get("slug", "").strip())
+            page.content = request.POST.get("content", "")
+            page.meta_description = request.POST.get("meta_description", "").strip()
+            page.published = "published" in request.POST
+            page.show_in_footer = "show_in_footer" in request.POST
+            page.save()
+
+            messages.success(request, "Page updated.")
+            return redirect("content:page_list")
+
+        # DELETE
+        elif action == "delete":
+            pk = request.POST.get("page_id")
+            page = get_object_or_404(Page, pk=pk, tenant=tenant)
+            page.delete()
+            messages.success(request, "Page deleted.")
+            return redirect("content:page_list")
+
+        # TOGGLE PUBLISH
+        elif action == "toggle":
+            pk = request.POST.get("page_id")
+            page = get_object_or_404(Page, pk=pk, tenant=tenant)
+            page.published = not page.published
+            page.save()
+            return redirect("content:page_list")
+
+    # EDIT MODE
+    edit_id = request.GET.get("edit")
+    if edit_id:
+        edit_obj = get_object_or_404(Page, pk=edit_id, tenant=tenant)
+
+    context = {
+        "pages": pages,
+        "edit_obj": edit_obj,
+        **build_nav_context(request),
+    }
+
+    return render(request, "dashboard/content/page_list.html", context)
