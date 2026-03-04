@@ -53,7 +53,7 @@ def build_nav_context(request):
             'children': [
                 {'label': 'Inquiries',     'url': '/contact/admissions/inquiries/',    'active': is_active('/dashboard/admissions/inquiries/')},
                 {'label': 'Forms',         'url': '/admissions/admission-forms/',        'active': is_active('/admissions/admission-forms/')},
-                {'label': 'Applications',  'url': '/admissions/applications/', 'active': is_active('/admissions/applications/')},
+              
             ],
         },
         # Academics section
@@ -186,12 +186,6 @@ def build_nav_context(request):
             'url':   '/settings/pages/', 
             'icon':  'book',
             'active': is_active('/settings/pages/'),
-        },
-        {
-            'label': 'SMS Integration',
-            'url':   '/settings/sms/',
-            'icon':  'plug-2',
-            'active': is_active('/settings/sms/'),
         },
         {
             'label': 'Contact & Forms',
