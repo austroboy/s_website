@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Message Sent | {{ request.tenant.name }}{% endblock %}
+
+{% block content %}
+<!-- Success Section -->
+<section class="bg-[var(--surface)] min-h-[80vh] flex items-center justify-center py-20 relative overflow-hidden">
+    <!-- Decorative Background -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.04]"
+        style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
+
+    <div class="max-w-xl mx-auto px-6 text-center relative z-10 reveal-up">
+        <!-- Animated Checkmark -->
+        <div class="relative w-28 h-28 mx-auto mb-8">
+            <div
+                class="absolute inset-0 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] rounded-full opacity-10 animate-ping">
+            </div>
+            <div
+                class="relative w-28 h-28 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] rounded-full flex items-center justify-center shadow-2xl shadow-[var(--primary-glow)]/30">
+                <i data-lucide="check" class="w-14 h-14 text-white" stroke-width="3"></i>
+            </div>
+        </div>
+
+        <h1 class="text-3xl lg:text-4xl font-extrabold text-[var(--secondary)] mb-4 tracking-tight">Thank You!</h1>
+        <p class="text-[var(--text-muted)] text-base leading-relaxed mb-3">
+            Your message has been sent successfully. Our team will review it and get back to you as soon as possible.
+        </p>
+        <p class="text-[var(--text-muted)] text-sm mb-10 opacity-70">
+            We typically respond within 24–48 hours during business days.
+        </p>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="/"
+                class="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white rounded-xl shadow-xl shadow-[var(--primary-glow)]/30 hover:shadow-[var(--primary-glow)]/50 transition-all duration-300 hover:-translate-y-1 font-bold text-sm">
+                <i data-lucide="home" class="w-4 h-4"></i>
+                Return to Home
+                <i data-lucide="chevron-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+            </a>
+            <a href="{% url 'contact:contact' %}"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-white text-[var(--primary)] border border-[var(--primary)]/30 rounded-xl hover:bg-[var(--primary)] hover:text-white transition-all duration-300 hover:-translate-y-1 font-bold text-sm shadow-sm">
+                <i data-lucide="message-square" class="w-4 h-4"></i>
+                Send Another Message
+            </a>
+        </div>
+
+        <!-- Divider -->
+        <div class="mt-12 pt-8 border-t border-[var(--border)]">
+            <p class="text-xs text-[var(--text-muted)] opacity-60 mb-4">Or explore other pages</p>
+            <div class="flex items-center justify-center gap-3 flex-wrap">
+                <a href="/admissions/"
+                    class="px-4 py-2 rounded-full text-xs font-bold bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all">
+                    Admissions
+                </a>
+                <a href="/academics/"
+                    class="px-4 py-2 rounded-full text-xs font-bold bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all">
+                    Academics
+                </a>
+                <a href="/about/"
+                    class="px-4 py-2 rounded-full text-xs font-bold bg-[var(--surface-alt)] border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all">
+                    About Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

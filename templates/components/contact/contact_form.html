@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us | {{ request.tenant.name }}{% endblock %}
+
+{% block content %}
+<!-- Hero Header -->
+<section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
+    <div class="absolute inset-0 z-0">
+        <img src="{% static 'assets/layout_images/hero_header.jpg' %}" alt="Contact Us"
+            class="w-full h-full object-cover">
+        <div class="absolute inset-0"
+            style="background: linear-gradient(to right, color-mix(in srgb, var(--primary-dark) 95%, transparent), color-mix(in srgb, var(--primary-dark) 60%, transparent), transparent);">
+        </div>
+    </div>
+
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 w-full">
+        <div class="reveal-up">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-4">
+                <i data-lucide="mail" class="w-4 h-4 text-[var(--accent)]"></i>
+                <span class="text-[11px] font-bold text-white/90 uppercase tracking-widest">Get In Touch</span>
+            </div>
+            <h1 class="text-3xl lg:text-5xl font-extrabold text-white mb-4 tracking-tight">Contact Us</h1>
+            <nav class="flex text-white/60 text-sm font-medium">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">Contact</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="bg-[var(--surface)] py-12 lg:py-20 min-h-screen relative overflow-hidden">
+    <!-- Decorative Background Elements -->
+    <div class="absolute top-20 right-0 w-[600px] h-[600px] rounded-full opacity-[0.03]"
+        style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
+    <div class="absolute bottom-20 left-0 w-[400px] h-[400px] rounded-full opacity-[0.02]"
+        style="background: radial-gradient(circle, var(--accent) 0%, transparent 70%);"></div>
+
+    <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10">
+
+        <!-- Section Header -->
+        <div
+            class="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 mb-12 lg:mb-16 reveal-up bg-white rounded-2xl p-6 md:p-8 border border-[var(--border)] shadow-sm relative overflow-hidden">
+            <!-- Subtle gradient accent -->
+            <div
+                class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary)]">
+            </div>
+            <div class="absolute -bottom-10 -right-10 w-40 h-40 rounded-full opacity-[0.04]"
+                style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
+
+            <!-- Left: Icon -->
+            <div class="shrink-0">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-[var(--primary)]/5 rounded-2xl blur-xl scale-110"></div>
+                    <img src="{% static 'assets/contacts/contact_icon.png' %}" alt="Customer Support"
+                        class="relative w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 object-contain drop-shadow-lg">
+                </div>
+            </div>
+
+            <!-- Right: Text Content -->
+            <div class="text-center sm:text-left flex-1">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 bg-[var(--primary)]/5 rounded-full border border-[var(--primary)]/10 mb-3">
+                    <i data-lucide="headphones" class="w-3.5 h-3.5 text-[var(--primary)]"></i>
+                    <span class="text-[10px] font-bold text-[var(--primary)] uppercase tracking-widest">We're Here to
+                        Help</span>
+                </div>
+                <h2
+                    class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight mb-3 leading-tight">
+                    We'd Love To Hear<br class="hidden sm:block"> From You
+                </h2>
+                <p class="text-[var(--text-muted)] text-sm md:text-base max-w-lg leading-relaxed">
+                    Have questions about our programs, campus, or enrollment? Send us a message and our team will
+                    respond promptly.
+                </p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+            <!-- Left: Contact Form (8 cols) -->
+            <div class="lg:col-span-8 reveal-up">
+                <div
+                    class="bg-white rounded-2xl p-6 md:p-10 border border-[var(--border)] shadow-sm relative overflow-hidden">
+                    <!-- Decorative Accent Line -->
+                    <div
+                        class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary)]">
+                    </div>
+
+                    <div class="flex items-center gap-3 mb-8">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center shadow-lg shadow-[var(--primary-glow)]">
+                            <i data-lucide="pen-line" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-extrabold text-[var(--secondary)]">Send Us a Message</h3>
+                            <p class="text-xs text-[var(--text-muted)]">Fill out the form below and we'll get back to
+                                you</p>
+                        </div>
+                    </div>
+
+                    <form method="post" class="space-y-5">
+                        {% csrf_token %}
+
+                        <!-- Name & Email Row -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="group">
+                                <label for="id_name"
+                                    class="block text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-2">
+                                    <i data-lucide="user" class="w-3.5 h-3.5 inline mr-1 text-[var(--primary)]"></i>
+                                    Full Name <span class="text-red-400">*</span>
+                                </label>
+                                <input type="text" name="name" id="id_name" required placeholder="Enter your full name"
+                                    class="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)]/50 focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all duration-300">
+                            </div>
+                            <div class="group">
+                                <label for="id_email"
+                                    class="block text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-2">
+                                    <i data-lucide="mail" class="w-3.5 h-3.5 inline mr-1 text-[var(--primary)]"></i>
+                                    Email Address <span class="text-red-400">*</span>
+                                </label>
+                                <input type="email" name="email" id="id_email" required placeholder="your@email.com"
+                                    class="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)]/50 focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all duration-300">
+                            </div>
+                        </div>
+
+                        <!-- Phone & Subject Row -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="group">
+                                <label for="id_phone"
+                                    class="block text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-2">
+                                    <i data-lucide="phone" class="w-3.5 h-3.5 inline mr-1 text-[var(--primary)]"></i>
+                                    Phone Number
+                                </label>
+                                <input type="tel" name="phone" id="id_phone" placeholder="+880 1XXX-XXXXXX"
+                                    class="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)]/50 focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all duration-300">
+                            </div>
+                            <div class="group">
+                                <label for="id_subject"
+                                    class="block text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-2">
+                                    <i data-lucide="hash" class="w-3.5 h-3.5 inline mr-1 text-[var(--primary)]"></i>
+                                    Subject <span class="text-red-400">*</span>
+                                </label>
+                                <input type="text" name="subject" id="id_subject" required
+                                    placeholder="Subject of your inquiry"
+                                    class="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)]/50 focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all duration-300">
+                            </div>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="group">
+                            <label for="id_message"
+                                class="block text-xs font-bold text-[var(--text)] uppercase tracking-wider mb-2">
+                                <i data-lucide="message-circle"
+                                    class="w-3.5 h-3.5 inline mr-1 text-[var(--primary)]"></i>
+                                Your Message <span class="text-red-400">*</span>
+                            </label>
+                            <textarea name="message" id="id_message" rows="5" required
+                                placeholder="Write your message here..."
+                                class="w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm text-[var(--text)] placeholder:text-[var(--text-muted)]/50 focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all duration-300 resize-none"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-2">
+                            <button type="submit"
+                                class="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white rounded-xl shadow-xl shadow-[var(--primary-glow)]/30 hover:shadow-[var(--primary-glow)]/50 transition-all duration-300 hover:-translate-y-1 font-bold text-sm">
+                                <i data-lucide="send" class="w-4 h-4"></i>
+                                Send Message
+                                <i data-lucide="chevron-right"
+                                    class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right: Info Sidebar (4 cols) -->
+            <div class="lg:col-span-4 space-y-5 reveal-up">
+
+                <!-- Illustration Card -->
+                <div class="bg-white rounded-2xl p-6 border border-[var(--border)] shadow-sm overflow-hidden relative">
+                    <img src="{% static 'assets/contacts/contact_form2.png' %}" alt="Education Illustration"
+                        class="w-full h-40 object-cover rounded-xl mb-4 opacity-90">
+                    <p class="text-xs text-center text-[var(--text-muted)] leading-relaxed">We are committed to
+                        providing the best educational experience. Reach out to us anytime!</p>
+                </div>
+
+                <!-- Address Card -->
+                <div
+                    class="bg-white rounded-2xl p-6 border border-[var(--border)] shadow-sm hover:shadow-lg hover:border-[var(--primary)]/30 transition-all duration-300 group hover:-translate-y-1">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center shadow-lg shadow-[var(--primary-glow)]/20 shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-extrabold text-[var(--secondary)] mb-1">Our Location</h4>
+                            <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+                                {{ request.tenant.address|default:"123 School Street, City, State" }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phone Card -->
+                <div
+                    class="bg-white rounded-2xl p-6 border border-[var(--border)] shadow-sm hover:shadow-lg hover:border-[var(--primary)]/30 transition-all duration-300 group hover:-translate-y-1">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center shadow-lg shadow-[var(--primary-glow)]/20 shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="phone" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-extrabold text-[var(--secondary)] mb-1">Call Us</h4>
+                            <a href="tel:{{ request.tenant.contact_phone }}"
+                                class="text-xs text-[var(--primary)] font-medium hover:underline">
+                                {{ request.tenant.contact_phone|default:"+880 1234-56789" }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Card -->
+                <div
+                    class="bg-white rounded-2xl p-6 border border-[var(--border)] shadow-sm hover:shadow-lg hover:border-[var(--primary)]/30 transition-all duration-300 group hover:-translate-y-1">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center shadow-lg shadow-[var(--primary-glow)]/20 shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="mail" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-extrabold text-[var(--secondary)] mb-1">Email Us</h4>
+                            <a href="mailto:{{ request.tenant.contact_email }}"
+                                class="text-xs text-[var(--primary)] font-medium hover:underline break-all">
+                                {{ request.tenant.contact_email|default:"info@school.edu" }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="sm:hidden bg-white rounded-2xl p-6 border border-[var(--border)] shadow-sm">
+                    <h3
+                        class="text-sm font-black text-[var(--secondary)] uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i data-lucide="link" class="w-4 h-4 text-[var(--primary)]"></i>
+                        Quick Links
+                    </h3>
+                    <div class="space-y-2">
+                        <a href="/admissions/"
+                            class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--primary)]/10 transition-colors group">
+                            <i data-lucide="graduation-cap" class="w-4 h-4 text-[var(--primary)]"></i>
+                            <span
+                                class="text-[13px] font-bold text-[var(--text)] group-hover:text-[var(--primary)] transition-colors">Admissions</span>
+                        </a>
+                        <a href="/academics/"
+                            class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--primary)]/10 transition-colors group">
+                            <i data-lucide="book-open" class="w-4 h-4 text-[var(--primary)]"></i>
+                            <span
+                                class="text-[13px] font-bold text-[var(--text)] group-hover:text-[var(--primary)] transition-colors">Academic
+                                Programs</span>
+                        </a>
+                        <a href="/contact/admissions/"
+                            class="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--primary)]/10 transition-colors group">
+                            <i data-lucide="clipboard-list" class="w-4 h-4 text-[var(--primary)]"></i>
+                            <span
+                                class="text-[13px] font-bold text-[var(--text)] group-hover:text-[var(--primary)] transition-colors">Admission
+                                Inquiry</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Width Map Section -->
+        <div class="mt-12 lg:mt-16 reveal-up">
+            <div class="bg-white rounded-2xl p-3 border border-[var(--border)] shadow-sm overflow-hidden">
+                <div class="flex items-center gap-3 mb-3 px-3">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center">
+                        <i data-lucide="map" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <h3 class="text-sm font-extrabold text-[var(--secondary)]">Find Us on the Map</h3>
+                </div>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.431697206121!2d90.3879!3d23.882!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c46440c946e3%3A0x63346d0484a86b3a!2sPresidency%20University!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd"
+                    class="w-full h-[350px] lg:h-[400px] border-0 rounded-xl" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

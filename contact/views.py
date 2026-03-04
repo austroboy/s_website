@@ -5,9 +5,9 @@ from .forms import ContactForm, AdmissionInquiryForm
 from django.views.generic import TemplateView
 
 class ContactFormView(FormView):
-    template_name = 'content/contact.html'
+    template_name = 'components/contact/contact_form.html'
     form_class = ContactForm
-    success_url = reverse_lazy('contact-success')
+    success_url = reverse_lazy('contact:success')
 
     def form_valid(self, form):
         # Save with tenant
@@ -19,13 +19,13 @@ class ContactFormView(FormView):
         return super().form_valid(form)
 
 class ContactSuccessView(TemplateView):
-    template_name = 'contact/success.html'
+    template_name = 'components/contact/success.html'
 
 class AdmissionInquiryCreateView(CreateView):
     model = AdmissionInquiry
     form_class = AdmissionInquiryForm
-    template_name = 'contact/admission_inquiry.html'
-    success_url = reverse_lazy('admission-thankyou')
+    template_name = 'components/contact/admissions_inquire.html'
+    success_url = reverse_lazy('contact:success')
 
     def form_valid(self, form):
         inquiry = form.save(commit=False)
