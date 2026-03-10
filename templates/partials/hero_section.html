@@ -1,5 +1,34 @@
 {% load static %}
-<section class="relative bg-cover bg-center h-screen flex items-center" style="background-image: url('{{ section.config.background_image|default:'https://placehold.co/1920x1080' }}');">
+<section x-data="{ 
+    images: {{ section.config.background_images|safe|default:'[]' }},
+    currentIndex: 0,
+    init() {
+        if (this.images.length > 1) {
+            setInterval(() => {
+                this.currentIndex = (this.currentIndex + 1) % this.images.length;
+            }, 5000);
+        }
+    }
+}" class="relative h-screen flex items-center overflow-hidden">
+    <!-- Background Images -->
+    <template x-if="images.length > 0">
+        <template x-for="(img, index) in images" :key="index">
+            <div x-show="currentIndex === index"
+                 x-transition:enter="transition ease-out duration-1000"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-1000"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="absolute inset-0 bg-cover bg-center"
+                 :style="'background-image: url(' + img + ');'">
+            </div>
+        </template>
+    </template>
+    <template x-if="images.length === 0">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{% static 'assets/placeholder.jpg' %}');"></div>
+    </template>
+
     <div class="absolute inset-0 bg-black opacity-50"></div>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center text-white">
         <h1 class="text-4xl md:text-6xl font-bold mb-4">{{ section.title|default:"Welcome to Our School" }}</h1>

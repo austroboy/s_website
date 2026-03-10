@@ -126,12 +126,12 @@ class="relative z-[100]">
                         </div>
                     </nav>
 
-                    <!-- Apply Now CTA -->
+                    <!-- Login CTA -->
                     <div class="hidden lg:block">
-                        <a href="/contact-us/" class="btn-primary-blue text-[13px] px-5 py-2.5 rounded-md">
+                        <a href="{% if request.tenant.api_base_url %}{{ request.tenant.api_base_url }}{% else %}#{% endif %}" class="btn-primary-blue text-[13px] px-5 py-2.5 rounded-md" target="_blank" rel="noopener noreferrer">
                             <span class="flex items-center">
-                                <i data-lucide="pen-line" class="w-3.5 h-3.5 mr-2"></i>
-                                Apply Now
+                                <i data-lucide="log-in" class="w-4 h-4 mr-2"></i>
+                                Log In
                             </span>
                         </a>
                     </div>

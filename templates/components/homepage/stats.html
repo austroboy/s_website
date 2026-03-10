@@ -47,10 +47,17 @@
                 observer.observe(this.$el);
             }
         }" class="relative py-14 md:py-18 bg-fixed bg-cover bg-center overflow-hidden" 
-           style="background-image: url('{{ section.config.bg_image|default:"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2070&auto=format&fit=crop" }}');">
+           {% if section.config.bg_image %}style="background-image: url('{{ section.config.bg_image }}');"{% endif %}>
+            
+            <!-- Dynamic Placeholder Background (when no bg_image provided) -->
+            {% if not section.config.bg_image %}
+                <div class="absolute inset-0 opacity-30">
+                    {% include "components/partials/dynamic_placeholder.svg" with svg_id="stats-bg" %}
+                </div>
+            {% endif %}
             
             <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(15, 29, 64, 0.92) 0%, rgba(0, 81, 255, 0.25) 50%, rgba(5, 13, 36, 0.92) 100%);"></div>
-            <div class="absolute inset-0 opacity-[0.06] pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');"></div>
+            <div class="absolute inset-0 opacity-[0.06] pointer-events-none" ></div>
 
             <div class="deco-circle w-[200px] h-[200px] -top-20 left-[10%] animate-float opacity-20"></div>
             <div class="deco-circle w-[150px] h-[150px] -bottom-16 right-[15%] animate-float-slow opacity-15"></div>

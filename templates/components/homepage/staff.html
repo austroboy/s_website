@@ -42,7 +42,13 @@
                         <!-- Photo Container -->
                         <a href="{% url 'staff:detail' staff.pk %}" class="relative w-28 h-28 mx-auto mb-6 block group/photo">
                             <div class="absolute inset-0 rounded-full border-2 border-dashed border-[var(--border)] group-hover:border-[var(--primary)] group-hover:rotate-90 transition-all duration-700"></div>
-                            <img src="{% if staff.photo %}{{ staff.photo }}{% else %}{% static 'assets/placeholder.jpg' %}{% endif %}" alt="{{ staff.name }}" class="w-full h-full object-cover rounded-full p-1.5 transition-transform duration-500 group-hover:scale-105">
+                            {% if staff.photo %}
+                                <img src="{{ staff.photo }}" alt="{{ staff.name }}" class="w-full h-full object-cover rounded-full p-1.5 transition-transform duration-500 group-hover:scale-105">
+                            {% else %}
+                                <div class="w-full h-full rounded-full overflow-hidden">
+                                    {% include "components/partials/dynamic_placeholder.svg" with svg_id=forloop.counter %}
+                                </div>
+                            {% endif %}
                             
                             <!-- Department tiny badge -->
                             <div class="absolute -bottom-2 right-0 bg-[var(--primary)] text-white w-8 h-8 rounded-full flex items-center justify-center shadow-md transform scale-0 group-hover:scale-100 transition-transform duration-300 delay-100">

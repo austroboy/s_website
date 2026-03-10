@@ -24,8 +24,12 @@
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 h-[auto] min-h-[500px] md:min-h-[700px]">
                 {% for album in gallery_albums %}
                     <a href="{% url 'albums:detail' album.pk %}" class="{% cycle 'col-span-1 row-span-1' 'col-span-1 row-span-1' 'col-span-1 row-span-2' 'col-span-2 row-span-1' 'col-span-2 row-span-1' 'col-span-1 row-span-1' 'col-span-1 row-span-1' %} group relative overflow-hidden rounded-2xl cursor-pointer glow-border-hover bg-[var(--surface-alt)]">
-                        <img src="{% if album.cover_image %}{{ album.cover_image }}{% else %}{% static 'assets/placeholder.jpg' %}{% endif %}" 
-                             alt="{{ album.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        {% if album.cover_image %}
+                            <img src="{{ album.cover_image }}" 
+                                 alt="{{ album.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        {% else %}
+                            {% include "components/partials/dynamic_placeholder.svg" with svg_id=forloop.counter %}
+                        {% endif %}
                         <div class="absolute inset-0 bg-gradient-to-t from-[var(--secondary)]/90 via-black/20 to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
                         
                         <!-- Date Badge -->

@@ -31,12 +31,18 @@ def _build_config(post_data: dict, section_type: str) -> dict:
     """Extract typed config dict from POST data based on section_type."""
     cfg = {}
     if section_type == 'hero':
+        bg_images = [
+            post_data.get('cfg_bg_image_1', '').strip(),
+            post_data.get('cfg_bg_image_2', '').strip(),
+            post_data.get('cfg_bg_image_3', '').strip(),
+            post_data.get('cfg_bg_image_4', '').strip(),
+        ]
         cfg = {
             'cta_primary_text':   post_data.get('cfg_cta_primary_text', ''),
             'cta_primary_link':   post_data.get('cfg_cta_primary_link', ''),
             'cta_secondary_text': post_data.get('cfg_cta_secondary_text', ''),
             'cta_secondary_link': post_data.get('cfg_cta_secondary_link', ''),
-            'background_image':   post_data.get('cfg_background_image', ''),
+            'background_images':  [img for img in bg_images if img],
         }
     elif section_type == 'stats':
         def _int(key): 
@@ -47,6 +53,7 @@ def _build_config(post_data: dict, section_type: str) -> dict:
             'teachers': _int('cfg_teachers'),
             'programs': _int('cfg_programs'),
             'years':    _int('cfg_years'),
+            'bg_image': post_data.get('cfg_stats_bg_image', '').strip(),
         }
     elif section_type == 'cta':
         cfg = {

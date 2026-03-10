@@ -192,8 +192,14 @@
             <input type="text" name="cfg_cta_secondary_link" class="form-input" placeholder="/about/">
           </div>
           <div class="col-span-2">
-            <label class="block text-xs text-slate-muted mb-1">Background Image URL</label>
-            <input type="text" name="cfg_background_image" class="form-input" placeholder="https://...">
+            <label class="block text-xs text-slate-muted mb-1">Background Image URLs (up to 4 — used as slideshow)</label>
+            <div class="space-y-2">
+              <input type="text" name="cfg_bg_image_1" id="f-bg-img-1" class="form-input" placeholder="Image 1 URL: https://...">
+              <input type="text" name="cfg_bg_image_2" id="f-bg-img-2" class="form-input" placeholder="Image 2 URL: https://...">
+              <input type="text" name="cfg_bg_image_3" id="f-bg-img-3" class="form-input" placeholder="Image 3 URL: https://...">
+              <input type="text" name="cfg_bg_image_4" id="f-bg-img-4" class="form-input" placeholder="Image 4 URL: https://...">
+            </div>
+            <p class="mt-1.5 text-xs text-slate-muted">Enter 1–4 image URLs. If multiple are set, the hero will cycle through them.</p>
           </div>
         </div>
       </div>
@@ -219,6 +225,10 @@
           <div>
             <label class="block text-xs text-slate-muted mb-1">Years of Excellence</label>
             <input type="number" name="cfg_years" class="form-input" placeholder="50">
+          </div>
+          <div class="col-span-2">
+            <label class="block text-xs text-slate-muted mb-1">Background Image URL</label>
+            <input type="text" name="cfg_stats_bg_image" id="f-stats-bg-img" class="form-input" placeholder="https://...">
           </div>
         </div>
       </div>
@@ -463,12 +473,18 @@
       setField('cfg_cta_primary_link',   config.cta_primary_link   || '');
       setField('cfg_cta_secondary_text', config.cta_secondary_text || '');
       setField('cfg_cta_secondary_link', config.cta_secondary_link || '');
-      setField('cfg_background_image',   config.background_image   || '');
+      // Populate up to 4 background image fields
+      const imgs = config.background_images || [];
+      ['f-bg-img-1','f-bg-img-2','f-bg-img-3','f-bg-img-4'].forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el) el.value = imgs[i] || '';
+      });
     } else if (config && type === 'stats') {
       setField('cfg_students', config.students || '');
       setField('cfg_teachers', config.teachers || '');
       setField('cfg_programs', config.programs || '');
       setField('cfg_years',    config.years    || '');
+      setField('cfg_stats_bg_image', config.bg_image || '');
     } else if (config && type === 'cta') {
       setField('cfg_primary_text',   config.primary_text   || '');
       setField('cfg_primary_link',   config.primary_link   || '');

@@ -95,6 +95,7 @@ class CachedProgram(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     icon = models.URLField(blank=True)
+    featured_image = models.URLField(blank=True, help_text="Featured/banner image URL for this program")
     order = models.PositiveIntegerField(default=0)
     is_published = models.BooleanField(default=True)
     last_synced = models.DateTimeField(auto_now=True)

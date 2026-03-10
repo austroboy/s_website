@@ -37,7 +37,11 @@
                         
                         <!-- Optional Image/Icon Area -->
                         <div class="relative h-40 bg-[var(--surface)] overflow-hidden flex items-center justify-center">
-                            <img src="{% if achievement.image %}{{ achievement.image.url }}{% else %}{% static 'assets/placeholder.jpg' %}{% endif %}" alt="{{ achievement.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            {% if achievement.image %}
+                                <img src="{{ achievement.image.url }}" alt="{{ achievement.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            {% else %}
+                                {% include "components/partials/dynamic_placeholder.svg" with svg_id=forloop.counter %}
+                            {% endif %}
                             
                             <!-- Date Badge -->
                             {% if achievement.date %}

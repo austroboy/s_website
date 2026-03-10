@@ -54,9 +54,13 @@
                         
                         <!-- Image Container with SVG Curve -->
                         <div class="relative h-44 overflow-hidden bg-[var(--surface)]">
-                            <img src="{% if news.featured_image %}{{ news.featured_image }}{% else %}{% static 'assets/placeholder.jpg' %}{% endif %}" 
-                                 alt="{{ news.title }}" 
-                                 class="w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-110">
+                            {% if news.featured_image %}
+                                <img src="{{ news.featured_image }}" 
+                                     alt="{{ news.title }}" 
+                                     class="w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-110">
+                            {% else %}
+                                {% include "components/partials/dynamic_placeholder.svg" with svg_id=forloop.counter %}
+                            {% endif %}
                             
                             <!-- Category Badge (Top Right) -->
                             {% if news.category %}

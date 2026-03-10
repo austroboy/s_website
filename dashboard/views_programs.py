@@ -67,6 +67,7 @@ def dashboard_program_create(request):
         name = request.POST.get('name', '').strip()
         description = request.POST.get('description', '').strip()
         icon = request.POST.get('icon', '').strip()
+        featured_image = request.POST.get('featured_image', '').strip()
         order = request.POST.get('order', 0)
         action = request.POST.get('action', 'draft')
         
@@ -76,6 +77,7 @@ def dashboard_program_create(request):
             name=name,
             description=description,
             icon=icon,
+            featured_image=featured_image,
             order=order,
             is_published=(action == 'publish'),
             last_synced=timezone.now(),
@@ -110,6 +112,12 @@ def dashboard_program_edit(request, program_id):
             program.icon = ''
         elif request.POST.get('icon'):
             program.icon = request.POST.get('icon')
+        
+        # Handle featured image
+        if request.POST.get('remove_featured_image') == 'true':
+            program.featured_image = ''
+        elif request.POST.get('featured_image'):
+            program.featured_image = request.POST.get('featured_image')
         
         # Handle publish status
         action = request.POST.get('action', 'draft')
