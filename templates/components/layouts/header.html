@@ -78,10 +78,10 @@ class="relative z-[100]">
                                 {% if menu.slug == 'header' %}
                                     {% for item in menu.items.all %}
                                         {% if not item.parent %}
-                                            <div class="nav-item-wrapper shrink-0"
+                                            <div class="nav-item-wrapper shrink-0 relative"
                                                  data-title="{{ item.title }}"
                                                  data-url="{{ item.url }}"
-                                                 data-children="[{% for child in item.children.all %}{&quot;title&quot;: &quot;{{ child.title }}&quot;, &quot;url&quot;: &quot;{{ child.url|default:'#' }}&quot;}{% if not forloop.last %},{% endif %}{% endfor %}]">
+                                                 data-children="[{% for child in item.children.all %}{&quot;title&quot;: &quot;{{ child.title|escapejs }}&quot;, &quot;url&quot;: &quot;{{ child.url|default:'#'|escapejs }}&quot;, &quot;children&quot;: [{% for grandchild in child.children.all %}{&quot;title&quot;: &quot;{{ grandchild.title|escapejs }}&quot;, &quot;url&quot;: &quot;{{ grandchild.url|default:'#'|escapejs }}&quot;}{% if not forloop.last %},{% endif %}{% endfor %}]}{% if not forloop.last %},{% endif %}{% endfor %}]">
                                                 <div class="relative group/nav-link flex items-center cursor-pointer px-4 py-2 mx-0.5 rounded-md transition-all duration-300 select-none"
                                                      :class="activeMenu === '{{ item.title }}' ? 'text-white' : 'text-white/70 hover:text-white'"
                                                      {% if item.children.exists %}
@@ -103,6 +103,86 @@ class="relative z-[100]">
                                                     <div class="absolute bottom-0 left-[14px] right-[14px] h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] transition-all duration-300 transform origin-left"
                                                          :class="activeMenu === '{{ item.title }}' ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0 group-hover/nav-link:scale-x-100 group-hover/nav-link:opacity-100'"></div>
                                                 </div>
+
+                                                {% if item.children.exists %}
+                                                    <div x-show="activeMenu === '{{ item.title }}'" 
+                                                         x-cloak
+                                                         x-transition:enter="transition ease-out duration-300"
+                                                         x-transition:enter-start="opacity-0 -translate-y-3 scale-95"
+                                                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                                         x-transition:leave="transition ease-in duration-200"
+                                                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                                         x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
+                                                         @click.away="activeMenu = null"
+                                                         class="hidden lg:block absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 z-50 w-[320px] shadow-2xl rounded-lg backdrop-blur-xl"
+                                                         style="background: linear-gradient(180deg, rgba(15, 29, 64, 0.98) 0%, rgba(26, 45, 90, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.1);">
+                                                    
+                                                        <!-- Dropdown Items -->
+                                                        <div class="py-2">
+                                                            {% for subitem in item.children.all %}
+                                                                <div class="relative group/subdropdown">
+                                                                    <a href="{{ subitem.url|default:'#' }}" 
+                                                                       class="group/dropdown relative flex items-center gap-3 px-5 py-3.5 text-white/80 hover:text-white hover:bg-white/[0.08] transition-all duration-300 border-l-3 border-transparent hover:border-[var(--accent)]"
+                                                                       @click="{% if not subitem.children.exists %}activeMenu = null{% endif %}">
+                                                                        
+                                                                        <!-- Icon/Bullet -->
+                                                                        <div class="w-5 h-5 rounded-lg bg-white/5 group-hover/dropdown:bg-[var(--primary)]/20 flex items-center justify-center shrink-0 transition-all duration-300 group-hover/dropdown:scale-110">
+                                                                            <i data-lucide="chevron-right" class="w-3 h-3 text-white/40 group-hover/dropdown:text-[var(--accent)] transition-colors"></i>
+                                                                        </div>
+                                                                        
+                                                                        <!-- Text -->
+                                                                        <div class="flex-1 min-w-0">
+                                                                            <div class="text-[12px] font-semibold leading-tight mb-0.5 group-hover/dropdown:translate-x-1 transition-transform duration-300">
+                                                                                {{ subitem.title }}
+                                                                            </div>
+                                                                            
+                                                                            <!-- Bottom Progress Line -->
+                                                                            <div class="h-[2px] w-0 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary-light)] rounded-full group-hover/dropdown:w-full transition-all duration-500 ease-out"></div>
+                                                                        </div>
+                                                                        
+                                                                        <!-- Arrow Indicator -->
+                                                                        {% if subitem.children.exists %}
+                                                                            <i data-lucide="chevron-right" class="w-4 h-4 text-white/80 transition-all duration-300 shrink-0"></i>
+                                                                        {% else %}
+                                                                            <i data-lucide="arrow-right" class="w-4 h-4 text-white/20 group-hover/dropdown:text-[var(--accent)] opacity-0 group-hover/dropdown:opacity-100 -translate-x-2 group-hover/dropdown:translate-x-0 transition-all duration-300 shrink-0"></i>
+                                                                        {% endif %}
+                                                                    </a>
+
+                                                                    {% if subitem.children.exists %}
+                                                                        <div class="absolute left-[calc(100%+4px)] top-0 hidden group-hover/subdropdown:block z-50 w-[320px] shadow-2xl rounded-lg backdrop-blur-xl transition-all duration-300 opacity-0 group-hover/subdropdown:opacity-100 translate-x-2 group-hover/subdropdown:translate-x-0"
+                                                                             style="background: linear-gradient(180deg, rgba(15, 29, 64, 0.98) 0%, rgba(26, 45, 90, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.1);">
+                                                                            <div class="py-2">
+                                                                                {% for granditem in subitem.children.all %}
+                                                                                    <a href="{{ granditem.url|default:'#' }}" 
+                                                                                       class="group/granddropdown relative flex items-center gap-3 px-5 py-3.5 text-white/80 hover:text-white hover:bg-white/[0.08] transition-all duration-300 border-l-3 border-transparent hover:border-[var(--accent)]"
+                                                                                       @click="activeMenu = null">
+                                                                                        <!-- Icon/Bullet -->
+                                                                                        <div class="w-5 h-5 rounded-lg bg-white/5 group-hover/granddropdown:bg-[var(--primary)]/20 flex items-center justify-center shrink-0 transition-all duration-300 group-hover/granddropdown:scale-110">
+                                                                                            <i data-lucide="chevron-right" class="w-3 h-3 text-white/40 group-hover/granddropdown:text-[var(--accent)] transition-colors"></i>
+                                                                                        </div>
+                                                                                        <!-- Text -->
+                                                                                        <div class="flex-1 min-w-0">
+                                                                                            <div class="text-[12px] font-semibold leading-tight mb-0.5 group-hover/granddropdown:translate-x-1 transition-transform duration-300">
+                                                                                                {{ granditem.title }}
+                                                                                            </div>
+                                                                                            <!-- Bottom Progress Line -->
+                                                                                            <div class="h-[2px] w-0 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary-light)] rounded-full group-hover/granddropdown:w-full transition-all duration-500 ease-out"></div>
+                                                                                        </div>
+                                                                                        <!-- Arrow Indicator -->
+                                                                                        <i data-lucide="arrow-right" class="w-4 h-4 text-white/20 group-hover/granddropdown:text-[var(--accent)] opacity-0 group-hover/granddropdown:opacity-100 -translate-x-2 group-hover/granddropdown:translate-x-0 transition-all duration-300 shrink-0"></i>
+                                                                                    </a>
+                                                                                {% endfor %}
+                                                                            </div>
+                                                                            <div class="h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary-light)]"></div>
+                                                                        </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                        <!-- Decorative Bottom Border -->
+                                                        <div class="h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary-light)]"></div>
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                         {% endif %}
                                     {% endfor %}
@@ -154,7 +234,11 @@ class="relative z-[100]">
                 </div>
             </div>
 
-            <!-- MEGA MENU PANEL -->
+            <!-- ============================================
+                 MEGA MENU PANEL (MULTI-COLUMN) - COMMENTED OUT
+                 Uncomment to restore wide multi-column menu layout
+                 ============================================ -->
+            <!-- 
             <div x-show="activeMenu" 
                  x-cloak
                  x-transition:enter="transition ease-out duration-300"
@@ -167,7 +251,6 @@ class="relative z-[100]">
                  class="absolute top-full left-6 right-6 lg:left-20 lg:right-20 z-40 shadow-2xl bg-[var(--footer-bg)] border-t-2 border-[var(--primary)] rounded-b-md overflow-hidden">
                 
                 <div class="max-w-[1200px] mx-auto py-8">
-                <!-- Standard Mega Menus -->
                 {% for menu in request.tenant.menus.all %}
                     {% if menu.slug == 'header' %}
                         {% for item in menu.items.all %}
@@ -177,22 +260,15 @@ class="relative z-[100]">
                                         {% for subitem in item.children.all %}
                                             <div class="break-inside-avoid mb-4">
                                                 <a href="{{ subitem.url|default:'#' }}" class="group/menu-link relative flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-all duration-300 overflow-hidden border border-transparent hover:border-white/5">
-                                                    <!-- Left Symbol -->
                                                     <div class="flex items-center justify-center shrink-0">
                                                         <i data-lucide="minus" class="w-3.5 h-3.5 text-white/40 group-hover/menu-link:text-[var(--accent)] transition-colors transform group-hover/menu-link:scale-110"></i>
                                                     </div>
-                                                    
                                                     <span class="text-sm font-bold text-white/70 group-hover/menu-link:text-white transition-colors relative overflow-hidden flex-1">
                                                         {{ subitem.title }}
-                                                        <!-- Bottom progress line -->
                                                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] transition-all duration-300 group-hover/menu-link:w-full"></span>
                                                     </span>
-                                                    
-                                                    <!-- Right Arrow -->
                                                     <i data-lucide="arrow-right" class="w-4 h-4 ml-auto text-white/10 group-hover/menu-link:text-[var(--accent)] -translate-x-2 opacity-0 group-hover/menu-link:opacity-100 group-hover/menu-link:translate-x-0 transition-all duration-300 shrink-0"></i>
                                                 </a>
-                                                
-                                                <!-- Optional Grandchildren -->
                                                 {% if subitem.children.exists %}
                                                     <ul class="mt-2 ml-7 space-y-1 mb-2">
                                                         {% for granditem in subitem.children.all %}
@@ -213,8 +289,6 @@ class="relative z-[100]">
                         {% endfor %}
                     {% endif %}
                 {% endfor %}
-
-                <!-- Dynamic 'More' Mega Menu (Matches design exactly) -->
                 <div x-show="activeMenu === 'More'" class="max-w-[1000px] mx-auto" x-cloak>
                     <div class="columns-1 sm:columns-2 lg:columns-3 gap-x-8 gap-y-4">
                         <template x-for="item in overflowItems" :key="item.title">
@@ -228,7 +302,6 @@ class="relative z-[100]">
                                         <i data-lucide="arrow-right" class="w-4 h-4 ml-auto text-white/10 group-hover/menu-link:text-[var(--accent)] -translate-x-2 opacity-0 group-hover/menu-link:opacity-100 group-hover/menu-link:translate-x-0 transition-all duration-300 shrink-0"></i>
                                     </template>
                                 </a>
-                                
                                 <template x-if="item.children && item.children.length > 0">
                                     <ul class="mt-2 ml-7 space-y-1 mb-2">
                                         <template x-for="child in item.children" :key="child.title">
@@ -245,6 +318,116 @@ class="relative z-[100]">
                         </template>
                     </div>
                 </div>
+            </div>
+            -->
+
+
+
+            <!-- More Dropdown (Dynamic Overflow Items) -->
+            <div x-show="activeMenu === 'More'" 
+                 x-cloak
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 -translate-y-3 scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                 x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
+                 @click.away="activeMenu = null"
+                 class="hidden lg:block absolute top-full right-8  z-50 w-[320px] shadow-2xl rounded-2xl overflow-hidden backdrop-blur-xl"
+                 style="background: linear-gradient(180deg, rgba(15, 29, 64, 0.98) 0%, rgba(26, 45, 90, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.1);">                
+                <!-- Dropdown Items -->
+                <div class="py-2">
+                    <template x-for="item in overflowItems" :key="item.title">
+                        <div class="relative group/overflowitem">
+                            <a :href="item.url || '#'" 
+                               class="group/dropdown relative flex items-center gap-3 px-5 py-3.5 text-white/80 hover:text-white hover:bg-white/[0.08] transition-all duration-300 border-l-3 border-transparent hover:border-[var(--accent)]"
+                               @click="(!item.children || item.children.length === 0) ? activeMenu = null : null">
+                                
+                                <!-- Icon/Bullet -->
+                                <div class="w-5 h-5 rounded-lg bg-white/5 group-hover/dropdown:bg-[var(--primary)]/20 flex items-center justify-center shrink-0 transition-all duration-300 group-hover/dropdown:scale-110">
+                                    <i data-lucide="chevron-right" class="w-3 h-3 text-white/40 group-hover/dropdown:text-[var(--accent)] transition-colors"></i>
+                                </div>
+                                
+                                <!-- Text -->
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-[12px] font-semibold leading-tight mb-0.5 group-hover/dropdown:translate-x-1 transition-transform duration-300" x-text="item.title"></div>
+                                    
+                                    <!-- Bottom Progress Line -->
+                                    <div class="h-[2px] w-0 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary-light)] rounded-full group-hover/dropdown:w-full transition-all duration-500 ease-out"></div>
+                                </div>
+                                
+                                <!-- Arrow Indicator -->
+                                <template x-if="item.children && item.children.length > 0">
+                                    <i data-lucide="chevron-left" class="w-4 h-4 text-white/80 transition-all duration-300 shrink-0"></i>
+                                </template>
+                                <template x-if="!item.children || item.children.length === 0">
+                                    <i data-lucide="arrow-right" class="w-4 h-4 text-white/20 group-hover/dropdown:text-[var(--accent)] opacity-0 group-hover/dropdown:opacity-100 -translate-x-2 group-hover/dropdown:translate-x-0 transition-all duration-300 shrink-0"></i>
+                                </template>
+                            </a>
+
+                            <!-- Render Sub Items -->
+                            <template x-if="item.children && item.children.length > 0">
+                                <div class="absolute right-[calc(100%+4px)] top-0 hidden group-hover/overflowitem:block z-50 w-[320px] shadow-2xl rounded-lg backdrop-blur-xl transition-all duration-300 opacity-0 group-hover/overflowitem:opacity-100 -translate-x-2 group-hover/overflowitem:translate-x-0"
+                                     style="background: linear-gradient(180deg, rgba(15, 29, 64, 0.98) 0%, rgba(26, 45, 90, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <div class="py-2">
+                                        <template x-for="child in item.children" :key="child.title">
+                                            <div class="relative group/overflowchild">
+                                                <a :href="child.url || '#'" 
+                                                   class="group/dropdown relative flex items-center gap-3 px-5 py-3.5 text-white/80 hover:text-white hover:bg-white/[0.08] transition-all duration-300 border-l-3 border-transparent hover:border-[var(--accent)]"
+                                                   @click="(!child.children || child.children.length === 0) ? activeMenu = null : null">
+                                                    
+                                                    <div class="w-5 h-5 rounded-lg bg-white/5 group-hover/dropdown:bg-[var(--primary)]/20 flex items-center justify-center shrink-0 transition-all duration-300 group-hover/dropdown:scale-110">
+                                                        <i data-lucide="chevron-right" class="w-3 h-3 text-white/40 group-hover/dropdown:text-[var(--accent)] transition-colors"></i>
+                                                    </div>
+                                                    
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="text-[12px] font-semibold leading-tight mb-0.5 group-hover/dropdown:translate-x-1 transition-transform duration-300" x-text="child.title"></div>
+                                                        <div class="h-[2px] w-0 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary-light)] rounded-full group-hover/dropdown:w-full transition-all duration-500 ease-out"></div>
+                                                    </div>
+                                                    
+                                                    <template x-if="child.children && child.children.length > 0">
+                                                        <i data-lucide="chevron-left" class="w-4 h-4 text-white/80 transition-all duration-300 shrink-0"></i>
+                                                    </template>
+                                                    <template x-if="!child.children || child.children.length === 0">
+                                                        <i data-lucide="arrow-right" class="w-4 h-4 text-white/20 group-hover/dropdown:text-[var(--accent)] opacity-0 group-hover/dropdown:opacity-100 -translate-x-2 group-hover/dropdown:translate-x-0 transition-all duration-300 shrink-0"></i>
+                                                    </template>
+                                                </a>
+                                                
+                                                <!-- Render Grand Items -->
+                                                <template x-if="child.children && child.children.length > 0">
+                                                    <div class="absolute right-[calc(100%+4px)] top-0 hidden group-hover/overflowchild:block z-50 w-[320px] shadow-2xl rounded-lg backdrop-blur-xl transition-all duration-300 opacity-0 group-hover/overflowchild:opacity-100 -translate-x-2 group-hover/overflowchild:translate-x-0"
+                                                         style="background: linear-gradient(180deg, rgba(15, 29, 64, 0.98) 0%, rgba(26, 45, 90, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.1);">
+                                                        <div class="py-2">
+                                                            <template x-for="grandchild in child.children" :key="grandchild.title">
+                                                                <a :href="grandchild.url || '#'" 
+                                                                   class="group/dropdown relative flex items-center gap-3 px-5 py-3.5 text-white/80 hover:text-white hover:bg-white/[0.08] transition-all duration-300 border-l-3 border-transparent hover:border-[var(--accent)]"
+                                                                   @click="activeMenu = null">
+                                                                    <div class="w-5 h-5 rounded-lg bg-white/5 group-hover/dropdown:bg-[var(--primary)]/20 flex items-center justify-center shrink-0 transition-all duration-300 group-hover/dropdown:scale-110">
+                                                                        <i data-lucide="chevron-right" class="w-3 h-3 text-white/40 group-hover/dropdown:text-[var(--accent)] transition-colors"></i>
+                                                                    </div>
+                                                                    <div class="flex-1 min-w-0">
+                                                                        <div class="text-[12px] font-semibold leading-tight mb-0.5 group-hover/dropdown:translate-x-1 transition-transform duration-300" x-text="grandchild.title"></div>
+                                                                        <div class="h-[2px] w-0 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary-light)] rounded-full group-hover/dropdown:w-full transition-all duration-500 ease-out"></div>
+                                                                    </div>
+                                                                    <i data-lucide="arrow-right" class="w-4 h-4 text-white/20 group-hover/dropdown:text-[var(--accent)] opacity-0 group-hover/dropdown:opacity-100 -translate-x-2 group-hover/dropdown:translate-x-0 transition-all duration-300 shrink-0"></i>
+                                                                </a>
+                                                            </template>
+                                                        </div>
+                                                        <div class="h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary-light)]"></div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div class="h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary-light)]"></div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+                
+                <!-- Decorative Bottom Border -->
+                <div class="h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary-light)]"></div>
             </div>
         </div>
     </div>
