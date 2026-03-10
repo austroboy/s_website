@@ -210,8 +210,8 @@ class="relative z-[100]">
                     <div class="hidden lg:block">
                         <a href="{% if request.tenant.api_base_url %}{{ request.tenant.api_base_url }}{% else %}#{% endif %}" class="btn-primary-blue text-[13px] px-5 py-2.5 rounded-md" target="_blank" rel="noopener noreferrer">
                             <span class="flex items-center">
-                                <i data-lucide="log-in" class="w-4 h-4 mr-2"></i>
-                                Log In
+                                <i data-lucide="shield-user" class="w-5 h-5 mr-1"></i>
+                                Login
                             </span>
                         </a>
                     </div>
@@ -219,7 +219,7 @@ class="relative z-[100]">
                     <!-- Mobile Navigation Toggle Flattened -->
                     <div class="lg:hidden ml-auto flex items-center gap-3">
                         <a href="{% if request.tenant.api_base_url %}{{ request.tenant.api_base_url }}{% else %}#{% endif %}\" class="btn-primary-blue text-[11px] px-3 py-2 rounded-md flex items-center gap-1.5" target="_blank" rel="noopener noreferrer">
-                            <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
+                            <i data-lucide="shield-user" class="w-3.5 h-3.5"></i>
                             <span>Login</span>
                         </a>
                         <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="p-2 text-white hover:bg-white/10 rounded-lg transition-colors">
