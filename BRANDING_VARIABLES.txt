@@ -1,0 +1,401 @@
+================================================================================
+SCHOOL MANAGEMENT SYSTEM - BRANDING VARIABLES
+================================================================================
+Complete Color Palettes (18 Fields) + Font Pairs
+Copy-paste values directly into your database
+================================================================================
+
+COLOR PALETTES (18 FIELDS EACH)
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+PALETTE 1: CLASSIC ACADEMIC BLUE
+Professional, trustworthy, traditional
+────────────────────────────────────────────────────────────────────────────────
+primary: #0051FF
+primary_dark: #003ACC
+primary_light: #3B82F6
+primary_glow: rgba(0, 81, 255, 0.35)
+secondary: #0F1D40
+secondary_light: #1A2D5A
+accent: #00D4FF
+surface: #F8FAFD
+surface_alt: #EFF4FB
+text: #1A1A2E
+text_muted: #64748B
+footer_bg: #111827
+footer_text: #FFFFFF
+border: #E5E7EB
+success: #28A745
+warning: #FFC107
+error: #DC3545
+
+────────────────────────────────────────────────────────────────────────────────
+PALETTE 2: ELECTRIC BLUE TECH
+Modern, vibrant, technology-focused
+────────────────────────────────────────────────────────────────────────────────
+primary: #0096FF
+primary_dark: #0077CC
+primary_light: #00B8FF
+primary_glow: rgba(0, 150, 255, 0.35)
+secondary: #0A192F
+secondary_light: #112240
+accent: #00FFF5
+surface: #F0F9FF
+surface_alt: #E0F2FE
+text: #0F172A
+text_muted: #475569
+footer_bg: #0A192F
+footer_text: #F8FAFC
+border: #CBD5E1
+success: #00C853
+warning: #FFD600
+error: #FF1744
+
+────────────────────────────────────────────────────────────────────────────────
+PALETTE 3: PROFESSIONAL BLACK & WHITE
+Elegant, minimalist, timeless
+────────────────────────────────────────────────────────────────────────────────
+primary: #1F2937
+primary_dark: #111827
+primary_light: #374151
+primary_glow: rgba(31, 41, 55, 0.25)
+secondary: #0F1419
+secondary_light: #1C2127
+accent: #9CA3AF
+surface: #FFFFFF
+surface_alt: #F9FAFB
+text: #111827
+text_muted: #6B7280
+footer_bg: #0F1419
+footer_text: #F3F4F6
+border: #E5E7EB
+success: #10B981
+warning: #F59E0B
+error: #EF4444
+
+────────────────────────────────────────────────────────────────────────────────
+PALETTE 4: EMERALD EXCELLENCE
+Fresh, growth-oriented, modern
+────────────────────────────────────────────────────────────────────────────────
+primary: #10B981
+primary_dark: #047857
+primary_light: #34D399
+primary_glow: rgba(16, 185, 129, 0.35)
+secondary: #064E3B
+secondary_light: #065F46
+accent: #6EE7B7
+surface: #F0FDF4
+surface_alt: #D1FAE5
+text: #1F2937
+text_muted: #6B7280
+footer_bg: #064E3B
+footer_text: #ECFDF5
+border: #D1FAE5
+success: #22C55E
+warning: #FBBF24
+error: #F87171
+
+────────────────────────────────────────────────────────────────────────────────
+PALETTE 5: ROYAL PURPLE PRESTIGE
+Premium, creative, distinguished
+────────────────────────────────────────────────────────────────────────────────
+primary: #7C3AED
+primary_dark: #5B21B6
+primary_light: #A78BFA
+primary_glow: rgba(124, 58, 237, 0.35)
+secondary: #2E1065
+secondary_light: #4C1D95
+accent: #C084FC
+surface: #FAF5FF
+surface_alt: #E9D5FF
+text: #1F2937
+text_muted: #6B7280
+footer_bg: #2E1065
+footer_text: #F3E8FF
+border: #E9D5FF
+success: #10B981
+warning: #F59E0B
+error: #EF4444
+
+────────────────────────────────────────────────────────────────────────────────
+PALETTE 6: SUNSET ORANGE INNOVATION
+Energetic, innovative, warm
+────────────────────────────────────────────────────────────────────────────────
+primary: #F97316
+primary_dark: #C2410C
+primary_light: #FB923C
+primary_glow: rgba(249, 115, 22, 0.35)
+secondary: #431407
+secondary_light: #7C2D12
+accent: #FDBA74
+surface: #FFF7ED
+surface_alt: #FED7AA
+text: #292524
+text_muted: #78716C
+footer_bg: #431407
+footer_text: #FFEDD5
+border: #FED7AA
+success: #16A34A
+warning: #EAB308
+error: #DC2626
+
+────────────────────────────────────────────────────────────────────────────────
+PALETTE 7: TEAL & NAVY PROFESSIONAL
+Balanced, sophisticated, confident
+────────────────────────────────────────────────────────────────────────────────
+primary: #0891B2
+primary_dark: #0E7490
+primary_light: #22D3EE
+primary_glow: rgba(8, 145, 178, 0.35)
+secondary: #0C4A6E
+secondary_light: #075985
+accent: #67E8F9
+surface: #F0FDFA
+surface_alt: #CFFAFE
+text: #1E293B
+text_muted: #64748B
+footer_bg: #0C4A6E
+footer_text: #ECFEFF
+border: #CFFAFE
+success: #14B8A6
+warning: #F59E0B
+error: #EF4444
+
+────────────────────────────────────────────────────────────────────────────────
+PALETTE 8: CRIMSON EXCELLENCE
+Bold, prestigious, confident
+────────────────────────────────────────────────────────────────────────────────
+primary: #DC2626
+primary_dark: #991B1B
+primary_light: #F87171
+primary_glow: rgba(220, 38, 38, 0.35)
+secondary: #450A0A
+secondary_light: #7F1D1D
+accent: #FCA5A5
+surface: #FFF5F5
+surface_alt: #FEE2E2
+text: #1F2937
+text_muted: #6B7280
+footer_bg: #450A0A
+footer_text: #FEF2F2
+border: #FEE2E2
+success: #16A34A
+warning: #F59E0B
+error: #B91C1C
+
+────────────────────────────────────────────────────────────────────────────────
+PALETTE 9: INDIGO MODERN
+Contemporary, stylish, innovative
+────────────────────────────────────────────────────────────────────────────────
+primary: #4F46E5
+primary_dark: #3730A3
+primary_light: #818CF8
+primary_glow: rgba(79, 70, 229, 0.35)
+secondary: #1E1B4B
+secondary_light: #312E81
+accent: #A5B4FC
+surface: #F5F3FF
+surface_alt: #E0E7FF
+text: #1E293B
+text_muted: #64748B
+footer_bg: #1E1B4B
+footer_text: #EEF2FF
+border: #E0E7FF
+success: #10B981
+warning: #F59E0B
+error: #EF4444
+
+────────────────────────────────────────────────────────────────────────────────
+PALETTE 10: AMBER & BROWN ACADEMIC
+Classic, scholarly, heritage
+────────────────────────────────────────────────────────────────────────────────
+primary: #D97706
+primary_dark: #92400E
+primary_light: #FBBF24
+primary_glow: rgba(217, 119, 6, 0.35)
+secondary: #44403C
+secondary_light: #57534E
+accent: #FCD34D
+surface: #FFFBEB
+surface_alt: #FEF3C7
+text: #292524
+text_muted: #78716C
+footer_bg: #44403C
+footer_text: #FEFCE8
+border: #FEF3C7
+success: #16A34A
+warning: #F59E0B
+error: #DC2626
+
+
+================================================================================
+FONT PAIRS (4 FIELDS EACH)
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+FONT PAIR 1: MODERN & CLEAN
+Outfit + Inter
+────────────────────────────────────────────────────────────────────────────────
+heading_font: Outfit
+body_font: Inter
+heading_weights: 400,600,700,800
+body_weights: 300,400,500,600,700,800
+
+────────────────────────────────────────────────────────────────────────────────
+FONT PAIR 2: CLASSIC & ELEGANT
+Playfair Display + Source Sans Pro
+────────────────────────────────────────────────────────────────────────────────
+heading_font: Playfair Display
+body_font: Source Sans Pro
+heading_weights: 400,600,700
+body_weights: 400,600
+
+────────────────────────────────────────────────────────────────────────────────
+FONT PAIR 3: TECH-FORWARD
+Space Grotesk + Inter
+────────────────────────────────────────────────────────────────────────────────
+heading_font: Space Grotesk
+body_font: Inter
+heading_weights: 400,500,700
+body_weights: 400,500,600
+
+────────────────────────────────────────────────────────────────────────────────
+FONT PAIR 4: PROFESSIONAL CORPORATE
+Sora + Work Sans
+────────────────────────────────────────────────────────────────────────────────
+heading_font: Sora
+body_font: Work Sans
+heading_weights: 400,600,700
+body_weights: 400,500,600
+
+────────────────────────────────────────────────────────────────────────────────
+FONT PAIR 5: WARM & FRIENDLY
+Plus Jakarta Sans + DM Sans
+────────────────────────────────────────────────────────────────────────────────
+heading_font: Plus Jakarta Sans
+body_font: DM Sans
+heading_weights: 400,600,700,800
+body_weights: 400,500
+
+
+================================================================================
+CSS VARIABLES REFERENCE
+================================================================================
+
+These variables are automatically generated in base.html from the database:
+
+Color Variables:
+    --primary
+    --primary-dark
+    --primary-light
+    --primary-glow
+    --secondary
+    --secondary-light
+    --accent
+    --surface
+    --surface-alt
+    --text
+    --text-muted
+    --footer-bg
+    --footer-text
+    --border
+    --success
+    --warning
+    --error
+
+Font Variables:
+    --font-heading
+    --font-body
+
+
+================================================================================
+USAGE INSTRUCTIONS
+================================================================================
+
+1. COLOR PALETTE SETUP:
+   - Choose a palette from above
+   - In Django Admin, go to Branding > Color Palettes
+   - Create/Edit the ColorPalette for your tenant
+   - Copy-paste all 18 color values from the palette above
+   - Save
+
+2. FONT PAIR SETUP:
+   - Choose a font pair from above
+   - In Django Admin, go to Branding > Font Pairs
+   - Create/Edit the FontPair for your tenant
+   - Copy-paste all 4 font values from the pair above
+   - Save
+
+3. PREVIEW:
+   - Open BRANDING_PRESETS_FULL.html in a browser to see all themes live
+   - Changes reflect immediately in your templates via CSS variables
+
+4. CUSTOMIZATION:
+   - Mix and match colors from different palettes
+   - Adjust hex values to match your brand
+   - Test with success/warning/error states
+   - Ensure sufficient color contrast for accessibility
+
+
+================================================================================
+TECHNICAL NOTES
+================================================================================
+
+- All colors use hex format (#RRGGBB) except primary_glow (rgba)
+- Font weights are comma-separated (e.g., "400,600,700")
+- Google Fonts are automatically loaded via FontPair.google_fonts_url()
+- CSS variables update dynamically without page refresh
+- Dark mode overrides: dark_primary, dark_surface, dark_text (optional)
+
+
+================================================================================
+COLOR PALETTE FIELD MAPPING
+================================================================================
+
+Primary Colors (Brand Identity):
+    primary         → Main brand color (buttons, links, CTAs)
+    primary_dark    → Hover states, darker sections
+    primary_light   → Light backgrounds, subtle accents
+    primary_glow    → Box shadows, glow effects (rgba format)
+
+Secondary Colors (Supporting):
+    secondary       → Headers, footers, navigation
+    secondary_light → Lighter navigation sections
+
+Accent Colors:
+    accent          → Highlights, special elements, icons
+
+Surface Colors (Backgrounds):
+    surface         → Main page background
+    surface_alt     → Card backgrounds, alternate sections
+
+Text Colors:
+    text            → Primary text (headings, body)
+    text_muted      → Secondary text (captions, metadata)
+
+Footer Colors:
+    footer_bg       → Footer background
+    footer_text     → Footer text color
+
+Border Colors:
+    border          → Borders, dividers, separators
+
+Status Colors (UI Feedback):
+    success         → Success messages, confirmations
+    warning         → Warnings, pending states
+    error           → Errors, rejections, alerts
+
+
+================================================================================
+FILES INCLUDED
+================================================================================
+
+1. BRANDING_PRESETS_FULL.html  → Visual preview (open in browser)
+2. BRANDING_VARIABLES.txt       → This file (copy-paste reference)
+3. templates/base.html          → CSS variables implementation
+
+
+================================================================================
+END OF FILE
+================================================================================
