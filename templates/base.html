@@ -14,10 +14,15 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts (Dynamic) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    {% if fonts %}
+        <link href="{{ fonts.google_fonts_url }}" rel="stylesheet">
+    {% else %}
+        <!-- Fallback fonts if no tenant context -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    {% endif %}
         <!-- Tailwind CSS via CDN (for development; use a build system for production) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Global custom CSS -->
@@ -41,6 +46,10 @@
             --text-muted: {{ colors.text_muted }};
             --border: {{ colors.border }};
             --border-light: color-mix(in srgb, var(--border) 60%, transparent);
+
+            /* Font Variables */
+            --font-heading: {% if fonts %}'{{ fonts.heading_font }}', {% endif %}system-ui, -apple-system, sans-serif;
+            --font-body: {% if fonts %}'{{ fonts.body_font }}', {% endif %}system-ui, -apple-system, sans-serif;
 
              --radius-sm: 6px;
     --radius-md: 12px;
@@ -68,7 +77,7 @@ html {
 }
 
 body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: var(--font-body);
     color: var(--text);
     background-color: var(--surface);
     line-height: 1.6;
@@ -89,7 +98,7 @@ body {
 
 /* ---- Headings ---- */
 h1, h2, h3, h4, h5, h6, .outfit {
-    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+    font-family: var(--font-heading);
     line-height: 1.2;
     letter-spacing: -0.02em;
 }

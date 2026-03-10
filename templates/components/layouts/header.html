@@ -138,7 +138,10 @@ class="relative z-[100]">
 
                     <!-- Mobile Navigation Toggle Flattened -->
                     <div class="lg:hidden ml-auto flex items-center gap-3">
-                        <a href="/contact-us/" class="btn-primary-blue text-[11px] px-3 py-2 rounded-md">Apply</a>
+                        <a href="{% if request.tenant.api_base_url %}{{ request.tenant.api_base_url }}{% else %}#{% endif %}\" class="btn-primary-blue text-[11px] px-3 py-2 rounded-md flex items-center gap-1.5" target="_blank" rel="noopener noreferrer">
+                            <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
+                            <span>Login</span>
+                        </a>
                         <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="p-2 text-white hover:bg-white/10 rounded-lg transition-colors">
                             <span x-show="!isMobileMenuOpen">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
