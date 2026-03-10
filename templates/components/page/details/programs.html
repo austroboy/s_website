@@ -5,13 +5,13 @@
 
 {% block content %}
 <!-- Hero Banner -->
-<section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
+<section class="relative h-[300px] lg:h-[450px] overflow-hidden flex items-center">
     <div class="absolute inset-0 z-0">
-        <img src="{% static 'assets/layout_images/hero_header.jpg' %}" 
-             alt="Institutional News" 
+        <img src="{% if program.featured_image %}{{ program.featured_image }}{% else %}{% static 'assets/layout_images/hero_header.jpg' %}{% endif %}" 
+             alt="{{ program.name                                                }}" 
              class="w-full h-full object-cover">
         <div class="absolute inset-0" 
-             style="background: linear-gradient(to right, color-mix(in srgb, var(--primary-dark) 95%, transparent), color-mix(in srgb, var(--primary-dark) 60%, transparent), transparent);">
+             style="background: linear-gradient(to right, color-mix(in srgb, var(--primary-dark) 45%, transparent), color-mix(in srgb, var(--primary-dark) 60%, transparent), transparent);">
         </div>
     </div>
 

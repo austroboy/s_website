@@ -169,7 +169,7 @@ class CachedProgramAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ("Tenant & Sync", {"fields": ("tenant", "sms_id", "is_published", "last_synced")}),
-        ("Program", {"fields": ("name", "description", "icon")}),
+        ("Program", {"fields": ("name", "description", "icon", "featured_image")}),
         ("Display", {"fields": ("order",)}),
     )
 

@@ -50,8 +50,11 @@
                 {% for program in page_obj.object_list|default:programs %}
                     <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col border border-[var(--border)]">
                         <div class="relative h-44 overflow-hidden">
-                            <img src="{% cycle 'assets/programs/program_1.png' 'assets/programs/program_2.png' 'assets/programs/program_3.png' 'assets/programs/program_4.png' 'assets/programs/program_5.png' as p_img silent %}{% static p_img %}" 
-                                 alt="{{ program.name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            {% if program.featured_image %}
+                                <img src="{{ program.featured_image }}" alt="{{ program.name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            {% else %}
+                                {% include "components/partials/dynamic_placeholder.svg" with svg_id=forloop.counter %}
+                            {% endif %}
                             <div class="absolute inset-0 bg-gradient-to-t from-[var(--secondary)]/80 via-black/20 to-transparent"></div>
                         </div>
                         <div class="p-4 flex flex-col flex-1">
