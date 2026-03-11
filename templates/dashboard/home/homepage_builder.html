@@ -486,10 +486,10 @@
       setField('cfg_years',    config.years    || '');
       setField('cfg_stats_bg_image', config.bg_image || '');
     } else if (config && type === 'cta') {
-      setField('cfg_primary_text',   config.primary_text   || '');
-      setField('cfg_primary_link',   config.primary_link   || '');
-      setField('cfg_secondary_text', config.secondary_text || '');
-      setField('cfg_secondary_link', config.secondary_link || '');
+      setField('cfg_primary_text',   config.cta_primary_text   || '');
+      setField('cfg_primary_link',   config.cta_primary_link   || '');
+      setField('cfg_secondary_text', config.cta_secondary_text || '');
+      setField('cfg_secondary_link', config.cta_secondary_link || '');
     }
 
     toggleConfigFields();

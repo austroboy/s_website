@@ -145,15 +145,15 @@
         {% endif %}
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            {% if section.config.primary_link %}
+            {% if section.config.cta_primary_link or section.config.cta_primary_text %}
             <a href="{{ section.config.cta_primary_link|default:'#' }}" class="btn-primary-blue text-sm h-12 px-8 rounded-lg w-full sm:w-auto shadow-lg">
                     <span><i data-lucide="pen-line" class="w-4 h-4 mr-2 inline"></i>{{ section.config.cta_primary_text|default:'Apply for Admission' }}</span>
                 </a>
             {% endif %}
 
-            {% if section.config.secondary_link %}
-            <a href="{{ section.config.secondary_link }}" class="btn-outline-blue text-sm px-8 py-3 w-full sm:w-auto hover:bg-[var(--surface-alt)] transition-colors duration-300">
-                {{ section.config.secondary_text|default:"Learn More" }}
+            {% if section.config.cta_secondary_link or section.config.cta_secondary_text %}
+            <a href="{{ section.config.cta_secondary_link|default:'#' }}" class="btn-outline-blue text-sm px-8 py-3 w-full sm:w-auto hover:bg-[var(--surface-alt)] transition-colors duration-300">
+                <span>{{ section.config.cta_secondary_text|default:"Learn More" }}</span>
             </a>
             {% endif %}
         </div>
