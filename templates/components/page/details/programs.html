@@ -21,7 +21,7 @@
                 <i data-lucide="graduation-cap" class="w-4 h-4 text-[var(--accent)]"></i>
                 <span class="text-[11px] font-bold text-white/90 uppercase tracking-widest">Academic Program</span>
             </div>
-            <h1 class="text-3xl lg:text-5xl font-extrabold text-white mb-4 tracking-tight">{{ program.name }}</h1>
+            <h1 class="text-3xl lg:text-5xl font-extrabold text-white mb-4 tracking-tight font-[family:var(--font-heading)]">{{ program.name }}</h1>
             <nav class="flex text-white/60 text-sm font-medium">
                 <a href="/" class="hover:text-white transition-colors">Home</a>
                 <span class="mx-2">/</span>
@@ -46,7 +46,7 @@
                         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center shadow-lg shadow-[var(--primary-glow)]">
                             <i data-lucide="file-text" class="w-5 h-5 text-white"></i>
                         </div>
-                        <h3 class="text-xl font-extrabold text-[var(--secondary)]">Program Overview</h3>
+                        <h3 class="text-xl font-extrabold text-[var(--secondary)] font-[family:var(--font-heading)]">Program Overview</h3>
                     </div>
                     
                     {% if program.description %}
@@ -69,9 +69,9 @@
                         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center shadow-lg shadow-[var(--primary-glow)]">
                             <i data-lucide="layers" class="w-5 h-5 text-white"></i>
                         </div>
-                        <h3 class="text-xl font-extrabold text-[var(--secondary)]">Curriculum Details</h3>
+                        <h3 class="text-xl font-extrabold text-[var(--secondary)] font-[family:var(--font-heading)]">Curriculum Details</h3>
                     </div>
-                    <div class="prose max-w-none text-[var(--text-muted)] text-[15px] leading-relaxed prose-headings:text-[var(--secondary)] prose-a:text-[var(--primary)]">
+                    <div class="prose max-w-none text-[var(--text-muted)] text-[15px] leading-relaxed prose-headings:text-[var(--secondary)] prose-a:text-[var(--primary)] font-[family:var(--font-body)]">
                         {{ program.content|safe }}
                     </div>
                 </div>

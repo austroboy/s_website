@@ -21,7 +21,7 @@
                 <i data-lucide="award" class="w-4 h-4 text-[var(--accent)]"></i>
                 <span class="text-[11px] font-bold text-white/90 uppercase tracking-widest">Achievement</span>
             </div>
-            <h1 class="text-3xl lg:text-5xl font-extrabold text-white mb-4 tracking-tight">{{ achievement.title }}</h1>
+            <h1 class="text-3xl lg:text-5xl font-extrabold text-white mb-4 tracking-tight font-[family:var(--font-heading)]">{{ achievement.title }}</h1>
             <nav class="flex text-white/60 text-sm font-medium">
                 <a href="/" class="hover:text-white transition-colors">Home</a>
                 <span class="mx-2">/</span>
@@ -48,9 +48,9 @@
                             <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center shadow-lg shadow-[var(--primary-glow)] group">
                                 <i data-lucide="award" class="w-5 h-5 text-white transition-transform group-hover:scale-110"></i>
                             </div>
-                            <h3 class="text-lg lg:text-xl font-black text-[var(--secondary)] tracking-tight">Achievement Highlights</h3>
+                            <h3 class="text-lg lg:text-xl font-black text-[var(--secondary)] tracking-tight font-[family:var(--font-heading)]">Achievement Highlights</h3>
                         </div>
-                        <div class="prose prose-lg pl-2 lg:pl-5 max-w-none text-[var(--text-muted)] text-[15px] leading-relaxed prose-headings:text-[var(--secondary)] prose-headings:font-black prose-a:text-[var(--primary)] prose-strong:text-[var(--secondary)] prose-img:rounded-2xl prose-img:shadow-lg">
+                        <div class="prose prose-lg pl-2 lg:pl-5 max-w-none text-[var(--text-muted)] text-[15px] leading-relaxed prose-headings:text-[var(--secondary)] prose-headings:font-black prose-a:text-[var(--primary)] prose-strong:text-[var(--secondary)] prose-img:rounded-2xl prose-img:shadow-lg font-[family:var(--font-body)]">
                             {{ achievement.description|safe }}
                         </div>
                     </div>

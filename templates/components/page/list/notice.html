@@ -17,7 +17,7 @@
 
     <div class="max-w-[1240px] mx-auto px-6 lg:px-8 relative z-10 w-full">
         <div class="reveal-up">
-            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4">All Notices</h1>
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4 font-[family:var(--font-heading)]">All Notices</h1>
             <nav class="flex text-white/70 text-sm font-medium">
                 <a href="/" class="hover:text-white transition-colors">Home</a>
                 <span class="mx-2">/</span>
@@ -37,7 +37,7 @@
                     <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2.5 rounded-xl text-white shadow-lg shadow-[var(--primary-glow)] shrink-0">
                         <i data-lucide="megaphone" class="w-5 h-5"></i>
                     </div>
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">Official Notice Board</h2>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight font-[family:var(--font-heading)]">Official Notice Board</h2>
                 </div>
                 <div>
                     <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">Stay updated with latest announcements</p>
@@ -58,7 +58,7 @@
                             <div class="flex items-center space-x-2 mb-1">
                                 <span class="text-[11px] font-semibold text-[var(--text-muted)]">{{ notice.created_at|date:"Y" }}</span>
                             </div>
-                            <h3 class="text-sm md:text-[15px] font-bold text-[var(--text)] leading-snug group-hover:text-[var(--primary)] transition-colors line-clamp-2">{{ notice.title }}</h3>
+                            <h3 class="text-sm md:text-[15px] font-bold text-[var(--text)] leading-snug group-hover:text-[var(--primary)] transition-colors line-clamp-2 font-[family:var(--font-heading)]">{{ notice.title }}</h3>
                         </div>
                         <div class="flex items-center px-3 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
                             <i data-lucide="arrow-right" class="w-4 h-4 text-[var(--primary)]"></i>

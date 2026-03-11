@@ -33,7 +33,7 @@
 
                         <!-- Basic Information -->
                         <div class="flex-1 text-center md:text-left">
-                            <h1 class="text-lg lg:text-2xl font-black text-[var(--secondary)] mb-2 tracking-tight">{{ staff.name }}</h1>
+                            <h1 class="text-lg lg:text-2xl font-black text-[var(--secondary)] mb-2 tracking-tight font-[family:var(--font-heading)]">{{ staff.name }}</h1>
                             <p class="text-md lg:text-lg font-bold text-[var(--primary)] mb-6">{{ staff.designation }}</p>
                             
                             <div class="grid grid-cols-1 gap-4">
@@ -75,10 +75,10 @@
                         <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] flex items-center justify-center shadow-lg">
                             <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
                         </div>
-                        <h2 class="text-lg font-black text-[var(--secondary)] tracking-tight">Biography & Background</h2>
+                        <h2 class="text-lg font-black text-[var(--secondary)] tracking-tight font-[family:var(--font-heading)]">Biography & Background</h2>
                     </div>
                     
-                    <div class="prose prose-lg max-w-none text-[var(--text-muted)] text-[16px] leading-[1.8] space-y-6">
+                    <div class="prose prose-lg max-w-none text-[var(--text-muted)] text-[16px] leading-[1.8] space-y-6 font-[family:var(--font-body)]">
                         {% if staff.bio %}
                             {{ staff.bio|safe }}
                         {% else %}

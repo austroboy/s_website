@@ -29,7 +29,7 @@
                 </div>
 
                 <!-- Title -->
-                <h1 class="text-3xl md:text-[2.75rem] lg:text-[3.25rem] font-extrabold text-[var(--secondary)] leading-[1.1] mb-6 tracking-tight">
+                <h1 class="text-3xl md:text-[2.75rem] lg:text-[3.25rem] font-extrabold text-[var(--secondary)] leading-[1.1] mb-6 tracking-tight font-[family:var(--font-heading)]">
                     {{ news.title }}
                 </h1>
 
@@ -109,7 +109,7 @@
                 {% endif %}
 
                 <!-- Content Body -->
-                <div class="prose prose-lg max-w-none prose-p:text-[var(--text)] prose-p:leading-[1.8] prose-headings:text-[var(--secondary)] prose-headings:font-black prose-strong:text-[var(--text)] prose-a:text-[var(--primary)]">
+                <div class="prose prose-lg max-w-none prose-p:text-[var(--text)] prose-p:leading-[1.8] prose-headings:text-[var(--secondary)] prose-headings:font-black prose-strong:text-[var(--text)] prose-a:text-[var(--primary)] font-[family:var(--font-body)]">
                     {{ news.content|safe }}
                 </div>
 
