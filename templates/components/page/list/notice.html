@@ -71,21 +71,21 @@
             {% if is_paginated %}
             <div class="mt-16 flex items-center justify-center space-x-3 reveal-up">
                 {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">
+                <a href="?page={{ page_obj.previous_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-[var(--primary)]/30 text-[var(--text-muted)] hover:border-[var(--primary)] transition-all shadow-sm">
                     <i data-lucide="chevron-left" class="w-5 h-5"></i>
                 </a>
                 {% endif %}
 
                 {% for num in paginator.page_range %}
                     {% if page_obj.number == num %}
-                    <span class="w-10 h-10 flex items-center justify-center rounded-2xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/20">{{ num }}</span>
+                    <span class="w-10 h-10 flex items-center justify-center rounded-2xl bg-[var(--primary)] text-white font-bold shadow-lg shadow-[var(--primary-glow)]">{{ num }}</span>
                     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                    <a href="?page={{ num }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">{{ num }}</a>
+                    <a href="?page={{ num }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-[var(--primary)]/30 text-[var(--text-muted)] hover:border-[var(--primary)] transition-all shadow-sm">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
 
                 {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">
+                <a href="?page={{ page_obj.next_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-[var(--primary)]/30 text-[var(--text-muted)] hover:border-[var(--primary)] transition-all shadow-sm">
                     <i data-lucide="chevron-right" class="w-5 h-5"></i>
                 </a>
                 {% endif %}

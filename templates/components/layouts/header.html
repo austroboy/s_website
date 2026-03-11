@@ -115,7 +115,7 @@ class="relative z-[100]">
                                                          x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
                                                          @click.away="activeMenu = null"
                                                          class="hidden lg:block absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 z-50 w-[320px] shadow-2xl rounded-lg backdrop-blur-xl"
-                                                         style="background: linear-gradient(180deg, rgba(15, 29, 64, 0.98) 0%, rgba(26, 45, 90, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.1);">
+                                                         style="background: linear-gradient(180deg, color-mix(in srgb, var(--secondary) 98%, transparent) 0%, color-mix(in srgb, var(--secondary-light) 98%, transparent) 100%); border: 1px solid rgba(255, 255, 255, 0.1);">
                                                     
                                                         <!-- Dropdown Items -->
                                                         <div class="py-2">
@@ -332,7 +332,7 @@ class="relative z-[100]">
                  x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
                  @click.away="activeMenu = null"
                  class="hidden lg:block absolute top-full right-8  z-50 w-[320px] shadow-2xl rounded-2xl overflow-hidden backdrop-blur-xl"
-                 style="background: linear-gradient(180deg, rgba(15, 29, 64, 0.98) 0%, rgba(26, 45, 90, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.1);">                
+                 style="background: linear-gradient(180deg, color-mix(in srgb, var(--secondary) 98%, transparent) 0%, color-mix(in srgb, var(--secondary-light) 98%, transparent) 100%); border: 1px solid rgba(255, 255, 255, 0.1);">                
                 <!-- Dropdown Items -->
                 <div class="py-2">
                     <template x-for="item in overflowItems" :key="item.title">
