@@ -102,7 +102,6 @@
                         {{ doc.description|striptags|truncatewords:20 }}
                     </p>
 
-                    <!-- Card Actions -->
                     <div class="mt-auto flex items-center justify-between pt-2">
                         {% if doc.file %}
                         <a href="{{ doc.file.url }}" download
@@ -112,7 +111,7 @@
                         </a>
                         {% endif %}
                         <a href="{% url 'documents:detail' doc.pk %}"
-                            class="px-4 py-1.5 border border-[var(--primary)]/30 text-[var(--primary)] text-xs font-semibold hover:bg-[var(--primary)] hover:text-white transition-all duration-300 rounded-lg">
+                            class="ml-auto px-4 py-1.5 border border-[var(--primary)]/30 text-[var(--primary)] text-xs font-semibold hover:bg-[var(--primary)] hover:text-white transition-all duration-300 rounded-lg">
                             Details
                         </a>
                     </div>
