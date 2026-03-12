@@ -16,7 +16,7 @@ def achievement_manager(request):
         action = request.POST.get("action")
 
         if action == "create":
-            Achievement.objects.create(
+            achievement = Achievement.objects.create(
                 tenant=tenant,
                 title=request.POST.get("title", "").strip(),
                 description=request.POST.get("description", "").strip(),
@@ -24,6 +24,9 @@ def achievement_manager(request):
                 order=int(request.POST.get("order") or 0),
                 is_published="is_published" in request.POST,
             )
+            if request.FILES.get("image"):
+                achievement.image = request.FILES["image"]
+                achievement.save()
             messages.success(request, "Achievement created successfully.")
             return redirect("achievements:achievement_manager")
 
@@ -38,6 +41,8 @@ def achievement_manager(request):
             achievement.date = request.POST.get("date") or None
             achievement.order = int(request.POST.get("order") or 0)
             achievement.is_published = "is_published" in request.POST
+            if request.FILES.get("image"):
+                achievement.image = request.FILES["image"]
             achievement.save()
 
             messages.success(request, "Achievement updated successfully.")

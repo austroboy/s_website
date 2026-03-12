@@ -37,7 +37,7 @@
 
 <!-- FORM PANEL -->
 <div id="form-panel" class="hidden bg-base-800 border border-base-700 rounded-2xl p-6 mb-6">
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="action" id="form-action" value="create">
     <input type="hidden" name="achievement_id" id="achievement-id">
@@ -67,8 +67,12 @@
         <input type="number" name="order" id="f-order"
           class="w-full bg-base-900 border border-base-700 rounded-xl px-3 py-2 text-white">
       </div>
-
-    </div>
+      <div class="sm:col-span-2">
+        <label class="text-xs text-slate-muted">Image</label>
+        <input type="file" name="image" id="f-image" accept="image/*"
+          class="w-full bg-base-900 border border-base-700 rounded-xl px-3 py-2 text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-gold/20 file:text-gold cursor-pointer">
+        <p id="f-image-current" class="hidden mt-1.5 text-xs text-slate-muted">Current: <span id="f-image-name" class="text-gold"></span></p>
+      </div>
 
     <div class="flex items-center gap-3 mt-4">
       <input type="checkbox" name="is_published" id="f-published" checked>
@@ -103,7 +107,7 @@
 
     <div class="flex gap-2">
       <button
-        onclick="openEdit('{{ a.id }}', `{{ a.title|escapejs }}`, `{{ a.description|escapejs }}`, '{{ a.date }}', '{{ a.order }}', {{ a.is_published|yesno:'true,false' }})"
+        onclick="openEdit('{{ a.id }}', `{{ a.title|escapejs }}`, `{{ a.description|escapejs }}`, '{{ a.date }}', '{{ a.order }}', {{ a.is_published|yesno:'true,false' }}, `{{ a.image.name|default:'' }}`)
         class="px-3 py-1 bg-gold/10 text-gold rounded-lg text-sm">
         Update
       </button>
@@ -132,13 +136,14 @@ function openForm() {
   document.getElementById('form-panel').classList.remove('hidden');
   document.getElementById('form-action').value = 'create';
   document.querySelector('form').reset();
+  document.getElementById('f-image-current').classList.add('hidden');
 }
 
 function closeForm() {
   document.getElementById('form-panel').classList.add('hidden');
 }
 
-function openEdit(id, title, description, date, order, published) {
+function openEdit(id, title, description, date, order, published, imageName) {
   openForm();
   document.getElementById('form-action').value = 'update';
   document.getElementById('achievement-id').value = id;
@@ -147,6 +152,10 @@ function openEdit(id, title, description, date, order, published) {
   document.getElementById('f-date').value = date;
   document.getElementById('f-order').value = order;
   document.getElementById('f-published').checked = published;
+  if (imageName) {
+    document.getElementById('f-image-name').textContent = imageName;
+    document.getElementById('f-image-current').classList.remove('hidden');
+  }
 }
 </script>
 {% endblock %}
