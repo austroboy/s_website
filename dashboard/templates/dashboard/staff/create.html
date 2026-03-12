@@ -252,11 +252,11 @@ function previewPhotoFromUrl(url) {
     previewContainer.classList.remove('hidden');
     
     // Handle error if image fails to load
-    previewImg.onerror = function() {
-      previewImg.src = '';
-      previewContainer.classList.add('hidden');
-      alert('Invalid image URL or image cannot be loaded');
-    };
+    // previewImg.onerror = function() {
+    //   previewImg.src = '';
+    //   previewContainer.classList.add('hidden');
+    //   alert('Invalid image URL or image cannot be loaded');
+    // };
   } else {
     previewContainer.classList.add('hidden');
   }
