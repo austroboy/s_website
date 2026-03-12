@@ -19,7 +19,7 @@
         this.overflowItems = [];
         
         // Available width - space for More button + padding
-        const availableWidth = track.clientWidth - 110; 
+        const availableWidth = track.clientWidth - 90; 
         let currentWidth = 0;
         
         items.forEach(el => {
@@ -82,7 +82,7 @@ class="relative z-[100]">
                                                  data-title="{{ item.title }}"
                                                  data-url="{{ item.url }}"
                                                  data-children="[{% for child in item.children.all %}{&quot;title&quot;: &quot;{{ child.title|escapejs }}&quot;, &quot;url&quot;: &quot;{{ child.url|default:'#'|escapejs }}&quot;, &quot;children&quot;: [{% for grandchild in child.children.all %}{&quot;title&quot;: &quot;{{ grandchild.title|escapejs }}&quot;, &quot;url&quot;: &quot;{{ grandchild.url|default:'#'|escapejs }}&quot;}{% if not forloop.last %},{% endif %}{% endfor %}]}{% if not forloop.last %},{% endif %}{% endfor %}]">
-                                                <div class="relative group/nav-link flex items-center cursor-pointer px-4 py-2 mx-0.5 rounded-md transition-all duration-300 select-none"
+                                                <div class="relative group/nav-link flex items-center cursor-pointer px-[13px] py-1.5 mx-0 rounded-md transition-all duration-300 select-none"
                                                      :class="activeMenu === '{{ item.title }}' ? 'text-white' : 'text-white/70 hover:text-white'"
                                                      {% if item.children.exists %}
                                                      @click="toggleMenu('{{ item.title }}')"
@@ -100,7 +100,7 @@ class="relative z-[100]">
                                                     {% endif %}
 
                                                     <!-- Bottom Indicator -->
-                                                    <div class="absolute bottom-0 left-[14px] right-[14px] h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] transition-all duration-300 transform origin-left"
+                                                    <div class="absolute bottom-0 left-[10px] right-[10px] h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] transition-all duration-300 transform origin-left"
                                                          :class="activeMenu === '{{ item.title }}' ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0 group-hover/nav-link:scale-x-100 group-hover/nav-link:opacity-100'"></div>
                                                 </div>
 
@@ -189,7 +189,7 @@ class="relative z-[100]">
                             
                             <!-- More Dropdown -->
                             <div x-show="overflowItems.length > 0" 
-                                 class="relative group/nav-link flex items-center cursor-pointer px-4 py-2 mx-0.5 rounded-md transition-all duration-300 select-none shrink-0" 
+                                 class="relative group/nav-link flex items-center cursor-pointer px-[13px] py-1.5 mx-0 rounded-md transition-all duration-300 select-none shrink-0" 
                                  :class="activeMenu === 'More' ? 'text-white' : 'text-white/70 hover:text-white'"
                                  @click="toggleMenu('More')"
                                  @mouseenter="activeMenu !== null ? (activeMenu = 'More') : null"
@@ -198,7 +198,7 @@ class="relative z-[100]">
                                  <i data-lucide="chevron-down" class="ml-1.5 opacity-70 w-4 h-4 transition-transform duration-300" :class="activeMenu === 'More' ? 'rotate-180 text-[var(--accent)]' : ''"></i>
                                  
                                  <!-- Bottom Indicator -->
-                                 <div class="absolute bottom-0 left-[14px] right-[14px] h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] transition-all duration-300 transform origin-left"
+                                 <div class="absolute bottom-0 left-[10px] right-[10px] h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] transition-all duration-300 transform origin-left"
                                       :class="activeMenu === 'More' ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0 group-hover/nav-link:scale-x-100 group-hover/nav-link:opacity-100'"></div>
                             </div>
                         </div>
