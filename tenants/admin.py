@@ -55,7 +55,7 @@ class TenantAdmin(admin.ModelAdmin):
                 "enable_results",
             )
         }),
-        ("Contact Info", {"fields": ("contact_email", "contact_phone", "address")}),
+        ("Contact Info", {"fields": ("bio", "contact_email", "contact_phone", "address")}),
         ("Timestamps", {"fields": ("created_at", "updated_at")}),
     )
 

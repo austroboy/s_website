@@ -25,7 +25,11 @@
                 </a>
 
                 <p class="text-white/60 text-[13px] leading-relaxed max-w-xs">
-                    Shaping the future through excellence in education, research, and innovation since 2003.
+                    {% if request.tenant.bio %}
+                        {{ request.tenant.bio }}
+                    {% else %}
+                        Shaping the future through excellence in education, research, and innovation.
+                    {% endif %}
                 </p>
 
                 <div class="space-y-4 pt-2">
