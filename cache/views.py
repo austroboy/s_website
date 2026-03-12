@@ -65,6 +65,15 @@ class NewsListView(ListView):
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True).order_by('-created_at')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from content.models import HomepageSection
+        context['section'] = HomepageSection.objects.filter(
+            tenant=self.request.tenant, section_type='news', is_active=True
+        ).first()
+        return context
+
+
 class NewsDetailView(DetailView):
     model = CachedNews
     template_name = 'components/page/details/news.html'
@@ -93,6 +102,14 @@ class EventListView(ListView):
         # Upcoming events first
         return super().get_queryset().filter(is_published=True).order_by('start_date')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from content.models import HomepageSection
+        context['section'] = HomepageSection.objects.filter(
+            tenant=self.request.tenant, section_type='events', is_active=True
+        ).first()
+        return context
+
 class EventDetailView(DetailView):
     model = CachedEvent
     template_name = 'components/page/details/event.html'
@@ -113,6 +130,14 @@ class NoticeListView(ListView):
         qs = qs.filter(Q(expiry_date__gte=now()) | Q(expiry_date__isnull=True))
         return qs.order_by('-created_at')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from content.models import HomepageSection
+        context['section'] = HomepageSection.objects.filter(
+            tenant=self.request.tenant, section_type='notices', is_active=True
+        ).first()
+        return context
+
 class NoticeDetailView(DetailView):
     model = CachedNotice
     template_name = 'components/page/details/notice.html'
@@ -130,6 +155,14 @@ class StaffListView(ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True).order_by('order', 'name')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from content.models import HomepageSection
+        context['section'] = HomepageSection.objects.filter(
+            tenant=self.request.tenant, section_type='staff', is_active=True
+        ).first()
+        return context
 
 class StaffDetailView(DetailView):
     model = CachedStaff
@@ -158,6 +191,14 @@ class ProgramListView(ListView):
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True).order_by('order')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from content.models import HomepageSection
+        context['section'] = HomepageSection.objects.filter(
+            tenant=self.request.tenant, section_type='features', is_active=True
+        ).first()
+        return context
+
 class ProgramDetailView(DetailView):
     model = CachedProgram
     template_name = 'components/page/details/programs.html'
@@ -175,6 +216,15 @@ class AlbumListView(ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True).order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from content.models import HomepageSection
+        context['section'] = HomepageSection.objects.filter(
+            tenant=self.request.tenant, section_type='gallery', is_active=True
+        ).first()
+        return context
+
 
 class AlbumDetailView(DetailView):
     model = CachedAlbum

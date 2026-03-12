@@ -10,6 +10,14 @@ class AchievementListView(ListView):
     def get_queryset(self):
         return super().get_queryset().filter(tenant=self.request.tenant, is_published=True)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from content.models import HomepageSection
+        context['section'] = HomepageSection.objects.filter(
+            tenant=self.request.tenant, section_type='achievements', is_active=True
+        ).first()
+        return context
+
 class AchievementDetailView(DetailView):
     model = Achievement
     template_name = 'components/page/details/achievement.html'
