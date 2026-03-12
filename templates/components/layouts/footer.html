@@ -44,7 +44,7 @@
                                 {% if request.tenant.address %}
                                 {{ request.tenant.address|linebreaksbr }}
                                 {% else %}
-                                11 Embankment Drive Road, Sector 10, Uttara, Dhaka
+                                Add Address in Tenant Settings
                                 {% endif %}
                             </p>
                         </div>
@@ -65,7 +65,7 @@
                                 {% if request.tenant.contact_phone %}
                                 {{ request.tenant.contact_phone }}
                                 {% else %}
-                                +880 1234-56789
+                                Add Contact Phone in Tenant Settings
                                 {% endif %}
                             </p>
                         </div>
@@ -86,7 +86,7 @@
                                 {% if request.tenant.contact_email %}
                                 {{ request.tenant.contact_email }}
                                 {% else %}
-                                admission@presidency.edu.bd
+                                Add Contact Email in Tenant Settings
                                 {% endif %}
                             </p>
                         </div>
@@ -113,22 +113,7 @@
                     {% endif %}
                     {% endfor %}
                     {% if not request.tenant.menus.exists %}
-                    <!-- Fallback links -->
-                    <li><a href="/publications"
-                            class="hover:text-[var(--primary-light)] transition-colors text-sm text-[var(--footer-text)]/70">Publications</a>
-                    </li>
-                    <li><a href="/academic/calendar"
-                            class="hover:text-[var(--primary-light)] transition-colors text-sm text-[var(--footer-text)]/70">Academic
-                            Calendar</a></li>
-                    <li><a href="/library"
-                            class="hover:text-[var(--primary-light)] transition-colors text-sm text-[var(--footer-text)]/70">Library</a>
-                    </li>
-                    <li><a href="/research/journals"
-                            class="hover:text-[var(--primary-light)] transition-colors text-sm text-[var(--footer-text)]/70">Journals</a>
-                    </li>
-                    <li><a href="/newsletters"
-                            class="hover:text-[var(--primary-light)] transition-colors text-sm text-[var(--footer-text)]/70">Newsletters</a>
-                    </li>
+                    <li class="text-xs italic opacity-50">No quick links available</li>
                     {% endif %}
                 </ul>
             </div>
