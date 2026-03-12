@@ -19,6 +19,8 @@ class BaseCachedModel(models.Model):
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 
+    objects = TenantAwareManager()
+
     class Meta:
         abstract = True
         unique_together = ('tenant', 'sms_id')
@@ -78,6 +80,8 @@ class CachedStaff(models.Model):
     is_published = models.BooleanField(default=True)
     last_synced = models.DateTimeField(auto_now=True)
 
+    objects = TenantAwareManager()
+
     class Meta:
         unique_together = ('tenant', 'sms_id')
         ordering = ['order']
@@ -100,6 +104,8 @@ class CachedProgram(models.Model):
     is_published = models.BooleanField(default=True)
     last_synced = models.DateTimeField(auto_now=True)
 
+    objects = TenantAwareManager()
+
     class Meta:
         unique_together = ('tenant', 'sms_id')
         ordering = ['order']
@@ -121,6 +127,8 @@ class CachedAlbum(models.Model):
     is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField()
     last_synced = models.DateTimeField(auto_now=True)
+
+    objects = TenantAwareManager()
 
     def __str__(self):
         return f"[{self.tenant.name}] {self.title}"
