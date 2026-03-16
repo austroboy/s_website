@@ -70,8 +70,7 @@ class="relative z-[100]">
                         </a>
                     </div>
 
-                    <!-- Desktop Navigation (Overflow handled) -->
-                    <nav class="hidden lg:flex items-center justify-center flex-1 text-white text-[14px] font-[500] tracking-wide">
+                    <nav class="hidden lg:flex items-center justify-center flex-1 text-white text-[14px] font-[500] tracking-wide px-4">
                         
                         <div class="flex items-center justify-center w-full h-full" x-ref="track">
                             {% for menu in request.tenant.menus.all %}
@@ -204,8 +203,7 @@ class="relative z-[100]">
                         </div>
                     </nav>
 
-                    <!-- Login CTA -->
-                    <div class="hidden lg:block">
+                    <div class="hidden lg:block ml-2">
                         <a href="{% if request.tenant.api_base_url %}{{ request.tenant.api_base_url }}{% else %}#{% endif %}" class="btn-primary-blue text-[13px] px-5 py-2.5 rounded-md" target="_blank" rel="noopener noreferrer">
                             <span class="flex items-center">
                                 <i data-lucide="shield-user" class="w-5 h-5 mr-1"></i>

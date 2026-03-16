@@ -72,13 +72,16 @@ def dashboard_notice_create(request):
         summary = request.POST.get('summary', '').strip()
         content = request.POST.get('content', '').strip()
         slug = request.POST.get('slug', '').strip()
-        featured_image = request.POST.get('featured_image', '').strip()
-        attachment_url = request.POST.get('attachment_url', '').strip()
+        # Handle files
+        featured_image = request.FILES.get('featured_image')
+        attachment_url = request.FILES.get('attachment_url')
         expiry_date = request.POST.get('expiry_date', '').strip() or None
         action = request.POST.get('action', 'draft')
 
         if not slug:
             slug = slugify(title)
+        else:
+            slug = slugify(slug)
 
         base_slug = slug
         counter = 1
@@ -121,11 +124,9 @@ def dashboard_notice_edit(request, notice_id):
         notice.title = request.POST.get('title', notice.title).strip()
         notice.summary = request.POST.get('summary', notice.summary).strip()
         notice.content = request.POST.get('content', notice.content).strip()
-        notice.attachment_url = request.POST.get('attachment_url', notice.attachment_url).strip()
-        expiry_date = request.POST.get('expiry_date', '').strip()
-        notice.expiry_date = expiry_date if expiry_date else None
-
-        new_slug = request.POST.get('slug', '').strip()
+        
+        # Handle slug
+        new_slug = slugify(request.POST.get('slug', '').strip())
         if new_slug and new_slug != notice.slug:
             base_slug = new_slug
             counter = 1
@@ -133,12 +134,23 @@ def dashboard_notice_edit(request, notice_id):
                 new_slug = f"{base_slug}-{counter}"
                 counter += 1
             notice.slug = new_slug
+        # Handle attachment
+        if request.POST.get('remove_attachment_url') == 'true':
+            notice.attachment_url = None
+        
+        new_attachment = request.FILES.get('attachment_url')
+        if new_attachment:
+            notice.attachment_url = new_attachment
 
-        # Handle featured image URL
+        # Handle featured image
         if request.POST.get('remove_image') == 'true':
-            notice.featured_image = ''
-        elif request.POST.get('featured_image'):
-            notice.featured_image = request.POST.get('featured_image').strip()
+            notice.featured_image = None
+        
+        new_image = request.FILES.get('featured_image')
+        if new_image:
+            notice.featured_image = new_image
+
+        notice.expiry_date = request.POST.get('expiry_date', '').strip() or None
 
         action = request.POST.get('action', 'draft')
         notice.is_published = (action == 'publish')

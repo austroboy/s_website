@@ -314,7 +314,7 @@
     <!-- Featured Image -->
     {% if notice.featured_image %}
     <div class="notep-featured-image mb-8">
-      <img src="{{ notice.featured_image }}" alt="{{ notice.title }}" class="w-full h-auto">
+      <img src="{{ notice.featured_image.url }}" alt="{{ notice.title }}" class="w-full h-auto">
     </div>
     {% endif %}
 
@@ -375,7 +375,7 @@
     <!-- Attachment -->
     {% if notice.attachment_url %}
     <div class="mb-8">
-      <a href="{{ notice.attachment_url }}" target="_blank" class="notep-attachment-btn">
+      <a href="{{ notice.attachment_url.url }}" target="_blank" class="notep-attachment-btn">
         <i data-lucide="paperclip" class="w-5 h-5"></i>
         Download Attachment
         <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>

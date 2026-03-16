@@ -7,6 +7,19 @@
     <title>{% block title %}{{ request.tenant.name }}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     
+    <!-- Favicon -->
+    {% if request.tenant.assets.favicon %}
+        <link rel="icon" type="image/x-icon" href="{{ request.tenant.assets.favicon.url }}">
+    {% endif %}
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="{% block og_title %}{{ request.tenant.name }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ block.super }}{% endblock %}">
+    {% if request.tenant.assets.og_image %}
+        <meta property="og:image" content="{{ request.tenant.assets.og_image.url }}">
+    {% endif %}
+    <meta property="og:type" content="website">
+    
     <!-- Alpine.js for lightweight interactivity -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Lucide Icons -->

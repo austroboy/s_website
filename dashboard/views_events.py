@@ -104,9 +104,11 @@ def dashboard_event_create(request):
         registration_link = request.POST.get('registration_link', '').strip()
         action = request.POST.get('action', 'draft')
         
-        # Generate slug if not provided
+        # Generate slug if not provided, else slugify provided slug
         if not slug:
             slug = slugify(title)
+        else:
+            slug = slugify(slug)
         
         # Ensure slug is unique
         base_slug = slug
@@ -126,7 +128,7 @@ def dashboard_event_create(request):
             end_date=end_date,
             venue=venue,
             registration_link=registration_link,
-            featured_image=request.POST.get('featured_image', ''),
+            featured_image=request.FILES.get('featured_image'),
             is_published=(action == 'publish'),
             created_at=timezone.now(),
             updated_at=timezone.now(),
@@ -172,7 +174,7 @@ def dashboard_event_edit(request, event_id):
         event.registration_link = request.POST.get('registration_link', event.registration_link).strip()
         
         # Handle slug
-        new_slug = request.POST.get('slug', '').strip()
+        new_slug = slugify(request.POST.get('slug', '').strip())
         if new_slug and new_slug != event.slug:
             base_slug = new_slug
             counter = 1
@@ -189,10 +191,12 @@ def dashboard_event_edit(request, event_id):
             event.is_published = False
         
         # Handle featured image
-        if request.POST.get('remove_image') == 'true':
-            event.featured_image = ''
-        elif request.POST.get('featured_image'):
-            event.featured_image = request.POST.get('featured_image')
+        if request.POST.get('remove_featured_image') == 'true':
+            event.featured_image = None
+        
+        new_image = request.FILES.get('featured_image')
+        if new_image:
+            event.featured_image = new_image
         
         event.updated_at = timezone.now()
         event.save()

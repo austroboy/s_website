@@ -31,7 +31,7 @@
                         <!-- Image Container with SVG Curve -->
                         <div class="relative h-44 overflow-hidden bg-[var(--surface)]">
                             {% if news.featured_image %}
-                                <img src="{{ news.featured_image }}" 
+                                <img src="{{ news.featured_image.url }}" 
                                      alt="{{ news.title }}" 
                                      class="w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-110">
                             {% else %}

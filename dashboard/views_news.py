@@ -78,15 +78,18 @@ def dashboard_news_create(request):
         category = request.POST.get('category', '').strip()
         author_name = request.POST.get('author_name', '').strip() or request.user.get_full_name() or request.user.username
         tags = request.POST.get('tags', '')
-        featured_image = request.POST.get('featured_image', '') # URL from input
+        # Handle featured image from FILES
+        featured_image = request.FILES.get('featured_image')
         action = request.POST.get('action', 'draft')
         
         # Handle tags (comma-separated to list)
         tags_list = [tag.strip() for tag in tags.split(',') if tag.strip()]
         
-        # Generate slug if not provided
+        # Generate slug if not provided, else slugify provided slug
         if not slug:
             slug = slugify(title)
+        else:
+            slug = slugify(slug)
         
         # Ensure slug is unique
         base_slug = slug
@@ -105,7 +108,7 @@ def dashboard_news_create(request):
             category=category,
             author_name=author_name,
             tags=tags_list,
-            featured_image=featured_image,  # Save the URL directly
+            featured_image=featured_image,
             is_published=(action == 'publish'),
             created_at=timezone.now(),
             updated_at=timezone.now(),
@@ -137,7 +140,7 @@ def dashboard_news_edit(request, news_id):
         news.author_name = request.POST.get('author_name', news.author_name).strip()
         
         # Handle slug
-        new_slug = request.POST.get('slug', '').strip()
+        new_slug = slugify(request.POST.get('slug', '').strip())
         if new_slug and new_slug != news.slug:
             base_slug = new_slug
             counter = 1
@@ -151,12 +154,12 @@ def dashboard_news_edit(request, news_id):
         news.tags = [tag.strip() for tag in tags.split(',') if tag.strip()]
         
         # Handle featured image
-        if request.POST.get('remove_image') == 'true':
-            news.featured_image = ''
-        else:
-            new_image = request.POST.get('featured_image', '').strip()
-            if new_image:
-                news.featured_image = new_image
+        if request.POST.get('remove_featured_image') == 'true':
+            news.featured_image = None
+        
+        new_image = request.FILES.get('featured_image')
+        if new_image:
+            news.featured_image = new_image
         
         # Handle publish status
         action = request.POST.get('action', 'draft')

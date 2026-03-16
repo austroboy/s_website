@@ -233,3 +233,32 @@ class AlbumDetailView(DetailView):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        album = self.get_object()
+        
+        # Combine legacy media and local media
+        combined_media = []
+        
+        # Add legacy items (external URLs)
+        if album.media_items:
+            for item in album.media_items:
+                combined_media.append({
+                    'url': item.get('url'),
+                    'type': item.get('type', 'image'),
+                    'caption': item.get('caption', ''),
+                    'is_local': False
+                })
+        
+        # Add local items (AlbumMedia)
+        for media in album.local_media.all().order_by('order', 'created_at'):
+            combined_media.append({
+                'url': media.file.url,
+                'type': media.media_type,
+                'caption': media.caption,
+                'is_local': True
+            })
+            
+        context['combined_media'] = combined_media
+        return context
