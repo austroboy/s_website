@@ -71,7 +71,7 @@
 <!-- ─── Page Header ─── -->
 <div class="fade-up d1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
   <div>
-    <h1 class="font-bold text-content-primary text-3xl leading-tight" style="font-family:'Syne',sans-serif">Visual Language</h1>
+    <h1 class="font-display font-bold text-content-primary text-3xl leading-tight">Visual Language</h1>
     <p class="mt-1.5 text-sm text-content-muted">
       Defined heading &amp; body typefaces for <span class="text-accent font-bold">{{ tenant.name }}</span>
     </p>
@@ -102,11 +102,11 @@
     <div class="p-8">
       <div class="flex items-center justify-between mb-8">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl flex items-center justify-center bg-accent/10 border border-accent/20 shadow-sm">
+          <div class="w-10 h-10 rounded-2xl flex items-center justify-center bg-accent/10 border border-base-700 shadow-sm">
             <i data-lucide="type" class="w-5 h-5 text-accent animate-pulse"></i>
           </div>
           <div>
-             <span class="text-xs font-bold text-content-primary uppercase tracking-widest" style="font-family:'Syne',sans-serif">Type Specimen</span>
+             <span class="text-xs font-bold text-content-primary uppercase tracking-widest">Type Specimen</span>
              <p class="text-[10px] text-content-muted font-medium uppercase tracking-tighter">Real-world usage simulation</p>
           </div>
         </div>
@@ -121,23 +121,23 @@
 
       <!-- Specimen box -->
       <div id="specimen" class="rounded-[32px] p-10 transition-all shadow-inner border border-base-700 bg-base-900">
-        <div class="text-[10px] font-black uppercase tracking-[0.2em] mb-6 opacity-40 ml-1 text-content-muted" style="font-family:'Syne',sans-serif">
+        <div class="text-[10px] font-black uppercase tracking-[0.2em] mb-6 opacity-40 ml-1 text-content-muted">
           Header Tier / {{ font_pair.heading_font }}
         </div>
-        <h1 class="heading-font leading-tight mb-4 text-content-primary"
+        <h1 class="font-display heading-font leading-tight mb-4 text-content-primary"
             style="font-size:3.5rem;font-weight:800;letter-spacing:-0.03em">
           Empowering Minds, Shaping Futures
         </h1>
-        <h2 class="heading-font mb-4 text-content-primary/80" style="font-size:1.75rem;font-weight:700;letter-spacing:-0.02em">
+        <h2 class="font-display heading-font mb-4 text-content-primary/80" style="font-size:1.75rem;font-weight:700;letter-spacing:-0.02em">
           Global Leadership · Artistic Innovation · Logical Rigour
         </h2>
-        <h3 class="heading-font mb-10 text-content-muted" style="font-size:1.25rem;font-weight:600">
+        <h3 class="font-display heading-font mb-10 text-content-muted" style="font-size:1.25rem;font-weight:600">
           Admissions are now open for the 2026/27 Cohort.
         </h3>
         
         <div id="specimen-hr" class="h-px bg-base-700 mb-10 opacity-20"></div>
 
-        <div class="text-[10px] font-black uppercase tracking-[0.2em] mb-5 opacity-40 ml-1 text-content-muted" style="font-family:'Syne',sans-serif">
+        <div class="text-[10px] font-black uppercase tracking-[0.2em] mb-5 opacity-40 ml-1 text-content-muted">
           Content Layer / {{ font_pair.body_font }}
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -233,13 +233,12 @@
     <div class="w-24 h-24 rounded-[32px] flex items-center justify-center mb-6 bg-accent/5 border-2 border-dashed border-accent/20 animate-pulse">
       <i data-lucide="type" class="w-10 h-10 text-accent opacity-30"></i>
     </div>
-    <h2 class="text-2xl font-bold text-content-primary mb-3" style="font-family:'Syne',sans-serif">Typography Not Configured</h2>
+    <h2 class="font-display text-2xl font-bold text-content-primary mb-3">Typography Not Configured</h2>
     <p class="text-sm text-content-muted mb-10 max-w-sm leading-relaxed font-medium">
       Your experience is currently using standard system fonts. Define custom typefaces to build a consistent brand presence.
     </p>
     <a href="{% url 'branding:fonts-create' %}"
-       class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-accent text-accent-contrast text-sm font-bold shadow-glow-accent hover:scale-[1.02] active:scale-[0.98] transition-all"
-       style="font-family:'Syne',sans-serif">
+       class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-accent text-accent-contrast text-sm font-bold shadow-glow-accent hover:scale-[1.02] active:scale-[0.98] transition-all">
       <i data-lucide="plus" class="w-5 h-5"></i>
       Define Font Pair
     </a>
@@ -255,7 +254,7 @@
         <i data-lucide="trash-2" class="w-8 h-8 text-rose-500"></i>
       </div>
       <div>
-        <h2 class="text-xl font-bold text-content-primary" style="font-family:'Syne',sans-serif">Reset Typography?</h2>
+        <h2 class="font-display text-xl font-bold text-content-primary">Reset Typography?</h2>
         <p class="text-sm text-content-muted mt-1 leading-relaxed">System will revert to generic Inter and system-ui fallbacks immediately.</p>
       </div>
     </div>

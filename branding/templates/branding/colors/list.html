@@ -16,7 +16,7 @@
 <!-- ─── Page Header ─── -->
 <div class="fade-up d1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
   <div>
-    <h1 class="font-bold text-content-primary text-2xl leading-tight" style="font-family:'Syne',sans-serif">Color Palette</h1>
+    <h1 class="font-display font-bold text-content-primary text-2xl leading-tight">Color Palette</h1>
     <p class="mt-1 text-sm text-content-muted">
       Token-based theme colors for <span class="text-accent font-bold">{{ tenant.name }}</span>
     </p>
@@ -50,7 +50,7 @@
         <div class="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
           <i data-lucide="eye" class="w-4 h-4 text-cyan-500"></i>
         </div>
-        <span class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Live Theme Preview</span>
+        <span class="text-sm font-bold text-content-primary">Live Theme Preview</span>
       </div>
       <span class="text-xs px-2.5 py-1 rounded-lg font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
         Active
@@ -62,7 +62,7 @@
            style="background:{{ palette.secondary }}; color:{{ palette.footer_text }}">
         <div class="flex items-center gap-2">
           <div class="w-6 h-6 rounded-lg shadow-sm" style="background:{{ palette.primary }}"></div>
-          <span class="text-xs font-bold" style="font-family:'Syne',sans-serif">{{ tenant.name }}</span>
+          <span class="text-xs font-bold">{{ tenant.name }}</span>
         </div>
         <div class="flex items-center gap-4">
           <span class="text-[10px] font-bold uppercase tracking-wider opacity-60">About</span>
@@ -79,7 +79,7 @@
             <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
             Global Education Standards
           </div>
-          <h3 class="text-xl font-bold text-white mb-1.5 leading-tight" style="font-family:'Syne',sans-serif">Excellence in Learning</h3>
+          <h3 class="font-display text-xl font-bold text-white mb-1.5 leading-tight">Excellence in Learning</h3>
           <p class="text-[11px] mb-4 max-w-[200px] leading-relaxed text-white/70">Empowering student success through innovative teaching and strong academic programs.</p>
           <div class="flex gap-2.5">
             <button class="text-[10px] px-4 py-2 rounded-xl font-bold text-white shadow-lg"
@@ -89,7 +89,7 @@
         </div>
         <div class="hidden sm:block w-32 rounded-2xl p-4 shadow-2xl backdrop-blur-md"
              style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)">
-          <div class="text-xl font-bold text-white leading-none mb-1" style="font-family:'Syne',sans-serif">98%</div>
+          <div class="text-xl font-bold text-white leading-none mb-1">98%</div>
           <div class="text-[10px] font-bold uppercase tracking-widest text-white/50">Success Rate</div>
           <div class="mt-3 w-full bg-white/10 rounded-full h-1">
              <div class="h-full rounded-full" style="background:{{ palette.accent }};width:98%"></div>
@@ -113,7 +113,7 @@
     <!-- Primary -->
     <div class="rounded-2xl overflow-hidden bg-base-800 border border-base-700 shadow-card">
       <div class="px-5 py-4 border-b border-base-700 bg-base-900/30">
-        <p class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Primary Brand</p>
+        <p class="text-sm font-bold text-content-primary">Primary Brand</p>
       </div>
       <div class="p-5 space-y-3.5">
         {% include "branding/components/color_token_row.html" with label="Primary" key="primary" value=palette.primary %}
@@ -126,7 +126,7 @@
     <!-- Secondary & Accent -->
     <div class="rounded-2xl overflow-hidden bg-base-800 border border-base-700 shadow-card">
       <div class="px-5 py-4 border-b border-base-700 bg-base-900/30">
-        <p class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Secondary & Accent</p>
+        <p class="text-sm font-bold text-content-primary">Secondary & Accent</p>
       </div>
       <div class="p-5 space-y-3.5">
         {% include "branding/components/color_token_row.html" with label="Secondary" key="secondary" value=palette.secondary %}
@@ -138,7 +138,7 @@
     <!-- Surfaces -->
     <div class="rounded-2xl overflow-hidden bg-base-800 border border-base-700 shadow-card">
       <div class="px-5 py-4 border-b border-base-700 bg-base-900/30">
-        <p class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Surfaces & Layout</p>
+        <p class="text-sm font-bold text-content-primary">Surfaces & Layout</p>
       </div>
       <div class="p-5 space-y-3.5">
         {% include "branding/components/color_token_row.html" with label="Surface" key="surface" value=palette.surface %}
@@ -150,7 +150,7 @@
     <!-- Typography -->
     <div class="rounded-2xl overflow-hidden bg-base-800 border border-base-700 shadow-card">
       <div class="px-5 py-4 border-b border-base-700 bg-base-900/30">
-        <p class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Typography</p>
+        <p class="text-sm font-bold text-content-primary">Typography</p>
       </div>
       <div class="p-5 space-y-3.5">
         {% include "branding/components/color_token_row.html" with label="Body Text" key="text" value=palette.text %}
@@ -161,7 +161,7 @@
     <!-- Footer -->
     <div class="rounded-2xl overflow-hidden bg-base-800 border border-base-700 shadow-card">
       <div class="px-5 py-4 border-b border-base-700 bg-base-900/30">
-        <p class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Footer</p>
+        <p class="text-sm font-bold text-content-primary">Footer</p>
       </div>
       <div class="p-5 space-y-3.5">
         {% include "branding/components/color_token_row.html" with label="Footer Background" key="footer_bg" value=palette.footer_bg %}
@@ -172,7 +172,7 @@
     <!-- Status -->
     <div class="rounded-2xl overflow-hidden bg-base-800 border border-base-700 shadow-card">
       <div class="px-5 py-4 border-b border-base-700 bg-base-900/30">
-        <p class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Semantic / Status</p>
+        <p class="text-sm font-bold text-content-primary">Semantic / Status</p>
       </div>
       <div class="p-5 space-y-3.5">
         {% include "branding/components/color_token_row.html" with label="Success" key="success" value=palette.success %}
@@ -185,7 +185,7 @@
     {% if palette.dark_primary or palette.dark_surface or palette.dark_text %}
     <div class="rounded-2xl overflow-hidden bg-base-800 border border-base-700 shadow-card lg:col-span-3">
       <div class="px-5 py-4 border-b border-base-700 bg-base-900/30">
-        <p class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Dark Mode Overrides</p>
+        <p class="text-sm font-bold text-content-primary">Dark Mode Overrides</p>
       </div>
       <div class="p-5 grid grid-cols-1 md:grid-cols-3 gap-6">
         {% if palette.dark_primary %}{% include "branding/components/color_token_row.html" with label="Dark Primary" key="dark_primary" value=palette.dark_primary %}{% endif %}
@@ -218,13 +218,12 @@
       <div class="absolute inset-0 bg-accent/5 rounded-3xl blur-xl animate-pulse"></div>
       <i data-lucide="palette" class="w-9 h-9 text-accent relative z-10"></i>
     </div>
-    <h2 class="text-2xl font-bold text-content-primary mb-3" style="font-family:'Syne',sans-serif">No Color Palette Configured</h2>
+    <h2 class="font-display text-2xl font-bold text-content-primary mb-3">No Color Palette Configured</h2>
     <p class="text-sm mb-9 max-w-sm leading-relaxed text-content-muted">
       Your school's public website is currently using the system default colors. Set up a custom palette to perfectly match your brand identity.
     </p>
     <a href="{% url 'branding:colors-create' %}"
-       class="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold bg-accent text-accent-contrast shadow-glow-accent hover:scale-[1.02] active:scale-[0.98] transition-all"
-       style="font-family:'Syne',sans-serif">
+       class="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl text-sm font-bold bg-accent text-accent-contrast shadow-glow-accent hover:scale-[1.02] active:scale-[0.98] transition-all">
       <i data-lucide="plus" class="w-4 h-4"></i>
       Create Color Palette
     </a>
@@ -240,7 +239,7 @@
         <i data-lucide="trash-2" class="w-6 h-6 text-rose-500"></i>
       </div>
       <div>
-        <h3 class="font-bold text-content-primary text-lg" style="font-family:'Syne',sans-serif">Delete Color Palette</h3>
+        <h3 class="font-display font-bold text-content-primary text-lg">Delete Color Palette</h3>
         <p class="text-xs text-content-muted font-medium">This action cannot be undone</p>
       </div>
     </div>

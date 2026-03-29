@@ -88,7 +88,7 @@
 <!-- ─── Page Header ─── -->
 <div class="fade-up d1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
   <div>
-    <h1 class="font-bold text-content-primary text-2xl leading-tight" style="font-family:'Syne',sans-serif">
+    <h1 class="font-display font-bold text-content-primary text-2xl leading-tight">
       {% if form.instance.pk %}Update Color Palette{% else %}Create Color Palette{% endif %}
     </h1>
     <p class="mt-1 text-sm text-content-muted">
@@ -126,7 +126,7 @@
             <i data-lucide="droplets" class="w-4 h-4 text-blue-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Primary Brand</h3>
+            <h3 class="font-display text-sm font-bold text-content-primary">Primary Brand</h3>
             <p class="text-[11px] text-content-muted">Main brand identity colours for core UI elements</p>
           </div>
         </div>
@@ -156,7 +156,7 @@
             <i data-lucide="sparkles" class="w-4 h-4 text-cyan-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Secondary & Accent</h3>
+            <h3 class="font-display text-sm font-bold text-content-primary">Secondary & Accent</h3>
             <p class="text-[11px] text-content-muted">Deep tones for layout structure and highlights</p>
           </div>
         </div>
@@ -174,7 +174,7 @@
             <i data-lucide="layout-template" class="w-4 h-4 text-indigo-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Surfaces & Layout</h3>
+            <h3 class="font-display text-sm font-bold text-content-primary">Surfaces & Layout</h3>
             <p class="text-[11px] text-content-muted">Theme backgrounds and structural borders</p>
           </div>
         </div>
@@ -192,7 +192,7 @@
             <i data-lucide="type" class="w-4 h-4 text-amber-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Typography</h3>
+            <h3 class="font-display text-sm font-bold text-content-primary">Typography</h3>
             <p class="text-[11px] text-content-muted">Text readability and hierarchy tokens</p>
           </div>
         </div>
@@ -209,7 +209,7 @@
             <i data-lucide="rows" class="w-4 h-4 text-slate-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Footer</h3>
+            <h3 class="font-display text-sm font-bold text-content-primary">Footer</h3>
             <p class="text-[11px] text-content-muted">Custom colours specifically for the footer region</p>
           </div>
         </div>
@@ -226,7 +226,7 @@
             <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Functional States</h3>
+            <h3 class="font-display text-sm font-bold text-content-primary">Functional States</h3>
             <p class="text-[11px] text-content-muted">Semantic colours for system feedback</p>
           </div>
         </div>
@@ -244,7 +244,7 @@
             <i data-lucide="moon" class="w-4 h-4 text-purple-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Dark Theme Overrides</h3>
+            <h3 class="font-display text-sm font-bold text-content-primary">Dark Theme Overrides</h3>
             <p class="text-[11px] text-content-muted">Specific refinements for deep theme mode</p>
           </div>
           <span class="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">Optional</span>
@@ -279,7 +279,7 @@
       <div class="px-5 py-4 border-b border-base-700 bg-base-900/30 flex items-center justify-between">
          <div class="flex items-center gap-2">
             <i data-lucide="eye" class="w-4 h-4 text-cyan-500"></i>
-            <span class="text-xs font-bold text-content-primary uppercase tracking-wider" style="font-family:'Syne',sans-serif">Live Simulator</span>
+            <span class="text-xs font-bold text-content-primary uppercase tracking-wider">Live Simulator</span>
          </div>
          <div class="flex items-center" id="theme-toggle-sim">
             <button onclick="setSimTheme('light')" id="sim-light-btn" class="p-1 px-2 rounded-l-lg bg-accent text-accent-contrast border border-accent/20 text-[9px] font-bold">LIGHT</button>
@@ -293,7 +293,7 @@
           <div id="mp-nav" class="flex items-center justify-between px-3 py-2.5">
             <div class="flex items-center gap-2">
               <div id="mp-logo" class="w-5 h-5 rounded-md shadow-sm"></div>
-              <span class="text-[10px] font-bold text-content-primary" id="mp-tenant-name" style="font-family:'Syne',sans-serif">{{ tenant.name|truncatechars:10 }}</span>
+              <span class="text-[10px] font-bold text-content-primary" id="mp-tenant-name">{{ tenant.name|truncatechars:10 }}</span>
             </div>
             <button id="mp-cta" class="text-[9px] px-2.5 py-1 rounded-md font-bold shadow-sm">APPLY</button>
           </div>
@@ -303,7 +303,7 @@
               <div id="mp-tag" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[8px] font-bold mb-2">
                 <span class="w-1 h-1 rounded-full bg-white opacity-80 animate-pulse"></span>OPEN ENROLMENT
               </div>
-              <h4 class="text-[13px] font-bold text-content-primary mb-1.5 leading-tight" style="font-family:'Syne',sans-serif">Future Starts Here</h4>
+              <h4 class="font-display text-[13px] font-bold text-content-primary mb-1.5 leading-tight">Future Starts Here</h4>
               <p class="text-[9px] opacity-70 mb-3 max-w-[120px]" id="mp-hero-text">Leading school excellence since 1974.</p>
               <div class="flex gap-1.5">
                 <button id="mp-pb" class="text-[9px] px-3 py-1.5 rounded-lg font-bold shadow-md transform active:scale-95 transition-all">Apply Now</button>

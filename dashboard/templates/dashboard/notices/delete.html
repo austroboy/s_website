@@ -19,7 +19,7 @@
       <p class="text-content-secondary mb-4">Are you sure you want to delete the following notice?</p>
 
       <div class="bg-base-900 border border-base-700 rounded-xl p-4 mb-6">
-        <h3 class="text-content-primary font-medium mb-1">{{ notice.title }}</h3>
+        <h3 class="font-display text-content-primary font-medium mb-1">{{ notice.title }}</h3>
         <p class="text-sm text-content-muted">{{ notice.created_at|date:"M d, Y" }}</p>
         {% if notice.expiry_date %}
         <p class="text-xs text-content-muted mt-1">Expires: {{ notice.expiry_date|date:"M d, Y" }}</p>

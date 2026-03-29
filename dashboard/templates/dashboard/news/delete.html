@@ -21,7 +21,7 @@
       </p>
       
       <div class="bg-base-900 border border-base-700 rounded-xl p-4 mb-6">
-        <h3 class="text-content-primary font-medium mb-1">{{ news.title }}</h3>
+        <h3 class="font-display text-content-primary font-medium mb-1">{{ news.title }}</h3>
         <p class="text-sm text-content-muted">{{ news.created_at|date:"M d, Y" }} • {{ news.author_name|default:"Unknown" }}</p>
         {% if news.category %}
         <span class="inline-block mt-2 px-2 py-1 rounded-lg bg-purple-500/10 text-purple-400 text-xs border border-purple-500/20">
