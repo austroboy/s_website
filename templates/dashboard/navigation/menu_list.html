@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="mb-6">
-  <h1 class="text-2xl font-display font-bold text-white">Menus</h1>
+  <h1 class="text-2xl font-display font-bold text-content-primary">Menus</h1>
 </div>
 
 <form method="post" class="mb-6 bg-base-800 p-6 rounded-2xl border border-base-700">
@@ -12,8 +12,8 @@
 
   <div class="grid grid-cols-2 gap-4">
     <input type="text" name="name" placeholder="Menu Name"
-      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
-    <select name="slug" class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
+    <select name="slug" class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
       <option value="header">Header</option>
       <option value="footer">Footer</option>
     </select>
@@ -28,8 +28,8 @@
   {% for menu in menus %}
   <div class="bg-base-800 border border-base-700 p-4 rounded-xl flex justify-between">
     <div>
-      <p class="text-white font-semibold">{{ menu.name }}</p>
-      <p class="text-xs text-slate-muted">{{ menu.slug }}</p>
+      <p class="text-content-primary font-semibold">{{ menu.name }}</p>
+      <p class="text-xs text-content-muted">{{ menu.slug }}</p>
     </div>
 
     <a href="{% url 'navigation:menu_item_manager' menu.id %}"

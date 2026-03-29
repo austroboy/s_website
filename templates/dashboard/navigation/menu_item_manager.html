@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1 class="text-2xl font-display font-bold text-white mb-6">
+<h1 class="text-2xl font-display font-bold text-content-primary mb-6">
   Manage Items — {{ menu.name }}
 </h1>
 
@@ -14,7 +14,7 @@
 
     <!-- Parent -->
     <select name="parent"
-      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
       <option value="">Top Level</option>
       {% for item in items %}
         {% if not item.parent %}
@@ -25,7 +25,7 @@
 
     <!-- Page -->
     <select name="page"
-      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
       <option value="">No Page</option>
       {% for page in pages %}
       <option value="{{ page.id }}">{{ page.title }}</option>
@@ -33,21 +33,21 @@
     </select>
 
     <input type="text" name="title" placeholder="Title"
-      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
     <input type="text" name="url" placeholder="URL"
-      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
     <input type="number" name="order" placeholder="Order"
-      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+      class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
   </div>
 
   <div class="flex gap-4 mt-4">
-    <label class="text-sm text-slate-soft">
+    <label class="text-sm text-content-secondary">
       <input type="checkbox" name="target_blank"> Open in new tab
     </label>
-    <label class="text-sm text-slate-soft">
+    <label class="text-sm text-content-secondary">
       <input type="checkbox" name="is_active" checked> Active
     </label>
   </div>
@@ -63,11 +63,11 @@
   <div class="bg-base-800 border border-base-700 p-4 rounded-xl">
     <div class="flex justify-between">
       <div>
-        <p class="text-white font-semibold">
+        <p class="text-content-primary font-semibold">
           {% if item.parent %}— {% endif %}
           {{ item.title }}
         </p>
-        <p class="text-xs text-slate-muted">
+        <p class="text-xs text-content-muted">
           {{ item.url }} {% if item.page %}(Page: {{ item.page.title }}){% endif %}
         </p>
       </div>
@@ -91,65 +91,65 @@
       </svg>
     </div>
     <div>
-      <h2 class="text-xl font-display font-bold text-white">Suggested Built-in Routes</h2>
-      <p class="text-sm text-slate-muted">Copy these URLs into the "URL" field above to link to system pages.</p>
+      <h2 class="text-xl font-display font-bold text-content-primary">Suggested Built-in Routes</h2>
+      <p class="text-sm text-content-muted">Copy these URLs into the "URL" field above to link to system pages.</p>
     </div>
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">Home</p>
-      <p class="text-white/40 text-xs font-mono select-all">/</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/</p>
     </div>
 
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">Contact Us</p>
-      <p class="text-white/40 text-xs font-mono select-all">/contact</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/contact</p>
     </div>
 
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">Admission Inquire</p>
-      <p class="text-white/40 text-xs font-mono select-all">/contact/admissions</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/contact/admissions</p>
     </div>
 
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">Academics</p>
-      <p class="text-white/40 text-xs font-mono select-all">/academics</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/academics</p>
     </div>
 
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">Documents</p>
-      <p class="text-white/40 text-xs font-mono select-all">/documents</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/documents</p>
     </div>
 
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">Admissions</p>
-      <p class="text-white/40 text-xs font-mono select-all">/admissions</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/admissions</p>
     </div>
 
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">Teacher & Staff</p>
-      <p class="text-white/40 text-xs font-mono select-all">/staff</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/staff</p>
     </div>
 
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">Achievements</p>
-      <p class="text-white/40 text-xs font-mono select-all">/achievements</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/achievements</p>
     </div>
 
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">News</p>
-      <p class="text-white/40 text-xs font-mono select-all">/news</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/news</p>
     </div>
 
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">Events</p>
-      <p class="text-white/40 text-xs font-mono select-all">/events</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/events</p>
     </div>
 
     <div class="bg-base-900/50 border border-base-700/50 p-4 rounded-2xl">
       <p class="text-gold font-bold text-sm mb-1">Notices</p>
-      <p class="text-white/40 text-xs font-mono select-all">/notices</p>
+      <p class="text-content-primary/40 text-xs font-mono select-all">/notices</p>
     </div>
   </div>
 </div>

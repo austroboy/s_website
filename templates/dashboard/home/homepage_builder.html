@@ -4,27 +4,27 @@
 {% block title %}Homepage Builder — {{ tenant.name|default:"SchoolOS" }}{% endblock %}
 
 {% block breadcrumb %}
-<span class="text-slate-muted">Dashboard</span>
+<span class="text-content-muted">Dashboard</span>
 <i data-lucide="chevron-right" class="w-3 h-3 text-base-500 flex-shrink-0"></i>
-<span class="text-slate-muted">Settings</span>
+<span class="text-content-muted">Settings</span>
 <i data-lucide="chevron-right" class="w-3 h-3 text-base-500 flex-shrink-0"></i>
-<span class="text-white font-medium">Homepage Builder</span>
+<span class="text-content-primary font-medium">Homepage Builder</span>
 {% endblock %}
 
 {% block extra_head %}
 <style>
   .section-row {
-    background: #1C2026;
-    border: 1px solid #232830;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-main);
     border-radius: 14px;
     transition: border-color .2s, box-shadow .2s, transform .15s;
   }
-  .section-row:hover { border-color: #2C343D; box-shadow: 0 4px 16px rgba(0,0,0,.25); }
-  .section-row.editing { border-color: rgba(240,165,0,.4); box-shadow: 0 0 0 1px rgba(240,165,0,.15); }
+  .section-row:hover { border-color: var(--border-subtle); box-shadow: 0 4px 16px var(--shadow-color); }
+  .section-row.editing { border-color: var(--accent-border); box-shadow: 0 0 0 1px var(--accent-glow); }
 
   .toggle-track {
     width: 34px; height: 18px; border-radius: 999px;
-    background: #2C343D; cursor: pointer; position: relative;
+    background: var(--border-subtle); cursor: pointer; position: relative;
     transition: background .2s; flex-shrink: 0;
   }
   .toggle-track.on { background: #10B981; }
@@ -36,21 +36,21 @@
   .toggle-track.on .toggle-thumb { left: 19px; }
 
   .form-panel {
-    background: #1C2026; border: 1px solid rgba(240,165,0,.25);
+    background: var(--bg-elevated); border: 1px solid var(--accent-border);
     border-radius: 16px; overflow: hidden;
     display: none;
   }
   .form-panel.open { display: block; }
 
   .form-input {
-    width: 100%; background: #16191D; border: 1px solid #2C343D;
-    border-radius: 10px; color: #E2E8F0; font-size: .875rem;
+    width: 100%; background: var(--bg-surface); border: 1px solid var(--border-subtle);
+    border-radius: 10px; color: var(--text-primary); font-size: .875rem;
     padding: 9px 12px; outline: none;
     transition: border-color .15s;
     font-family: 'DM Sans', sans-serif;
   }
-  .form-input:focus { border-color: rgba(240,165,0,.5); }
-  .form-input::placeholder { color: #3D4752; }
+  .form-input:focus { border-color: var(--accent); }
+  .form-input::placeholder { color: var(--text-muted); }
 
   .config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   @media(max-width: 640px){ .config-row { grid-template-columns: 1fr; } }
@@ -101,8 +101,8 @@
 {#  PAGE HEADER #}
 <div class="fade-up delay-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
   <div>
-    <h1 class="font-display text-2xl font-bold text-white leading-tight">Homepage Builder</h1>
-    <p class="mt-0.5 text-sm text-slate-muted">
+    <h1 class="font-display text-2xl font-bold text-content-primary leading-tight">Homepage Builder</h1>
+    <p class="mt-0.5 text-sm text-content-muted">
       Manage sections for
       <span class="text-gold font-medium">{{ tenant.name|default:"Global Tech Academy" }}</span>
     </p>
@@ -122,9 +122,9 @@
     <div class="w-8 h-8 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center">
       <i data-lucide="layout-template" class="w-4 h-4 text-gold"></i>
     </div>
-    <p class="text-sm font-semibold text-white flex-1" id="form-title">Add Section</p>
+    <p class="text-sm font-semibold text-content-primary flex-1" id="form-title">Add Section</p>
     <button type="button" onclick="closeForm()"
-      class="p-1.5 rounded-lg text-slate-muted hover:text-white hover:bg-base-700 transition-colors">
+      class="p-1.5 rounded-lg text-content-muted hover:text-content-primary hover:bg-base-700 transition-colors">
       <i data-lucide="x" class="w-4 h-4"></i>
     </button>
   </div>
@@ -139,7 +139,7 @@
 
       {# Section type #}
       <div>
-        <label class="block text-xs font-semibold text-slate-muted uppercase tracking-wider mb-1.5">Section Type</label>
+        <label class="block text-xs font-semibold text-content-muted uppercase tracking-wider mb-1.5">Section Type</label>
         <select name="section_type" id="f-section-type" class="form-input" onchange="toggleConfigFields()">
           {% for value, label in section_types %}
           <option value="{{ value }}">{{ label }}</option>
@@ -149,19 +149,19 @@
 
       {# Order #}
       <div>
-        <label class="block text-xs font-semibold text-slate-muted uppercase tracking-wider mb-1.5">Display Order</label>
+        <label class="block text-xs font-semibold text-content-muted uppercase tracking-wider mb-1.5">Display Order</label>
         <input type="number" name="order" id="f-order" class="form-input" value="{{ sections.count|add:1 }}" min="0">
       </div>
 
       {# Title #}
       <div class="sm:col-span-2">
-        <label class="block text-xs font-semibold text-slate-muted uppercase tracking-wider mb-1.5">Title <span class="text-base-500 normal-case font-normal">(optional)</span></label>
+        <label class="block text-xs font-semibold text-content-muted uppercase tracking-wider mb-1.5">Title <span class="text-base-500 normal-case font-normal">(optional)</span></label>
         <input type="text" name="title" id="f-title" class="form-input" placeholder="e.g. Welcome to our School">
       </div>
 
       {# Subtitle #}
       <div class="sm:col-span-2">
-        <label class="block text-xs font-semibold text-slate-muted uppercase tracking-wider mb-1.5">Subtitle <span class="text-base-500 normal-case font-normal">(optional)</span></label>
+        <label class="block text-xs font-semibold text-content-muted uppercase tracking-wider mb-1.5">Subtitle <span class="text-base-500 normal-case font-normal">(optional)</span></label>
         <input type="text" name="subtitle" id="f-subtitle" class="form-input" placeholder="e.g. Discover your potential here">
       </div>
 
@@ -171,63 +171,63 @@
     <div id="config-fields" class="space-y-4 mb-5">
       {# Hero config #}
       <div id="cfg-hero" class="hidden bg-base-900 border border-base-700 rounded-xl p-4 space-y-3">
-        <p class="text-xs font-semibold text-slate-muted uppercase tracking-wider flex items-center gap-1.5">
+        <p class="text-xs font-semibold text-content-muted uppercase tracking-wider flex items-center gap-1.5">
           <i data-lucide="settings-2" class="w-3 h-3"></i> Hero Config
         </p>
         <div class="config-row">
           <div>
-            <label class="block text-xs text-slate-muted mb-1">CTA Primary Text</label>
+            <label class="block text-xs text-content-muted mb-1">CTA Primary Text</label>
             <input type="text" name="cfg_cta_primary_text" class="form-input" placeholder="Apply Now">
           </div>
           <div>
-            <label class="block text-xs text-slate-muted mb-1">CTA Primary Link</label>
+            <label class="block text-xs text-content-muted mb-1">CTA Primary Link</label>
             <input type="text" name="cfg_cta_primary_link" class="form-input" placeholder="/admissions/">
           </div>
           <div>
-            <label class="block text-xs text-slate-muted mb-1">CTA Secondary Text</label>
+            <label class="block text-xs text-content-muted mb-1">CTA Secondary Text</label>
             <input type="text" name="cfg_cta_secondary_text" class="form-input" placeholder="Learn More">
           </div>
           <div>
-            <label class="block text-xs text-slate-muted mb-1">CTA Secondary Link</label>
+            <label class="block text-xs text-content-muted mb-1">CTA Secondary Link</label>
             <input type="text" name="cfg_cta_secondary_link" class="form-input" placeholder="/about/">
           </div>
           <div class="col-span-2">
-            <label class="block text-xs text-slate-muted mb-1">Background Image URLs (up to 4 — used as slideshow)</label>
+            <label class="block text-xs text-content-muted mb-1">Background Image URLs (up to 4 — used as slideshow)</label>
             <div class="space-y-2">
               <input type="text" name="cfg_bg_image_1" id="f-bg-img-1" class="form-input" placeholder="Image 1 URL: https://...">
               <input type="text" name="cfg_bg_image_2" id="f-bg-img-2" class="form-input" placeholder="Image 2 URL: https://...">
               <input type="text" name="cfg_bg_image_3" id="f-bg-img-3" class="form-input" placeholder="Image 3 URL: https://...">
               <input type="text" name="cfg_bg_image_4" id="f-bg-img-4" class="form-input" placeholder="Image 4 URL: https://...">
             </div>
-            <p class="mt-1.5 text-xs text-slate-muted">Enter 1–4 image URLs. If multiple are set, the hero will cycle through them.</p>
+            <p class="mt-1.5 text-xs text-content-muted">Enter 1–4 image URLs. If multiple are set, the hero will cycle through them.</p>
           </div>
         </div>
       </div>
 
       {# Stats config #}
       <div id="cfg-stats" class="hidden bg-base-900 border border-base-700 rounded-xl p-4 space-y-3">
-        <p class="text-xs font-semibold text-slate-muted uppercase tracking-wider flex items-center gap-1.5">
+        <p class="text-xs font-semibold text-content-muted uppercase tracking-wider flex items-center gap-1.5">
           <i data-lucide="settings-2" class="w-3 h-3"></i> Statistics Config
         </p>
         <div class="config-row">
           <div>
-            <label class="block text-xs text-slate-muted mb-1">Students Count</label>
+            <label class="block text-xs text-content-muted mb-1">Students Count</label>
             <input type="number" name="cfg_students" class="form-input" placeholder="2500">
           </div>
           <div>
-            <label class="block text-xs text-slate-muted mb-1">Teachers Count</label>
+            <label class="block text-xs text-content-muted mb-1">Teachers Count</label>
             <input type="number" name="cfg_teachers" class="form-input" placeholder="200">
           </div>
           <div>
-            <label class="block text-xs text-slate-muted mb-1">Programs Count</label>
+            <label class="block text-xs text-content-muted mb-1">Programs Count</label>
             <input type="number" name="cfg_programs" class="form-input" placeholder="45">
           </div>
           <div>
-            <label class="block text-xs text-slate-muted mb-1">Years of Excellence</label>
+            <label class="block text-xs text-content-muted mb-1">Years of Excellence</label>
             <input type="number" name="cfg_years" class="form-input" placeholder="50">
           </div>
           <div class="col-span-2">
-            <label class="block text-xs text-slate-muted mb-1">Background Image URL</label>
+            <label class="block text-xs text-content-muted mb-1">Background Image URL</label>
             <input type="text" name="cfg_stats_bg_image" id="f-stats-bg-img" class="form-input" placeholder="https://...">
           </div>
         </div>
@@ -235,24 +235,24 @@
 
       {# CTA config #}
       <div id="cfg-cta" class="hidden bg-base-900 border border-base-700 rounded-xl p-4 space-y-3">
-        <p class="text-xs font-semibold text-slate-muted uppercase tracking-wider flex items-center gap-1.5">
+        <p class="text-xs font-semibold text-content-muted uppercase tracking-wider flex items-center gap-1.5">
           <i data-lucide="settings-2" class="w-3 h-3"></i> CTA Config
         </p>
         <div class="config-row">
           <div>
-            <label class="block text-xs text-slate-muted mb-1">Primary Button Text</label>
+            <label class="block text-xs text-content-muted mb-1">Primary Button Text</label>
             <input type="text" name="cfg_primary_text" class="form-input" placeholder="Get Started">
           </div>
           <div>
-            <label class="block text-xs text-slate-muted mb-1">Primary Button Link</label>
+            <label class="block text-xs text-content-muted mb-1">Primary Button Link</label>
             <input type="text" name="cfg_primary_link" class="form-input" placeholder="/admissions/apply/">
           </div>
           <div>
-            <label class="block text-xs text-slate-muted mb-1">Secondary Button Text</label>
+            <label class="block text-xs text-content-muted mb-1">Secondary Button Text</label>
             <input type="text" name="cfg_secondary_text" class="form-input" placeholder="Contact Us">
           </div>
           <div>
-            <label class="block text-xs text-slate-muted mb-1">Secondary Button Link</label>
+            <label class="block text-xs text-content-muted mb-1">Secondary Button Link</label>
             <input type="text" name="cfg_secondary_link" class="form-input" placeholder="/contact/">
           </div>
         </div>
@@ -265,8 +265,8 @@
       <div class="toggle-track on" id="f-toggle" onclick="toggleActive()">
         <div class="toggle-thumb"></div>
       </div>
-      <label for="f-is-active" class="text-sm text-slate-soft cursor-pointer" onclick="toggleActive()">
-        Section is <span id="f-toggle-label" class="text-white font-medium">Active</span>
+      <label for="f-is-active" class="text-sm text-content-secondary cursor-pointer" onclick="toggleActive()">
+        Section is <span id="f-toggle-label" class="text-content-primary font-medium">Active</span>
       </label>
     </div>
 
@@ -278,7 +278,7 @@
         <span id="form-submit-label">Save Section</span>
       </button>
       <button type="button" onclick="closeForm()"
-        class="px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted text-sm font-semibold hover:text-white hover:border-base-500 transition-colors">
+        class="px-5 py-2.5 rounded-xl border border-base-600 text-content-muted text-sm font-semibold hover:text-content-primary hover:border-base-500 transition-colors">
         Cancel
       </button>
     </div>
@@ -298,13 +298,13 @@
 
       {# Section type icon #}
       <div class="w-8 h-8 rounded-xl bg-base-700 border border-base-600 flex items-center justify-center flex-shrink-0">
-        <i data-lucide="{{ section.section_type }}" class="w-4 h-4 text-slate-muted"></i>
+        <i data-lucide="{{ section.section_type }}" class="w-4 h-4 text-content-muted"></i>
       </div>
 
       {# Info #}
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2 flex-wrap">
-          <p class="text-sm font-semibold text-white truncate">
+          <p class="text-sm font-semibold text-content-primary truncate">
             {{ section.title|default:section.get_section_type_display }}
           </p>
           <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full border badge-{{ section.section_type }}">
@@ -315,7 +315,7 @@
           </span>
         </div>
         {% if section.subtitle %}
-        <p class="text-xs text-slate-muted truncate mt-0.5">{{ section.subtitle }}</p>
+        <p class="text-xs text-content-muted truncate mt-0.5">{{ section.subtitle }}</p>
         {% endif %}
       </div>
 
@@ -332,13 +332,13 @@
       <div class="flex items-center gap-1.5 flex-shrink-0">
         <button type="button"
           onclick="openEdit({{ section.id }}, '{{ section.section_type }}', {{ section.order }}, `{{ section.title|escapejs }}`, `{{ section.subtitle|escapejs }}`, {{ section.is_active|yesno:'true,false' }}, {{ section.config|safe }})"
-          class="p-2 rounded-lg text-slate-muted hover:text-gold hover:bg-gold/10 transition-colors"
+          class="p-2 rounded-lg text-content-muted hover:text-gold hover:bg-gold/10 transition-colors"
           title="Edit">
           <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
         </button>
         <button type="button"
           onclick="confirmDelete({{ section.id }}, '{{ section.get_section_type_display|escapejs }}')"
-          class="p-2 rounded-lg text-slate-muted hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+          class="p-2 rounded-lg text-content-muted hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
           title="Delete">
           <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
         </button>
@@ -355,8 +355,8 @@
   <div class="w-14 h-14 rounded-2xl bg-base-700 border border-base-600 flex items-center justify-center mb-4">
     <i data-lucide="layout-template" class="w-7 h-7 text-base-500"></i>
   </div>
-  <p class="font-display font-semibold text-white mb-1">No sections yet</p>
-  <p class="text-sm text-slate-muted mb-5">Add your first section to start building your homepage.</p>
+  <p class="font-display font-semibold text-content-primary mb-1">No sections yet</p>
+  <p class="text-sm text-content-muted mb-5">Add your first section to start building your homepage.</p>
   <button type="button" onclick="openForm()"
     class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold text-base-900 text-sm font-bold hover:bg-gold-light transition-colors shadow-glow-gold">
     <i data-lucide="plus" class="w-4 h-4"></i>
@@ -374,23 +374,23 @@
         <i data-lucide="trash-2" class="w-5 h-5 text-rose-400"></i>
       </div>
       <div>
-        <p class="text-white font-semibold">Delete Section</p>
-        <p class="text-xs text-slate-muted">This cannot be undone.</p>
+        <p class="text-content-primary font-semibold">Delete Section</p>
+        <p class="text-xs text-content-muted">This cannot be undone.</p>
       </div>
     </div>
-    <p class="text-sm text-slate-muted mb-6">
-      Delete the <span class="text-white font-medium" id="delete-section-name"></span> section?
+    <p class="text-sm text-content-muted mb-6">
+      Delete the <span class="text-content-primary font-medium" id="delete-section-name"></span> section?
     </p>
     <div class="flex gap-3">
       <button type="button" onclick="closeDeleteModal()"
-        class="flex-1 px-4 py-2.5 rounded-xl border border-base-600 text-slate-muted text-sm font-semibold hover:text-white transition-colors">
+        class="flex-1 px-4 py-2.5 rounded-xl border border-base-600 text-content-muted text-sm font-semibold hover:text-content-primary transition-colors">
         Cancel
       </button>
       <form method="post" id="delete-form" class="flex-1">
         {% csrf_token %}
         <input type="hidden" name="action" value="delete">
         <button type="submit"
-          class="w-full px-4 py-2.5 rounded-xl bg-rose-500 text-white text-sm font-bold hover:bg-rose-400 transition-colors">
+          class="w-full px-4 py-2.5 rounded-xl bg-rose-500 text-content-primary text-sm font-bold hover:bg-rose-400 transition-colors">
           Delete
         </button>
       </form>
@@ -402,7 +402,7 @@
 <div id="toast"
   class="flex items-center gap-3 px-4 py-3 rounded-xl border border-emerald-500/30 bg-base-800 shadow-card min-w-[220px]">
   <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-  <span class="text-sm font-medium text-white" id="toast-msg">Saved!</span>
+  <span class="text-sm font-medium text-content-primary" id="toast-msg">Saved!</span>
 </div>
 
 {% endblock %}
@@ -417,7 +417,7 @@
     cb.checked    = !cb.checked;
     track.classList.toggle('on', cb.checked);
     label.textContent = cb.checked ? 'Active' : 'Inactive';
-    label.className   = cb.checked ? 'text-white font-medium' : 'text-slate-muted font-medium';
+    label.className   = cb.checked ? 'text-content-primary font-medium' : 'text-content-muted font-medium';
   }
 
   // ── Show/hide dynamic config panels ──────────────────

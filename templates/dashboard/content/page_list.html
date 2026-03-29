@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="mb-6">
-  <h1 class="text-2xl font-display font-bold text-white">
+  <h1 class="text-2xl font-display font-bold text-content-primary">
     Pages
   </h1>
 </div>
@@ -25,7 +25,7 @@
              name="title"
              value="{{ edit_obj.title|default:'' }}"
              placeholder="Title"
-             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
       <!-- Slug -->
       <input type="text"
@@ -33,26 +33,26 @@
              name="slug"
              value="{{ edit_obj.slug|default:'' }}"
              placeholder="Slug"
-             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
       <!-- Meta -->
       <input type="text"
              name="meta_description"
              value="{{ edit_obj.meta_description|default:'' }}"
              placeholder="Meta Description"
-             class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+             class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
       <!-- Content -->
       <textarea name="content"
                 rows="6"
                 placeholder="HTML Content Allowed"
-                class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">{{ edit_obj.content|default:'' }}</textarea>
+                class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">{{ edit_obj.content|default:'' }}</textarea>
 
     </div>
 
     <div class="mt-4 flex gap-6">
 
-      <label class="text-sm text-slate-soft">
+      <label class="text-sm text-content-secondary">
         <input type="checkbox" name="published"
           {% if edit_obj %}
             {% if edit_obj.published %}checked{% endif %}
@@ -60,7 +60,7 @@
         Published
       </label>
 
-      <label class="text-sm text-slate-soft">
+      <label class="text-sm text-content-secondary">
         <input type="checkbox" name="show_in_footer"
           {% if edit_obj %}
             {% if edit_obj.show_in_footer %}checked{% endif %}
@@ -85,8 +85,8 @@
   <div class="bg-base-800 border border-base-700 rounded-xl p-4 flex justify-between items-center">
 
     <div>
-      <p class="text-white font-semibold">{{ page.title }}</p>
-      <p class="text-xs text-slate-muted">
+      <p class="text-content-primary font-semibold">{{ page.title }}</p>
+      <p class="text-xs text-content-muted">
         /{{ page.slug }} |
         {% if page.published %}
           <span class="text-green-400">Published</span>
