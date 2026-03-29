@@ -38,37 +38,37 @@
     <table class="min-w-full text-sm text-left text-content-secondary">
       <thead class="bg-base-900 border-b border-base-700 text-xs uppercase text-content-muted tracking-wider">
         <tr>
-          <th class="px-4 py-3">Name</th>
-          <th class="px-4 py-3">Email</th>
-          <th class="px-4 py-3">Phone</th>
-          <th class="px-4 py-3">Program</th>
-          <th class="px-4 py-3">Grade</th>
-          <th class="px-4 py-3">Message</th>
-          <th class="px-4 py-3">Date</th>
-          <th class="px-4 py-3 text-center">Status</th>
+          <th class="px-4 py-3 whitespace-nowrap">Name</th>
+          <th class="px-4 py-3 whitespace-nowrap">Email</th>
+          <th class="px-4 py-3 whitespace-nowrap">Phone</th>
+          <th class="px-4 py-3 whitespace-nowrap">Program</th>
+          <th class="px-4 py-3 whitespace-nowrap">Grade</th>
+          <th class="px-4 py-3 min-w-[250px]">Message</th>
+          <th class="px-4 py-3 whitespace-nowrap">Date</th>
+          <th class="px-4 py-3 text-center whitespace-nowrap">Status</th>
         </tr>
       </thead>
 
       <tbody class="divide-y divide-base-700">
         {% for inquiry in inquiries %}
         <tr class="hover:bg-base-900/40 transition">
-          <td class="px-4 py-3 font-medium text-content-primary">
+          <td class="px-4 py-3 font-medium text-content-primary whitespace-nowrap">
             {{ inquiry.full_name }}
           </td>
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 whitespace-nowrap text-content-muted">
             {{ inquiry.email }}
           </td>
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 whitespace-nowrap">
             {{ inquiry.phone }}
           </td>
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 whitespace-nowrap">
             {{ inquiry.program_of_interest|default:"—" }}
           </td>
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 whitespace-nowrap">
             {{ inquiry.grade_level|default:"—" }}
           </td>
-          <td class="px-4 py-3 max-w-md ">
-            {{ inquiry.message|default:"—" }}
+          <td class="px-4 py-3 min-w-[300px]">
+             <p class="line-clamp-2 text-content-secondary leading-relaxed" title="{{ inquiry.message }}">{{ inquiry.message|default:"—" }}</p>
           </td>
           <td class="px-4 py-3 whitespace-nowrap">
             {{ inquiry.created_at|date:"M d, Y H:i" }}

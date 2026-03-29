@@ -133,33 +133,33 @@
     <table class="w-full" id="staff-table">
       <thead class="sticky top-0 z-20">
         <tr class="border-b border-base-700 bg-base-900 shadow-sm border-b border-base-700">
-          <th class="text-left py-4 px-5 w-10">
+          <th class="text-left py-4 px-5 w-10 whitespace-nowrap">
             <span class="text-xs font-semibold text-content-muted uppercase tracking-wider">
               <i data-lucide="grip-vertical" class="w-4 h-4"></i>
             </span>
           </th>
-          <th class="text-left py-4 px-5">
+          <th class="text-left py-4 px-5 whitespace-nowrap">
             <span class="text-xs font-semibold text-content-muted uppercase tracking-wider">Select</span>
           </th>
-          <th class="text-left py-4 px-5">
+          <th class="text-left py-4 px-5 whitespace-nowrap min-w-[200px]">
             <span class="text-xs font-semibold text-content-muted uppercase tracking-wider">Staff Member</span>
           </th>
-          <th class="text-left py-4 px-5">
+          <th class="text-left py-4 px-5 whitespace-nowrap min-w-[180px]">
             <span class="text-xs font-semibold text-content-muted uppercase tracking-wider">Designation</span>
           </th>
-          <th class="text-left py-4 px-5">
+          <th class="text-left py-4 px-5 whitespace-nowrap min-w-[150px]">
             <span class="text-xs font-semibold text-content-muted uppercase tracking-wider">Department</span>
           </th>
-          <th class="text-left py-4 px-5">
+          <th class="text-left py-4 px-5 whitespace-nowrap">
             <span class="text-xs font-semibold text-content-muted uppercase tracking-wider">Contact</span>
           </th>
-          <th class="text-left py-4 px-5">
+          <th class="text-left py-4 px-5 whitespace-nowrap">
             <span class="text-xs font-semibold text-content-muted uppercase tracking-wider">Status</span>
           </th>
-          <th class="text-left py-4 px-5">
+          <th class="text-left py-4 px-5 whitespace-nowrap">
             <span class="text-xs font-semibold text-content-muted uppercase tracking-wider">Order</span>
           </th>
-          <th class="text-left py-4 px-5">
+          <th class="text-left py-4 px-5 whitespace-nowrap">
             <span class="text-xs font-semibold text-content-muted uppercase tracking-wider">Actions</span>
           </th>
         </tr>
@@ -167,15 +167,15 @@
       <tbody class="divide-y divide-base-700" id="staff-tbody">
         {% for staff in page_obj %}
         <tr class="hover:bg-base-700/40 transition-colors group" data-id="{{ staff.id }}">
-          <td class="py-4 px-5 drag-handle cursor-move">
+          <td class="py-4 px-5 drag-handle cursor-move whitespace-nowrap">
             <i data-lucide="grip-vertical" class="w-4 h-4 text-base-500 hover:text-gold transition-colors"></i>
           </td>
-          <td class="py-4 px-5">
+          <td class="py-4 px-5 whitespace-nowrap">
             <input type="checkbox" 
                    class="staff-select w-4 h-4 rounded border-base-600 bg-base-900 text-gold focus:ring-gold/30"
                    value="{{ staff.id }}">
           </td>
-          <td class="py-4 px-5">
+          <td class="py-4 px-5 whitespace-nowrap min-w-[200px]">
             <div class="flex items-center gap-3">
               {% if staff.photo %}
               <img src="{{ staff.photo.url }}" alt="{{ staff.name }}" class="w-10 h-10 rounded-full object-cover border border-base-600">
@@ -191,15 +191,15 @@
               </div>
             </div>
           </td>
-          <td class="py-4 px-5 text-sm text-content-secondary">
-            {{ staff.designation }}
+          <td class="py-4 px-5 text-sm text-content-secondary whitespace-nowrap min-w-[180px]">
+            <p class="truncate" title="{{ staff.designation }}">{{ staff.designation }}</p>
           </td>
-          <td class="py-4 px-5">
+          <td class="py-4 px-5 whitespace-nowrap min-w-[150px]">
             <span class="text-xs font-medium text-purple-400">
               {{ staff.department }}
             </span>
           </td>
-          <td class="py-4 px-5">
+          <td class="py-4 px-5 whitespace-nowrap">
             <div class="flex flex-col gap-1">
               {% if staff.email %}
               <a href="mailto:{{ staff.email }}" class="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
@@ -215,7 +215,7 @@
               {% endif %}
             </div>
           </td>
-          <td class="py-4 px-5">
+          <td class="py-4 px-5 whitespace-nowrap">
             {% if staff.is_published %}
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
@@ -228,10 +228,10 @@
             </span>
             {% endif %}
           </td>
-          <td class="py-4 px-5 text-sm text-content-secondary">
+          <td class="py-4 px-5 text-sm text-content-secondary whitespace-nowrap">
             {{ staff.order }}
           </td>
-          <td class="py-4 px-5">
+          <td class="py-4 px-5 whitespace-nowrap">
             <div class="flex items-center gap-1">
               <a href="/dashboard/staff/{{ staff.id }}/edit/" 
                  class="p-2 rounded-lg text-content-muted hover:text-content-primary hover:bg-base-700 transition-colors"

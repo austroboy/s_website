@@ -38,14 +38,14 @@
     <table class="min-w-full text-sm text-left text-content-secondary">
       <thead class="bg-base-900 border-b border-base-700 text-xs uppercase text-content-muted tracking-wider">
         <tr>
-          <th class="px-4 py-3">Name</th>
-          <th class="px-4 py-3">Email</th>
-          <th class="px-4 py-3">Phone</th>
-          <th class="px-4 py-3">Subject</th>
-          <th class="px-4 py-3">Message</th>
-          <th class="px-4 py-3">IP</th>
-          <th class="px-4 py-3">Date</th>
-          <th class="px-4 py-3 text-center">Status</th>
+          <th class="px-4 py-3 whitespace-nowrap">Name</th>
+          <th class="px-4 py-3 whitespace-nowrap">Email</th>
+          <th class="px-4 py-3 whitespace-nowrap">Phone</th>
+          <th class="px-4 py-3 whitespace-nowrap min-w-[150px]">Subject</th>
+          <th class="px-4 py-3 min-w-[250px]">Message</th>
+          <th class="px-4 py-3 whitespace-nowrap">IP</th>
+          <th class="px-4 py-3 whitespace-nowrap">Date</th>
+          <th class="px-4 py-3 text-center whitespace-nowrap">Status</th>
         </tr>
       </thead>
 
@@ -53,24 +53,24 @@
         {% for submission in submissions %}
         <tr class="hover:bg-base-900/40 transition">
           
-          <td class="px-4 py-3 font-medium text-content-primary">
+          <td class="px-4 py-3 font-medium text-content-primary whitespace-nowrap">
             {{ submission.name }}
           </td>
 
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 whitespace-nowrap text-content-muted">
             {{ submission.email }}
           </td>
 
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 whitespace-nowrap">
             {{ submission.phone|default:"—" }}
           </td>
 
-          <td class="px-4 py-3">
-            {{ submission.subject }}
+          <td class="px-4 py-3 whitespace-nowrap font-medium text-content-primary min-w-[150px]">
+            <p class="truncate" title="{{ submission.subject }}">{{ submission.subject }}</p>
           </td>
 
-          <td class="px-4 py-3 max-w-md">
-            {{ submission.message }}
+          <td class="px-4 py-3 min-w-[300px]">
+            <p class="line-clamp-2 text-content-secondary leading-relaxed" title="{{ submission.message }}">{{ submission.message }}</p>
           </td>
 
           <td class="px-4 py-3 whitespace-nowrap text-xs text-content-muted">
