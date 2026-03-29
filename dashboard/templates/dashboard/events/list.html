@@ -22,7 +22,7 @@
       </p>
     </div>
     <a href="/dashboard/events/create/" 
-       class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gold text-base-900 text-sm font-semibold hover:bg-gold-light transition-colors shadow-glow-gold">
+       class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-accent text-accent-contrast text-sm font-semibold hover:opacity-90 transition-all shadow-md">
       <i data-lucide="plus" class="w-4 h-4"></i>
       Create Event
     </a>
@@ -92,7 +92,7 @@
     <!-- Filter Buttons -->
     <div class="flex items-end gap-2">
       <button type="submit" 
-              class="flex-1 px-4 py-2 bg-gold text-base-900 font-medium rounded-lg hover:bg-gold-light transition-colors">
+              class="flex-1 px-4 py-2 bg-accent text-accent-contrast font-medium rounded-lg hover:opacity-90 transition-all">
         Apply Filters
       </button>
       <a href="/dashboard/events/" 
@@ -302,7 +302,9 @@
         
         {% for num in page_obj.paginator.page_range %}
           {% if page_obj.number == num %}
-          <span class="px-3 py-1.5 rounded-lg bg-gold text-base-900 font-medium">{{ num }}</span>
+          <span class="px-3 py-1.5 rounded-lg bg-accent text-accent-contrast font-medium">
+            {{ num }}
+          </span>
           {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
           <a href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if current_status != 'all' %}&status={{ current_status }}{% endif %}{% if current_date_filter != 'all' %}&date={{ current_date_filter }}{% endif %}" 
              class="px-3 py-1.5 rounded-lg border border-base-600 text-content-muted hover:text-content-primary hover:border-gold transition-colors">
@@ -313,7 +315,7 @@
         
         {% if page_obj.has_next %}
         <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if current_status != 'all' %}&status={{ current_status }}{% endif %}{% if current_date_filter != 'all' %}&date={{ current_date_filter }}{% endif %}" 
-           class="px-3 py-1.5 rounded-lg bg-gold text-base-900 font-medium hover:bg-gold-light transition-colors">
+           class="px-3 py-1.5 rounded-lg bg-accent text-accent-contrast font-medium hover:opacity-90 transition-all">
           Next
         </a>
         {% endif %}

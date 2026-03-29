@@ -6,21 +6,18 @@
     value    — hex string
     is_glow  — True for rgba values
 {% endcomment %}
-<div class="flex items-center gap-3">
-  {% if is_glow %}
-    <div class="w-9 h-9 rounded-xl flex-shrink-0" style="background:{{ value }};border:1px solid rgba(255,255,255,.08)"></div>
-  {% else %}
-    <div class="w-9 h-9 rounded-xl flex-shrink-0" style="background:{{ value }};border:1px solid rgba(255,255,255,.08)"></div>
-  {% endif %}
+<div class="flex items-center gap-4 group">
+  <div class="w-10 h-10 rounded-xl flex-shrink-0 shadow-sm border border-base-700/50 transition-transform group-hover:scale-105" 
+       style="background:{{ value|default:'transparent' }};"></div>
+  
   <div class="min-w-0 flex-1">
-    <p class="text-xs font-medium text-white">{{ label }}</p>
-    <p class="text-[11px] font-mono mt-0.5" style="color:#64748B">{{ value|default:"—" }}</p>
+    <p class="text-xs font-bold text-content-primary truncate uppercase tracking-tight" style="font-family:'Syne',sans-serif">{{ label }}</p>
+    <p class="text-[10px] font-mono mt-0.5 text-content-muted/80 tracking-wider">{{ value|default:"—" }}</p>
   </div>
-  <button onclick="navigator.clipboard.writeText('{{ value }}')"
-          class="p-1.5 rounded-lg transition-colors flex-shrink-0"
-          style="color:#3D4752" title="Copy"
-          onmouseover="this.style.color='#94A3B8';this.style.background='#232830'"
-          onmouseout="this.style.color='#3D4752';this.style.background='transparent'">
-    <i data-lucide="copy" style="width:13px;height:13px"></i>
+
+  <button onclick="navigator.clipboard.writeText('{{ value }}'); showToast('Copied {{ label }} value')"
+          class="p-2 rounded-xl transition-all text-content-muted hover:text-accent hover:bg-accent/10 active:scale-90"
+          title="Copy to clipboard">
+    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
   </button>
 </div>

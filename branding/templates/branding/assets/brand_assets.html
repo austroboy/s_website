@@ -4,60 +4,63 @@
 {% block title %}Brand Assets — {{ tenant.name|default:"SchoolOS" }}{% endblock %}
 
 {% block breadcrumb %}
-<span class="text-slate-muted">Dashboard</span>
-<i data-lucide="chevron-right" class="w-3 h-3 text-base-500 flex-shrink-0"></i>
-<span class="text-slate-muted">Branding</span>
-<i data-lucide="chevron-right" class="w-3 h-3 text-base-500 flex-shrink-0"></i>
-<span class="text-white font-medium">Logo &amp; Assets</span>
+  <a class="transition-colors text-content-muted hover:text-accent">Dashboard</a>
+  <i data-lucide="chevron-right" class="w-3 h-3 text-content-muted/50"></i>
+  <span class="text-content-muted">Branding</span>
+  <i data-lucide="chevron-right" class="w-3 h-3 text-content-muted/50"></i>
+  <span class="font-bold text-content-primary">Logo &amp; Assets</span>
 {% endblock %}
 
 {% block extra_head %}
 <style>
   /* ─── Asset card ─────────────────────────────────── */
   .asset-card {
-    background: #1C2026;
-    border: 1px solid #232830;
-    border-radius: 16px;
+    background: var(--base-800);
+    border: 1px solid var(--base-700);
+    border-radius: 24px;
     overflow: hidden;
-    transition: border-color .2s, box-shadow .2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
   }
   .asset-card:hover {
-    border-color: #2C343D;
-    box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    border-color: var(--base-600);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
   }
 
   /* ─── Checkerboard transparent indicator ─────────── */
   .checker {
     background-image:
-      linear-gradient(45deg,  #2C343D 25%, transparent 25%),
-      linear-gradient(-45deg, #2C343D 25%, transparent 25%),
-      linear-gradient(45deg,  transparent 75%, #2C343D 75%),
-      linear-gradient(-45deg, transparent 75%, #2C343D 75%);
+      linear-gradient(45deg,  var(--base-700) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--base-700) 25%, transparent 25%),
+      linear-gradient(45deg,  transparent 75%, var(--base-700) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--base-700) 75%);
     background-size: 12px 12px;
     background-position: 0 0, 0 6px, 6px -6px, -6px 0;
   }
 
   /* ─── Drop zone ──────────────────────────────────── */
   .drop-zone {
-    border: 2px dashed #2C343D;
-    border-radius: 14px;
-    background: #16191D;
+    border: 2px dashed var(--base-600);
+    border-radius: 20px;
+    background: var(--base-950);
     cursor: pointer;
-    transition: border-color .2s, background .2s;
+    transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 12px;
     text-align: center;
-    padding: 24px 16px;
-    min-height: 120px;
+    padding: 32px 20px;
+    min-height: 140px;
     position: relative;
+    overflow: hidden;
   }
   .drop-zone:hover,
   .drop-zone.dragover {
-    border-color: rgba(240,165,0,.5);
-    background: rgba(240,165,0,.04);
+    border-color: var(--accent);
+    background: var(--accent-bg);
   }
   .drop-zone input[type=file] {
     position: absolute;
@@ -66,25 +69,27 @@
     cursor: pointer;
     width: 100%;
     height: 100%;
+    z-index: 10;
   }
 
   /* ─── Clear checkbox ─────────────────────────────── */
   .clear-check {
-    width: 14px; height: 14px;
-    border-radius: 4px;
-    border: 1px solid #2C343D;
-    background: #1C2026;
+    width: 18px; height: 18px;
+    border-radius: 6px;
+    border: 1px solid var(--base-600);
+    background: var(--base-800);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: background .15s, border-color .15s;
+    transition: all 0.2s;
     cursor: pointer;
   }
   input[name*="clear_"]:checked ~ label .clear-check,
   .clear-active .clear-check {
-    background: #F43F5E;
-    border-color: #F43F5E;
+    background: var(--rose-500);
+    border-color: var(--rose-500);
+    box-shadow: 0 0 0 4px var(--rose-500)/10;
   }
 
   /* ─── Preview mockup ─────────────────────────────── */
@@ -92,9 +97,10 @@
 
   /* ─── Toast ──────────────────────────────────────── */
   #toast {
-    position: fixed; bottom: 24px; left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    opacity: 0; transition: all .3s; z-index: 999;
+    position: fixed; bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(40px);
+    opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    z-index: 9999;
     pointer-events: none;
   }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -104,11 +110,14 @@
   .img-preview {
     display: none;
     position: relative;
-    border-radius: 10px;
+    border-radius: 16px;
     overflow: hidden;
-    border: 1px solid #2C343D;
+    border: 1px solid var(--base-700);
+    background: var(--base-900);
+    padding: 12px;
+    margin-top: 12px;
   }
-  .img-preview.has-image { display: block; }
+  .img-preview.has-image { display: block; animation: zoomIn 0.3s ease; }
 </style>
 {% endblock %}
 
@@ -117,31 +126,31 @@
 
 {% if messages %}
   {% for message in messages %}
-  <div class="fade-up mb-4 flex items-center gap-3 px-4 py-3 rounded-xl border
-    {% if message.tags == 'success' %}bg-emerald-500/10 border-emerald-500/20 text-emerald-400
-    {% elif message.tags == 'error' %}bg-rose-500/10 border-rose-500/20 text-rose-400
-    {% else %}bg-gold/10 border-gold/20 text-gold{% endif %}">
+  <div class="fade-up mb-6 flex items-center gap-3 px-5 py-4 rounded-2xl border font-bold text-sm shadow-sm
+    {% if message.tags == 'success' %}bg-emerald-500/10 border-emerald-500/20 text-emerald-500
+    {% elif message.tags == 'error' %}bg-rose-500/10 border-rose-500/20 text-rose-500
+    {% else %}bg-accent/10 border-accent/20 text-accent{% endif %}">
     <i data-lucide="{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}alert-circle{% else %}info{% endif %}" class="w-4 h-4 flex-shrink-0"></i>
-    <p class="text-sm font-medium">{{ message }}</p>
+    <p>{{ message }}</p>
   </div>
   {% endfor %}
 {% endif %}
 
-<div class="fade-up delay-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
+<div class="fade-up d1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
   <div>
-    <h1 class="font-display text-2xl font-bold text-white leading-tight">Logo &amp; Assets</h1>
-    <p class="mt-0.5 text-sm text-slate-muted">
-      Brand imagery for
-      <span class="text-gold font-medium">{{ tenant.name|default:"Global Tech Academy" }}</span>
+    <h1 class="font-bold text-3xl text-content-primary leading-tight" style="font-family:'Syne',sans-serif">Visual Identity</h1>
+    <p class="mt-1.5 text-sm text-content-muted">
+      Manage logos, icons and social assets for
+      <span class="text-accent font-bold">{{ tenant.name|default:"SchoolOS" }}</span>
     </p>
   </div>
 
   {% if assets %}
-  <div class="flex items-center gap-2">
+  <div class="flex items-center gap-3">
     <button type="button" onclick="openDeleteModal()"
-      class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-400 text-sm font-semibold hover:bg-rose-500/20 transition-colors">
+      class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-2xl border border-rose-500/20 bg-rose-500/5 text-rose-500 text-sm font-bold hover:bg-rose-500/10 transition-all active:scale-95 shadow-sm">
       <i data-lucide="trash-2" class="w-4 h-4"></i>
-      Delete All
+      Reset All Assets
     </button>
   </div>
   {% endif %}
@@ -150,127 +159,106 @@
 
 <form method="post" enctype="multipart/form-data" id="assets-form">
   {% csrf_token %}
-  <div class="fade-up delay-2 grid grid-cols-1 xl:grid-cols-3 gap-6">
+  <div class="fade-up d2 grid grid-cols-1 xl:grid-cols-3 gap-8">
 
 
-    <div class="xl:col-span-2 space-y-5">
+    <div class="xl:col-span-2 space-y-6">
 
-      {% include "branding/assets/asset_field.html" with field_key="logo_light" field_label="Logo — Light Version" field_hint="Used on dark backgrounds. PNG/SVG recommended." icon="sun" icon_color="text-gold" icon_bg="bg-gold/10 border-gold/20" current_image=assets.logo_light checker_bg="bg-base-900" recommended="Recommended: 300×80px, transparent PNG or SVG" %}
-
-
-      {% include "branding/assets/asset_field.html" with field_key="logo_dark" field_label="Logo — Dark Version" field_hint="Used on light backgrounds." icon="moon" icon_color="text-cyan" icon_bg="bg-cyan/10 border-cyan/20" current_image=assets.logo_dark checker_bg="bg-white/90" recommended="Recommended: 300×80 px, transparent PNG or SVG" %}
+      {% include "branding/assets/asset_field.html" with field_key="logo_light" field_label="Logo — Light Version" field_hint="Best for dark backgrounds like navbars. SVG preferred." icon="sun" icon_color="text-amber-500" icon_bg="bg-amber-500/10 border-amber-500/20" current_image=assets.logo_light checker_bg="bg-base-900" recommended="300×80px, transparent PNG/SVG" %}
 
 
-      {% include "branding/assets/asset_field.html" with field_key="favicon" field_label="Favicon" field_hint="Browser tab icon. ICO or square PNG." icon="globe" icon_color="text-purple-400" icon_bg="bg-purple-500/10 border-purple-500/20" current_image=assets.favicon checker_bg="checker" recommended="Recommended: 32×32 px or 64×64 px ICO/PNG" %}
+      {% include "branding/assets/asset_field.html" with field_key="logo_dark" field_label="Logo — Dark Version" field_hint="Best for light backgrounds (Invoices, Documents)." icon="moon" icon_color="text-cyan-500" icon_bg="bg-cyan-500/10 border-cyan-500/20" current_image=assets.logo_dark checker_bg="bg-white" recommended="300×80 px, transparent PNG/SVG" %}
 
 
-      {% include "branding/assets/asset_field.html" with field_key="og_image" field_label="Social Sharing Image (OG Image)" field_hint="Default image for link previews on social media." icon="share-2" icon_color="text-emerald-400" icon_bg="bg-emerald-500/10 border-emerald-500/20" current_image=assets.og_image checker_bg="checker" recommended="Recommended: 1200×630 px JPG/PNG" %}
+      {% include "branding/assets/asset_field.html" with field_key="favicon" field_label="Favicon" field_hint="The tiny icon in browser tabs." icon="globe" icon_color="text-purple-500" icon_bg="bg-purple-500/10 border-purple-500/20" current_image=assets.favicon checker_bg="checker" recommended="32×32 px or 64×64 px ICO/PNG" %}
 
 
-      {% include "branding/assets/asset_field.html" with field_key="footer_logo" field_label="Footer Logo" field_hint="Typically a smaller or white-inverted version of the logo." icon="layout-panel-bottom" icon_color="text-slate-soft" icon_bg="bg-base-700 border-base-600" current_image=assets.footer_logo checker_bg="bg-base-900" recommended="Recommended: 200×60 px, transparent PNG" %}
+      {% include "branding/assets/asset_field.html" with field_key="og_image" field_label="Social Preview (OG Image)" field_hint="Shown when library links are shared on social media." icon="share-2" icon_color="text-indigo-500" icon_bg="bg-indigo-500/10 border-indigo-500/20" current_image=assets.og_image checker_bg="checker" recommended="1200×630 px JPG/PNG" %}
+
+
+      {% include "branding/assets/asset_field.html" with field_key="footer_logo" field_label="Footer Logo" field_hint="A simplified or monotone version for page footers." icon="layout-panel-bottom" icon_color="text-content-muted" icon_bg="bg-base-700 border-base-600" current_image=assets.footer_logo checker_bg="bg-base-950" recommended="200×60 px, transparent PNG" %}
 
     </div><!-- /left col -->
 
 
-    <div class="preview-panel space-y-4">
+    <div class="preview-panel space-y-5">
 
 
       <div class="asset-card">
-        <div class="flex items-center gap-2 px-4 py-3 border-b border-base-700">
-          <i data-lucide="eye" class="w-4 h-4 text-slate-muted"></i>
-          <p class="text-sm font-semibold text-white">Live Preview</p>
+        <div class="flex items-center gap-3 px-5 py-4 border-b border-base-700 bg-base-900/30">
+          <i data-lucide="eye" class="w-4 h-4 text-cyan-500"></i>
+          <p class="text-xs font-bold text-content-primary uppercase tracking-widest" style="font-family:'Syne',sans-serif">Environment Mocks</p>
         </div>
-        <div class="p-4 space-y-4">
+        <div class="p-5 space-y-6">
 
           {# Dark header mock #}
-          <div>
-            <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Header (dark bg)</p>
-            <div class="bg-base-900 rounded-xl px-4 py-3 flex items-center gap-3 border border-base-700">
+          <div class="group">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-content-muted/60 mb-3 ml-1">UI Header (Deep Theme)</p>
+            <div class="bg-base-950 rounded-2xl px-5 py-4 flex items-center gap-4 border border-base-700 shadow-inner group-hover:border-accent/30 transition-colors">
               <div id="preview-logo-light" class="h-8 flex items-center">
                 {% if assets.logo_light %}
-                  <img src="{{ assets.logo_light.url }}" class="h-7 max-w-[120px] object-contain" alt="Logo light">
+                  <img src="{{ assets.logo_light.url }}" class="h-7 max-w-[130px] object-contain" alt="Logo light">
                 {% else %}
-                  <div class="h-7 w-24 rounded-md bg-base-700 animate-pulse flex items-center justify-center">
-                    <i data-lucide="image" class="w-4 h-4 text-base-500"></i>
+                  <div class="h-8 w-28 rounded-lg bg-base-800 animate-pulse flex items-center justify-center border border-base-700">
+                    <i data-lucide="image" class="w-4 h-4 text-base-600"></i>
                   </div>
                 {% endif %}
               </div>
-              <div class="ml-auto flex items-center gap-1.5">
-                <div class="w-12 h-1.5 bg-base-700 rounded-full"></div>
-                <div class="w-10 h-1.5 bg-base-700 rounded-full"></div>
-                <div class="w-8 h-1.5 bg-base-700 rounded-full"></div>
+              <div class="ml-auto flex items-center gap-2">
+                <div class="w-10 h-1.5 bg-base-800 rounded-full"></div>
+                <div class="w-8 h-1.5 bg-accent/20 rounded-full"></div>
               </div>
             </div>
           </div>
 
           {# Light header mock #}
-          <div>
-            <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Header (light bg)</p>
-            <div class="bg-white rounded-xl px-4 py-3 flex items-center gap-3 border border-slate-200">
+          <div class="group">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-content-muted/60 mb-3 ml-1">UI Header (Light Theme)</p>
+            <div class=" rounded-2xl px-5 py-4 flex items-center gap-4 border border-base-700 shadow-sm group-hover:border-slate-300 transition-colors">
               <div id="preview-logo-dark" class="h-8 flex items-center">
                 {% if assets.logo_dark %}
-                  <img src="{{ assets.logo_dark.url }}" class="h-7 max-w-[120px] object-contain" alt="Logo dark">
+                  <img src="{{ assets.logo_dark.url }}" class="h-7 max-w-[130px] object-contain" alt="Logo dark">
                 {% else %}
-                  <div class="h-7 w-24 rounded-md bg-slate-200 animate-pulse flex items-center justify-center">
-                    <i data-lucide="image" class="w-4 h-4 text-slate-400"></i>
+                  <div class="h-8 w-28 rounded-lg bg-slate-100 animate-pulse flex items-center justify-center border border-slate-200">
+                    <i data-lucide="image" class="w-4 h-4 text-slate-300"></i>
                   </div>
                 {% endif %}
               </div>
-              <div class="ml-auto flex items-center gap-1.5">
-                <div class="w-12 h-1.5 bg-slate-200 rounded-full"></div>
-                <div class="w-10 h-1.5 bg-slate-200 rounded-full"></div>
-                <div class="w-8 h-1.5 bg-slate-200 rounded-full"></div>
+              <div class="ml-auto flex items-center gap-2">
+                <div class="w-10 h-1.5 bg-slate-100 rounded-full"></div>
+                <div class="w-8 h-1.5 bg-blue-500/10 rounded-full"></div>
               </div>
             </div>
           </div>
 
           {# Favicon mock #}
-          <div>
-            <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Browser Tab</p>
-            <div class="bg-base-800 rounded-xl px-3 py-2 flex items-center gap-2 border border-base-700">
-              <div id="preview-favicon" class="w-4 h-4 rounded-sm overflow-hidden flex-shrink-0 checker flex items-center justify-center">
+          <div class="group">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-content-muted/60 mb-3 ml-1">Browser Experience</p>
+            <div class="bg-base-900/50 rounded-2xl px-4 py-3 flex items-center gap-3 border border-base-700 group-hover:bg-base-900 transition-all">
+              <div id="preview-favicon" class="w-5 h-5 rounded-lg overflow-hidden flex-shrink-0 checker flex items-center justify-center border border-base-700/50 shadow-sm">
                 {% if assets.favicon %}
                   <img src="{{ assets.favicon.url }}" class="w-4 h-4 object-contain" alt="Favicon">
                 {% else %}
-                  <div class="w-3 h-3 rounded-sm bg-base-600"></div>
+                  <div class="w-3 h-3 rounded-full bg-base-600"></div>
                 {% endif %}
               </div>
-              <span class="text-xs text-slate-muted truncate">{{ tenant.name|default:"SchoolOS" }} — Home</span>
-              <div class="ml-auto w-2.5 h-2.5 rounded-full bg-base-600 flex-shrink-0"></div>
+              <span class="text-xs font-bold text-content-muted truncate flex-1">{{ tenant.name|default:"SchoolOS" }} Dashboard</span>
+              <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-glow-emerald"></div>
             </div>
           </div>
 
-          {# OG Image mock #}
-          <div>
-            <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Social Sharing</p>
-            <div id="preview-og" class="rounded-xl overflow-hidden border border-base-700 aspect-video checker flex items-center justify-center relative">
+          {# Social mock #}
+          <div class="group">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-content-muted/60 mb-3 ml-1">Social Feed Presentation</p>
+            <div id="preview-og" class="rounded-2xl overflow-hidden border border-base-700 aspect-video checker flex items-center justify-center shadow-lg group-hover:scale-[1.02] transition-transform">
               {% if assets.og_image %}
                 <img src="{{ assets.og_image.url }}" class="w-full h-full object-cover" alt="OG Image">
               {% else %}
-                <div class="flex flex-col items-center gap-1 text-base-500">
-                  <i data-lucide="share-2" class="w-6 h-6"></i>
-                  <span class="text-[10px]">No OG image</span>
+                <div class="flex flex-col items-center gap-2 text-content-disabled">
+                  <i data-lucide="share-2" class="w-8 h-8 opacity-40"></i>
+                  <span class="text-[10px] font-bold uppercase tracking-tighter">Preview Empty</span>
                 </div>
               {% endif %}
-            </div>
-          </div>
-
-          {# Footer mock #}
-          <div>
-            <p class="text-[10px] font-semibold uppercase tracking-widest text-base-500 mb-2">Footer</p>
-            <div class="bg-base-900 rounded-xl px-4 py-4 border border-base-700 flex flex-col items-center gap-2">
-              <div id="preview-footer-logo" class="h-7 flex items-center">
-                {% if assets.footer_logo %}
-                  <img src="{{ assets.footer_logo.url }}" class="h-6 max-w-[100px] object-contain" alt="Footer logo">
-                {% else %}
-                  <div class="h-6 w-20 rounded-md bg-base-700 animate-pulse"></div>
-                {% endif %}
-              </div>
-              <div class="flex gap-2">
-                <div class="w-10 h-1 bg-base-700 rounded-full"></div>
-                <div class="w-10 h-1 bg-base-700 rounded-full"></div>
-                <div class="w-10 h-1 bg-base-700 rounded-full"></div>
-              </div>
             </div>
           </div>
 
@@ -278,38 +266,39 @@
       </div>
 
       {# Tips card #}
-      <div class="bg-gold/5 border border-gold/20 rounded-2xl p-4 space-y-3">
-        <div class="flex items-center gap-2">
-          <i data-lucide="lightbulb" class="w-4 h-4 text-gold flex-shrink-0"></i>
-          <p class="text-sm font-semibold text-gold">Best Practices</p>
+      <div class="bg-accent/5 border border-base-700 rounded-3xl p-6 space-y-4 shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-accent/10 flex items-center justify-center border border-base-700">
+            <i data-lucide="sparkles" class="w-4 h-4 text-accent"></i>
+          </div>
+          <p class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Design Tips</p>
         </div>
-        <ul class="space-y-2 text-xs text-slate-muted leading-relaxed">
-          <li class="flex gap-2"><span class="text-gold mt-0.5">•</span> Use SVG or transparent PNG for logos to ensure crisp rendering at any size.</li>
-          <li class="flex gap-2"><span class="text-gold mt-0.5">•</span> The OG image should be exactly 1200×630 px to avoid cropping on all platforms.</li>
-          <li class="flex gap-2"><span class="text-gold mt-0.5">•</span> Provide both light and dark logo variants to support all theme modes.</li>
-          <li class="flex gap-2"><span class="text-gold mt-0.5">•</span> Keep favicon simple — it will be rendered at 16×16 px on most screens.</li>
+        <ul class="space-y-3 text-[11px] text-content-muted leading-relaxed font-medium">
+          <li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0 animate-pulse"></span> SVG provides infinite scalability without losing quality.</li>
+          <li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0 animate-pulse"></span> OG Images should be 1200×630px for perfect cross-platform social previews.</li>
+          <li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0 animate-pulse"></span> Transparent backgrounds are essential for modern web aesthetics.</li>
         </ul>
       </div>
 
     </div><!-- /right col -->
-  </div><!-- /grid -->
+  </div>
 
-  {# ── STICKY SAVE BAR ──────────────────────────────── #}
-  <div class="fade-up delay-5 sticky bottom-5 mt-6 z-10">
-    <div class="bg-base-800/90 backdrop-blur-md border border-base-700 rounded-2xl p-4 flex items-center justify-between gap-4 shadow-card">
-      <p class="text-sm text-slate-muted hidden sm:block">
-        <i data-lucide="info" class="w-3.5 h-3.5 inline-block mr-1 text-base-500"></i>
-        Changes apply immediately after saving.
-      </p>
-      <div class="flex gap-3 ml-auto">
+
+  <!-- STICKY ACTION BAR -->
+  <div class=" sticky bottom-6 mt-8 z-40">
+    <div class="bg-base-800/80 backdrop-blur-xl border border-base-700 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-5 shadow-2xl">
+      <div class="flex items-center gap-3 ml-2">
+         <p class="text-xs text-content-muted font-bold tracking-tight">Changes apply globally across all modules instantly.</p>
+      </div>
+      <div class="flex gap-3 w-full sm:w-auto">
         <a href="{% url 'branding:brand_assets' %}"
-           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted text-sm font-semibold hover:text-white hover:border-base-500 transition-colors">
+           class="flex-1 sm:flex-none px-6 py-3.5 rounded-2xl border border-base-700 text-content-muted text-sm font-bold hover:bg-base-700 hover:text-content-primary transition-all flex items-center justify-center">
           Cancel
         </a>
         <button type="submit"
-          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gold text-base-900 text-sm font-bold hover:bg-gold-light transition-colors shadow-glow-gold">
+          class="flex-1 sm:flex-none px-10 py-3.5 rounded-2xl bg-accent text-accent-contrast text-sm font-bold hover:scale-[1.02] active:scale-[0.98] transition-all shadow-glow-accent flex items-center justify-center gap-2.5">
           <i data-lucide="save" class="w-4 h-4"></i>
-          Save Assets
+          Update Brand Assets
         </button>
       </div>
     </div>
@@ -319,60 +308,72 @@
 
 {% if assets %}
 <div id="delete-modal"
-  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm">
-  <div class="bg-base-800 border border-base-700 rounded-2xl p-6 max-w-sm w-full mx-4 shadow-card">
-    <div class="flex items-center gap-3 mb-4">
-      <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center flex-shrink-0">
-        <i data-lucide="trash-2" class="w-5 h-5 text-rose-400"></i>
+  class="fixed inset-0 z-[100] hidden items-center justify-center bg-base-950/80 backdrop-blur-md px-4">
+  <div class="bg-base-800 border border-base-700 rounded-3xl p-8 max-w-sm w-full shadow-2xl animate-zoom-in">
+    <div class="flex flex-col items-center text-center gap-4 mb-6">
+      <div class="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shadow-lg">
+        <i data-lucide="trash-2" class="w-8 h-8 text-rose-500"></i>
       </div>
       <div>
-        <p class="text-white font-semibold">Delete All Assets</p>
-        <p class="text-xs text-slate-muted">This action cannot be undone.</p>
+        <h2 class="text-xl font-bold text-content-primary" style="font-family:'Syne',sans-serif">Reset Visual Identity?</h2>
+        <p class="text-sm text-content-muted mt-1 leading-relaxed">This will permanently remove all uploaded logos and assets from this workspace.</p>
       </div>
     </div>
-    <p class="text-sm text-slate-muted mb-6">
-      All uploaded brand assets (logos, favicon, OG image, footer logo) will be permanently removed from
-      <span class="text-white font-medium">{{ tenant.name }}</span>.
-    </p>
-    <div class="flex gap-3">
-      <button type="button" onclick="closeDeleteModal()"
-        class="flex-1 px-4 py-2.5 rounded-xl border border-base-600 text-slate-muted text-sm font-semibold hover:text-white transition-colors">
-        Cancel
-      </button>
-      <form method="post" action="{% url 'branding:brand_assets_delete' %}" class="flex-1">
+    
+    <div class="flex flex-col gap-3">
+      <form method="post" action="{% url 'branding:brand_assets_delete' %}">
         {% csrf_token %}
         <button type="submit"
-          class="w-full px-4 py-2.5 rounded-xl bg-rose-500 text-white text-sm font-bold hover:bg-rose-400 transition-colors">
-          Delete All
+          class="w-full px-6 py-4 rounded-2xl bg-rose-500 text-white text-sm font-bold hover:bg-rose-600 transition-all shadow-glow-rose active:scale-95">
+          Yes, Delete Everything
         </button>
       </form>
+      <button type="button" onclick="closeDeleteModal()"
+        class="w-full px-6 py-4 rounded-2xl bg-base-700 text-content-muted text-sm font-bold hover:text-content-primary transition-all">
+        Cancel
+      </button>
     </div>
   </div>
 </div>
 {% endif %}
 
 <div id="toast"
-  class="flex items-center gap-3 px-4 py-3 rounded-xl border border-base-600 bg-base-800 shadow-card min-w-[220px]">
-  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-  <span class="text-sm font-medium text-white" id="toast-msg">Saved!</span>
+  class="flex items-center gap-3 px-6 py-4 rounded-2xl border border-base-700 bg-base-800 shadow-2xl min-w-[280px]">
+  <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 flex-shrink-0 animate-pulse"></i>
+  <div class="flex flex-col">
+     <span class="text-sm font-bold text-content-primary" id="toast-title">Success</span>
+     <span class="text-[10px] font-medium text-content-muted" id="toast-msg">Assets updated successfully</span>
+  </div>
 </div>
 
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
+  // ── Toast System ─────────────────────────────────────
+  function showToast(msg, isError = false) {
+    const t = document.getElementById('toast');
+    const msgEl = document.getElementById('toast-msg');
+    const titleEl = document.getElementById('toast-title');
+    if (!t || !msgEl) return;
+    
+    msgEl.textContent = msg;
+    titleEl.textContent = isError ? 'Error Occurred' : 'System Success';
+    
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
   // ── Clear checkbox toggle ─────────────────────────────
   function toggleClear(key, checked) {
     const chk  = document.getElementById(`clear-check-${key}`);
     const icon = document.getElementById(`clear-icon-${key}`);
     if (!chk) return;
     if (checked) {
-      chk.style.background   = '#F43F5E';
-      chk.style.borderColor  = '#F43F5E';
+      chk.className = 'clear-check bg-rose-500 border-rose-500 shadow-glow-rose';
       if (icon) icon.classList.remove('hidden');
     } else {
-      chk.style.background   = '';
-      chk.style.borderColor  = '';
+      chk.className = 'clear-check border-base-600 bg-base-800';
       if (icon) icon.classList.add('hidden');
     }
     lucide.createIcons();
@@ -386,7 +387,9 @@
 
     // Update file name label
     const nameEl = document.getElementById(`file-name-${key}`);
-    if (nameEl) nameEl.textContent = file.name;
+    if (nameEl) {
+        nameEl.innerHTML = `<span class="text-accent underline font-bold">${file.name}</span>`;
+    }
 
     // Show inline preview
     const previewWrap = document.getElementById(`img-preview-${key}`);
@@ -410,15 +413,17 @@
     if (!panel) return;
 
     if (key === 'favicon') {
-      panel.innerHTML = `<img src="${url}" class="w-4 h-4 object-contain" alt="Favicon">`;
+      panel.innerHTML = `<img src="${url}" class="w-4 h-4 object-contain animate-fade-in" alt="Favicon">`;
     } else if (key === 'og_image') {
-      panel.innerHTML = `<img src="${url}" class="w-full h-full object-cover" alt="OG preview">`;
+      panel.innerHTML = `<img src="${url}" class="w-full h-full object-cover animate-fade-in" alt="OG preview">`;
     } else {
       const cls = key === 'footer_logo'
-        ? 'h-6 max-w-[100px] object-contain'
-        : 'h-7 max-w-[120px] object-contain';
+        ? 'h-6 max-w-[100px] object-contain animate-fade-in'
+        : 'h-7 max-w-[130px] object-contain animate-fade-in';
       panel.innerHTML = `<img src="${url}" class="${cls}" alt="${key}">`;
     }
+    
+    showToast(`${file.name} selected. Save to apply.`);
   }
 
   // ── Clear file selection ──────────────────────────────
@@ -426,9 +431,19 @@
     const input = document.getElementById(`id_${key}`);
     if (input) input.value = '';
     const nameEl = document.getElementById(`file-name-${key}`);
-    if (nameEl) nameEl.innerHTML = 'Drop file or <span class="text-gold underline">browse</span>';
+    if (nameEl) nameEl.innerHTML = 'Drop file or <span class="text-accent underline font-bold">browse</span>';
     const previewWrap = document.getElementById(`img-preview-${key}`);
     if (previewWrap) previewWrap.classList.remove('has-image');
+    
+    // Reset preview
+    const panelMap = {
+      logo_light: 'preview-logo-light', logo_dark: 'preview-logo-dark',
+      favicon: 'preview-favicon', og_image: 'preview-og', footer_logo: 'preview-footer-logo'
+    };
+    const panel = document.getElementById(panelMap[key]);
+    if(panel) {
+        panel.innerHTML = `<div class="w-8 h-8 rounded bg-base-700/50 animate-pulse"></div>`;
+    }
   }
 
   // ── Drop zone drag feedback ───────────────────────────
@@ -439,19 +454,25 @@
   });
 
   // ── Delete modal ──────────────────────────────────────
-  function openDeleteModal()  { document.getElementById('delete-modal')?.classList.replace('hidden','flex'); }
-  function closeDeleteModal() { document.getElementById('delete-modal')?.classList.replace('flex','hidden'); }
-  document.getElementById('delete-modal')?.addEventListener('click', function(e) {
-    if (e.target === this) closeDeleteModal();
-  });
+  function openDeleteModal()  { 
+    const m = document.getElementById('delete-modal');
+    if (m) {
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+  }
+  function closeDeleteModal() { 
+    const m = document.getElementById('delete-modal');
+    if (m) {
+      m.classList.remove('flex');
+      m.classList.add('hidden');
+    }
+  }
 
   // ── Auto-show toast if Django message present ─────────
   {% if messages %}
   (function() {
-    const t = document.getElementById('toast');
-    if (!t) return;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3500);
+    showToast("System configurations updated");
   })();
   {% endif %}
 </script>

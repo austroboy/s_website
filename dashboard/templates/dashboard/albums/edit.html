@@ -130,7 +130,7 @@
                   </select>
                   <button type="button" 
                           onclick="addMediaByUrl()"
-                          class="px-6 py-2.5 bg-gold text-base-900 rounded-xl font-medium hover:bg-gold-light transition-colors whitespace-nowrap">
+                          class="px-6 py-2.5 bg-accent text-accent-contrast rounded-xl font-medium hover:opacity-90 transition-all whitespace-nowrap">
                     Add
                   </button>
                 </div>
@@ -277,7 +277,7 @@
               {% if album.is_published %}Unpublish & Save Draft{% else %}Save as Draft{% endif %}
             </button>
             <button type="submit" name="action" value="publish"
-                    class="w-full px-5 py-2.5 rounded-xl bg-gold text-base-900 font-semibold hover:bg-gold-light transition-colors shadow-glow-gold">
+                    class="w-full px-5 py-2.5 rounded-xl bg-accent text-accent-contrast font-semibold hover:opacity-90 transition-all shadow-md">
               {% if album.is_published %}Update & Publish{% else %}Publish Album{% endif %}
             </button>
           </div>
@@ -389,7 +389,7 @@ function renderMediaGrid() {
     const overlay = document.createElement('div');
     overlay.className = 'absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2';
     overlay.innerHTML = `
-      <button type="button" onclick="editMedia(${item.isLocal}, ${item.originalIndex})" class="p-2 rounded-lg bg-gold text-base-900 hover:bg-gold-light transition-colors" title="Edit caption">
+      <button type="button" onclick="editMedia(${item.isLocal}, ${item.originalIndex})" class="p-2 rounded-lg bg-accent text-accent-contrast hover:opacity-90 transition-all" title="Edit caption">
         <i data-lucide="edit-3" class="w-4 h-4"></i>
       </button>
       <button type="button" onclick="removeMedia(${item.isLocal}, ${item.originalIndex})" class="p-2 rounded-lg bg-red-500/80 text-content-primary hover:bg-red-600 transition-colors" title="Remove">

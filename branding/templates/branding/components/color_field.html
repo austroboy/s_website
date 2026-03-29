@@ -7,13 +7,13 @@
     required — defaults True; pass False for optional fields
 {% endcomment %}
 
-<div>
-  <label for="{{ field.id_for_label }}" class="block text-xs font-medium text-white mb-1.5">
+<div class="space-y-2">
+  <label for="{{ field.id_for_label }}" class="block text-xs font-bold text-content-primary uppercase tracking-tight" style="font-family:'Syne',sans-serif">
     {{ label }}
     {% if required != False %}
-      <span style="color:#F43F5E">*</span>
+      <span class="text-rose-500">*</span>
     {% else %}
-      <span class="ml-1 font-normal" style="color:#3D4752">optional</span>
+      <span class="ml-1 font-normal lowercase text-content-muted/60">(optional)</span>
     {% endif %}
   </label>
 
@@ -45,10 +45,10 @@
   </div>
 
   {% if hint %}
-  <p class="text-[11px] mt-1.5" style="color:#3D4752">{{ hint }}</p>
+  <p class="text-[10px] text-content-muted leading-relaxed">{{ hint }}</p>
   {% endif %}
 
   {% if field.errors %}
-  <p class="text-xs mt-1" style="color:#F43F5E">{{ field.errors|join:", " }}</p>
+  <p class="text-[10px] font-bold text-rose-500 animate-fade-in">{{ field.errors|join:", " }}</p>
   {% endif %}
 </div>

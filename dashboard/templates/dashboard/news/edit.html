@@ -300,12 +300,12 @@
               Cancel
             </a>
             <button type="submit" name="action" value="draft"
-                    class="w-full px-5 py-2.5 rounded-xl border border-gold/30 text-gold hover:bg-gold/10 transition-colors">
-              {% if news.is_published %}Unpublish & Save Draft{% else %}Save as Draft{% endif %}
+                    class="w-full px-5 py-2.5 rounded-xl border border-accent-border text-accent hover:bg-accent-bg transition-colors">
+              {% if article.is_published %}Unpublish & Save Draft{% else %}Save as Draft{% endif %}
             </button>
             <button type="submit" name="action" value="publish"
-                    class="w-full px-5 py-2.5 rounded-xl bg-gold text-base-900 font-semibold hover:bg-gold-light transition-colors shadow-glow-gold">
-              {% if news.is_published %}Update & Publish{% else %}Publish Article{% endif %}
+                    class="w-full px-5 py-2.5 rounded-xl bg-accent text-accent-contrast font-semibold hover:opacity-90 transition-all shadow-md">
+              {% if article.is_published %}Update & Publish{% else %}Publish Article{% endif %}
             </button>
           </div>
         </div>

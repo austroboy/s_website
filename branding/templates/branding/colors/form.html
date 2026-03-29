@@ -8,119 +8,143 @@
   /* ── Color picker + hex input ── */
   .color-field-row { display:flex; align-items:center; gap:12px; }
   .color-chip {
-    width:36px; height:36px; border-radius:10px; cursor:pointer;
-    border:2px solid rgba(255,255,255,.1); flex-shrink:0;
-    transition:transform .15s, box-shadow .15s;
+    width:40px; height:40px; border-radius:12px; cursor:pointer;
+    border:2px solid var(--base-600); flex-shrink:0;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
   }
-  .color-chip:hover { transform:scale(1.1); box-shadow:0 0 0 3px rgba(240,165,0,.3); }
+  .color-chip:hover { 
+    transform: scale(1.1) rotate(-4deg); 
+    box-shadow: 0 0 0 4px var(--accent-bg);
+    border-color: var(--accent);
+  }
   input[type="color"] { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
+  
   .hex-input {
-    flex:1; border-radius:10px; padding:9px 14px;
-    font-size:.875rem; color:#E2E8F0;
-    font-family:'DM Sans',sans-serif; letter-spacing:.04em;
-    outline:none; transition:border-color .15s, box-shadow .15s;
-    background:#1C2026; border:1px solid #2C343D;
+    flex:1; border-radius:12px; padding:10px 16px;
+    font-size:.875rem; color: var(--content-primary);
+    font-family:'DM Sans',sans-serif;
+    outline:none; transition: all 0.2s;
+    background: var(--base-800); 
+    border: 1px solid var(--base-700);
   }
-  .hex-input:focus { border-color:rgba(240,165,0,.5); box-shadow:0 0 0 3px rgba(240,165,0,.1); }
-  .hex-input::placeholder { color:#3D4752; }
+  .hex-input:focus { 
+    border-color: var(--accent); 
+    box-shadow: 0 0 0 4px var(--accent-bg);
+    background: var(--base-900);
+  }
+  .hex-input::placeholder { color: var(--content-disabled); }
+
   /* Form section card */
-  .form-card { background:#1C2026; border:1px solid #232830; border-radius:16px; overflow:hidden; margin-bottom:20px; }
-  .form-card-header { padding:14px 20px; border-bottom:1px solid #232830; display:flex; align-items:center; gap:10px; }
-  .form-icon { width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .form-body { padding:20px; display:grid; grid-template-columns:1fr; gap:16px; }
+  .form-card { 
+    background: var(--base-800); 
+    border: 1px solid var(--base-700); 
+    border-radius:24px; overflow:hidden; margin-bottom:24px; 
+    box-shadow: var(--shadow-sm);
+  }
+  .form-card-header { 
+    padding:16px 24px; 
+    border-bottom:1px solid var(--base-700); 
+    display:flex; align-items:center; gap:12px; 
+    background: var(--base-900/30);
+  }
+  .form-icon { 
+    width:36px; height:36px; border-radius:12px; 
+    display:flex; align-items:center; justify-content:center; 
+    flex-shrink:0; 
+  }
+  .form-body { padding:24px; display:grid; grid-template-columns:1fr; gap:20px; }
   @media(min-width:640px){ .form-body { grid-template-columns:1fr 1fr; } }
+
   /* sticky action bar */
   .action-bar {
-    position:sticky; bottom:16px; z-index:10;
-    background:#1C2026; border:1px solid #232830; border-radius:16px;
-    padding:14px; display:flex; gap:12px;
-    backdrop-filter:blur(8px);
+    position:sticky; bottom:20px; z-index:40;
+    background: var(--base-800/80); 
+    border: 1px solid var(--base-700); 
+    border-radius:20px;
+    padding:16px; display:flex; gap:12px;
+    backdrop-filter:blur(12px);
+    box-shadow: var(--shadow-lg);
   }
+
   /* preview panel */
-  .preview-panel { position:sticky; top:24px; }
+  .preview-panel { position:sticky; top:24px; transition: all 0.3s ease; }
+  .preview-panel:hover { transform: translateY(-4px); }
 </style>
 {% endblock %}
 
 {% block breadcrumb %}
-  <a  style="color:#64748B">Dashboard</a>
-  <i data-lucide="chevron-right" class="w-3 h-3" style="color:#3D4752"></i>
-  <a href="{% url 'branding:colors-list' %}" style="color:#64748B">Branding</a>
-  <i data-lucide="chevron-right" class="w-3 h-3" style="color:#3D4752"></i>
-  <a href="{% url 'branding:colors-list' %}" style="color:#64748B">Color Palette</a>
-  <i data-lucide="chevron-right" class="w-3 h-3" style="color:#3D4752"></i>
-  <span class="font-medium text-white">
-    {% if form.instance.pk %}Update{% else %}Create{% endif %}
+  <a class="transition-colors text-content-muted hover:text-accent">Dashboard</a>
+  <i data-lucide="chevron-right" class="w-3 h-3 text-content-muted/50"></i>
+  <a href="{% url 'branding:colors-list' %}" class="transition-colors text-content-muted hover:text-accent">Branding</a>
+  <i data-lucide="chevron-right" class="w-3 h-3 text-content-muted/50"></i>
+  <span class="font-bold text-content-primary">
+    {% if form.instance.pk %}Update{% else %}Create{% endif %} Palette
   </span>
 {% endblock %}
 
 {% block content %}
 
 <!-- ─── Page Header ─── -->
-<div class="fade-up d1 flex items-center justify-between mb-7">
+<div class="fade-up d1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
   <div>
-    <h1 class="font-bold text-white text-2xl leading-tight" style="font-family:'Syne',sans-serif">
+    <h1 class="font-bold text-content-primary text-2xl leading-tight" style="font-family:'Syne',sans-serif">
       {% if form.instance.pk %}Update Color Palette{% else %}Create Color Palette{% endif %}
     </h1>
-    <p class="mt-0.5 text-sm" style="color:#64748B">
-      {% if form.instance.pk %}
-        Adjust token-based theme colors for
-      {% else %}
-        Set up token-based theme colors for
-      {% endif %}
-      <span style="color:#F0A500">{{ tenant.name }}</span>
+    <p class="mt-1 text-sm text-content-muted">
+      Define the core visual tokens for <span class="text-accent font-bold">{{ tenant.name }}</span>
     </p>
   </div>
   <a href="{% url 'branding:colors-list' %}"
-     class="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors"
-     style="background:#1C2026;border:1px solid #232830;color:#94A3B8">
-    <i data-lucide="x" class="w-4 h-4"></i> Cancel
+     class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all bg-base-800 text-content-muted border border-base-700 hover:bg-base-700 hover:text-content-primary">
+    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to List
   </a>
 </div>
 
 
-<!-- ─── 2-col layout: form + sticky preview ─── -->
-<div class="fade-up d2 flex flex-col xl:flex-row gap-6">
+<div class="fade-up d2 flex flex-col xl:flex-row gap-8">
 
   <!-- FORM (left) -->
   <div class="flex-1 min-w-0">
     <form method="post" id="color-form" action="{% if form.instance.pk %}{% url 'branding:colors-update' %}{% else %}{% url 'branding:colors-create' %}{% endif %}">
       {% csrf_token %}
 
-      <!-- Display non-field errors -->
       {% if form.non_field_errors %}
-      <div class="mb-4 px-4 py-3 rounded-xl text-sm" style="background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.25);color:#F43F5E">
+      <div class="mb-6 px-5 py-4 rounded-2xl text-sm font-bold bg-rose-500/10 text-rose-500 border border-rose-500/20 shadow-sm animate-shake">
+        <div class="flex items-center gap-2 mb-1">
+           <i data-lucide="alert-circle" class="w-4 h-4"></i>
+           <span>Validation Error</span>
+        </div>
         {{ form.non_field_errors }}
       </div>
       {% endif %}
 
-
       <!-- ══ GROUP 1: Primary Brand ══ -->
       <div class="form-card">
         <div class="form-card-header">
-          <div class="form-icon" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2)">
-            <i data-lucide="droplets" style="width:16px;height:16px;color:#3B82F6"></i>
+          <div class="form-icon bg-blue-500/10 border border-blue-500/20">
+            <i data-lucide="droplets" class="w-4 h-4 text-blue-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-white" style="font-family:'Syne',sans-serif">Primary Brand</h3>
-            <p class="text-[11px]" style="color:#64748B">Main brand colour used in buttons, links and CTAs</p>
+            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Primary Brand</h3>
+            <p class="text-[11px] text-content-muted">Main brand identity colours for core UI elements</p>
           </div>
         </div>
         <div class="form-body">
-          {% include "branding/components/color_field.html" with field=form.primary label="Primary" hint="Main brand colour — buttons, links, highlights" %}
-          {% include "branding/components/color_field.html" with field=form.primary_dark label="Primary Dark" hint="Hover/active state — should be darker than primary" %}
-          {% include "branding/components/color_field.html" with field=form.primary_light label="Primary Light" hint="Tint for badges, backgrounds, soft accents" %}
-          <!-- Glow is a text field (rgba string) -->
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-medium text-white mb-1.5">
+          {% include "branding/components/color_field.html" with field=form.primary label="Primary" hint="Action buttons, active states, key highlights" %}
+          {% include "branding/components/color_field.html" with field=form.primary_dark label="Primary Dark" hint="Deep tone for hover states and heavy backgrounds" %}
+          {% include "branding/components/color_field.html" with field=form.primary_light label="Primary Light" hint="Soft tint for badges and decorative items" %}
+          <div class="sm:col-span-1">
+            <label class="block text-xs font-bold text-content-primary mb-2">
               Primary Glow
-              <span class="ml-1 font-normal" style="color:#64748B">— rgba / CSS value</span>
+              <span class="ml-1 font-normal text-content-muted">— rgba/css string</span>
             </label>
             <input type="text" name="{{ form.primary_glow.html_name }}"
                    value="{{ form.primary_glow.value|default:'' }}"
                    placeholder="rgba(0, 81, 255, 0.35)"
                    class="hex-input w-full" />
-            <p class="text-[11px] mt-1.5" style="color:#3D4752">Used for glowing shadows and highlights behind primary elements</p>
-            {% if form.primary_glow.errors %}<p class="text-xs mt-1" style="color:#F43F5E">{{ form.primary_glow.errors|join:", " }}</p>{% endif %}
+            <p class="text-[10px] mt-2 text-content-muted leading-relaxed">Adds depth via fuzzy shadows behind primary elements</p>
+            {% if form.primary_glow.errors %}<p class="text-[10px] mt-1 text-rose-500 font-bold">{{ form.primary_glow.errors|join:", " }}</p>{% endif %}
           </div>
         </div>
       </div>
@@ -128,170 +152,201 @@
       <!-- ══ GROUP 2: Secondary & Accent ══ -->
       <div class="form-card">
         <div class="form-card-header">
-          <div class="form-icon" style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2)">
-            <i data-lucide="sparkles" style="width:16px;height:16px;color:#00D4FF"></i>
+          <div class="form-icon bg-cyan-500/10 border border-cyan-500/20">
+            <i data-lucide="sparkles" class="w-4 h-4 text-cyan-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-white" style="font-family:'Syne',sans-serif">Secondary & Accent</h3>
-            <p class="text-[11px]" style="color:#64748B">Dark brand tone for navbars, footers and hero backgrounds</p>
+            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Secondary & Accent</h3>
+            <p class="text-[11px] text-content-muted">Deep tones for layout structure and highlights</p>
           </div>
         </div>
         <div class="form-body">
-          {% include "branding/components/color_field.html" with field=form.secondary label="Secondary" hint="Navbars, hero sections, card borders" %}
-          {% include "branding/components/color_field.html" with field=form.secondary_light label="Secondary Light" hint="Lighter variant for card hover states and overlays" %}
-          {% include "branding/components/color_field.html" with field=form.accent label="Accent" hint="Eye-catching highlight for badges, tags and decorations" %}
+          {% include "branding/components/color_field.html" with field=form.secondary label="Secondary" hint="Navbar, Hero and structural containers" %}
+          {% include "branding/components/color_field.html" with field=form.secondary_light label="Secondary Light" hint="Panel backgrounds and hover modifiers" %}
+          {% include "branding/components/color_field.html" with field=form.accent label="Accent" hint="Vibrant attention-grabber for special marks" %}
         </div>
       </div>
 
       <!-- ══ GROUP 3: Surfaces & Layout ══ -->
       <div class="form-card">
         <div class="form-card-header">
-          <div class="form-icon" style="background:rgba(148,163,184,.06);border:1px solid rgba(148,163,184,.15)">
-            <i data-lucide="layout-template" style="width:16px;height:16px;color:#94A3B8"></i>
+          <div class="form-icon bg-indigo-500/10 border border-indigo-500/20">
+            <i data-lucide="layout-template" class="w-4 h-4 text-indigo-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-white" style="font-family:'Syne',sans-serif">Surfaces & Layout</h3>
-            <p class="text-[11px]" style="color:#64748B">Background, card and border colours</p>
+            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Surfaces & Layout</h3>
+            <p class="text-[11px] text-content-muted">Theme backgrounds and structural borders</p>
           </div>
         </div>
         <div class="form-body">
-          {% include "branding/components/color_field.html" with field=form.surface label="Surface" hint="Default page and card background" %}
-          {% include "branding/components/color_field.html" with field=form.surface_alt label="Surface Alt" hint="Alternate background for table rows, code blocks" %}
-          {% include "branding/components/color_field.html" with field=form.border label="Border" hint="Standard dividers and input borders" %}
+          {% include "branding/components/color_field.html" with field=form.surface label="Surface" hint="Default body and main card background" %}
+          {% include "branding/components/color_field.html" with field=form.surface_alt label="Surface Alt" hint="Used for secondary panels and table stripes" %}
+          {% include "branding/components/color_field.html" with field=form.border label="Border" hint="Standard divider and component line colour" %}
         </div>
       </div>
 
       <!-- ══ GROUP 4: Typography ══ -->
       <div class="form-card">
         <div class="form-card-header">
-          <div class="form-icon" style="background:rgba(226,232,240,.05);border:1px solid rgba(226,232,240,.1)">
-            <i data-lucide="type" style="width:16px;height:16px;color:#CBD5E1"></i>
+          <div class="form-icon bg-amber-500/10 border border-amber-500/20">
+            <i data-lucide="type" class="w-4 h-4 text-amber-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-white" style="font-family:'Syne',sans-serif">Typography</h3>
-            <p class="text-[11px]" style="color:#64748B">Body and secondary text colours</p>
+            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Typography</h3>
+            <p class="text-[11px] text-content-muted">Text readability and hierarchy tokens</p>
           </div>
         </div>
         <div class="form-body">
-          {% include "branding/components/color_field.html" with field=form.text label="Body Text" hint="Primary readable content and headings" %}
-          {% include "branding/components/color_field.html" with field=form.text_muted label="Muted Text" hint="Secondary labels, timestamps, helper text" %}
+          {% include "branding/components/color_field.html" with field=form.text label="Body Text" hint="Primary readable content and large headings" %}
+          {% include "branding/components/color_field.html" with field=form.text_muted label="Muted Text" hint="Detailed help text and secondary labels" %}
         </div>
       </div>
 
       <!-- ══ GROUP 5: Footer ══ -->
       <div class="form-card">
         <div class="form-card-header">
-          <div class="form-icon" style="background:rgba(100,116,139,.08);border:1px solid rgba(100,116,139,.2)">
-            <i data-lucide="rows" style="width:16px;height:16px;color:#64748B"></i>
+          <div class="form-icon bg-slate-500/10 border border-slate-500/20">
+            <i data-lucide="rows" class="w-4 h-4 text-slate-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-white" style="font-family:'Syne',sans-serif">Footer</h3>
-            <p class="text-[11px]" style="color:#64748B">Footer section background and text</p>
+            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Footer</h3>
+            <p class="text-[11px] text-content-muted">Custom colours specifically for the footer region</p>
           </div>
         </div>
         <div class="form-body">
-          {% include "branding/components/color_field.html" with field=form.footer_bg label="Footer Background" hint="Footer section background colour" %}
-          {% include "branding/components/color_field.html" with field=form.footer_text label="Footer Text" hint="Text, link and icon colour inside footer" %}
+          {% include "branding/components/color_field.html" with field=form.footer_bg label="Footer Background" hint="Distinctive footer section background" %}
+          {% include "branding/components/color_field.html" with field=form.footer_text label="Footer Text" hint="Links and baseline text inside the footer" %}
         </div>
       </div>
 
-      <!-- ══ GROUP 6: Semantic / Status ══ -->
+      <!-- ══ GROUP 6: Semantic Status ══ -->
       <div class="form-card">
         <div class="form-card-header">
-          <div class="form-icon" style="background:rgba(40,167,69,.08);border:1px solid rgba(40,167,69,.2)">
-            <i data-lucide="traffic-cone" style="width:16px;height:16px;color:#28A745"></i>
+          <div class="form-icon bg-emerald-500/10 border border-emerald-500/20">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-white" style="font-family:'Syne',sans-serif">Semantic / Status</h3>
-            <p class="text-[11px]" style="color:#64748B">Feedback colours for system states</p>
+            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Functional States</h3>
+            <p class="text-[11px] text-content-muted">Semantic colours for system feedback</p>
           </div>
         </div>
         <div class="form-body">
-          {% include "branding/components/color_field.html" with field=form.success label="Success" hint="Confirmations, published states, positive feedback" %}
-          {% include "branding/components/color_field.html" with field=form.warning label="Warning" hint="Alerts, expiry notices, pending states" %}
-          {% include "branding/components/color_field.html" with field=form.error label="Error" hint="Validation errors, destructive action indicators" %}
+          {% include "branding/components/color_field.html" with field=form.success label="Success" hint="Success messages and active badges" %}
+          {% include "branding/components/color_field.html" with field=form.warning label="Warning" hint="Pending alerts and notifications" %}
+          {% include "branding/components/color_field.html" with field=form.error label="Error" hint="Validation errors and critical alerts" %}
         </div>
       </div>
 
-      <!-- ══ GROUP 7: Dark Mode Overrides ══ -->
+      <!-- ══ GROUP 7: Dark Mode ══ -->
       <div class="form-card">
         <div class="form-card-header">
-          <div class="form-icon" style="background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.15)">
-            <i data-lucide="moon" style="width:16px;height:16px;color:#A855F7"></i>
+          <div class="form-icon bg-purple-500/10 border border-purple-500/20">
+            <i data-lucide="moon" class="w-4 h-4 text-purple-500"></i>
           </div>
           <div>
-            <h3 class="text-sm font-semibold text-white" style="font-family:'Syne',sans-serif">Dark Mode Overrides</h3>
-            <p class="text-[11px]" style="color:#64748B">Optional — leave blank to inherit from light mode values</p>
+            <h3 class="text-sm font-bold text-content-primary" style="font-family:'Syne',sans-serif">Dark Theme Overrides</h3>
+            <p class="text-[11px] text-content-muted">Specific refinements for deep theme mode</p>
           </div>
-          <span class="ml-auto text-[11px] px-2 py-0.5 rounded-md font-semibold"
-                style="background:rgba(168,85,247,.1);color:#A855F7;border:1px solid rgba(168,85,247,.2)">Optional</span>
+          <span class="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">Optional</span>
         </div>
         <div class="form-body">
-          {% include "branding/components/color_field.html" with field=form.dark_primary label="Dark Primary" hint="Override primary in dark mode" required=False %}
-          {% include "branding/components/color_field.html" with field=form.dark_surface label="Dark Surface" hint="Override surface/background in dark mode" required=False %}
-          {% include "branding/components/color_field.html" with field=form.dark_text label="Dark Text" hint="Override body text colour in dark mode" required=False %}
+          {% include "branding/components/color_field.html" with field=form.dark_primary label="Dark Primary" hint="Custom primary color for dark interfaces" required=False %}
+          {% include "branding/components/color_field.html" with field=form.dark_surface label="Dark Surface" hint="Global background override for dark mode" required=False %}
+          {% include "branding/components/color_field.html" with field=form.dark_text label="Dark Text" hint="Body text override for better contrast in dark mode" required=False %}
         </div>
       </div>
 
       <!-- ── Sticky Action Bar ── -->
-      <div class="action-bar">
+      <div class="action-bar flex flex-col sm:flex-row gap-3">
         <button type="submit"
-                class="flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all"
-                style="background:#F0A500;color:#0D1012;font-family:'Syne',sans-serif">
+                class="flex-1 py-3.5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2.5 transition-all bg-accent text-accent-contrast shadow-glow-accent hover:scale-[1.02] active:scale-[0.98]">
           <i data-lucide="save" class="w-4 h-4"></i>
-          {% if form.instance.pk %}Save Changes{% else %}Create Palette{% endif %}
+          {% if form.instance.pk %}Save Palette Changes{% else %}Initialise Color Palette{% endif %}
         </button>
         <a href="{% url 'branding:colors-list' %}"
-           class="px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center gap-2"
-           style="background:#232830;color:#94A3B8;border:1px solid #2C343D">
-          Cancel
+           class="px-6 py-3.5 rounded-2xl text-sm font-bold transition-all bg-base-800 text-content-muted border border-base-700 hover:bg-base-700 hover:text-content-primary flex items-center justify-center gap-2">
+           Cancel
         </a>
       </div>
 
     </form>
-  </div><!-- /form col -->
+  </div>
 
 
   <!-- STICKY LIVE PREVIEW (right) -->
-  <div class="xl:w-72 flex-shrink-0">
-    <div class="preview-panel rounded-2xl overflow-hidden" style="background:#1C2026;border:1px solid #232830">
-      <div class="px-4 py-3" style="border-bottom:1px solid #232830">
-        <div class="flex items-center gap-2">
-          <i data-lucide="eye" class="w-4 h-4" style="color:#00C2CC"></i>
-          <span class="text-xs font-semibold text-white" style="font-family:'Syne',sans-serif">Live Preview</span>
-          <span class="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded"
-                style="background:rgba(0,194,204,.1);color:#00C2CC;border:1px solid rgba(0,194,204,.2)">Real-time</span>
-        </div>
+  <div class="xl:w-80 flex-shrink-0">
+    <div class="preview-panel rounded-2xl overflow-hidden bg-base-800 border border-base-700 shadow-card">
+      <div class="px-5 py-4 border-b border-base-700 bg-base-900/30 flex items-center justify-between">
+         <div class="flex items-center gap-2">
+            <i data-lucide="eye" class="w-4 h-4 text-cyan-500"></i>
+            <span class="text-xs font-bold text-content-primary uppercase tracking-wider" style="font-family:'Syne',sans-serif">Live Simulator</span>
+         </div>
+         <div class="flex items-center" id="theme-toggle-sim">
+            <button onclick="setSimTheme('light')" id="sim-light-btn" class="p-1 px-2 rounded-l-lg bg-accent text-accent-contrast border border-accent/20 text-[9px] font-bold">LIGHT</button>
+            <button onclick="setSimTheme('dark')" id="sim-dark-btn" class="p-1 px-2 rounded-r-lg bg-base-700 text-content-muted border border-base-600 text-[9px] font-bold">DARK</button>
+         </div>
       </div>
-      <!-- Mini site sim -->
-      <div class="p-3">
-        <div id="mini-preview" class="rounded-xl overflow-hidden" style="border:1px solid #2C343D">
-          <div id="mp-nav" class="flex items-center justify-between px-3 py-2">
-            <div class="flex items-center gap-1.5">
-              <div id="mp-logo" class="w-5 h-5 rounded-md"></div>
-              <span class="text-[10px] font-bold text-white" style="font-family:'Syne',sans-serif">{{ tenant.name|truncatechars:12 }}</span>
+      
+      <div class="p-4" id="sim-container">
+        <!-- Site Frame -->
+        <div id="mini-preview" class="rounded-2xl overflow-hidden border border-base-700 shadow-2xl transition-all duration-500">
+          <div id="mp-nav" class="flex items-center justify-between px-3 py-2.5">
+            <div class="flex items-center gap-2">
+              <div id="mp-logo" class="w-5 h-5 rounded-md shadow-sm"></div>
+              <span class="text-[10px] font-bold text-content-primary" id="mp-tenant-name" style="font-family:'Syne',sans-serif">{{ tenant.name|truncatechars:10 }}</span>
             </div>
-            <button id="mp-cta" class="text-[10px] px-2 py-0.5 rounded-md font-semibold text-white">Apply</button>
+            <button id="mp-cta" class="text-[9px] px-2.5 py-1 rounded-md font-bold shadow-sm">APPLY</button>
           </div>
-          <div id="mp-hero" class="px-3 py-4">
-            <div id="mp-tag" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold mb-1.5">
-              <span class="w-1 h-1 rounded-full bg-white opacity-70"></span>Est. 1974
+          
+          <div id="mp-hero" class="px-3 py-6 relative overflow-hidden">
+            <div class="relative z-10">
+              <div id="mp-tag" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[8px] font-bold mb-2">
+                <span class="w-1 h-1 rounded-full bg-white opacity-80 animate-pulse"></span>OPEN ENROLMENT
+              </div>
+              <h4 class="text-[13px] font-bold text-content-primary mb-1.5 leading-tight" style="font-family:'Syne',sans-serif">Future Starts Here</h4>
+              <p class="text-[9px] opacity-70 mb-3 max-w-[120px]" id="mp-hero-text">Leading school excellence since 1974.</p>
+              <div class="flex gap-1.5">
+                <button id="mp-pb" class="text-[9px] px-3 py-1.5 rounded-lg font-bold shadow-md transform active:scale-95 transition-all">Apply Now</button>
+                <button id="mp-sb" class="text-[9px] px-3 py-1.5 rounded-lg font-bold border backdrop-blur-sm">View More</button>
+              </div>
             </div>
-            <h4 class="text-xs font-bold text-white mb-1" style="font-family:'Syne',sans-serif">Discover Your Potential</h4>
-            <div class="flex gap-1.5 mt-2">
-              <button id="mp-pb" class="text-[10px] px-2 py-1 rounded-md font-semibold text-white">Apply</button>
-              <button id="mp-sb" class="text-[10px] px-2 py-1 rounded-md font-semibold text-white" style="border:1px solid rgba(255,255,255,.3)">Learn</button>
-            </div>
+            <!-- Decorative circle -->
+            <div class="absolute -bottom-6 -right-6 w-16 h-16 rounded-full opacity-10" id="mp-decor" style="background: white"></div>
           </div>
-          <div id="mp-footer" class="px-3 py-2">
-            <span class="text-[9px]" style="opacity:.6">© 2026 {{ tenant.name|truncatechars:20 }}</span>
+          
+          <div id="mp-body" class="p-3 bg-white transition-colors duration-500">
+             <div class="grid grid-cols-2 gap-2">
+                <div class="p-2 rounded-xl bg-slate-50 border border-slate-100" id="mp-card-1">
+                   <div class="w-full h-1 bg-slate-200 rounded-full mb-1"></div>
+                   <div class="w-1/2 h-1 bg-slate-200 rounded-full"></div>
+                </div>
+                <div class="p-2 rounded-xl bg-slate-50 border border-slate-100" id="mp-card-2">
+                   <div class="w-full h-1 bg-slate-200 rounded-full mb-1"></div>
+                   <div class="w-1/2 h-1 bg-slate-200 rounded-full"></div>
+                </div>
+             </div>
+          </div>
+
+          <div id="mp-footer" class="px-4 py-3 border-t">
+            <div class="flex items-center justify-between">
+               <span class="text-[8px] font-medium opacity-60">© 2026 Admin</span>
+               <div class="flex gap-2">
+                  <div class="w-2.5 h-2.5 rounded-full bg-white/20"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-white/20"></div>
+               </div>
+            </div>
           </div>
         </div>
+        
+        <!-- Palette Status -->
+        <div class="mt-6 flex flex-wrap gap-2" id="swatch-strip"></div>
       </div>
-      <!-- Swatch strip -->
-      <div class="px-4 pb-4">
-        <p class="text-[10px] mb-2" style="color:#64748B">Current palette</p>
-        <div class="flex gap-1.5 flex-wrap" id="swatch-strip"></div>
+      
+      <div class="px-5 py-4 bg-base-900/40 border-t border-base-700">
+         <div class="flex items-center gap-3">
+           
+            <p class="text-[10px] text-content-muted leading-tight font-medium">Changes here are captured instantly but only applied once saved.</p>
+         </div>
       </div>
     </div>
   </div><!-- /preview col -->
@@ -303,29 +358,98 @@
 
 {% block extra_scripts %}
 <script>
+  let simTheme = 'light';
+
+  function setSimTheme(theme) {
+    simTheme = theme;
+    const lightBtn = document.getElementById('sim-light-btn');
+    const darkBtn = document.getElementById('sim-dark-btn');
+    const mpBody = document.getElementById('mp-body');
+    const mpCard1 = document.getElementById('mp-card-1');
+    const mpCard2 = document.getElementById('mp-card-2');
+    const hpText = document.getElementById('mp-hero-text');
+    const tnName = document.getElementById('mp-tenant-name');
+
+    if(theme === 'dark') {
+      darkBtn.className = "p-1 px-2 rounded-r-lg bg-accent text-accent-contrast border border-accent/20 text-[9px] font-bold";
+      lightBtn.className = "p-1 px-2 rounded-l-lg bg-base-700 text-content-muted border border-base-600 text-[9px] font-bold";
+      mpBody.style.background = '#0F172A';
+      mpCard1.style.background = '#1E293B'; mpCard1.style.borderColor = '#334155';
+      mpCard2.style.background = '#1E293B'; mpCard2.style.borderColor = '#334155';
+    } else {
+      lightBtn.className = "p-1 px-2 rounded-l-lg bg-accent text-accent-contrast border border-accent/20 text-[9px] font-bold";
+      darkBtn.className = "p-1 px-2 rounded-r-lg bg-base-700 text-content-muted border border-base-600 text-[9px] font-bold";
+      mpBody.style.background = '#ffffff';
+      mpCard1.style.background = '#f8fafc'; mpCard1.style.borderColor = '#f1f5f9';
+      mpCard2.style.background = '#f8fafc'; mpCard2.style.borderColor = '#f1f5f9';
+    }
+    updatePreview();
+  }
+
   // ── Preview update ──────────────────────────────────
   function updatePreview() {
-    const g = k => document.querySelector(`[name="${k}"]`)?.value || '';
-    const p  = g('primary')      || '#0051FF';
+    const g = k => {
+        // If dark theme, check for overrides first
+        if(simTheme === 'dark') {
+            const override = document.querySelector(`[name="dark_${k}"]`)?.value;
+            if(override) return override;
+        }
+        return document.querySelector(`[name="${k}"]`)?.value || '';
+    };
+
+    const p  = g('primary')      || '#3B82F6';
     const sec= g('secondary')    || '#0F1D40';
     const acc= g('accent')       || '#00D4FF';
+    const surface = g('surface') || (simTheme === 'dark' ? '#0F172A' : '#ffffff');
+    const txt = g('text')        || (simTheme === 'dark' ? '#ffffff' : '#0F172A');
     const ft = g('footer_bg')    || '#111827';
     const ftT= g('footer_text')  || '#ffffff';
+    const brd = g('border')      || (simTheme === 'dark' ? '#334155' : '#E2E8F0');
 
     const nav = document.getElementById('mp-nav');
     if(nav) nav.style.background = sec;
+    
     const logo = document.getElementById('mp-logo');
     if(logo) logo.style.background = p;
+    
     const cta = document.getElementById('mp-cta');
-    if(cta){ cta.style.background=p; cta.style.border='none'; }
+    if(cta){ 
+        cta.style.background=p; 
+        cta.style.color='#ffffff';
+    }
+    
     const hero = document.getElementById('mp-hero');
-    if(hero) hero.style.background = `linear-gradient(135deg,${sec},${sec}cc)`;
+    if(hero) hero.style.background = `linear-gradient(135deg, ${sec}, ${g('secondary_light') || sec})`;
+    
     const tag = document.getElementById('mp-tag');
-    if(tag){ tag.style.background=`${acc}22`; tag.style.color=acc; tag.style.border=`1px solid ${acc}44`; }
+    if(tag){ 
+        tag.style.background=`${acc}22`; 
+        tag.style.color=acc; 
+        tag.style.border=`1px solid ${acc}44`; 
+    }
+    
     const pb = document.getElementById('mp-pb');
-    if(pb){ pb.style.background=p; pb.style.border='none'; }
+    if(pb){ 
+        pb.style.background=p; 
+        pb.style.color='#ffffff';
+    }
+    
+    const sb = document.getElementById('mp-sb');
+    if(sb) {
+        sb.style.borderColor = 'rgba(255,255,255,0.3)';
+        sb.style.color = '#ffffff';
+    }
+
     const footer = document.getElementById('mp-footer');
-    if(footer){ footer.style.background=ft; footer.style.color=ftT; }
+    if(footer){ 
+        footer.style.background=ft; 
+        footer.style.color=ftT; 
+        footer.style.borderColor = 'rgba(255,255,255,0.05)';
+    }
+
+    const mpBody = document.getElementById('mp-body');
+    if(mpBody && !mpBody.style.background) mpBody.style.background = surface;
+
     updateSwatches();
   }
 
@@ -334,8 +458,8 @@
     if(!strip) return;
     const keys = ['primary','secondary','accent','surface','text','success','warning','error'];
     strip.innerHTML = keys.map(k => {
-      const v = document.querySelector(`[name="${k}"]`)?.value || '#888';
-      return `<div title="${k}: ${v}" style="width:26px;height:26px;border-radius:7px;background:${v};border:1px solid rgba(255,255,255,.08);cursor:default"></div>`;
+      const v = document.querySelector(`[name="${k}"]`)?.value || '#ccc';
+      return `<div title="${k}: ${v}" class="w-7 h-7 rounded-lg border border-base-700 shadow-sm" style="background:${v}"></div>`;
     }).join('');
   }
 
@@ -347,14 +471,16 @@
     if(!picker || !hex) return;
 
     picker.addEventListener('input', () => {
-      hex.value = picker.value;
+      hex.value = picker.value.toUpperCase();
       if(chip) chip.style.background = picker.value;
       updatePreview();
     });
     hex.addEventListener('input', () => {
-      if(/^#[0-9A-Fa-f]{6}$/.test(hex.value)) {
-        picker.value = hex.value;
-        if(chip) chip.style.background = hex.value;
+      let val = hex.value.trim();
+      if(!val.startsWith('#')) val = '#' + val;
+      if(/^#[0-9A-Fa-f]{6}$/.test(val)) {
+        picker.value = val;
+        if(chip) chip.style.background = val;
         updatePreview();
       }
     });
