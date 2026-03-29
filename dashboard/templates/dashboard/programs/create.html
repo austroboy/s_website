@@ -4,27 +4,27 @@
 {% block title %}Add Program - {{ tenant.name }}{% endblock %}
 
 {% block breadcrumb %}
-<span class="text-slate-muted">Academics</span>
+<span class="text-content-muted">Academics</span>
 <i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
-<span class="text-slate-muted">Programs</span>
+<span class="text-content-muted">Programs</span>
 <i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
-<span class="text-white font-medium">Add Program</span>
+<span class="text-content-primary font-medium">Add Program</span>
 {% endblock %}
 
 {% block content %}
 <div class="fade-up delay-1 mb-7">
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div>
-      <h1 class="font-display text-2xl font-bold text-white leading-tight">
+      <h1 class="font-display text-2xl font-bold text-content-primary leading-tight">
         Add Academic Program
       </h1>
-      <p class="mt-0.5 text-sm text-slate-muted">
+      <p class="mt-0.5 text-sm text-content-muted">
         Add a new academic program or course for {{ tenant.name }}
       </p>
     </div>
     <div class="flex items-center gap-2">
       <a href="/dashboard/programs/" 
-         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors">
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-base-600 text-content-muted hover:text-content-primary hover:border-base-500 transition-colors">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
         Back to Programs
       </a>
@@ -41,38 +41,38 @@
     <div class="lg:col-span-2">
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-6 py-5 border-b border-base-700">
-          <h2 class="font-display font-semibold text-white">Program Details</h2>
+          <h2 class="font-display font-semibold text-content-primary">Program Details</h2>
         </div>
         
         <div class="p-6 space-y-5">
           <!-- Name Field -->
           <div>
-            <label class="block text-sm font-medium text-slate-soft mb-2">
+            <label class="block text-sm font-medium text-content-secondary mb-2">
               Program Name <span class="text-gold">*</span>
             </label>
             <input type="text" 
                    name="name" 
                    id="name"
                    required
-                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"
                    placeholder="Bachelor of Science in Computer Science">
           </div>
           
           <!-- Description Field -->
           <div>
-            <label class="block text-sm font-medium text-slate-soft mb-2">
+            <label class="block text-sm font-medium text-content-secondary mb-2">
               Description
             </label>
             <textarea name="description" 
                       id="description"
                       rows="6"
-                      class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"
+                      class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"
                       placeholder="Detailed description of the program, curriculum highlights, duration, etc."></textarea>
           </div>
           
           <!-- Order Field -->
           <div>
-            <label class="block text-sm font-medium text-slate-soft mb-2">
+            <label class="block text-sm font-medium text-content-secondary mb-2">
               Display Order
             </label>
             <input type="number" 
@@ -80,8 +80,8 @@
                    id="order"
                    value="0"
                    min="0"
-                   class="w-32 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
-            <p class="mt-1.5 text-xs text-slate-muted">
+                   class="w-32 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+            <p class="mt-1.5 text-xs text-content-muted">
               Lower numbers appear first in listings
             </p>
           </div>
@@ -95,27 +95,27 @@
       <!-- Icon Upload Card -->
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-5 py-4 border-b border-base-700">
-          <h3 class="font-display font-semibold text-white">Program Icon</h3>
+          <h3 class="font-display font-semibold text-content-primary">Program Icon</h3>
         </div>
         <div class="p-5">
           <div>
-            <label class="block text-sm font-medium text-slate-soft mb-2">
+            <label class="block text-sm font-medium text-content-secondary mb-2">
               Choose Icon
             </label>
             <input type="file" 
                    name="icon" 
                    id="icon_input"
                    accept="image/*"
-                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gold file:text-base-900 hover:file:bg-gold-light"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gold file:text-base-900 hover:file:bg-gold-light"
                    onchange="previewFile(this, 'icon-preview', 'icon-preview-container')">
-            <p class="mt-1.5 text-xs text-slate-muted">
+            <p class="mt-1.5 text-xs text-content-muted">
               Select an icon image (SVG, PNG, JPG, WebP)
             </p>
           </div>
           
           <!-- Icon Preview -->
           <div id="icon-preview-container" class="mt-4 hidden">
-            <p class="text-xs text-slate-muted mb-2">Preview:</p>
+            <p class="text-xs text-content-muted mb-2">Preview:</p>
             <div class="flex justify-center">
               <img id="icon-preview" src="" alt="Preview" class="w-24 h-24 rounded-xl border border-base-600 object-contain bg-base-900 p-2">
             </div>
@@ -132,27 +132,27 @@
       <!-- Featured Image Upload Card -->
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-5 py-4 border-b border-base-700">
-          <h3 class="font-display font-semibold text-white">Featured Image</h3>
+          <h3 class="font-display font-semibold text-content-primary">Featured Image</h3>
         </div>
         <div class="p-5">
           <div>
-            <label class="block text-sm font-medium text-slate-soft mb-2">
+            <label class="block text-sm font-medium text-content-secondary mb-2">
               Choose Image
             </label>
             <input type="file" 
                    name="featured_image" 
                    id="featured_image_input"
                    accept="image/*"
-                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gold file:text-base-900 hover:file:bg-gold-light"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gold file:text-base-900 hover:file:bg-gold-light"
                    onchange="previewFile(this, 'featured-image-preview', 'featured-image-preview-container')">
-            <p class="mt-1.5 text-xs text-slate-muted">
+            <p class="mt-1.5 text-xs text-content-muted">
               Select a banner image (recommended 16:9)
             </p>
           </div>
           
           <!-- Featured Image Preview -->
           <div id="featured-image-preview-container" class="mt-4 hidden">
-            <p class="text-xs text-slate-muted mb-2">Preview:</p>
+            <p class="text-xs text-content-muted mb-2">Preview:</p>
             <img id="featured-image-preview" src="" alt="Preview" class="w-full rounded-xl border border-base-600 object-cover bg-base-900 aspect-video">
             <button type="button" 
                     onclick="clearFile('featured_image_input', 'featured-image-preview-container')"
@@ -168,32 +168,32 @@
       <!-- Quick Tips -->
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-5 py-4 border-b border-base-700">
-          <h3 class="font-display font-semibold text-white">Quick Tips</h3>
+          <h3 class="font-display font-semibold text-content-primary">Quick Tips</h3>
         </div>
         <div class="p-5 space-y-3">
           <div class="flex items-start gap-3">
             <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
               <i data-lucide="check" class="w-3 h-3"></i>
             </div>
-            <p class="text-sm text-slate-soft">Use clear program names with degree type</p>
+            <p class="text-sm text-content-secondary">Use clear program names with degree type</p>
           </div>
           <div class="flex items-start gap-3">
             <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
               <i data-lucide="check" class="w-3 h-3"></i>
             </div>
-            <p class="text-sm text-slate-soft">Include duration, eligibility in description</p>
+            <p class="text-sm text-content-secondary">Include duration, eligibility in description</p>
           </div>
           <div class="flex items-start gap-3">
             <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
               <i data-lucide="check" class="w-3 h-3"></i>
             </div>
-            <p class="text-sm text-slate-soft">Use SVG icons for better scaling</p>
+            <p class="text-sm text-content-secondary">Use SVG icons for better scaling</p>
           </div>
           <div class="flex items-start gap-3">
             <div class="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 mt-0.5">
               <i data-lucide="check" class="w-3 h-3"></i>
             </div>
-            <p class="text-sm text-slate-soft">Lower order numbers appear first</p>
+            <p class="text-sm text-content-secondary">Lower order numbers appear first</p>
           </div>
         </div>
       </div>
@@ -203,7 +203,7 @@
         <div class="p-5">
           <div class="flex flex-col gap-3">
             <a href="/dashboard/programs/" 
-               class="w-full px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors text-center">
+               class="w-full px-5 py-2.5 rounded-xl border border-base-600 text-content-muted hover:text-content-primary hover:border-base-500 transition-colors text-center">
               Cancel
             </a>
             <button type="submit" name="action" value="draft"

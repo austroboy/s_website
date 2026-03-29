@@ -4,32 +4,32 @@
 {% block title %}Edit Album - {{ tenant.name }}{% endblock %}
 
 {% block breadcrumb %}
-<span class="text-slate-muted">Content</span>
+<span class="text-content-muted">Content</span>
 <i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
-<span class="text-slate-muted">Gallery</span>
+<span class="text-content-muted">Gallery</span>
 <i data-lucide="chevron-right" class="w-3 h-3 text-base-500"></i>
-<span class="text-white font-medium">Edit: {{ album.title|truncatechars:30 }}</span>
+<span class="text-content-primary font-medium">Edit: {{ album.title|truncatechars:30 }}</span>
 {% endblock %}
 
 {% block content %}
 <div class="fade-up delay-1 mb-7">
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div>
-      <h1 class="font-display text-2xl font-bold text-white leading-tight">
+      <h1 class="font-display text-2xl font-bold text-content-primary leading-tight">
         Edit Album
       </h1>
-      <p class="mt-0.5 text-sm text-slate-muted">
+      <p class="mt-0.5 text-sm text-content-muted">
         Update album details and manage media
       </p>
     </div>
     <div class="flex items-center gap-2">
       <a href="/dashboard/albums/" 
-         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors">
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-base-600 text-content-muted hover:text-content-primary hover:border-base-500 transition-colors">
         <i data-lucide="arrow-left" class="w-4 h-4"></i>
         Back to Albums
       </a>
       <a href="/dashboard/albums/{{ album.id }}/preview/" target="_blank"
-         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-base-700 text-white hover:bg-base-600 transition-colors">
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-base-700 text-content-primary hover:bg-base-600 transition-colors">
         <i data-lucide="eye" class="w-4 h-4"></i>
         Preview Album
       </a>
@@ -46,8 +46,8 @@
     <div class="lg:col-span-2">
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-6 py-5 border-b border-base-700 flex items-center justify-between">
-          <h2 class="font-display font-semibold text-white">Album Details</h2>
-          <span class="text-xs text-slate-muted">
+          <h2 class="font-display font-semibold text-content-primary">Album Details</h2>
+          <span class="text-xs text-content-muted">
             <i data-lucide="clock" class="w-3 h-3 inline mr-1"></i>
             Last updated: {{ album.last_synced|date:"M d, Y H:i" }}
           </span>
@@ -56,7 +56,7 @@
         <div class="p-6 space-y-5">
           <!-- Title Field -->
           <div>
-            <label class="block text-sm font-medium text-slate-soft mb-2">
+            <label class="block text-sm font-medium text-content-secondary mb-2">
               Album Title <span class="text-gold">*</span>
             </label>
             <input type="text" 
@@ -64,18 +64,18 @@
                    id="title"
                    value="{{ album.title }}"
                    required
-                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
           </div>
           
           <!-- Description Field -->
           <div>
-            <label class="block text-sm font-medium text-slate-soft mb-2">
+            <label class="block text-sm font-medium text-content-secondary mb-2">
               Description
             </label>
             <textarea name="description" 
                       id="description"
                       rows="4"
-                      class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">{{ album.description }}</textarea>
+                      class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">{{ album.description }}</textarea>
           </div>
           
           <!-- Hidden fields for media -->
@@ -84,20 +84,20 @@
           
           <!-- Media Manager Section -->
           <div class="pt-4 border-t border-base-700">
-            <h3 class="font-display font-semibold text-white mb-4">Media Manager</h3>
+            <h3 class="font-display font-semibold text-content-primary mb-4">Media Manager</h3>
             
             <!-- Tabs for Add Media -->
             <div class="mb-6" x-data="{ tab: 'local' }">
               <div class="flex border-b border-base-700 mb-4">
                 <button type="button" 
                         @click="tab = 'local'"
-                        :class="tab === 'local' ? 'border-gold text-gold' : 'border-transparent text-slate-muted hover:text-white'"
+                        :class="tab === 'local' ? 'border-gold text-gold' : 'border-transparent text-content-muted hover:text-content-primary'"
                         class="px-4 py-2 border-b-2 font-medium text-sm transition-colors">
                   Local Upload
                 </button>
                 <button type="button" 
                         @click="tab = 'url'"
-                        :class="tab === 'url' ? 'border-gold text-gold' : 'border-transparent text-slate-muted hover:text-white'"
+                        :class="tab === 'url' ? 'border-gold text-gold' : 'border-transparent text-content-muted hover:text-content-primary'"
                         class="px-4 py-2 border-b-2 font-medium text-sm transition-colors">
                   Add by URL
                 </button>
@@ -112,8 +112,8 @@
                   <div class="w-16 h-16 rounded-full bg-base-700/50 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                     <i data-lucide="upload-cloud" class="w-8 h-8 text-gold"></i>
                   </div>
-                  <h4 class="text-white font-medium mb-1">Click or drag images & videos</h4>
-                  <p class="text-xs text-slate-muted uppercase tracking-wider">Supports JPG, PNG, GIF, MP4, WEBM</p>
+                  <h4 class="text-content-primary font-medium mb-1">Click or drag images & videos</h4>
+                  <p class="text-xs text-content-muted uppercase tracking-wider">Supports JPG, PNG, GIF, MP4, WEBM</p>
                 </div>
               </div>
 
@@ -123,8 +123,8 @@
                   <input type="url" 
                          id="media-url-input"
                          placeholder="https://example.com/image.jpg"
-                         class="flex-1 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white text-sm placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
-                  <select id="media-type-select" class="px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white text-sm focus:border-gold focus:ring-1 focus:ring-gold/30">
+                         class="flex-1 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary text-sm placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
+                  <select id="media-type-select" class="px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary text-sm focus:border-gold focus:ring-1 focus:ring-gold/30">
                     <option value="image">Image</option>
                     <option value="video">Video</option>
                   </select>
@@ -140,7 +140,7 @@
             <!-- Media Grid -->
             <div>
               <div class="flex items-center justify-between mb-3">
-                <h4 class="text-sm font-medium text-white">Media Items <span id="media-count" class="text-gold ml-1">{{ album.media_items|length }}</span></h4>
+                <h4 class="text-sm font-medium text-content-primary">Media Items <span id="media-count" class="text-gold ml-1">{{ album.media_items|length }}</span></h4>
                 <button type="button" 
                         onclick="clearAllMedia()"
                         class="text-xs text-red-400 hover:text-red-300 transition-colors">
@@ -161,18 +161,18 @@
       <!-- Status Card -->
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-5 py-4 border-b border-base-700">
-          <h3 class="font-display font-semibold text-white">Album Status</h3>
+          <h3 class="font-display font-semibold text-content-primary">Album Status</h3>
         </div>
         <div class="p-5">
           <div class="flex items-center justify-between mb-4">
-            <span class="text-sm text-slate-soft">Current Status</span>
+            <span class="text-sm text-content-secondary">Current Status</span>
             {% if album.is_published %}
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
               Published
             </span>
             {% else %}
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-base-600/50 text-slate-soft border border-base-600">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-base-600/50 text-content-secondary border border-base-600">
               <span class="w-1.5 h-1.5 bg-base-500 rounded-full"></span>
               Draft
             </span>
@@ -181,20 +181,20 @@
           
           <div class="space-y-3 text-sm">
             <div class="flex justify-between">
-              <span class="text-slate-muted">SMS ID</span>
-              <span class="text-white font-mono text-xs">{{ album.sms_id }}</span>
+              <span class="text-content-muted">SMS ID</span>
+              <span class="text-content-primary font-mono text-xs">{{ album.sms_id }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-slate-muted">Created</span>
-              <span class="text-white">{{ album.created_at|date:"M d, Y" }}</span>
+              <span class="text-content-muted">Created</span>
+              <span class="text-content-primary">{{ album.created_at|date:"M d, Y" }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-slate-muted">Last Modified</span>
-              <span class="text-white">{{ album.last_synced|date:"M d, Y H:i" }}</span>
+              <span class="text-content-muted">Last Modified</span>
+              <span class="text-content-primary">{{ album.last_synced|date:"M d, Y H:i" }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-slate-muted">Media Count</span>
-              <span class="text-white font-medium" id="sidebar-media-count">{{ album.media_items|length }}</span>
+              <span class="text-content-muted">Media Count</span>
+              <span class="text-content-primary font-medium" id="sidebar-media-count">{{ album.media_items|length }}</span>
             </div>
           </div>
         </div>
@@ -203,18 +203,18 @@
       <!-- Cover Image Upload Card -->
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-5 py-4 border-b border-base-700">
-          <h3 class="font-display font-semibold text-white">Cover Image</h3>
+          <h3 class="font-display font-semibold text-content-primary">Cover Image</h3>
         </div>
         <div class="p-5">
           <!-- Current Cover Preview (if exists) -->
           {% if album.cover_image %}
           <div class="mb-4" id="current-cover-container">
-            <p class="text-xs text-slate-muted mb-2">Current cover:</p>
+            <p class="text-xs text-content-muted mb-2">Current cover:</p>
             <div class="relative">
               <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="w-full rounded-xl border border-base-600 max-h-48 object-cover">
               <button type="button" 
                       onclick="removeCurrentCover()"
-                      class="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/80 text-white hover:bg-red-600 transition-colors">
+                      class="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/80 text-content-primary hover:bg-red-600 transition-colors">
                 <i data-lucide="x" class="w-4 h-4"></i>
               </button>
             </div>
@@ -224,18 +224,18 @@
           
           <!-- Cover Upload Input -->
           <div>
-            <label class="block text-sm font-medium text-slate-soft mb-2">
+            <label class="block text-sm font-medium text-content-secondary mb-2">
               {% if album.cover_image %}Upload New Cover (optional){% else %}Choose Cover Image{% endif %}
             </label>
             <input type="file" name="cover_image" id="cover_input"
                    accept="image/*"
-                   class="w-full px-4 py-2 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors text-xs file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-semibold file:bg-gold file:text-base-900 hover:file:bg-gold-light"
+                   class="w-full px-4 py-2 bg-base-900 border border-base-600 rounded-xl text-content-primary focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors text-xs file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-semibold file:bg-gold file:text-base-900 hover:file:bg-gold-light"
                    onchange="previewCover(this)">
           </div>
           
           <!-- New Cover Preview -->
           <div id="new-cover-preview-container" class="mt-4 hidden">
-            <p class="text-xs text-slate-muted mb-2">New cover preview:</p>
+            <p class="text-xs text-content-muted mb-2">New cover preview:</p>
             <img id="new-cover-preview" src="" alt="Preview" class="w-full rounded-xl border border-base-600 max-h-48 object-cover">
             <button type="button" 
                     onclick="clearNewCover()"
@@ -253,7 +253,7 @@
           <h3 class="font-display font-semibold text-red-400">Danger Zone</h3>
         </div>
         <div class="p-5">
-          <p class="text-sm text-slate-soft mb-4">
+          <p class="text-sm text-content-secondary mb-4">
             Once you delete an album, all media will be lost. Please be certain.
           </p>
           <button type="button" onclick="confirmDelete({{ album.id }}, '{{ album.title|escapejs }}')"
@@ -269,7 +269,7 @@
         <div class="p-5">
           <div class="flex flex-col gap-3">
             <a href="/dashboard/albums/" 
-               class="w-full px-5 py-2.5 rounded-xl border border-base-600 text-slate-muted hover:text-white hover:border-base-500 transition-colors text-center">
+               class="w-full px-5 py-2.5 rounded-xl border border-base-600 text-content-muted hover:text-content-primary hover:border-base-500 transition-colors text-center">
               Cancel
             </a>
             <button type="submit" name="action" value="draft"
@@ -291,16 +291,16 @@
 <div id="deleteModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
   <div class="bg-base-800 border border-base-700 rounded-2xl max-w-md w-full mx-4 overflow-hidden shadow-2xl">
     <div class="px-6 py-4 border-b border-base-700">
-      <h3 class="font-display font-semibold text-white text-lg">Confirm Delete</h3>
+      <h3 class="font-display font-semibold text-content-primary text-lg">Confirm Delete</h3>
     </div>
     <div class="p-6">
-      <p class="text-slate-soft mb-2">Are you sure you want to delete:</p>
-      <p class="text-white font-medium mb-4" id="delete-title"></p>
+      <p class="text-content-secondary mb-2">Are you sure you want to delete:</p>
+      <p class="text-content-primary font-medium mb-4" id="delete-title"></p>
       <p class="text-sm text-red-400">This action cannot be undone.</p>
     </div>
     <div class="px-6 py-4 border-t border-base-700 flex items-center justify-end gap-3">
       <button onclick="closeDeleteModal()" 
-              class="px-4 py-2 border border-base-600 text-slate-muted rounded-xl hover:text-white hover:border-base-500 transition-colors">
+              class="px-4 py-2 border border-base-600 text-content-muted rounded-xl hover:text-content-primary hover:border-base-500 transition-colors">
         Cancel
       </button>
       <form id="delete-form" method="POST" action="/dashboard/albums/{{ album.id }}/delete/" class="inline">
@@ -335,7 +335,7 @@ function renderMediaGrid() {
   ];
   
   if (allItems.length === 0) {
-    grid.innerHTML = '<div class="col-span-full text-center py-8 text-slate-muted">No media items in this album. Upload files or add URLs above.</div>';
+    grid.innerHTML = '<div class="col-span-full text-center py-8 text-content-muted">No media items in this album. Upload files or add URLs above.</div>';
     if (mediaCount) mediaCount.textContent = '0';
     if (sidebarMediaCount) sidebarMediaCount.textContent = '0';
     return;
@@ -362,7 +362,7 @@ function renderMediaGrid() {
       mediaContent = `
         <video src="${item.url}" class="w-full h-full object-cover"></video>
         <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-          <i data-lucide="play" class="w-8 h-8 text-white"></i>
+          <i data-lucide="play" class="w-8 h-8 text-content-primary"></i>
         </div>
       `;
     } else {
@@ -380,7 +380,7 @@ function renderMediaGrid() {
     // Caption if exists
     if (item.caption) {
       const captionDiv = document.createElement('div');
-      captionDiv.className = 'absolute bottom-0 left-0 right-0 bg-black/70 text-white text-[10px] p-1 truncate';
+      captionDiv.className = 'absolute bottom-0 left-0 right-0 bg-black/70 text-content-primary text-[10px] p-1 truncate';
       captionDiv.textContent = item.caption;
       mediaCard.appendChild(captionDiv);
     }
@@ -392,7 +392,7 @@ function renderMediaGrid() {
       <button type="button" onclick="editMedia(${item.isLocal}, ${item.originalIndex})" class="p-2 rounded-lg bg-gold text-base-900 hover:bg-gold-light transition-colors" title="Edit caption">
         <i data-lucide="edit-3" class="w-4 h-4"></i>
       </button>
-      <button type="button" onclick="removeMedia(${item.isLocal}, ${item.originalIndex})" class="p-2 rounded-lg bg-red-500/80 text-white hover:bg-red-600 transition-colors" title="Remove">
+      <button type="button" onclick="removeMedia(${item.isLocal}, ${item.originalIndex})" class="p-2 rounded-lg bg-red-500/80 text-content-primary hover:bg-red-600 transition-colors" title="Remove">
         <i data-lucide="trash-2" class="w-4 h-4"></i>
       </button>
     `;

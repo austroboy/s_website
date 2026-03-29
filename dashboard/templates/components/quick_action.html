@@ -19,7 +19,7 @@
     {% with bg="bg-orange-500/10" border="border-orange-500/20" text="text-orange-400" hover="hover:bg-orange-500/20" %}
     {% endwith %}
 {% else %}
-    {% with bg="bg-base-700" border="border-base-600" text="text-slate-soft" hover="hover:bg-base-600" %}
+    {% with bg="bg-base-700" border="border-base-600" text="text-content-secondary" hover="hover:bg-base-600" %}
     {% endwith %}
 {% endif %}
 
@@ -28,7 +28,7 @@
         <div class="w-8 h-8 rounded-lg {{ bg }} border {{ border }} flex items-center justify-center">
             <i data-lucide="{{ icon }}" class="w-4 h-4 {{ text }}"></i>
         </div>
-        <span class="text-xs font-medium text-slate-soft group-hover:text-white transition-colors text-center leading-tight">
+        <span class="text-xs font-medium text-content-secondary group-hover:text-content-primary transition-colors text-center leading-tight">
             {{ label }}
         </span>
     </a>

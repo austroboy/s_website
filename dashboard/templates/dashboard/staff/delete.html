@@ -11,12 +11,12 @@
         <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
           <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400"></i>
         </div>
-        <h2 class="font-display font-semibold text-white text-lg">Delete Staff Member</h2>
+        <h2 class="font-display font-semibold text-content-primary text-lg">Delete Staff Member</h2>
       </div>
     </div>
     
     <div class="p-6">
-      <p class="text-slate-soft mb-4">
+      <p class="text-content-secondary mb-4">
         Are you sure you want to delete the following staff member?
       </p>
       
@@ -30,8 +30,8 @@
           </div>
           {% endif %}
           <div>
-            <h3 class="text-white font-medium">{{ staff.name }}</h3>
-            <p class="text-sm text-slate-muted">{{ staff.designation }}</p>
+            <h3 class="text-content-primary font-medium">{{ staff.name }}</h3>
+            <p class="text-sm text-content-muted">{{ staff.designation }}</p>
           </div>
         </div>
         {% if staff.department %}
@@ -52,7 +52,7 @@
         {% csrf_token %}
         <div class="flex items-center gap-3">
           <a href="/dashboard/staff/" 
-             class="flex-1 px-4 py-2.5 border border-base-600 text-slate-muted rounded-xl hover:text-white hover:border-base-500 transition-colors text-center">
+             class="flex-1 px-4 py-2.5 border border-base-600 text-content-muted rounded-xl hover:text-content-primary hover:border-base-500 transition-colors text-center">
             Cancel
           </a>
           <button type="submit" 

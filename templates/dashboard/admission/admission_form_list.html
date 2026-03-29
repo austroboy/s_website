@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="mb-6">
-  <h1 class="text-2xl font-display font-bold text-white">
+  <h1 class="text-2xl font-display font-bold text-content-primary">
     Admission Forms
   </h1>
 </div>
@@ -22,24 +22,24 @@
       <input type="text" name="title"
         value="{{ edit_obj.title|default:'' }}"
         placeholder="Title"
-        class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+        class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
       <input type="number" name="order"
         value="{{ edit_obj.order|default:'0' }}"
         placeholder="Order"
-        class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+        class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
       <textarea name="description"
         placeholder="Description"
-        class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">{{ edit_obj.description|default:'' }}</textarea>
+        class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">{{ edit_obj.description|default:'' }}</textarea>
 
       <input type="file" name="file"
-        class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+        class="col-span-2 bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
     </div>
 
     <div class="mt-4 flex items-center gap-4">
-      <label class="text-sm text-slate-soft">
+      <label class="text-sm text-content-secondary">
         <input type="checkbox" name="is_published"
           {% if edit_obj %}
             {% if edit_obj.is_published %}checked{% endif %}
@@ -64,8 +64,8 @@
   <div class="bg-base-800 border border-base-700 rounded-xl p-4 flex justify-between items-center">
 
     <div>
-      <p class="text-white font-semibold">{{ form.title }}</p>
-      <p class="text-xs text-slate-muted">
+      <p class="text-content-primary font-semibold">{{ form.title }}</p>
+      <p class="text-xs text-content-muted">
         Order: {{ form.order }} |
         {% if form.is_published %}
           <span class="text-green-400">Published</span>

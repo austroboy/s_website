@@ -26,26 +26,43 @@
           extend: {
             colors: {
               base: {
-                950: "#0D1012",
-                900: "#16191D",
-                800: "#1C2026",
-                700: "#232830",
-                600: "#2C343D",
-                500: "#3D4752",
+                950: "rgb(var(--bg-body-rgb) / <alpha-value>)",
+                900: "rgb(var(--bg-surface-rgb) / <alpha-value>)",
+                800: "rgb(var(--bg-elevated-rgb) / <alpha-value>)",
+                700: "rgb(var(--border-main-rgb) / <alpha-value>)",
+                600: "rgb(var(--border-subtle-rgb) / <alpha-value>)",
+                500: "rgb(var(--border-muted-rgb) / <alpha-value>)",
+                400: "rgb(var(--text-muted-rgb) / <alpha-value>)",
               },
-              gold: { DEFAULT: "#F0A500", light: "#FFBE3C", dark: "#C47F00" },
-              cyan: { DEFAULT: "#00C2CC", light: "#34D9E3", dark: "#008C94" },
+              content: {
+                primary: "rgb(var(--text-primary-rgb) / <alpha-value>)",
+                secondary: "rgb(var(--text-secondary-rgb) / <alpha-value>)",
+                muted: "rgb(var(--text-muted-rgb) / <alpha-value>)",
+              },
+              gold: { 
+                DEFAULT: "rgb(var(--accent-rgb) / <alpha-value>)", 
+                light: "rgb(var(--accent-light-rgb) / <alpha-value>)", 
+                dark: "rgb(var(--accent-dark-rgb, var(--accent-rgb)) / <alpha-value>)" 
+              },
+              cyan: { 
+                DEFAULT: "rgb(0 194 204 / <alpha-value>)", 
+                light: "rgb(52 217 227 / <alpha-value>)", 
+                dark: "rgb(0 140 148 / <alpha-value>)" 
+              },
               emerald: { pulse: "#10B981" },
-              slate: { muted: "#64748B", soft: "#94A3B8" },
+              slate: { 
+                muted: "rgb(var(--text-muted-rgb) / <alpha-value>)", 
+                soft: "rgb(var(--text-secondary-rgb) / <alpha-value>)" 
+              },
             },
             fontFamily: {
               display: ["Syne", "sans-serif"],
               body: ["DM Sans", "sans-serif"],
             },
             boxShadow: {
-              "glow-gold": "0 0 24px rgba(240,165,0,0.18)",
+              "glow-gold": "0 0 24px var(--accent-glow)",
               "glow-cyan": "0 0 20px rgba(0,194,204,0.15)",
-              card: "0 1px 3px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.2)",
+              card: "0 1px 3px rgba(0,0,0,0.4), 0 4px 16px var(--shadow-color)",
             },
           },
         },
@@ -61,99 +78,128 @@
 
       /* ── DARK (default) ─────────────────────────────── */
       :root, [data-theme="dark"] {
+        --bg-body-rgb:      13, 16, 18;
+        --bg-surface-rgb:   22, 25, 29;
+        --bg-elevated-rgb:  28, 32, 38;
+        --border-main-rgb:  35, 40, 48;
+        --border-subtle-rgb: 44, 52, 61;
+        --border-muted-rgb: 61, 71, 82;
+        --text-primary-rgb: 226, 232, 240;
+        --text-secondary-rgb: 148, 163, 184;
+        --text-muted-rgb:   100, 116, 139;
+        --accent-rgb:       240, 165, 0;
+        --accent-light-rgb: 255, 190, 60;
+
         --bg-body:          #0D1012;
         --bg-surface:       #16191D;
         --bg-elevated:      #1C2026;
-        --bg-card:          #1C2026;
         --border-main:      #232830;
         --border-subtle:    #2C343D;
         --border-muted:     #3D4752;
         --text-primary:     #E2E8F0;
         --text-secondary:   #94A3B8;
         --text-muted:       #64748B;
-        --scrollbar-track:  #16191D;
-        --scrollbar-thumb:  #2C343D;
+        --accent:           #F0A500;
         --nav-hover-bg:     #232830;
         --nav-hover-text:   #E2E8F0;
         --submenu-hover-bg: #1C2026;
         --submenu-hover-text:#CBD5E1;
-        --header-bg:        #16191D;
-        --sidebar-bg:       #16191D;
-        --accent:           #F0A500;
-        --accent-light:     #FFBE3C;
-        --accent-glow:      rgba(240,165,0,0.18);
-        --accent-border:    rgba(240,165,0,0.2);
-        --accent-bg:        rgba(240,165,0,0.08);
         --active-text:      #F0A500;
         --active-subtext:   #FFBE3C;
-        --overlay-bg:       rgba(0,0,0,0.6);
-        --switcher-active:  #F0A500;
+        --scrollbar-thumb:  #2C343D;
+
+        --accent-glow:      rgba(240, 165, 0, 0.18);
+        --accent-border:    rgba(240, 165, 0, 0.2);
+        --accent-bg:        rgba(240, 165, 0, 0.08);
+        --header-bg:        #16191D;
+        --sidebar-bg:       #16191D;
+        --shadow-color:     rgba(0,0,0,0.2);
       }
 
       /* ── LIGHT (Slate) ───────────────────────────────── */
       [data-theme="light"] {
+        /* --- RGB (for Tailwind opacity modifiers) --- */
+        --bg-body-rgb:       248, 250, 252;   /* slate-50  */
+        --bg-surface-rgb:    255, 255, 255;   /* white     */
+        --bg-elevated-rgb:   241, 245, 249;   /* slate-100 */
+        --border-main-rgb:   226, 232, 240;   /* slate-200 */
+        --border-subtle-rgb: 203, 213, 225;   /* slate-300 */
+        --border-muted-rgb:  148, 163, 184;   /* slate-400 */
+        --text-primary-rgb:  15,  23,  42;    /* slate-900 */
+        --text-secondary-rgb: 71, 85,  105;   /* slate-600 */
+        --text-muted-rgb:    148, 163, 184;   /* slate-400 */
+        --accent-rgb:        79,  70,  229;   /* indigo-600*/
+        --accent-light-rgb:  99,  102, 241;   /* indigo-500*/
+
+        /* --- Named (for var() references in CSS) --- */
         --bg-body:          #F8FAFC;
         --bg-surface:       #FFFFFF;
         --bg-elevated:      #F1F5F9;
         --bg-card:          #FFFFFF;
-        --border-main:      #E2E8F0;
-        --border-subtle:    #CBD5E1;
-        --border-muted:     #94A3B8;
+        --border-main:      #E2E8F0;   /* slate-200 — soft, clean */
+        --border-subtle:    #CBD5E1;   /* slate-300 */
+        --border-muted:     #94A3B8;   /* slate-400 */
         --text-primary:     #0F172A;
         --text-secondary:   #475569;
         --text-muted:       #94A3B8;
-        --scrollbar-track:  #F1F5F9;
-        --scrollbar-thumb:  #CBD5E1;
-        --nav-hover-bg:     #F1F5F9;
-        --nav-hover-text:   #0F172A;
-        --submenu-hover-bg: #F8FAFC;
-        --submenu-hover-text:#334155;
-        --header-bg:        #FFFFFF;
-        --sidebar-bg:       #FFFFFF;
         --accent:           #4F46E5;
-        --accent-light:     #6366F1;
-        --accent-glow:      rgba(79,70,229,0.15);
-        --accent-border:    rgba(79,70,229,0.25);
-        --accent-bg:        rgba(79,70,229,0.07);
+        --nav-hover-bg:     #EEF2FF;   /* indigo-50  */
+        --nav-hover-text:   #1E1B4B;
+        --submenu-hover-bg: #F0F4FF;
+        --submenu-hover-text:#312E81;
         --active-text:      #4F46E5;
         --active-subtext:   #6366F1;
-        --overlay-bg:       rgba(0,0,0,0.4);
-        --switcher-active:  #4F46E5;
+        --scrollbar-thumb:  #CBD5E1;
+
+        --accent-glow:      rgba(79, 70, 229, 0.10);
+        --accent-border:    rgba(79, 70, 229, 0.18);
+        --accent-bg:        rgba(79, 70, 229, 0.06);
+        --header-bg:        #FFFFFF;
+        --sidebar-bg:       #FAFBFF;   /* very faint indigo tint */
+        --shadow-color:     rgba(100, 116, 139, 0.08);
       }
 
-      /* ── BLUE (Dynamic Indigo-Blue) ──────────────────── */
+      /* ── BLUE (Ocean) ──────────────────── */
       [data-theme="blue"] {
+        --bg-body-rgb:      15, 23, 41;
+        --bg-surface-rgb:   20, 30, 53;
+        --bg-elevated-rgb:  26, 39, 68;
+        --border-main-rgb:  30, 48, 88;
+        --border-subtle-rgb: 38, 64, 112;
+        --border-muted-rgb: 59, 89, 152;
+        --text-primary-rgb: 224, 238, 255;
+        --text-secondary-rgb: 147, 180, 216;
+        --text-muted-rgb:   94, 135, 181;
+        --accent-rgb:       56, 189, 248;
+        --accent-light-rgb: 125, 211, 252;
+
         --bg-body:          #0F1729;
         --bg-surface:       #141E35;
         --bg-elevated:      #1A2744;
-        --bg-card:          #1A2744;
         --border-main:      #1E3058;
         --border-subtle:    #264070;
         --border-muted:     #3B5998;
         --text-primary:     #E0EEFF;
         --text-secondary:   #93B4D8;
         --text-muted:       #5E87B5;
-        --scrollbar-track:  #141E35;
-        --scrollbar-thumb:  #264070;
+        --accent:           #38BDF8;
         --nav-hover-bg:     #1E3058;
         --nav-hover-text:   #E0EEFF;
         --submenu-hover-bg: #1A2744;
         --submenu-hover-text:#B8D0EC;
-        --header-bg:        #141E35;
-        --sidebar-bg:       #141E35;
-        --accent:           #38BDF8;
-        --accent-light:     #7DD3FC;
-        --accent-glow:      rgba(56,189,248,0.2);
-        --accent-border:    rgba(56,189,248,0.25);
-        --accent-bg:        rgba(56,189,248,0.08);
         --active-text:      #38BDF8;
         --active-subtext:   #7DD3FC;
-        --overlay-bg:       rgba(0,0,0,0.65);
-        --switcher-active:  #38BDF8;
+        --scrollbar-thumb:  #264070;
+
+        --accent-glow:      rgba(56, 189, 248, 0.15);
+        --accent-border:    rgba(56, 189, 248, 0.18);
+        --accent-bg:        rgba(56, 189, 248, 0.06);
+        --active-text:      #38BDF8;
+        --header-bg:        #141E35;
+        --sidebar-bg:       #141E35;
+        --shadow-color:     rgba(0,0,0,0.25);
       }
 
-      * { box-sizing: border-box; }
-      html, body { height: 100%; margin: 0; }
       body {
         font-family: 'DM Sans', sans-serif;
         background-color: var(--bg-body);
@@ -163,9 +209,120 @@
 
       /* ─── SCROLLBAR ─────────────────────────────────────── */
       ::-webkit-scrollbar { width: 4px; }
-      ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 2px; }
+      ::-webkit-scrollbar-track { background: var(--bg-surface); }
+      ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 2px; }
       ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+      /* ─── GLOBAL THEME BORDER CORRECTIONS ───────────────── */
+      /* Ensures cards, panels, inputs, and tables show correct   */
+      /* soft borders in Light and Ocean Blue themes.             */
+
+      /* Light — Card / Panel Backgrounds */
+      [data-theme="light"] .bg-base-800,
+      [data-theme="light"] .bg-base-900 {
+        background-color: var(--bg-surface) !important;
+      }
+
+      /* Light / Blue — Border Color Snap */
+      [data-theme="light"] .border-base-700,
+      [data-theme="light"] .border-base-600,
+      [data-theme="light"] .border-base-500,
+      [data-theme="blue"]  .border-base-700,
+      [data-theme="blue"]  .border-base-600,
+      [data-theme="blue"]  .border-base-500 {
+        border-color: var(--border-main) !important;
+      }
+
+      /* Light / Blue — Dividers inside tables */
+      [data-theme="light"] .divide-base-700 > * + *,
+      [data-theme="blue"]  .divide-base-700 > * + * {
+        border-color: var(--border-subtle) !important;
+      }
+
+      /* Light / Blue — Inputs, Selects, Textareas */
+      [data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+      [data-theme="light"] select,
+      [data-theme="light"] textarea,
+      [data-theme="blue"]  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+      [data-theme="blue"]  select,
+      [data-theme="blue"]  textarea {
+        background-color: var(--bg-surface) !important;
+        border-color: var(--border-subtle) !important;
+        color: var(--text-primary) !important;
+      }
+
+      /* Light — Input Focus Ring */
+      [data-theme="light"] input:focus,
+      [data-theme="light"] select:focus,
+      [data-theme="light"] textarea:focus {
+        border-color: var(--accent) !important;
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(79,70,229,0.10) !important;
+      }
+
+      /* Blue — Input Focus Ring */
+      [data-theme="blue"] input:focus,
+      [data-theme="blue"] select:focus,
+      [data-theme="blue"] textarea:focus {
+        border-color: var(--accent) !important;
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(56,189,248,0.12) !important;
+      }
+
+      /* Light — Table hover row */
+      [data-theme="light"] tbody tr:hover td {
+        background-color: rgba(79,70,229,0.03) !important;
+      }
+
+      /* Light — Modal / Dialog panels */
+      [data-theme="light"] .bg-base-800.border.border-base-700,
+      [data-theme="light"] .border-base-700.rounded-2xl,
+      [data-theme="light"] .border-base-700.rounded-xl {
+        background-color: var(--bg-surface) !important;
+        border-color: var(--border-main) !important;
+        box-shadow: 0 4px 24px rgba(100,116,139,0.10), 0 1px 4px rgba(100,116,139,0.06) !important;
+      }
+
+      /* Light — thead strip */
+      [data-theme="light"] thead tr,
+      [data-theme="light"] .bg-base-900\/50 {
+        background-color: var(--bg-elevated) !important;
+      }
+
+      /* ─── DARK — explicit border enforcement ─────────────── */
+      /* Fixes any "white border" artifact in dark mode by        */
+      /* pinning all base-border classes to the dark palette.     */
+      [data-theme="dark"] .border-base-700,
+      :root .border-base-700 {
+        border-color: #232830 !important;
+      }
+      [data-theme="dark"] .border-base-600,
+      :root .border-base-600 {
+        border-color: #2C343D !important;
+      }
+      [data-theme="dark"] .border-base-500,
+      :root .border-base-500 {
+        border-color: #3D4752 !important;
+      }
+      [data-theme="dark"] .divide-base-700 > * + *,
+      :root .divide-base-700 > * + * {
+        border-color: #232830 !important;
+      }
+      /* Dark — Inputs, Selects, Textareas */
+      [data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+      [data-theme="dark"] select,
+      [data-theme="dark"] textarea {
+        background-color: #0D1012 !important;
+        border-color: #2C343D !important;
+        color: #E2E8F0 !important;
+      }
+      [data-theme="dark"] input:focus,
+      [data-theme="dark"] select:focus,
+      [data-theme="dark"] textarea:focus {
+        border-color: #F0A500 !important;
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(240,165,0,0.10) !important;
+      }
 
       /* ─── NAV SIDEBAR ───────────────────────────────────── */
       #sidebar {
@@ -398,7 +555,7 @@
         <!-- Mobile sidebar toggle -->
         <button
           id="sidebar-toggle"
-          class="p-2 rounded-lg text-slate-muted hover:text-white hover:bg-base-700 transition-colors lg:hidden"
+          class="p-2 rounded-lg text-content-muted hover:text-content-primary hover:bg-base-700 transition-colors lg:hidden"
         >
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
@@ -406,7 +563,7 @@
         <!-- Collapse toggle (desktop) -->
         <button
           id="collapse-toggle"
-          class="p-2 rounded-lg text-slate-muted hover:text-white hover:bg-base-700 transition-colors hidden lg:flex"
+          class="p-2 rounded-lg text-content-muted hover:text-content-primary hover:bg-base-700 transition-colors hidden lg:flex"
         >
           <i data-lucide="panel-right" class="w-5 h-5"></i>
         </button>
@@ -414,12 +571,12 @@
         <!-- Breadcrumb -->
         <nav class="flex items-center gap-2 text-sm min-w-0 overflow-hidden">
           {% block breadcrumb %}
-          <span class="text-slate-muted">Dashboard</span>
+          <span class="text-content-muted">Dashboard</span>
           <i
             data-lucide="chevron-right"
             class="w-3 h-3 text-base-500 flex-shrink-0"
           ></i>
-          <span class="text-white font-medium truncate">Overview</span>
+          <span class="text-content-primary font-medium truncate">Overview</span>
           {% endblock %}
         </nav>
       </div>
@@ -427,21 +584,19 @@
       <!-- Right Actions -->
       <div class="flex items-center gap-2 flex-shrink-0 ml-4">
 
-        <!-- Theme Switcher Pill -->
-        <div class="theme-switcher" id="theme-switcher" title="Switch Theme">
+        <!-- Theme Switcher — Desktop Pill (lg+) / Mobile Icon (< lg) -->
+
+        <!-- DESKTOP: 3-button pill -->
+        <div class="theme-switcher hidden lg:flex" id="theme-switcher-desktop" title="Switch Theme">
           <!-- Dark -->
-          <button class="theme-btn" data-theme-target="dark" data-tip="Dark"
-            aria-label="Dark theme">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="theme-btn" data-theme-target="dark" data-tip="Dark" aria-label="Dark theme">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
           </button>
           <!-- Light -->
-          <button class="theme-btn" data-theme-target="light" data-tip="Light"
-            aria-label="Light theme">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="theme-btn" data-theme-target="light" data-tip="Light" aria-label="Light theme">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="5"/>
               <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
               <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
@@ -450,14 +605,58 @@
             </svg>
           </button>
           <!-- Blue -->
-          <button class="theme-btn" data-theme-target="blue" data-tip="Ocean"
-            aria-label="Blue theme">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="theme-btn" data-theme-target="blue" data-tip="Ocean" aria-label="Blue theme">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <path d="M2 12h10l4-8 4 8"/>
             </svg>
           </button>
+        </div>
+
+        <!-- MOBILE: single icon + dropdown -->
+        <div class="relative lg:hidden" id="theme-mobile-wrapper">
+          <button id="theme-mobile-trigger"
+            class="p-2 rounded-xl text-content-muted hover:text-content-primary transition-colors"
+            style="background:var(--bg-elevated); border:1px solid var(--border-subtle);"
+            aria-label="Switch theme" aria-expanded="false">
+            <!-- Filled dynamically by JS -->
+            <span id="theme-mobile-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </span>
+          </button>
+
+          <!-- Dropdown -->
+          <div id="theme-mobile-dropdown"
+            class="hidden absolute right-0 top-full mt-2 z-50 overflow-hidden"
+            style="width:140px; background:var(--bg-elevated); border:1px solid var(--border-subtle); border-radius:14px; box-shadow:0 8px 24px var(--shadow-color);">
+            <button class="theme-mobile-opt w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors" data-theme-target="dark">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+              Dark
+            </button>
+            <div style="height:1px;background:var(--border-main);margin:0 10px;"></div>
+            <button class="theme-mobile-opt w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors" data-theme-target="light">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+              Light
+            </button>
+            <div style="height:1px;background:var(--border-main);margin:0 10px;"></div>
+            <button class="theme-mobile-opt w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors" data-theme-target="blue">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h10l4-8 4 8"/>
+              </svg>
+              Ocean
+            </button>
+          </div>
         </div>
 
         <!-- Divider -->
@@ -483,7 +682,7 @@
         <!-- Admin Avatar -->
         <div class="flex items-center gap-2 pl-2 ml-1" style="border-left:1px solid var(--border-subtle);">
           <div
-            class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan to-cyan-dark flex items-center justify-center text-xs font-bold text-white"
+            class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan to-cyan-dark flex items-center justify-center text-xs font-bold text-content-primary"
           >
             {{ request.user.username|default:"AD"|slice:":2" }}
           </div>
@@ -525,12 +724,12 @@
           </div>
           <div class="brand-name min-w-0">
             <p
-              class="text-sm font-display font-bold text-white leading-tight truncate"
+              class="text-sm font-display font-bold text-content-primary leading-tight truncate"
             >
               SchoolOS
             </p>
             <p
-              class="brand-tag text-[10px] text-slate-muted leading-tight uppercase tracking-widest"
+              class="brand-tag text-[10px] text-content-muted leading-tight uppercase tracking-widest"
             >
               Platform Admin
             </p>
@@ -555,11 +754,11 @@
             </div>
             <div class="min-w-0">
               <p
-                class="text-[11px] font-semibold text-white truncate leading-tight"
+                class="text-[11px] font-semibold text-content-primary truncate leading-tight"
               >
                 {{ request.tenant.name|default:"Global Tech Academy" }}
               </p>
-              <p class="text-[10px] text-slate-muted truncate">
+              <p class="text-[10px] text-content-muted truncate">
                 {{ request.tenant.subdomain|default:"global" }}.schoolos.app
               </p>
             </div>
@@ -581,12 +780,12 @@
             class="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-base-800 cursor-pointer transition-colors group"
           >
             <div
-              class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan to-cyan-dark flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+              class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan to-cyan-dark flex items-center justify-center text-xs font-bold text-content-primary flex-shrink-0"
             >
               {{ request.user.username|default:"AD"|slice:":2" }}
             </div>
             <div class="user-details min-w-0 flex-1">
-              <p class="text-sm font-medium text-white leading-tight truncate">
+              <p class="text-sm font-medium text-content-primary leading-tight truncate">
                 {{ request.user.username|default:"Platform Admin" }}
               </p>
               
@@ -595,7 +794,7 @@
               {% csrf_token %}
               <button
                   type="submit"
-                  class="text-slate-muted hover:text-red-400 transition-colors p-1 rounded-lg hover:bg-red-500/10"
+                  class="text-content-muted hover:text-red-400 transition-colors p-1 rounded-lg hover:bg-red-500/10"
               >
                   <i data-lucide="log-out" class="w-4 h-4"></i>
               </button>
@@ -619,13 +818,32 @@
 
       // ── THEME SWITCHER ──────────────────────────────────────
       const THEME_KEY = 'schoolos-theme';
-      const themes = ['dark', 'light', 'blue'];
+
+      // SVG icons keyed by theme name
+      const themeIcons = {
+        dark:  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+        light: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+        blue:  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"/><path d="M2 12h10l4-8 4 8"/></svg>`,
+      };
 
       function applyTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem(THEME_KEY, theme);
+
+        // Update desktop pill active states
         document.querySelectorAll('.theme-btn').forEach(btn => {
           btn.classList.toggle('active', btn.dataset.themeTarget === theme);
+        });
+
+        // Update mobile trigger icon
+        const mobileIcon = document.getElementById('theme-mobile-icon');
+        if (mobileIcon) mobileIcon.innerHTML = themeIcons[theme] || themeIcons.dark;
+
+        // Update mobile dropdown option highlights
+        document.querySelectorAll('.theme-mobile-opt').forEach(opt => {
+          const isActive = opt.dataset.themeTarget === theme;
+          opt.style.color     = isActive ? 'var(--active-text)' : 'var(--text-secondary)';
+          opt.style.background = isActive ? 'var(--accent-bg)'   : '';
         });
       }
 
@@ -635,12 +853,44 @@
         applyTheme(saved);
       })();
 
+      // Desktop pill buttons
       document.querySelectorAll('.theme-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           applyTheme(btn.dataset.themeTarget);
           lucide.createIcons();
         });
       });
+
+      // Mobile dropdown — toggle open/close
+      const mobileTrigger  = document.getElementById('theme-mobile-trigger');
+      const mobileDropdown = document.getElementById('theme-mobile-dropdown');
+
+      mobileTrigger && mobileTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = !mobileDropdown.classList.contains('hidden');
+        mobileDropdown.classList.toggle('hidden', isOpen);
+        mobileTrigger.setAttribute('aria-expanded', String(!isOpen));
+      });
+
+      // Mobile dropdown — option click
+      document.querySelectorAll('.theme-mobile-opt').forEach(opt => {
+        opt.addEventListener('click', () => {
+          applyTheme(opt.dataset.themeTarget);
+          mobileDropdown.classList.add('hidden');
+          mobileTrigger.setAttribute('aria-expanded', 'false');
+          lucide.createIcons();
+        });
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        const wrapper = document.getElementById('theme-mobile-wrapper');
+        if (wrapper && !wrapper.contains(e.target)) {
+          mobileDropdown && mobileDropdown.classList.add('hidden');
+          mobileTrigger && mobileTrigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+
 
       // ── Collapse sidebar (desktop) ──────────────────────
       const sidebar = document.getElementById("sidebar");

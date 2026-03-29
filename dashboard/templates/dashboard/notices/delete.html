@@ -11,18 +11,18 @@
         <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
           <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400"></i>
         </div>
-        <h2 class="font-display font-semibold text-white text-lg">Delete Notice</h2>
+        <h2 class="font-display font-semibold text-content-primary text-lg">Delete Notice</h2>
       </div>
     </div>
 
     <div class="p-6">
-      <p class="text-slate-soft mb-4">Are you sure you want to delete the following notice?</p>
+      <p class="text-content-secondary mb-4">Are you sure you want to delete the following notice?</p>
 
       <div class="bg-base-900 border border-base-700 rounded-xl p-4 mb-6">
-        <h3 class="text-white font-medium mb-1">{{ notice.title }}</h3>
-        <p class="text-sm text-slate-muted">{{ notice.created_at|date:"M d, Y" }}</p>
+        <h3 class="text-content-primary font-medium mb-1">{{ notice.title }}</h3>
+        <p class="text-sm text-content-muted">{{ notice.created_at|date:"M d, Y" }}</p>
         {% if notice.expiry_date %}
-        <p class="text-xs text-slate-muted mt-1">Expires: {{ notice.expiry_date|date:"M d, Y" }}</p>
+        <p class="text-xs text-content-muted mt-1">Expires: {{ notice.expiry_date|date:"M d, Y" }}</p>
         {% endif %}
       </div>
 
@@ -37,7 +37,7 @@
         {% csrf_token %}
         <div class="flex items-center gap-3">
           <a href="/dashboard/notices/"
-             class="flex-1 px-4 py-2.5 border border-base-600 text-slate-muted rounded-xl hover:text-white hover:border-base-500 transition-colors text-center">
+             class="flex-1 px-4 py-2.5 border border-base-600 text-content-muted rounded-xl hover:text-content-primary hover:border-base-500 transition-colors text-center">
             Cancel
           </a>
           <button type="submit"

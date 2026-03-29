@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="mb-6">
-  <h1 class="text-2xl font-display font-bold text-white">
+  <h1 class="text-2xl font-display font-bold text-content-primary">
     Document Categories
   </h1>
 </div>
@@ -25,7 +25,7 @@
              name="name"
              value="{{ edit_obj.name|default:'' }}"
              placeholder="Category Name"
-             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
       <!-- Slug -->
       <input type="text"
@@ -33,14 +33,14 @@
              name="slug"
              value="{{ edit_obj.slug|default:'' }}"
              placeholder="Slug"
-             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
       <!-- Order -->
       <input type="number"
              name="order"
              value="{{ edit_obj.order|default:'0' }}"
              placeholder="Order"
-             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-white">
+             class="bg-base-900 border border-base-700 px-3 py-2 rounded-xl text-content-primary">
 
     </div>
 
@@ -57,8 +57,8 @@
   <div class="bg-base-800 border border-base-700 rounded-xl p-4 flex justify-between items-center">
 
     <div>
-      <p class="text-white font-semibold">{{ category.name }}</p>
-      <p class="text-xs text-slate-muted">
+      <p class="text-content-primary font-semibold">{{ category.name }}</p>
+      <p class="text-xs text-content-muted">
         /{{ category.slug }} | Order: {{ category.order }}
       </p>
     </div>
