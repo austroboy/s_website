@@ -397,7 +397,7 @@
     <!-- Featured Image -->
     {% if event.featured_image %}
     <div class="evp-featured-image mb-8">
-      <img src="{{ event.featured_image }}" alt="{{ event.title }}" class="w-full h-auto">
+      <img src="{{ event.featured_image.url }}" alt="{{ event.title }}" class="w-full h-auto">
     </div>
     {% endif %}
     

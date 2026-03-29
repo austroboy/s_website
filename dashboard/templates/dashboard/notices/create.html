@@ -28,7 +28,7 @@
 
 <!-- Create Notice Form - সবকিছু একটি ফর্মের ভিতরে -->
 <div class="fade-up delay-2">
-  <form method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+  <form method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
     {% csrf_token %}
     
     <!-- Main Form - 2 columns -->
@@ -90,51 +90,54 @@
     <!-- Sidebar - 1 column (এখন ফর্মের ভিতরে) -->
     <div class="lg:col-span-1 space-y-5">
 
-      <!-- Featured Image URL -->
+      <!-- Featured Image Upload -->
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-5 py-4 border-b border-base-700">
           <h3 class="font-display font-semibold text-white">Featured Image</h3>
         </div>
         <div class="p-5 space-y-3">
           <div>
-            <label class="block text-xs font-medium text-slate-muted mb-1.5">Image URL</label>
-            <input type="url" name="featured_image" id="featured_image"
-                   placeholder="https://example.com/image.jpg"
-                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors text-sm"
-                   onchange="previewImageFromUrl(this.value)">
+            <label class="block text-xs font-medium text-slate-muted mb-1.5">Choose Image</label>
+            <input type="file" name="featured_image" id="featured_image_input"
+                   accept="image/*"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors text-sm file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gold file:text-base-900 hover:file:bg-gold-light"
+                   onchange="previewImage(this)">
           </div>
           <div id="image-preview-container" class="hidden">
             <p class="text-xs text-slate-muted mb-2">Preview:</p>
             <img id="image-preview" src="" alt="Preview" class="w-full rounded-xl border border-base-600">
-            <button type="button" onclick="clearImageUrl()"
+            <button type="button" onclick="clearFile('featured_image_input', 'image-preview-container')"
                     class="mt-2 text-xs text-red-400 hover:text-red-300 transition-colors">
-              <i data-lucide="x" class="w-3 h-3 inline mr-1"></i> Clear image
+              <i data-lucide="x" class="w-3 h-3 inline mr-1"></i> Remove image
             </button>
           </div>
-          <p class="text-xs text-slate-muted">Paste a direct URL to an image</p>
+          <p class="text-xs text-slate-muted">Select an image from your device</p>
         </div>
       </div>
 
-      <!-- Attachment URL -->
+      <!-- Attachment Upload -->
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-5 py-4 border-b border-base-700">
           <h3 class="font-display font-semibold text-white">Attachment</h3>
         </div>
         <div class="p-5 space-y-3">
           <div>
-            <label class="block text-xs font-medium text-slate-muted mb-1.5">Attachment URL</label>
-            <input type="url" name="attachment_url" id="attachment_url"
-                   placeholder="https://example.com/document.pdf"
-                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors text-sm">
+            <label class="block text-xs font-medium text-slate-muted mb-1.5">Choose File</label>
+            <input type="file" name="attachment_url" id="attachment_input"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors text-sm file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gold file:text-base-900 hover:file:bg-gold-light"
+                   onchange="previewAttachment(this)">
           </div>
           <div id="attachment-preview-container" class="hidden">
-            <a id="attachment-link" href="#" target="_blank"
-               class="inline-flex items-center gap-1.5 text-xs text-gold hover:text-gold-light transition-colors">
+            <span id="attachment-name" class="inline-flex items-center gap-1.5 text-xs text-gold">
               <i data-lucide="paperclip" class="w-3.5 h-3.5"></i>
-              View attachment
-            </a>
+              File selected
+            </span>
+            <button type="button" onclick="clearFile('attachment_input', 'attachment-preview-container')"
+                    class="ml-2 text-xs text-red-400 hover:text-red-300 transition-colors">
+              <i data-lucide="x" class="w-3 h-3 inline mr-1"></i> Clear
+            </button>
           </div>
-          <p class="text-xs text-slate-muted">Link to PDF, DOC, or any downloadable file</p>
+          <p class="text-xs text-slate-muted">Upload a PDF, document, or other file</p>
         </div>
       </div>
 
@@ -227,41 +230,40 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-// Image URL preview
-function previewImageFromUrl(url) {
+// Image preview
+function previewImage(input) {
   const previewContainer = document.getElementById('image-preview-container');
   const previewImg = document.getElementById('image-preview');
   
-  if (url && url.trim() !== '') {
-    previewImg.src = url;
-    previewContainer.classList.remove('hidden');
-    
-    previewImg.onerror = function() {
-      previewImg.src = '';
-      previewContainer.classList.add('hidden');
-      alert('Invalid image URL or image cannot be loaded');
-    };
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      previewContainer.classList.remove('hidden');
+    }
+    reader.readAsDataURL(input.files[0]);
   } else {
     previewContainer.classList.add('hidden');
   }
 }
 
-function clearImageUrl() {
-  document.getElementById('featured_image').value = '';
-  document.getElementById('image-preview-container').classList.add('hidden');
-}
-
-// Attachment URL preview
-document.getElementById('attachment_url')?.addEventListener('input', function() {
+// Attachment preview
+function previewAttachment(input) {
   const previewContainer = document.getElementById('attachment-preview-container');
-  const attachmentLink = document.getElementById('attachment-link');
+  const attachmentName = document.getElementById('attachment-name');
   
-  if (this.value && this.value.trim() !== '') {
-    attachmentLink.href = this.value;
+  if (input.files && input.files[0]) {
+    attachmentName.innerHTML = `<i data-lucide="paperclip" class="w-3.5 h-3.5"></i> ${input.files[0].name}`;
     previewContainer.classList.remove('hidden');
+    if (window.lucide) lucide.createIcons();
   } else {
     previewContainer.classList.add('hidden');
   }
-});
+}
+
+function clearFile(inputId, containerId) {
+  document.getElementById(inputId).value = '';
+  document.getElementById(containerId).classList.add('hidden');
+}
 </script>
 {% endblock %}

@@ -66,8 +66,9 @@ def dashboard_program_create(request):
         # Get form data
         name = request.POST.get('name', '').strip()
         description = request.POST.get('description', '').strip()
-        icon = request.POST.get('icon', '').strip()
-        featured_image = request.POST.get('featured_image', '').strip()
+        # Handle images
+        icon = request.FILES.get('icon')
+        featured_image = request.FILES.get('featured_image')
         order = request.POST.get('order', 0)
         action = request.POST.get('action', 'draft')
         
@@ -109,15 +110,19 @@ def dashboard_program_edit(request, program_id):
         
         # Handle icon
         if request.POST.get('remove_icon') == 'true':
-            program.icon = ''
-        elif request.POST.get('icon'):
-            program.icon = request.POST.get('icon')
+            program.icon = None
+        
+        new_icon = request.FILES.get('icon')
+        if new_icon:
+            program.icon = new_icon
         
         # Handle featured image
         if request.POST.get('remove_featured_image') == 'true':
-            program.featured_image = ''
-        elif request.POST.get('featured_image'):
-            program.featured_image = request.POST.get('featured_image')
+            program.featured_image = None
+        
+        new_featured = request.FILES.get('featured_image')
+        if new_featured:
+            program.featured_image = new_featured
         
         # Handle publish status
         action = request.POST.get('action', 'draft')

@@ -178,7 +178,7 @@
           <td class="py-4 px-5">
             <div class="flex items-center gap-3">
               {% if staff.photo %}
-              <img src="{{ staff.photo }}" alt="{{ staff.name }}" class="w-10 h-10 rounded-full object-cover border border-base-600">
+              <img src="{{ staff.photo.url }}" alt="{{ staff.name }}" class="w-10 h-10 rounded-full object-cover border border-base-600">
               {% else %}
               <div class="w-10 h-10 rounded-full bg-gradient-to-br from-base-700 to-base-600 border border-base-600 flex items-center justify-center">
                 <i data-lucide="user" class="w-5 h-5 text-base-400"></i>
@@ -195,13 +195,9 @@
             {{ staff.designation }}
           </td>
           <td class="py-4 px-5">
-            {% if staff.department %}
-            <span class="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-purple-500/10 text-purple-400 border border-purple-500/20">
+            <span class="text-xs font-medium text-purple-400">
               {{ staff.department }}
             </span>
-            {% else %}
-            <span class="text-xs text-slate-muted">—</span>
-            {% endif %}
           </td>
           <td class="py-4 px-5">
             <div class="flex flex-col gap-1">

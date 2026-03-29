@@ -86,11 +86,13 @@ def dashboard_staff_create(request):
         designation = request.POST.get('designation', '').strip()
         department = request.POST.get('department', '').strip()
         bio = request.POST.get('bio', '').strip()
-        photo = request.POST.get('photo', '').strip()
         email = request.POST.get('email', '').strip()
         phone = request.POST.get('phone', '').strip()
         order = request.POST.get('order', 0)
         action = request.POST.get('action', 'draft')
+        
+        # Get photo from FILES
+        photo = request.FILES.get('photo')
         
         # Create staff member
         staff = CachedStaff.objects.create(
@@ -144,9 +146,11 @@ def dashboard_staff_edit(request, staff_id):
         
         # Handle photo
         if request.POST.get('remove_photo') == 'true':
-            staff.photo = ''
-        elif request.POST.get('photo'):
-            staff.photo = request.POST.get('photo')
+            staff.photo = None
+        
+        new_photo = request.FILES.get('photo')
+        if new_photo:
+            staff.photo = new_photo
         
         # Handle publish status
         action = request.POST.get('action', 'draft')

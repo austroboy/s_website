@@ -7,6 +7,19 @@
     <title>{% block title %}{{ request.tenant.name }}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     
+    <!-- Favicon -->
+    {% if request.tenant.assets.favicon %}
+        <link rel="icon" type="image/x-icon" href="{{ request.tenant.assets.favicon.url }}">
+    {% endif %}
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="{% block og_title %}{{ request.tenant.name }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ block.super }}{% endblock %}">
+    {% if request.tenant.assets.og_image %}
+        <meta property="og:image" content="{{ request.tenant.assets.og_image.url }}">
+    {% endif %}
+    <meta property="og:type" content="website">
+    
     <!-- Alpine.js for lightweight interactivity -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Lucide Icons -->
@@ -62,8 +75,8 @@
     --shadow-sm: 0 1px 3px rgba(15, 29, 64, 0.06);
     --shadow-md: 0 4px 16px rgba(15, 29, 64, 0.08);
     --shadow-lg: 0 10px 40px rgba(15, 29, 64, 0.12);
-    --shadow-glow: 0 0 30px rgba(0, 81, 255, 0.2);
-    --shadow-glow-lg: 0 0 60px rgba(0, 81, 255, 0.3);
+    --shadow-glow: 0 0 30px color-mix(in srgb, var(--primary) 20%, transparent);
+    --shadow-glow-lg: 0 0 60px color-mix(in srgb, var(--primary) 30%, transparent);
 
     --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -173,7 +186,7 @@ h1, h2, h3, h4, h5, h6, .outfit {
 
 .btn-primary-blue:hover {
     transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 30px rgba(0, 81, 255, 0.5), 0 0 40px rgba(0, 81, 255, 0.25);
+    box-shadow: 0 8px 30px color-mix(in srgb, var(--primary) 50%, transparent), 0 0 40px color-mix(in srgb, var(--primary) 25%, transparent);
 }
 
 .btn-primary-blue:hover::before {
@@ -687,7 +700,7 @@ h1, h2, h3, h4, h5, h6, .outfit {
     </style>
     {% block extra_head %}{% endblock %}
 </head>
-<body class="antialiased font-sans bg-[var(--surface)] text-[var(--text)]">
+<body class="antialiased bg-[var(--surface)] text-[var(--text)]">
     {% include 'components/layouts/header.html' %}
 
     

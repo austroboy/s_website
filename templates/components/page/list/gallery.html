@@ -7,9 +7,9 @@
 <!-- Standard Academic Hero Header Flattened -->
 <section class="relative h-[200px] lg:h-[300px] overflow-hidden flex items-center">
        <div class="absolute inset-0 z-0">
-        <img src="{% static 'assets/layout_images/hero_header.jpg' %}" 
+        <img src="{% static 'assets/layout_images/gallery_header.png' %}" 
              alt="Institutional Gallery" 
-             class="w-full h-full object-cover">
+             class="w-full h-full object-contain object-right">
         <div class="absolute inset-0" 
              style="background: linear-gradient(to right, color-mix(in srgb, var(--primary-dark) 95%, transparent), color-mix(in srgb, var(--primary-dark) 60%, transparent), transparent);">
         </div>
@@ -36,10 +36,10 @@
                     <div class="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-dark)] p-2.5 rounded-xl text-white shadow-lg shadow-[var(--primary-glow)] shrink-0">
                         <i data-lucide="images" class="w-5 h-5"></i>
                     </div>
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">Explore Our Gallery</h2>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text)] tracking-tight">{{ section.title|default:"Explore Our Gallery" }}</h2>
                 </div>
                 <div>
-                    <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">Capturing Moments, Creating Memories</p>
+                    <p class="text-[var(--text-muted)] text-sm md:text-base opacity-70">{{ section.subtitle|default:"Capturing Moments, Creating Memories" }}</p>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
                 {% for album in page_obj.object_list|default:albums %}
                     <a href="{% url 'albums:detail' album.pk %}" class="{% cycle 'col-span-1 row-span-1' 'col-span-1 row-span-1' 'col-span-1 row-span-2' 'col-span-2 row-span-1' 'col-span-2 row-span-1' 'col-span-1 row-span-1' 'col-span-1 row-span-1' %} group relative overflow-hidden rounded-2xl cursor-pointer glow-border-hover bg-[var(--surface-alt)]">
                         {% if album.cover_image %}
-                            <img src="{{ album.cover_image }}" 
+                            <img src="{{ album.cover_image.url }}" 
                                  alt="{{ album.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         {% else %}
                             {% include "components/partials/dynamic_placeholder.svg" with svg_id=forloop.counter %}
@@ -65,7 +65,7 @@
                         <!-- Media Count -->
                         <div class="absolute top-3 left-3 bg-black/40 backdrop-blur-md rounded-full px-2 py-1 flex items-center space-x-1.5 transition-opacity duration-500 opacity-0 group-hover:opacity-100 z-20">
                             <i data-lucide="camera" class="w-3 h-3 text-white"></i>
-                            <span class="text-[9px] font-bold text-white uppercase tracking-widest">{{ album.media_items|length|default:"0" }} PHOTOS</span>
+                            <span class="text-[9px] font-bold text-white uppercase tracking-widest">{{ album.total_media_count }} PHOTOS</span>
                         </div>
 
                         <div class="absolute bottom-0 left-0 p-4 lg:p-6 w-full text-white z-20">
@@ -80,21 +80,21 @@
             {% if is_paginated %}
             <div class="mt-16 flex items-center justify-center space-x-3 reveal-up">
                 {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">
+                <a href="?page={{ page_obj.previous_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-[var(--primary)]/30 text-[var(--text-muted)] hover:border-[var(--primary)] transition-all shadow-sm">
                     <i data-lucide="chevron-left" class="w-5 h-5"></i>
                 </a>
                 {% endif %}
 
                 {% for num in paginator.page_range %}
                     {% if page_obj.number == num %}
-                    <span class="w-10 h-10 flex items-center justify-center rounded-2xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/20">{{ num }}</span>
+                    <span class="w-10 h-10 flex items-center justify-center rounded-2xl bg-[var(--primary)] text-white font-bold shadow-lg shadow-[var(--primary-glow)]">{{ num }}</span>
                     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                    <a href="?page={{ num }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">{{ num }}</a>
+                    <a href="?page={{ num }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-[var(--primary)]/30 text-[var(--text-muted)] hover:border-[var(--primary)] transition-all shadow-sm">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
 
                 {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-cyan-400/30 text-gray-500 hover:border-blue-600 transition-all shadow-sm">
+                <a href="?page={{ page_obj.next_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-[var(--primary)]/30 text-[var(--text-muted)] hover:border-[var(--primary)] transition-all shadow-sm">
                     <i data-lucide="chevron-right" class="w-5 h-5"></i>
                 </a>
                 {% endif %}

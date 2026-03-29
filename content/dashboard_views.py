@@ -57,10 +57,10 @@ def _build_config(post_data: dict, section_type: str) -> dict:
         }
     elif section_type == 'cta':
         cfg = {
-            'primary_text':   post_data.get('cfg_primary_text', ''),
-            'primary_link':   post_data.get('cfg_primary_link', ''),
-            'secondary_text': post_data.get('cfg_secondary_text', ''),
-            'secondary_link': post_data.get('cfg_secondary_link', ''),
+            'cta_primary_text':   post_data.get('cfg_primary_text', ''),
+            'cta_primary_link':   post_data.get('cfg_primary_link', ''),
+            'cta_secondary_text': post_data.get('cfg_secondary_text', ''),
+            'cta_secondary_link': post_data.get('cfg_secondary_link', ''),
         }
     # Sections without specific config just return {}
     return {k: v for k, v in cfg.items() if v or v == 0}

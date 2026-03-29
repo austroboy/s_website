@@ -34,7 +34,7 @@
 
 <!-- Create Staff Form - সবকিছু একটি ফর্মের ভিতরে -->
 <div class="fade-up delay-2">
-  <form method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+  <form method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
     {% csrf_token %}
     
     <!-- Main Form - 2 columns -->
@@ -150,24 +150,24 @@
     <!-- Sidebar - 1 column (এখন ফর্মের ভিতরে) -->
     <div class="lg:col-span-1 space-y-5">
       
-      <!-- Photo URL Card -->
+      <!-- Photo Upload Card -->
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-5 py-4 border-b border-base-700">
-          <h3 class="font-display font-semibold text-white">Profile Photo URL</h3>
+          <h3 class="font-display font-semibold text-white">Profile Photo</h3>
         </div>
         <div class="p-5">
           <div>
             <label class="block text-sm font-medium text-slate-soft mb-2">
-              Photo URL
+              Choose Photo
             </label>
-            <input type="url" 
+            <input type="file" 
                    name="photo" 
-                   id="photo_url"
-                   placeholder="https://example.com/photo.jpg"
-                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"
-                   onchange="previewPhotoFromUrl(this.value)">
+                   id="photo_input"
+                   accept="image/*"
+                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gold file:text-base-900 hover:file:bg-gold-light"
+                   onchange="previewPhoto(this)">
             <p class="mt-1.5 text-xs text-slate-muted">
-              Enter a direct URL to an image (JPG, PNG, WebP)
+              Select a JPG, PNG, or WebP image from your device
             </p>
           </div>
           
@@ -176,10 +176,10 @@
             <p class="text-xs text-slate-muted mb-2">Preview:</p>
             <img id="photo-preview" src="" alt="Preview" class="w-full rounded-xl border border-base-600 max-h-48 object-cover">
             <button type="button" 
-                    onclick="clearPhotoUrl()"
+                    onclick="clearPhoto()"
                     class="mt-2 text-xs text-red-400 hover:text-red-300 transition-colors">
               <i data-lucide="x" class="w-3 h-3 inline mr-1"></i>
-              Clear photo
+              Remove photo
             </button>
           </div>
         </div>
@@ -243,27 +243,24 @@
 
 <!-- JavaScript -->
 <script>
-function previewPhotoFromUrl(url) {
+function previewPhoto(input) {
   const previewContainer = document.getElementById('photo-preview-container');
   const previewImg = document.getElementById('photo-preview');
   
-  if (url && url.trim() !== '') {
-    previewImg.src = url;
-    previewContainer.classList.remove('hidden');
-    
-    // Handle error if image fails to load
-    previewImg.onerror = function() {
-      previewImg.src = '';
-      previewContainer.classList.add('hidden');
-      alert('Invalid image URL or image cannot be loaded');
-    };
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      previewContainer.classList.remove('hidden');
+    }
+    reader.readAsDataURL(input.files[0]);
   } else {
     previewContainer.classList.add('hidden');
   }
 }
 
-function clearPhotoUrl() {
-  document.getElementById('photo_url').value = '';
+function clearPhoto() {
+  document.getElementById('photo_input').value = '';
   document.getElementById('photo-preview-container').classList.add('hidden');
 }
 </script>

@@ -28,6 +28,7 @@ class Tenant(models.Model):
     enable_results = models.BooleanField(default=True)
 
     # Contact info (can be overridden locally)
+    bio = models.TextField(blank=True, help_text="Short biography or description of the school")
     contact_email = models.EmailField(blank=True)
     contact_phone = models.CharField(max_length=20, blank=True)
     address = models.TextField(blank=True)

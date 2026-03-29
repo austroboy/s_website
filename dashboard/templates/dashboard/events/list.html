@@ -165,7 +165,7 @@
           <td class="py-4 px-5">
             <div class="flex items-center gap-3">
               {% if event.featured_image %}
-              <img src="{{ event.featured_image }}" alt="" class="w-10 h-10 rounded-lg object-cover border border-base-600">
+              <img src="{{ event.featured_image.url }}" alt="" class="w-10 h-10 rounded-lg object-cover border border-base-600">
               {% else %}
               <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-700 to-purple-600 border border-base-600 flex items-center justify-center">
                 <i data-lucide="calendar" class="w-5 h-5 text-white"></i>

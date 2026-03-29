@@ -138,7 +138,7 @@
           <td class="py-4 px-5">
             <div class="flex items-center gap-3">
               {% if notice.featured_image %}
-              <img src="{{ notice.featured_image }}" alt="" class="w-10 h-10 rounded-lg object-cover border border-base-600">
+              <img src="{{ notice.featured_image.url }}" alt="" class="w-10 h-10 rounded-lg object-cover border border-base-600">
               {% else %}
               <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-base-700 to-base-600 border border-base-600 flex items-center justify-center">
                 <i data-lucide="megaphone" class="w-5 h-5 text-base-400"></i>
@@ -183,7 +183,7 @@
           </td>
           <td class="py-4 px-5">
             {% if notice.attachment_url %}
-            <a href="{{ notice.attachment_url }}" target="_blank"
+            <a href="{{ notice.attachment_url.url }}" target="_blank"
                class="inline-flex items-center gap-1 text-xs text-gold hover:text-gold-light transition-colors">
               <i data-lucide="paperclip" class="w-3.5 h-3.5"></i>
               View

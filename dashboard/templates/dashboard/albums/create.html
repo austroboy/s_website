@@ -34,7 +34,7 @@
 
 <!-- Create Album Form - সবকিছু একটি ফর্মের ভিতরে -->
 <div class="fade-up delay-2">
-  <form method="POST" id="album-form" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+  <form method="POST" id="album-form" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
     {% csrf_token %}
     
     <!-- Main Form - 2 columns -->
@@ -70,17 +70,47 @@
                       placeholder="Brief description of the album..."></textarea>
           </div>
           
-          <!-- Hidden field for media items -->
+          <!-- Hidden fields for media -->
           <input type="hidden" name="media_items" id="media_items" value="[]">
+          <input type="hidden" name="local_media_ids" id="local_media_ids" value="[]">
           
           <!-- Media Manager Section -->
           <div class="pt-4 border-t border-base-700">
             <h3 class="font-display font-semibold text-white mb-4">Media Manager</h3>
             
-            <!-- URL Input for Media -->
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-slate-soft mb-2">Add Media by URL</label>
-              <div class="space-y-3">
+            <!-- Tabs for Add Media -->
+            <div class="mb-6" x-data="{ tab: 'local' }">
+              <div class="flex border-b border-base-700 mb-4">
+                <button type="button" 
+                        @click="tab = 'local'"
+                        :class="tab === 'local' ? 'border-gold text-gold' : 'border-transparent text-slate-muted hover:text-white'"
+                        class="px-4 py-2 border-b-2 font-medium text-sm transition-colors">
+                  Local Upload
+                </button>
+                <button type="button" 
+                        @click="tab = 'url'"
+                        :class="tab === 'url' ? 'border-gold text-gold' : 'border-transparent text-slate-muted hover:text-white'"
+                        class="px-4 py-2 border-b-2 font-medium text-sm transition-colors">
+                  Add by URL
+                </button>
+              </div>
+
+              <!-- Local Upload Tab -->
+              <div x-show="tab === 'local'" class="space-y-4">
+                <div id="drop-zone" 
+                     class="border-2 border-dashed border-base-600 rounded-2xl p-8 text-center hover:border-gold/50 hover:bg-gold/5 transition-all cursor-pointer group"
+                     onclick="document.getElementById('local-media-input').click()">
+                  <input type="file" id="local-media-input" multiple accept="image/*,video/*" class="hidden" onchange="handleLocalFiles(this.files)">
+                  <div class="w-16 h-16 rounded-full bg-base-700/50 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <i data-lucide="upload-cloud" class="w-8 h-8 text-gold"></i>
+                  </div>
+                  <h4 class="text-white font-medium mb-1">Click or drag images & videos</h4>
+                  <p class="text-xs text-slate-muted uppercase tracking-wider">Supports JPG, PNG, GIF, MP4, WEBM</p>
+                </div>
+              </div>
+
+              <!-- URL Input Tab -->
+              <div x-show="tab === 'url'" class="space-y-3">
                 <div class="flex gap-2">
                   <input type="url" 
                          id="media-url-input"
@@ -96,10 +126,6 @@
                     Add
                   </button>
                 </div>
-                <p class="text-xs text-slate-muted">
-                  <i data-lucide="info" class="w-3 h-3 inline mr-1"></i>
-                  Supported: Images (JPG, PNG, GIF) and Videos (MP4, WebM)
-                </p>
               </div>
             </div>
             
@@ -124,7 +150,7 @@
     
     <!-- Sidebar - 1 column (এখন ফর্মের ভিতরে) -->
     <div class="lg:col-span-1 space-y-5">
-      <!-- Cover Image URL Card -->
+      <!-- Cover Image Upload Card -->
       <div class="bg-base-800 border border-base-700 rounded-2xl overflow-hidden shadow-card">
         <div class="px-5 py-4 border-b border-base-700">
           <h3 class="font-display font-semibold text-white">Cover Image</h3>
@@ -132,17 +158,14 @@
         <div class="p-5">
           <div>
             <label class="block text-sm font-medium text-slate-soft mb-2">
-              Cover Image URL
+              Choose Cover Image
             </label>
-            <input type="url" 
+            <input type="file" 
                    name="cover_image" 
-                   id="cover-url"
-                   class="w-full px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-white placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors"
-                   placeholder="https://example.com/cover.jpg"
-                   onchange="previewCoverFromUrl(this.value)">
-            <p class="mt-1.5 text-xs text-slate-muted">
-              Optional: Add a cover image for the album
-            </p>
+                   id="cover_input"
+                   accept="image/*"
+                   class="w-full px-4 py-2 bg-base-900 border border-base-600 rounded-xl text-white focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors text-xs file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-semibold file:bg-gold file:text-base-900 hover:file:bg-gold-light"
+                   onchange="previewCover(this)">
           </div>
           
           <!-- Cover Preview -->
@@ -150,7 +173,7 @@
             <p class="text-xs text-slate-muted mb-2">Cover preview:</p>
             <img id="cover-preview" src="" alt="Preview" class="w-full rounded-xl border border-base-600 max-h-48 object-cover">
             <button type="button" 
-                    onclick="clearCoverUrl()"
+                    onclick="clearCover()"
                     class="mt-2 text-xs text-red-400 hover:text-red-300 transition-colors">
               <i data-lucide="x" class="w-3 h-3 inline mr-1"></i>
               Remove cover image
@@ -218,7 +241,8 @@
 <!-- JavaScript for Media Management -->
 <script>
 // Initialize media items array
-let mediaItems = [];
+let mediaItems = []; // For URL-based items
+let localMedia = []; // For uploaded local items {id, url, type, caption}
 
 // Render media grid
 function renderMediaGrid() {
@@ -227,21 +251,27 @@ function renderMediaGrid() {
   
   if (!grid) return;
   
-  if (mediaItems.length === 0) {
-    grid.innerHTML = '<div class="col-span-full text-center py-8 text-slate-muted">No media added yet. Add some URLs above.</div>';
+  // Combine both types for rendering
+  const allItems = [
+    ...mediaItems.map((item, index) => ({ ...item, isLocal: false, originalIndex: index })),
+    ...localMedia.map((item, index) => ({ ...item, isLocal: true, originalIndex: index }))
+  ];
+  
+  if (allItems.length === 0) {
+    grid.innerHTML = '<div class="col-span-full text-center py-8 text-slate-muted">No media added yet. Upload files or add URLs above.</div>';
     if (mediaCount) mediaCount.textContent = '0';
     return;
   }
   
   grid.innerHTML = '';
   
-  mediaItems.forEach((item, index) => {
-    const isVideo = item.type === 'video' || (item.url && item.url.match(/\.(mp4|webm|ogg)$/i));
+  allItems.forEach((item, displayIndex) => {
+    const isVideo = item.type === 'video' || (item.url && item.url.match(/\.(mp4|webm|ogg|mov)$/i));
     
     const mediaCard = document.createElement('div');
     mediaCard.className = 'relative group aspect-square rounded-lg overflow-hidden border border-base-600 bg-base-900 cursor-move';
     mediaCard.setAttribute('draggable', 'true');
-    mediaCard.setAttribute('data-index', index);
+    mediaCard.setAttribute('data-display-index', displayIndex);
     
     // Drag events
     mediaCard.addEventListener('dragstart', handleDragStart);
@@ -253,7 +283,7 @@ function renderMediaGrid() {
     if (isVideo) {
       mediaContent = `
         <video src="${item.url}" class="w-full h-full object-cover"></video>
-        <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+        <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
           <i data-lucide="play" class="w-8 h-8 text-white"></i>
         </div>
       `;
@@ -263,10 +293,16 @@ function renderMediaGrid() {
     
     mediaCard.innerHTML = mediaContent;
     
+    // Type Badge
+    const badge = document.createElement('div');
+    badge.className = `absolute top-2 right-2 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${item.isLocal ? 'bg-gold/20 text-gold border border-gold/30' : 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'}`;
+    badge.textContent = item.isLocal ? 'Local' : 'URL';
+    mediaCard.appendChild(badge);
+    
     // Caption if exists
     if (item.caption) {
       const captionDiv = document.createElement('div');
-      captionDiv.className = 'absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs p-1 truncate';
+      captionDiv.className = 'absolute bottom-0 left-0 right-0 bg-black/70 text-white text-[10px] p-1 truncate';
       captionDiv.textContent = item.caption;
       mediaCard.appendChild(captionDiv);
     }
@@ -275,15 +311,12 @@ function renderMediaGrid() {
     const overlay = document.createElement('div');
     overlay.className = 'absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2';
     overlay.innerHTML = `
-      <button type="button" onclick="editMedia(${index})" class="p-2 rounded-lg bg-gold text-base-900 hover:bg-gold-light transition-colors" title="Edit caption">
+      <button type="button" onclick="editMedia(${item.isLocal}, ${item.originalIndex})" class="p-2 rounded-lg bg-gold text-base-900 hover:bg-gold-light transition-colors" title="Edit caption">
         <i data-lucide="edit-3" class="w-4 h-4"></i>
       </button>
-      <button type="button" onclick="removeMedia(${index})" class="p-2 rounded-lg bg-red-500/80 text-white hover:bg-red-600 transition-colors" title="Remove">
+      <button type="button" onclick="removeMedia(${item.isLocal}, ${item.originalIndex})" class="p-2 rounded-lg bg-red-500/80 text-white hover:bg-red-600 transition-colors" title="Remove">
         <i data-lucide="trash-2" class="w-4 h-4"></i>
       </button>
-      <div class="absolute top-1 left-1 bg-black/50 text-white text-xs px-1.5 py-0.5 rounded">
-        <i data-lucide="grip-vertical" class="w-3 h-3"></i>
-      </div>
     `;
     
     mediaCard.appendChild(overlay);
@@ -292,7 +325,7 @@ function renderMediaGrid() {
   
   // Update media count
   if (mediaCount) {
-    mediaCount.textContent = mediaItems.length;
+    mediaCount.textContent = allItems.length;
   }
   
   // Reinitialize Lucide icons
@@ -300,17 +333,52 @@ function renderMediaGrid() {
     lucide.createIcons();
   }
   
-  // Update hidden field
-  updateMediaItemsField();
+  // Update hidden fields
+  updateMediaFields();
+}
+
+// Local File Handling
+function handleLocalFiles(files) {
+  if (!files || files.length === 0) return;
+  
+  Array.from(files).forEach(file => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+    
+    // Optional: add uploading state to UI
+    
+    fetch('/dashboard/albums/upload-media/', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        localMedia.push({
+          id: data.id,
+          url: data.url,
+          type: data.type,
+          caption: ''
+        });
+        renderMediaGrid();
+      } else {
+        alert('Upload failed for: ' + file.name);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error uploading: ' + file.name);
+    });
+  });
 }
 
 // Drag and drop variables
-let draggedItemIndex = null;
+let draggedItemDisplayIndex = null;
 
 function handleDragStart(e) {
-  draggedItemIndex = parseInt(e.target.getAttribute('data-index'));
+  draggedItemDisplayIndex = parseInt(e.target.getAttribute('data-display-index'));
   e.target.classList.add('opacity-50');
-  e.dataTransfer.setData('text/plain', draggedItemIndex);
 }
 
 function handleDragOver(e) {
@@ -320,15 +388,25 @@ function handleDragOver(e) {
 
 function handleDrop(e) {
   e.preventDefault();
-  const target = e.target.closest('[data-index]');
+  const target = e.target.closest('[data-display-index]');
   if (!target) return;
   
-  const targetIndex = parseInt(target.getAttribute('data-index'));
-  if (draggedItemIndex === null || draggedItemIndex === targetIndex) return;
+  const targetIndex = parseInt(target.getAttribute('data-display-index'));
+  if (draggedItemDisplayIndex === null || draggedItemDisplayIndex === targetIndex) return;
   
-  // Reorder array
-  const [draggedItem] = mediaItems.splice(draggedItemIndex, 1);
-  mediaItems.splice(targetIndex, 0, draggedItem);
+  // This is a bit complex since we have two arrays. 
+  // Let's simplify: merge, reorder, then split back.
+  const allItems = [
+    ...mediaItems.map(item => ({ ...item, isLocal: false })),
+    ...localMedia.map(item => ({ ...item, isLocal: true }))
+  ];
+  
+  const [draggedItem] = allItems.splice(draggedItemDisplayIndex, 1);
+  allItems.splice(targetIndex, 0, draggedItem);
+  
+  // Split back
+  mediaItems = allItems.filter(i => !i.isLocal).map(({isLocal, ...rest}) => rest);
+  localMedia = allItems.filter(i => i.isLocal).map(({isLocal, ...rest}) => rest);
   
   renderMediaGrid();
 }
@@ -338,7 +416,7 @@ function handleDragEnd(e) {
   document.querySelectorAll('.group').forEach(el => {
     el.classList.remove('border-gold');
   });
-  draggedItemIndex = null;
+  draggedItemDisplayIndex = null;
 }
 
 // Add media by URL
@@ -347,18 +425,7 @@ function addMediaByUrl() {
   const typeSelect = document.getElementById('media-type-select');
   const url = urlInput.value.trim();
   
-  if (!url) {
-    alert('Please enter a URL');
-    return;
-  }
-  
-  // Validate URL
-  try {
-    new URL(url);
-  } catch {
-    alert('Please enter a valid URL');
-    return;
-  }
+  if (!url) return;
   
   mediaItems.push({
     url: url,
@@ -371,9 +438,10 @@ function addMediaByUrl() {
 }
 
 // Edit media caption
-function editMedia(index) {
-  const item = mediaItems[index];
-  const caption = prompt('Enter caption for this media:', item.caption || '');
+function editMedia(isLocal, index) {
+  const arr = isLocal ? localMedia : mediaItems;
+  const item = arr[index];
+  const caption = prompt('Enter caption:', item.caption || '');
   if (caption !== null) {
     item.caption = caption;
     renderMediaGrid();
@@ -381,57 +449,70 @@ function editMedia(index) {
 }
 
 // Remove media
-function removeMedia(index) {
-  if (confirm('Remove this media from album?')) {
-    mediaItems.splice(index, 1);
+function removeMedia(isLocal, index) {
+  if (confirm('Remove this item?')) {
+    if (isLocal) {
+        localMedia.splice(index, 1);
+    } else {
+        mediaItems.splice(index, 1);
+    }
     renderMediaGrid();
   }
 }
 
 // Clear all media
 function clearAllMedia() {
-  if (mediaItems.length > 0 && confirm('Remove all media from album?')) {
+  if (confirm('Remove all media items?')) {
     mediaItems = [];
+    localMedia = [];
     renderMediaGrid();
   }
 }
 
-// Update hidden field with media items JSON
-function updateMediaItemsField() {
+// Update hidden fields
+function updateMediaFields() {
   document.getElementById('media_items').value = JSON.stringify(mediaItems);
+  document.getElementById('local_media_ids').value = JSON.stringify(localMedia.map(m => m.id));
 }
 
-// Cover image preview from URL
-function previewCoverFromUrl(url) {
+// Cover image preview
+function previewCover(input) {
   const previewContainer = document.getElementById('cover-preview-container');
   const previewImg = document.getElementById('cover-preview');
   
-  if (url && url.trim() !== '') {
-    previewImg.src = url;
-    previewContainer.classList.remove('hidden');
-    
-    previewImg.onerror = function() {
-      previewImg.src = '';
-      previewContainer.classList.add('hidden');
-      alert('Invalid image URL or image cannot be loaded');
-    };
-  } else {
-    previewContainer.classList.add('hidden');
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      previewContainer.classList.remove('hidden');
+    }
+    reader.readAsDataURL(input.files[0]);
   }
 }
 
-function clearCoverUrl() {
-  document.getElementById('cover-url').value = '';
+function clearCover() {
+  document.getElementById('cover_input').value = '';
   document.getElementById('cover-preview-container').classList.add('hidden');
 }
 
-// Initialize on page load
+// Drop zone drag events
 document.addEventListener('DOMContentLoaded', function() {
+  const dz = document.getElementById('drop-zone');
+  if (dz) {
+    dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('bg-gold/10', 'border-gold'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('bg-gold/10', 'border-gold'));
+    dz.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dz.classList.remove('bg-gold/10', 'border-gold');
+      handleLocalFiles(e.dataTransfer.files);
+    });
+  }
+  
   renderMediaGrid();
   
-  // Form submit validation
+  // Submit validation
   document.getElementById('album-form').addEventListener('submit', function(e) {
-    updateMediaItemsField(); // Ensure latest data is saved
+    updateMediaFields();
   });
 });
 </script>

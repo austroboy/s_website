@@ -236,7 +236,7 @@
   <!-- Featured Image -->
   {% if news.featured_image %}
   <div class="np-featured-image mb-8">
-    <img src="{{ news.featured_image }}" alt="{{ news.title }}" class="w-full h-auto">
+    <img src="{{ news.featured_image.url }}" alt="{{ news.title }}" class="w-full h-auto">
   </div>
   {% endif %}
   

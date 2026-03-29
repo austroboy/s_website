@@ -122,12 +122,17 @@
     <!-- Cover Image -->
     <div class="relative aspect-video overflow-hidden">
       {% if album.cover_image %}
-      <img src="{{ album.cover_image }}" alt="{{ album.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+      <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
       {% else %}
       <div class="w-full h-full bg-gradient-to-br from-base-700 to-base-600 flex items-center justify-center">
         <i data-lucide="image" class="w-12 h-12 text-base-500"></i>
       </div>
       {% endif %}
+      
+      <!-- Selection Checkbox -->
+      <div class="absolute top-3 left-3">
+        <input type="checkbox" name="album_ids" value="{{ album.id }}" class="album-select w-4 h-4 rounded border-base-600 bg-black/30 text-gold focus:ring-gold/30">
+      </div>
       
       <!-- Status Badge -->
       <div class="absolute top-3 right-3">
@@ -148,7 +153,7 @@
       <div class="absolute bottom-3 left-3">
         <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium bg-black/50 text-white backdrop-blur-sm">
           <i data-lucide="images" class="w-3 h-3"></i>
-          {{ album.media_items|length }} items
+          {{ album.total_media_count }} items
         </span>
       </div>
     </div>

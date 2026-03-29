@@ -37,7 +37,7 @@
 
 <!-- FORM PANEL -->
 <div id="form-panel" class="hidden bg-base-800 border border-base-700 rounded-2xl p-6 mb-6">
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="action" id="form-action" value="create">
     <input type="hidden" name="achievement_id" id="achievement-id">
@@ -54,6 +54,12 @@
         <label class="text-xs text-slate-muted">Description</label>
         <textarea name="description" id="f-description"
           class="w-full bg-base-900 border border-base-700 rounded-xl px-3 py-2 text-white"></textarea>
+      </div>
+
+      <div class="sm:col-span-2">
+        <label class="text-xs text-slate-muted">Image</label>
+        <input type="file" name="image" id="f-image" accept="image/*"
+          class="w-full bg-base-900 border border-base-700 rounded-xl px-3 py-2 text-white">
       </div>
 
       <div>
@@ -95,7 +101,7 @@
   <div class="bg-base-800 border border-base-700 rounded-xl p-4 flex justify-between items-start">
     <div>
       <h3 class="text-white font-semibold">{{ a.title }}</h3>
-      <p class="text-xs text-slate-muted mt-1">{{ a.description }}</p>
+      <p class="text-xs text-slate-muted mt-1 line-clamp-1" title="{{ a.description }}">{{ a.description }}</p>
       <p class="text-xs text-slate-muted mt-1">
         {{ a.date }} | Order: {{ a.order }}
       </p>

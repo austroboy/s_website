@@ -9,11 +9,11 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts: Syne (display) + Quicksand (body) -->
+    <!-- Google Fonts: Syne (display) + DM Sans (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Quicksand:wght@300..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap"
       rel="stylesheet"
     />
 
@@ -39,8 +39,8 @@
               slate: { muted: "#64748B", soft: "#94A3B8" },
             },
             fontFamily: {
-              display: ["Quicksand", "sans-serif"],
-              body: ["Quicksand", "sans-serif"],
+              display: ["Syne", "sans-serif"],
+              body: ["DM Sans", "sans-serif"],
             },
             boxShadow: {
               "glow-gold": "0 0 24px rgba(240,165,0,0.18)",
@@ -56,7 +56,7 @@
       * { box-sizing: border-box; }
       html, body { height: 100%; margin: 0; }
       body {
-        font-family: 'Quicksand', sans-serif;
+        font-family: 'DM Sans', sans-serif;
         background-color: #0D1012;
         color: #E2E8F0;
       }
@@ -164,6 +164,46 @@
       }
       .fade-up { animation: fadeUp 0.4s ease forwards; opacity: 0; }
       {% for i in "12345678" %}.delay-{{ forloop.counter }} { animation-delay: {{ forloop.counter0 }}00ms; }{% endfor %}
+
+      :root {
+        --sidebar-width: 268px;
+        --sidebar-collapsed-width: 68px;
+        --curr-sidebar-width: var(--sidebar-width);
+      }
+
+      body.sidebar-collapsed {
+        --curr-sidebar-width: var(--sidebar-collapsed-width);
+      }
+
+      #main-header, #main-content {
+        margin-left: var(--curr-sidebar-width);
+        transition: margin-left 0.25s ease;
+      }
+
+      #sidebar {
+        width: var(--curr-sidebar-width);
+        min-width: var(--curr-sidebar-width);
+        transition: width 0.25s ease, min-width 0.25s ease, transform 0.25s ease;
+      }
+
+      @media (max-width: 1023px) {
+        :root {
+          --curr-sidebar-width: 0px;
+        }
+        #sidebar {
+          width: var(--sidebar-width);
+          min-width: var(--sidebar-width);
+          transform: translateX(-100%);
+          left: 0;
+          z-index: 50;
+        }
+        #sidebar.mobile-open {
+          transform: translateX(0);
+        }
+        #main-header, #main-content {
+          margin-left: 0;
+        }
+      }
     </style>
 
     {% block extra_head %}{% endblock %}
@@ -175,7 +215,6 @@
   ═══════════════════════════════════════════════════ -->
     <header
       class="bg-base-900 border-b border-base-700 h-14 flex items-center px-5 flex-shrink-0 z-30 sticky top-0"
-      style="margin-left: 268px"
       id="main-header"
     >
       <div class="flex items-center gap-3 flex-1 min-w-0">
@@ -250,7 +289,6 @@
       <main
         class="flex-1 overflow-y-auto min-w-0"
         id="main-content"
-        style="margin-left: 268px; transition: margin-right 0.25s ease"
       >
         <div class="p-6 max-w-7xl mx-auto">
           {% block content %}{% endblock %}
@@ -260,8 +298,7 @@
       <!-- ─── RIGHT SIDEBAR NAVIGATION ──────────────────── -->
       <aside
         id="sidebar"
-        class="fixed left-0 top-0 h-full bg-base-900 border-l border-base-700 flex flex-col z-40 overflow-y-auto"
-        style="top: 0"
+        class="fixed left-0 top-0 h-full bg-base-900 border-r border-base-700 flex flex-col z-40"
       >
         <!-- Brand / Logo Area -->
         <div
@@ -369,44 +406,32 @@
 
       // ── Collapse sidebar (desktop) ──────────────────────
       const sidebar = document.getElementById("sidebar");
-      const mainContent = document.getElementById("main-content");
-      const mainHeader = document.getElementById("main-header");
       const collapseBtn = document.getElementById("collapse-toggle");
-
-      function updateMainMargin() {
-        const w = sidebar.classList.contains("collapsed") ? "68px" : "268px";
-        mainContent.style.marginRight = w;
-        mainHeader.style.marginRight = w;
-      }
 
       collapseBtn &&
         collapseBtn.addEventListener("click", () => {
           sidebar.classList.toggle("collapsed");
-          updateMainMargin();
+          document.body.classList.toggle("sidebar-collapsed");
         });
 
       // ── Mobile sidebar toggle ────────────────────────────
       const toggleBtn = document.getElementById("sidebar-toggle");
       const overlay = document.getElementById("mobile-overlay");
 
+      function openSidebar() {
+        sidebar.classList.add("mobile-open");
+        overlay.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      }
+
       function closeSidebar() {
-        sidebar.style.transform = "translateX(100%)";
+        sidebar.classList.remove("mobile-open");
         overlay.classList.add("hidden");
+        document.body.style.overflow = "";
       }
 
       toggleBtn &&
-        toggleBtn.addEventListener("click", () => {
-          sidebar.style.transform = "translateX(0)";
-          overlay.classList.remove("hidden");
-        });
-
-      // Mobile: sidebar starts offscreen
-      if (window.innerWidth < 1024) {
-        sidebar.style.transform = "translateX(100%)";
-        sidebar.style.transition = "transform 0.25s ease";
-        mainContent.style.marginRight = "0";
-        mainHeader.style.marginRight = "0";
-      }
+        toggleBtn.addEventListener("click", openSidebar);
 
       // ── Submenu accordion ───────────────────────────────
       document.querySelectorAll(".nav-item.has-children").forEach((item) => {
