@@ -255,10 +255,16 @@ class AlbumDetailView(DetailView):
         for media in album.local_media.all().order_by('order', 'created_at'):
             combined_media.append({
                 'url': media.file.url,
-                'type': media.media_type,
+                'type': 'image',
                 'caption': media.caption,
                 'is_local': True
             })
             
+        # Calculate counts for filtering
+        image_count = sum(1 for item in combined_media if item['type'] == 'image')
+        video_count = sum(1 for item in combined_media if item['type'] == 'video')
+            
         context['combined_media'] = combined_media
+        context['image_count'] = image_count
+        context['video_count'] = video_count
         return context

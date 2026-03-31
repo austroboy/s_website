@@ -253,9 +253,15 @@
         
         <!-- Media -->
         {% if item.type == 'video' or item.url|slice:'-4:' == '.mp4' or item.url|slice:'-5:' == '.webm' or item.url|slice:'-4:' == '.ogg' %}
-        <video src="{{ item.url }}" class="w-full h-full object-cover"></video>
+        <iframe src="{{ item.url }}" class="w-full h-full object-cover pointer-events-none" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <div class="absolute inset-0 bg-transparent z-10"></div>
         <div class="absolute top-2 left-2 px-2 py-1 bg-black/60 backdrop-blur-sm rounded-lg ap-text-primary text-xs border border-white/10">
           <i data-lucide="video" class="w-3 h-3 inline mr-1"></i> Video
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30">
+            <i data-lucide="play" class="w-5 h-5 fill-white"></i>
+          </div>
         </div>
         {% else %}
         <img src="{{ item.url }}" alt="{{ item.caption }}" class="w-full h-full object-cover" loading="lazy">
@@ -320,7 +326,10 @@
     <div class="backdrop-blur-sm rounded-xl p-4 border ap-border-custom text-center" style="background-color: rgb(var(--bg-elevated-rgb) / 0.2);">
       <div class="text-2xl font-bold text-purple-400 mb-1">
         {% with videos=album.media_items %}
-          0
+          {% regroup album.media_items by type as media_types %}
+          {% for type in media_types %}
+            {% if type.grouper == 'video' %}{{ type.list|length }}{% endif %}
+          {% endfor %}
         {% endwith %}
       </div>
       <div class="text-xs ap-text-tertiary uppercase tracking-wider">Videos</div>
@@ -337,19 +346,19 @@
 <div id="ap-lightbox" class="fixed inset-0 z-[100] hidden items-center justify-center" style="background-color: rgb(var(--bg-body-rgb));">
   <!-- Close Button -->
   <button onclick="apCloseLightbox()" 
-          class="absolute top-4 right-4 z-10 p-3 rounded-full backdrop-blur-sm ap-text-primary hover:bg-blue-500 hover:text-content-primary transition-all border ap-border-custom hover:border-blue-500/50" style="background-color: rgb(var(--border-subtle-rgb) / 0.3);">
+          class="absolute top-4 right-4 z-50 p-3 rounded-full backdrop-blur-sm ap-text-primary hover:bg-blue-500 hover:text-content-primary transition-all border ap-border-custom hover:border-blue-500/50" style="background-color: rgb(var(--border-subtle-rgb) / 0.3);">
     <i data-lucide="x" class="w-5 h-5"></i>
   </button>
   
   <!-- Navigation Buttons -->
   <button onclick="apNavigateLightbox('prev')" 
-          class="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full backdrop-blur-sm ap-text-primary hover:bg-blue-500 hover:text-content-primary transition-all border ap-border-custom hover:border-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed" style="background-color: rgb(var(--border-subtle-rgb) / 0.3);"
+          class="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full backdrop-blur-sm ap-text-primary hover:bg-blue-500 hover:text-content-primary transition-all border ap-border-custom hover:border-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed" style="background-color: rgb(var(--border-subtle-rgb) / 0.3);"
           id="ap-lightbox-prev">
     <i data-lucide="chevron-left" class="w-5 h-5"></i>
   </button>
   
   <button onclick="apNavigateLightbox('next')" 
-          class="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full backdrop-blur-sm ap-text-primary hover:bg-blue-500 hover:text-content-primary transition-all border ap-border-custom hover:border-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed" style="background-color: rgb(var(--border-subtle-rgb) / 0.3);"
+          class="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full backdrop-blur-sm ap-text-primary hover:bg-blue-500 hover:text-content-primary transition-all border ap-border-custom hover:border-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed" style="background-color: rgb(var(--border-subtle-rgb) / 0.3);"
           id="ap-lightbox-next">
     <i data-lucide="chevron-right" class="w-5 h-5"></i>
   </button>
@@ -393,6 +402,11 @@
     // Update content
     apUpdateLightboxContent();
     
+    // Ensure icons are rendered
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+    
     // Update caption
     captionDiv.textContent = apMediaItems[index].caption || 'No caption';
     
@@ -419,7 +433,13 @@
     
     if (type === 'video') {
       content.innerHTML = `
-        <video src="${item.url}" controls autoplay class="max-h-[85vh] max-w-full rounded-lg shadow-2xl"></video>
+        <div class="relative w-full max-w-4xl aspect-video mx-auto">
+          <iframe src="${item.url}${item.url.includes('?') ? '&' : '?'}autoplay=1&rel=0" 
+                  class="w-full h-full rounded-2xl shadow-2xl" 
+                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen
+                  referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
       `;
     } else {
       content.innerHTML = `

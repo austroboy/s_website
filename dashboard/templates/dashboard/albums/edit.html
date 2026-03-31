@@ -124,7 +124,7 @@
                          id="media-url-input"
                          placeholder="https://example.com/image.jpg"
                          class="flex-1 px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary text-sm placeholder:text-base-500 focus:border-gold focus:ring-1 focus:ring-gold/30 transition-colors">
-                  <select id="media-type-select" class="px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary text-sm focus:border-gold focus:ring-1 focus:ring-gold/30">
+                  <select id="media-type-select" class="px-4 py-2.5 bg-base-900 border border-base-600 rounded-xl text-content-primary text-sm focus:border-gold focus:ring-1 focus:ring-gold/30 cursor-pointer bg-[position:right_0.75rem_center]">
                     <option value="image">Image</option>
                     <option value="video">Video</option>
                   </select>
@@ -360,21 +360,24 @@ function renderMediaGrid() {
     let mediaContent = '';
     if (isVideo) {
       mediaContent = `
-        <video src="${item.url}" class="w-full h-full object-cover"></video>
-        <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-          <i data-lucide="play" class="w-8 h-8 text-content-primary"></i>
+        <iframe src="${item.url}" class="w-full h-full object-cover pointer-events-none" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <div class="absolute inset-0 bg-transparent z-10"></div>
+        <div class="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none">
+          <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30">
+            <i data-lucide="play" class="w-5 h-5 fill-white"></i>
+          </div>
         </div>
       `;
     } else {
-      mediaContent = `<img src="${item.url}" alt="${item.caption || ''}" class="w-full h-full object-cover">`;
+      mediaContent = `<img src="${item.url}" alt="${item.caption || ''}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">`;
     }
     
     mediaCard.innerHTML = mediaContent;
 
     // Type Badge
     const badge = document.createElement('div');
-    badge.className = `absolute top-2 right-2 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${item.isLocal ? 'bg-gold/20 text-gold border border-gold/30' : 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'}`;
-    badge.textContent = item.isLocal ? 'Local' : 'URL';
+    badge.className = `absolute top-2 left-2 px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider backdrop-blur-md shadow-sm ${item.isLocal ? 'bg-accent-bg/80 text-accent border border-accent-border' : 'bg-cyan-500/80 text-white border border-cyan-500/30'}`;
+    badge.textContent = item.isLocal ? 'Local' : 'Video';
     mediaCard.appendChild(badge);
     
     // Caption if exists
@@ -387,7 +390,7 @@ function renderMediaGrid() {
     
     // Add overlay with actions
     const overlay = document.createElement('div');
-    overlay.className = 'absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2';
+    overlay.className = 'absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 z-20';
     overlay.innerHTML = `
       <button type="button" onclick="editMedia(${item.isLocal}, ${item.originalIndex})" class="p-2 rounded-lg bg-accent text-accent-contrast hover:opacity-90 transition-all" title="Edit caption">
         <i data-lucide="edit-3" class="w-4 h-4"></i>
@@ -499,9 +502,17 @@ function handleDragEnd(e) {
 function addMediaByUrl() {
   const urlInput = document.getElementById('media-url-input');
   const typeSelect = document.getElementById('media-type-select');
-  const url = urlInput.value.trim();
+  let url = urlInput.value.trim();
   
   if (!url) return;
+  
+  if (typeSelect.value === 'video') {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    if (match && match[2].length === 11) {
+      url = `https://www.youtube.com/embed/${match[2]}`;
+    }
+  }
   
   mediaItems.push({
     url: url,

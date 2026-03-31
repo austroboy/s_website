@@ -13,7 +13,7 @@
     </a>
     {% endwith %}
 {% elif color == "gold" or color == "accent" %}
-    {% with bg="bg-accent/10" border="border-accent/20" text="text-accent" hover="hover:bg-accent/20" %}
+    {% with bg="bg-accent-bg" border="border-accent-border" text="text-gold" hover="hover:bg-accent-bg/80" %}
     <a href="{{ action_url }}"
        class="flex flex-col items-center gap-2 p-3 rounded-xl border {{ border }} {{ bg }} {{ hover }} transition-all group cursor-pointer">
         <div class="w-8 h-8 rounded-lg {{ bg }} border {{ border }} flex items-center justify-center">
